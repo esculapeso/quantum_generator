@@ -155,20 +155,10 @@ jQuery(document).ready(function ($) {
   var $videoThumbsDiv = $('<div id="videoThumbs" ></div>');
   $videoThumbsDiv.appendTo($videoChooserSection);
 
-  var videos = [
-    { id: "6f0y1Iaorug", name: "Waves 1" },
-    { id: "LTmXmskEMas", name: "Waves 2" },
-    { id: "5Lzi4T6mu0U", name: "Meditation" },
-    { id: "fiSowadSS-E", name: "Tropical Beach" },
-    { id: "uWfwDnroMEA", name: "Relax Fire" },
-    { id: "mRlat5h_GTM", name: "Chills from Fireplace" },
-    { id: "WHPEKLQID4U", name: "Soothing Waves" },
-    { id: "YIElwQiqMQ4", name: "Calming Ocean" },
-    { id: "WmYgr8zwJmI", name: "Jungle River" },
-    { id: "jkLRith2wcc", name: "Water Sounds" },
-    { id: "R4QvFu9tn98", name: "SUN Wave" },
-    { id: "bz9YoyEXC38", name: "Solar Flare" },
-  ]
+  var $videoSelect = $('<select class="videoSelect" ></select>');
+$videoSelect.appendTo($videoChooserSection);
+
+  var videos = getBackgroundVideos();
 
   $(videos).each(function (k, v) {
     var thumbUrl = "https://img.youtube.com/vi/" + v.id + "/0.jpg"
@@ -179,7 +169,10 @@ jQuery(document).ready(function ($) {
       'style="background-image:url(' + thumbUrl + ')" ' +
       '></div>');
     $videoThumbPreviewDiv.appendTo($videoThumbsDiv);
-  });
+
+    var $videoOption = $('<option value="'+v.id+'">'+v.name+'</option>');
+    $videoOption.appendTo($videoSelect);
+});
 
   $(document).on('mouseover', '.videoThumb', function () {
     $(".videoCaption").html($(this).attr('videoname'))
@@ -193,20 +186,6 @@ jQuery(document).ready(function ($) {
     player.setVolume($('.videoVolume').val());
     player.loadVideoById($(this).attr('videoid'));
   });
-
-  var $videoSelect = $('<select class="videoSelect" >' +
-    '<option value="6f0y1Iaorug">Waves 1</option>' +
-    '<option value="LTmXmskEMas">Waves 2</option>' +
-    '<option value="5Lzi4T6mu0U">Meditation</option>' +
-    '<option value="fiSowadSS-E">Tropical Beach</option>' +
-    '<option value="uWfwDnroMEA">Relax Fire</option>' +
-    '<option value="mRlat5h_GTM">Chills from Fireplace</option>' +
-    '<option value="WHPEKLQID4U">Soothing Waves</option>' +
-    '<option value="YIElwQiqMQ4">Calming Ocean</option>' +
-    '<option value="WmYgr8zwJmI">Jungle River</option>' +
-    '<option value="jkLRith2wcc">Water Sounds</option>' +
-    '</select>');
-  $videoSelect.appendTo($videoChooserSection);
 
   $(document).on('change', '.videoSelect', function () {
     player.setVolume($('.videoVolume').val());
@@ -268,7 +247,7 @@ jQuery(document).ready(function ($) {
   timedPrint(32);
 
   function getBackgroundVideos() {
-    return videos = [
+    return [
       { id: "6f0y1Iaorug", name: "Waves 1" },
       { id: "LTmXmskEMas", name: "Waves 2" },
       { id: "5Lzi4T6mu0U", name: "Meditation" },
