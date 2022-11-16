@@ -90,7 +90,7 @@ jQuery(document).ready(function ($) {
       currentNumber = printHex(dataMonopole, 'afterbegin', index);
 
 
-
+      createBackgroundGradient(dataHereBottom, dataHereRight, dataHereTop, dataHereLeft);
 
     }
     t = setTimeout(function () { timedPrint(index); }, 80);
@@ -115,6 +115,14 @@ jQuery(document).ready(function ($) {
 
   var $imageDiv = $('<div class="uploadImageHolder" ></div>');
   $imageDiv.appendTo(header);
+
+  var initFocusText = "Focus";
+  var $focusText = $(`<div class="focusText generatorText" >${initFocusText}</div>`);
+  $focusText.appendTo(header);
+
+  var initCaptionText = "Gold";
+  var $captionText = $(`<div class="captionText generatorText" >${initCaptionText}</div>`);
+  $captionText.appendTo(header);
 
   var $imageInnerDiv = $('<div class="imageInnerDiv" ></div>');
   $imageInnerDiv.appendTo($imageDiv);
@@ -156,7 +164,7 @@ jQuery(document).ready(function ($) {
   $videoThumbsDiv.appendTo($videoChooserSection);
 
   var $videoSelect = $('<select class="videoSelect" ></select>');
-$videoSelect.appendTo($videoChooserSection);
+  $videoSelect.appendTo($videoChooserSection);
 
   var videos = getBackgroundVideos();
 
@@ -170,9 +178,9 @@ $videoSelect.appendTo($videoChooserSection);
       '></div>');
     $videoThumbPreviewDiv.appendTo($videoThumbsDiv);
 
-    var $videoOption = $('<option value="'+v.id+'">'+v.name+'</option>');
+    var $videoOption = $('<option value="' + v.id + '">' + v.name + '</option>');
     $videoOption.appendTo($videoSelect);
-});
+  });
 
   $(document).on('mouseover', '.videoThumb', function () {
     $(".videoCaption").html($(this).attr('videoname'))
@@ -196,7 +204,45 @@ $videoSelect.appendTo($videoChooserSection);
   var $imageCaptionDiv = $('<div class="imageCaption" >' + selectImageMessage + '</div>');
   $imageCaptionDiv.appendTo($videoChooserSection);
 
-  var $removeImage = $('<input class="removeImageButton" type="button" value="Remove Focus Image" />');
+  var $focusTextTextBox = $('<input class="focusTextTextBox" type="text" value="' + initFocusText + '" />');
+  $focusTextTextBox.appendTo($videoChooserSection);
+
+  var $focusTextSaveButton = $('<input class="focusTextSaveButton"  type="button" value="Save"  />');
+  $focusTextSaveButton.appendTo($videoChooserSection);
+
+  $(document).on('input', '.focusTextTextBox', function () {
+    $(".focusText").html($(this).val());
+  });
+
+  $(document).on('click', '.focusTextSaveButton', function () {
+    event.preventDefault();
+
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+
+    var sessionTime = Date.now().toUTCString();
+    var focusText = $(".focusTextTextBox").val();
+    var videoID = player.getVideoData()['video_id'];
+    var videoName = getVideobyVideoId(videoID)[0].name;
+    var focusImage = $(".captionText").html().replace('\n', ' ');
+
+    var sessionContent = `Session time: ${sessionTime}\nFocus Text: ${focusText}\nVideo Name: ${videoName}\nVideo Id: ${videoID}\nFocus Image: ${focusImage}`;
+
+    fileName = `${year}_${month}_${day}_${focusText}`;
+
+    // window.location.href="data:application/octet-stream;base64,"+Base64.encode(txtData);
+    var blob = new Blob([sessionContent],
+      { type: "text/plain;charset=utf-8" });
+    saveAs(blob, `${fileName}.txt`);
+  });
+
+  $("#formToSave").submit(function (event) {
+
+  });
+
+  var $removeImage = $('<input class="removeImageButton imageButton" type="button" value="Remove Focus Image" />');
   $removeImage.appendTo($videoChooserSection);
   $(document).on('click', '.removeImageButton', function () {
     $(".imageInnerDiv").css('background-image', '');
@@ -204,18 +250,34 @@ $videoSelect.appendTo($videoChooserSection);
 
   var $uploadImageHiddenButton = $('<input class="uploadImageHiddenButton" type="file" style="display: none;" />');
   $uploadImageHiddenButton.appendTo($videoChooserSection);
-  var $uploadImageButton = $('<input class="uploadImageButton" type="button" value="Upload Focus Image" />');
+  var $uploadImageButton = $('<input class="uploadImageButton imageButton" type="button" value="Upload Focus Image" />');
   $uploadImageButton.appendTo($videoChooserSection);
+
   $(document).on('click', '.uploadImageButton', function () {
     $(".uploadImageHiddenButton").click();
   });
 
 
-  var $image = $('<img class="uploadImageExample" src="https://esculap.org/wp-content/uploads/2022/10/sextupole.jpg" />');
-  $image.appendTo($videoChooserSection);
+  var focusImages = [
+    { caption: 'Scalability\nHolopedia', filepath: 'https://esculap.org/wp-content/uploads/2022/10/sextupole.jpg' },
+    { caption: 'Esculap\nDARQ', filepath: 'https://esculap.org/wp-content/uploads/2022/10/Esculap_Grail_3d-1.png' },
+  ]
+
+  $(focusImages).each(function (k, fi) {
+    var $imageDiv = $('<div class="uploadImageExample" src="" ></div>');
+    $imageDiv.appendTo($videoChooserSection);
+
+    var $image = $(`<img class="uploadedImage" src="${fi.filepath}" />`);
+    $image.appendTo($imageDiv);
+
+    var $caption = $(`<div class="uploadImageCaption" >${fi.caption}</div>`);
+    $caption.appendTo($imageDiv);
+  });
 
   $(document).on('click', '.uploadImageExample', function () {
-    $(".imageInnerDiv").css('background-image', 'url("https://esculap.org/wp-content/uploads/2022/10/sextupole.jpg")');
+    var imagePath = $(this).find(".uploadedImage").attr('src');
+    $(".imageInnerDiv").css('background-image', `url("${imagePath})`);
+    $(".captionText").html($(this).find(".uploadImageCaption").html());
   });
 
   //var myFile = $('.uploadImageButton').prop('files');
@@ -226,20 +288,18 @@ $videoSelect.appendTo($videoChooserSection);
       // Clear image container
       $(".imageInnerDiv").removeAttr('src');
 
-
       $.each(files, function (index, ff) // loop each image 
       {
-
         var reader = new FileReader();
-
         // Put image in created image tags
         reader.onload = function (e) {
           $(".imageInnerDiv").css('background-image', 'url("' + e.target.result + '")');
         }
-
         reader.readAsDataURL(ff);
-
       });
+
+      $(".captionText").html(initCaptionText);
+
     }
   });
 
@@ -261,6 +321,74 @@ $videoSelect.appendTo($videoChooserSection);
       { id: "R4QvFu9tn98", name: "SUN Wave" },
       { id: "bz9YoyEXC38", name: "Solar Flare" },
     ];
+  }
+
+  function getVideobyVideoId(videoId) {
+    console.log(getBackgroundVideos())
+    console.log(getBackgroundVideos().filter(v => v.id == videoId))
+    return getBackgroundVideos().filter(v => v.id == videoId)
+  }
+
+  function createBackgroundGradient(div1, div2, div3, div4) {
+    var coralPalette = [166, 76, 49, 240, 128, 128];
+    var darkGreenPalette = [20, 28, 4, 20, 28, 4];
+
+    var palette = darkGreenPalette;
+    var lowerLeftNumber = $(div1).find('div').html();
+
+    var leftNum = lowerLeftNumber.substring(0, 48)
+    var i = leftNum.length;
+    var lsum = 0
+    while (i--) {
+      lsum += parseInt(leftNum.charAt(i));
+    }
+
+    var lowerRightNumber = $(div2).find('div').html()
+    var rightNum = lowerRightNumber.substring(0, 48)
+    var i = rightNum.length;
+    var rsum = 0
+    while (i--) {
+      rsum += parseInt(rightNum.charAt(i));
+    }
+
+    var rightNumber = $(div3).find('div').html()
+    var rNum = rightNumber.substring(0, 48)
+    var i = rNum.length;
+    var csum = 0
+    while (i--) {
+      csum += parseInt(rNum.charAt(i));
+    }
+
+    var gradient;
+    if ($(div4).find('div').html().length > 48) {
+      var lr = palette[0] + parseInt(lowerLeftNumber.substring(0, 16)) % 8 - 4;
+      var lg = palette[1] + parseInt(lowerLeftNumber.substring(16, 32)) % 16 - 8;
+      var lb = palette[2] + parseInt(lowerLeftNumber.substring(32, 48)) % 16 - 8;
+      var la = lsum / 300;
+
+      // console.log({slr: lr - palette[0], lg, lb, la})
+      // console.log({lr, lg, lb, la})
+
+      var rr = palette[3] + parseInt(lowerRightNumber.substring(0, 16)) % 8 - 4;
+      var rg = palette[4] + parseInt(lowerRightNumber.substring(16, 32)) % 16 - 8;
+      var rb = palette[5] + parseInt(lowerRightNumber.substring(32, 48)) % 16 - 8;
+      var ra = rsum / 300;
+
+      var cr = palette[3] + parseInt(rightNumber.substring(0, 16)) % 8 - 4;
+      var cg = palette[4] + parseInt(rightNumber.substring(16, 32)) % 16 - 8;
+      var cb = palette[5] + parseInt(rightNumber.substring(32, 48)) % 16 - 8;
+      var ca = csum / 300;
+
+      var col1 = `rgba(${lr},${lg},${lb},${la})`;
+      var col2 = `rgba(${rr},${rg},${rb},${ra})`;
+      var col3 = `rgba(${cr},${cg},${cb},${ca})`;
+
+      // parametry: color, jasność, przezroczystość, obwiednia, promień, kąt
+      gradient = `linear-gradient(90deg, rgba(${lr},${lg},${lb},${la}) 0%, rgba(${rr},${rg},${rb},${ra}) 100%)`;
+      gradient = `conic-gradient(${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1}), 
+					conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
+      $('.page-content').css('background', gradient);
+    }
   }
 
 });
