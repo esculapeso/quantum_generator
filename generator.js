@@ -7,6 +7,17 @@ jQuery(document).ready(function ($) {
   let delayIndex = -3
   let numArray = '0000000000000000'
 
+  var emotionsList = [
+    { name: "Happy", value: 4 },
+    { name: "Joyful", value: 3 },
+    { name: "Proud", value: 4 },
+    { name: "Satisfied", value: 1 },
+    { name: "Sad", value: 0 },
+    { name: "Angry", value: 0 },
+    { name: "Anxious", value: 0 },
+    { name: "Worried", value: 2 },
+  ]
+
   function getOneHex(index) {
     for (let i = 0; i < 1; i++) {
       jQuery.get("https://qrng.anu.edu.au/API/jsonI.php?length=1024&type=uint8", data => {
@@ -257,7 +268,6 @@ jQuery(document).ready(function ($) {
     $(".uploadImageHiddenButton").click();
   });
 
-
   var focusImages = [
     { caption: 'Scalability\nHolopedia', filepath: 'https://esculap.org/wp-content/uploads/2022/10/sextupole.jpg' },
     { caption: 'Esculap\nDARQ', filepath: 'https://esculap.org/wp-content/uploads/2022/10/Esculap_Grail_3d-1.png' },
@@ -298,10 +308,14 @@ jQuery(document).ready(function ($) {
         reader.readAsDataURL(ff);
       });
 
-      $(".captionText").html(initCaptionText);
+      var fileName = files[0].name.split('.')[0];
+
+      $(".captionText").html(fileName);
 
     }
   });
+
+  initializeEmotionsQuantity();
 
   timedCount();
   timedPrint(32);
@@ -389,6 +403,88 @@ jQuery(document).ready(function ($) {
 					conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       $('.page-content').css('background', gradient);
     }
+  }
+
+  function initializeEmotionsQuantity() {
+    $emotionalQuantity = $('.emotionalQuantity')
+
+    var $emotionSections = $('<div class="emotionSections" ></div>');
+    $emotionSections.appendTo($emotionalQuantity);
+
+    $(emotionsList).each((i, e) => {
+      var $emotion = $('<div class="emotion"></div>');
+      $emotion.appendTo($emotionSections);
+
+      var $emotionName = $(`<div class="emotionName">${e.name}</div>`);
+      $emotionName.appendTo($emotion);
+
+      var $emotionQuantityBar = $(`<div class="emotionQuantityBar"></div>`);
+      $emotionQuantityBar.appendTo($emotion);
+
+      var $emotionQuantityBarFill = $(`<div class="emotionQuantityBarFill"></div>`);
+      $emotionQuantityBarFill.appendTo($emotionQuantityBar);
+
+      var $emotionQuantity = $(`<input class="emotionQuantity" type="number" emotion="${e.name}" value="${e.value}" min="0" max="10" />`);
+      $emotionQuantity.appendTo($emotion);
+
+    })
+
+    $(document).on('change', '.emotionQuantity', function () {
+      var selectedindex = emotionsList.findIndex((e) => e.name == $(this).attr('emotion'))
+      emotionsList[selectedindex].value = $(this).val();
+      drawStar(150, 150, 80, 50);
+    });
+
+    drawStar(150, 150, 80, 50);
+  }
+
+  function drawStar(cx, cy, outerRadius, innerRadius) {
+
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    ctx.textAlign = 'center';
+    ctx.fillStyle = "pink";
+
+    $('.emotionQuantityBarFill').each((i, bar) => {
+      $(bar).css('width', `${emotionsList[i].value * 10}%`)
+    })
+
+    var selectedEmotions = $(emotionsList).filter((i, e) => e.value > 0)
+    spikes = selectedEmotions.length
+    emotions = selectedEmotions
+
+    ctx.clearRect(0, 0, 300, 300);
+    var rot = Math.PI / 2 * 3;
+    var x = cx;
+    var y = cy;
+    var step = Math.PI / spikes;
+
+    ctx.strokeSyle = "#000";
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - outerRadius)
+    for (i = 0; i < spikes; i++) {
+      x = cx + Math.cos(rot) * outerRadius;
+      y = cy + Math.sin(rot) * outerRadius;
+      ctx.lineTo(x, y)
+
+      var xt = cx + Math.cos(rot) * outerRadius * 1.3;
+      var yt = cy + Math.sin(rot) * outerRadius * 1.3;
+      ctx.font = `${emotions[i].value * 3 + 10}px serif`;
+      ctx.fillText(emotions[i].name, xt, yt);
+      rot += step
+
+      x = cx + Math.cos(rot) * innerRadius;
+      y = cy + Math.sin(rot) * innerRadius;
+      ctx.lineTo(x, y)
+      rot += step
+    }
+    ctx.lineTo(cx, cy - outerRadius)
+    ctx.closePath();
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+    ctx.fillStyle = 'pink';
+    ctx.fill();
   }
 
 });
