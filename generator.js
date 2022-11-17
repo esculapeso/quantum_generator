@@ -140,8 +140,17 @@ jQuery(document).ready(function ($) {
   let monopole = document.getElementsByClassName('monoTunnelImage')[0];
   appendDataHolder(monopole, "dataMonopole", "monopole")
 
+  var $videoChooserSection = $('<div class="videoChooserSection" ></div>');
+  $videoChooserSection.appendTo(header);
 
+  var tabs = [
+    { name: 'Video', id: 'videoOptionsContent' },
+    { name: 'Focus Text', id: 'focusOptionsContent' },
+    { name: 'Image', id: 'imageOptionsContent' },
+    { name: 'People', id: 'peopleOptionsContent' },
+  ]
 
+  $( "#tabs" ).tabs().appendTo($videoChooserSection);
 
   var $imageDiv = $('<div class="uploadImageHolder" ></div>');
   $imageDiv.appendTo(header);
@@ -158,52 +167,31 @@ jQuery(document).ready(function ($) {
   $imageInnerDiv.appendTo($imageDiv);
 
 
+
+  /**********************
+          VIDEO 
+  ***********************/
+
   var $videoContainerDiv = $('<div class="video-container" ></div>');
   $videoContainerDiv.appendTo($imageDiv);
 
   var $videoDiv = $('<div id="videoHolder" ></div>');
   $videoDiv.appendTo($videoContainerDiv);
 
-
-  var $videoChooserSection = $('<div class="videoChooserSection" ></div>');
-  $videoChooserSection.appendTo(header);
-
-  var $videoControlsDiv = $('<div id="videoControls" ></div>');
-  $videoControlsDiv.appendTo($videoChooserSection);
-
-  var youtubePlayButton = "https://esculap.org/wp-content/uploads/2022/11/playVideo.png"
-  var $youtubePlayButtonImage = $(`<img src="${youtubePlayButton}" class="youtubePlayButtonImage" />`);
-  $youtubePlayButtonImage.appendTo($videoControlsDiv);
-
-  $(document).on('click', '.youtubePlayButtonImage', function () {
-    player.setVolume($('.videoVolume').val());
-    player.playVideo();
-  });
-
-  var youtubeRemoveButton = "https://esculap.org/wp-content/uploads/2022/11/removeVideo.png"
-  var $youtubeRemoveButtonImage = $(`<img src="${youtubeRemoveButton}" class="youtubeRemoveButtonImage" />`);
-  //$youtubeRemoveButtonImage.appendTo($videoControlsDiv);
-
-  $(document).on('click', '.youtubeRemoveButtonImage', function () {
-    player.stopVideo();
-  });
-
-  var $videoVolumeInput = $('<input type="range" value="10" class="videoVolume" />');
-  $videoVolumeInput.appendTo($videoControlsDiv);
-  $(document).on('change', '.videoVolume', function () {
-    player.setVolume($(this).val());
-  });
-
-
+  var $tab1 = $("#tabs-1");
 
   var selectVideoMessage = "~~ Choose white noise video ~~"
-  var $videoCaptionDiv = $(`<div class="videoCaption" >${selectVideoMessage}</div>`);
-  $videoCaptionDiv.appendTo($videoChooserSection);
+  var $videoCaptionDiv = $(`<div class="videoCaption tabHeader" >${selectVideoMessage}</div>`);
+  $videoCaptionDiv.appendTo($tab1);
+  
+  var $videoChooserContent = $('<div class="videoChooserContent chooserContent" ></div>');
+  $videoChooserContent.appendTo($tab1);
+
   var $videoThumbsDiv = $('<div id="videoThumbs" ></div>');
-  $videoThumbsDiv.appendTo($videoChooserSection);
+  $videoThumbsDiv.appendTo($videoChooserContent);
 
   var $videoSelect = $('<select class="videoSelect" ></select>');
-  $videoSelect.appendTo($videoChooserSection);
+  $videoSelect.appendTo($videoChooserContent);
 
   var videos = getBackgroundVideos();
 
@@ -240,27 +228,75 @@ jQuery(document).ready(function ($) {
     player.loadVideoById($(this).val());
   });
 
-  var selectImageMessage = "~~ Choose focus image ~~"
-  var $imageCaptionDiv = $(`<div class="imageCaption" >${selectImageMessage}</div>`);
-  $imageCaptionDiv.appendTo($videoChooserSection);
+
+  var $videoControls = $('<div class="videoControls" ></div>');
+  $videoControls.appendTo($tab1);
+
+  var youtubePlayButton = "https://esculap.org/wp-content/uploads/2022/11/playVideo.png"
+  var $youtubePlayButtonImage = $(`<img src="${youtubePlayButton}" class="youtubePlayButtonImage" />`);
+  $youtubePlayButtonImage.appendTo($videoControls);
+
+  $(document).on('click', '.youtubePlayButtonImage', function () {
+    player.setVolume($('.videoVolume').val());
+    player.playVideo();
+  });
+
+  var youtubeRemoveButton = "https://esculap.org/wp-content/uploads/2022/11/removeVideo.png"
+  var $youtubeRemoveButtonImage = $(`<img src="${youtubeRemoveButton}" class="youtubeRemoveButtonImage" />`);
+  //$youtubeRemoveButtonImage.appendTo($videoControlsDiv);
+
+  $(document).on('click', '.youtubeRemoveButtonImage', function () {
+    player.stopVideo();
+  });
+
+  var $videoVolumeInput = $('<input type="range" value="10" class="videoVolume" />');
+  $videoVolumeInput.appendTo($videoControls);
+  $(document).on('change', '.videoVolume', function () {
+    player.setVolume($(this).val());
+  });
+
+
+  /**********************
+        FOCUS TEXT 
+  ***********************/
+
+  var $tab2 = $("#tabs-2");
+
+  var selectFocusMessage = "~~ Choose Focus ~~"
+  var $focusCaption = $(`<div class="focusCaption tabHeader" >${selectFocusMessage}</div>`);
+  $focusCaption.appendTo($tab2);
 
   var $focusTextTextBox = $(`<input class="focusTextTextBox" type="text" value="${initFocusText}" />`);
-  $focusTextTextBox.appendTo($videoChooserSection);
+  $focusTextTextBox.appendTo($tab2);
 
   $(document).on('input', '.focusTextTextBox', function () {
     $(".focusText").html($(this).val());
   });
 
-  var $removeImage = $('<input class="removeImageButton imageButton button" type="button" value="Remove Image" />');
-  $removeImage.appendTo($videoChooserSection);
+  /**********************
+          IMAGES 
+  ***********************/
+
+  var $tab3 = $("#tabs-3");
+
+  var selectImageMessage = "~~ Choose Image ~~"
+  var $imageCaptionDiv = $(`<div class="imageCaption tabHeader" >${selectImageMessage}</div>`);
+  $imageCaptionDiv.appendTo($tab3);
+
+  var $imageButtons = $('<div class="imageButtons" ></div>');
+  $imageButtons.appendTo($tab3);
+
+  var $removeImage = $('<input class="removeImageButton imageButton button" type="button" value="Hide" />');
+  $removeImage.appendTo($imageButtons);
   $(document).on('click', '.removeImageButton', function () {
     $(".imageInnerDiv").css('background-image', '');
   });
 
   var $uploadImageHiddenButton = $('<input class="uploadImageHiddenButton" type="file" style="display: none;" />');
-  $uploadImageHiddenButton.appendTo($videoChooserSection);
-  var $uploadImageButton = $('<input class="uploadImageButton imageButton button" type="button" value="Upload Image" />');
-  $uploadImageButton.appendTo($videoChooserSection);
+  $uploadImageHiddenButton.appendTo($imageButtons);
+
+  var $uploadImageButton = $('<input class="uploadImageButton imageButton button" type="button" value="Upload" />');
+  $uploadImageButton.appendTo($imageButtons);
 
   $(document).on('click', '.uploadImageButton', function () {
     $(".uploadImageHiddenButton").click();
@@ -273,7 +309,7 @@ jQuery(document).ready(function ($) {
 
   $(focusImages).each(function (k, fi) {
     var $imageDiv = $('<div class="uploadImageExample" src="" ></div>');
-    $imageDiv.appendTo($videoChooserSection);
+    $imageDiv.appendTo($tab3);
 
     var $image = $(`<img class="uploadedImage" src="${fi.filepath}" />`);
     $image.appendTo($imageDiv);
@@ -290,28 +326,113 @@ jQuery(document).ready(function ($) {
 
   //var myFile = $('.uploadImageButton').prop('files');
   $(document).on('change', '.uploadImageHiddenButton', function () {
-    var files = $(this).prop('files');
+    var fileName = uploadImage(".imageInnerDiv", $(this));
+    $(".captionText").html(fileName);
+  });
+
+  function uploadImage(targetImageSelector, $this) {
+    var files = $this.prop('files');
     if (files && files[0]) { // got sth
 
       // Clear image container
-      $(".imageInnerDiv").removeAttr('src');
+      $(targetImageSelector).removeAttr('src');
 
       $.each(files, function (index, ff) // loop each image 
       {
         var reader = new FileReader();
         // Put image in created image tags
         reader.onload = function (e) {
-          $(".imageInnerDiv").css('background-image', `url("${e.target.result}")`);
+          $(targetImageSelector).css('background-image', `url("${e.target.result}")`);
         }
         reader.readAsDataURL(ff);
       });
 
-      var fileName = files[0].name.split('.')[0];
-
-      $(".captionText").html(fileName);
-
+      return files[0].name.split('.')[0];
     }
+  }
+
+
+  /**********************
+          PEOPLE 
+  ***********************/
+
+  var $tab4 = $("#tabs-4");
+
+  var $peopleCaption = $(`<div class="focusCaption tabHeader" >~~ Choose People ~~</div>`);
+  $peopleCaption.appendTo($tab4);
+
+  var $peopleContent = $(`<div class="peopleContent" ></div>`);
+  $peopleContent.appendTo($tab4);
+
+  var people = [
+    { name: "Therapist", role: "therapist"},
+    { name: "Person 1", role: "person1"},
+    { name: "Person 2", role: "person2"},
+    { name: "Person 3", role: "person3"},
+    { name: "Person 4", role: "person4"},
+  ]
+
+  $(people).each((i, p) => {
+
+    var $personPanel = $(`<div class="${p.role} personPanel" ></div>`);
+    $personPanel.appendTo($peopleContent);
+  
+    var $personImage = $(`<div class="${p.role}Thumb personImageThumb"></div>`);
+    $personImage.appendTo($personPanel);
+
+    var $personRightPanel = $(`<div class="personRightPanel"></div>`);
+    $personRightPanel.appendTo($personPanel);
+  
+    var $personTag = $(`<div class="personTag" >${p.name}</div>`);
+    $personTag.appendTo($personRightPanel);
+
+    var $personHiddenUploadButton = $(`<input class="personHiddenUploadButton" target="${p.role}" type="file" style="display: none;" />`);
+    $personHiddenUploadButton.appendTo($personRightPanel);
+  
+    var $personUploadButton = $(`<input role="${p.role}" class="personUploadButton" type="button" value="Upload Image" />`);
+    $personUploadButton.appendTo($personRightPanel);
+
+  })
+  
+
+  var $thrapistImage = $('<div class="personImage therapistImage bottom" ></div>');
+  $thrapistImage.appendTo(header);
+
+  var $thrapistImage = $('<div class="personImage therapistImage right" ></div>');
+  $thrapistImage.appendTo(header);
+
+  var $thrapistImage = $('<div class="personImage therapistImage top" ></div>');
+  $thrapistImage.appendTo(header);
+
+  var $thrapistImage = $('<div class="personImage therapistImage left" ></div>');
+  $thrapistImage.appendTo(header);
+
+  var $person1Image = $('<div class="personImage person1Image" ></div>');
+  $person1Image.appendTo(header);
+
+  var $person1Image = $('<div class="personImage person2Image" ></div>');
+  $person1Image.appendTo(header);
+
+  var $person1Image = $('<div class="personImage person3Image" ></div>');
+  $person1Image.appendTo(header);
+
+  var $person1Image = $('<div class="personImage person4Image" ></div>');
+  $person1Image.appendTo(header);
+
+  $(document).on('click', '.personUploadButton', function () {
+    var role = $(this).attr('role');
+    $(`.${role} .personHiddenUploadButton`).click();
   });
+
+  $(document).on('change', '.personHiddenUploadButton', function () {
+    var target = $(this).attr('target');
+    var targetSelector = `.${target}Image, .${target}Thumb`;
+    uploadImage(targetSelector, $(this));
+  });
+
+  /**********************
+        SAVE SESSION 
+  ***********************/
 
   var $focusTextSave = $(`<div class="focusTextSave" ></div>`);
   $focusTextSave.appendTo($videoChooserSection);
@@ -376,8 +497,6 @@ jQuery(document).ready(function ($) {
   }
 
   function getVideobyVideoId(videoId) {
-    console.log(getBackgroundVideos())
-    console.log(getBackgroundVideos().filter(v => v.id == videoId))
     return getBackgroundVideos().filter(v => v.id == videoId)
   }
 
@@ -417,9 +536,6 @@ jQuery(document).ready(function ($) {
       var lg = palette[1] + parseInt(lowerLeftNumber.substring(16, 32)) % 16 - 8;
       var lb = palette[2] + parseInt(lowerLeftNumber.substring(32, 48)) % 16 - 8;
       var la = lsum / 300;
-
-      // console.log({slr: lr - palette[0], lg, lb, la})
-      // console.log({lr, lg, lb, la})
 
       var rr = palette[3] + parseInt(lowerRightNumber.substring(0, 16)) % 8 - 4;
       var rg = palette[4] + parseInt(lowerRightNumber.substring(16, 32)) % 16 - 8;
@@ -497,7 +613,6 @@ jQuery(document).ready(function ($) {
     }
 
     function onQuantityClick(list, contanerSelector, _this, canvasId) {
-      console.log({_this})
       var selectedindex = list.findIndex((e) => e.name == _this.attr('emotion'))
       list[selectedindex].value = _this.val();
       drawStar(150, 150, 80, 50, list, canvasId);
@@ -518,9 +633,6 @@ jQuery(document).ready(function ($) {
     var ctx = canvas.getContext("2d");
     ctx.textAlign = 'center';
     ctx.fillStyle = "pink";
-
-    console.log({list})
-
 
     var selectedEmotions = $(list).filter((i, e) => e.value > 0)
     spikes = selectedEmotions.length
