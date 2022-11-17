@@ -223,12 +223,6 @@ End of comment */
 	white-space: pre-line;
 }
 
-.video-container {
-  position: relative;
-  width: 100%;
-  padding-bottom: 100%;
-}
-
 #videoHolder {
   position: absolute;
   top: 0;
@@ -332,4 +326,22 @@ End of comment */
 	width: 100%;
 	text-align: center;
 	margin-top: 10px;
+}
+
+.video-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-bottom: 100%;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 50%!important;
+  left: 50%!important;
+  width: 570px!important;
+  height: 570px!important;
+  transform: translate(-50%, -50%);
+	max-width: unset!important;
+	max-height: unset!important;
 }
