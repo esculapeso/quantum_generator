@@ -152,12 +152,21 @@ jQuery(document).ready(function ($) {
   var $videoControlsDiv = $('<div id="videoControls" ></div>');
   $videoControlsDiv.appendTo($videoChooserSection);
 
-  var youtubePlayButton = "https://esculap.org/wp-content/uploads/2022/10/YouTube_play_button.png"
+  var youtubePlayButton = "https://esculap.org/wp-content/uploads/2022/11/playVideo.png"
   var $youtubePlayButtonImage = $('<img src="' + youtubePlayButton + '" class="youtubePlayButtonImage" />');
   $youtubePlayButtonImage.appendTo($videoControlsDiv);
+  
   $(document).on('click', '.youtubePlayButtonImage', function () {
     player.setVolume($('.videoVolume').val());
     player.playVideo();
+  });
+
+  var youtubeRemoveButton = "https://esculap.org/wp-content/uploads/2022/11/removeVideo.png"
+  var $youtubeRemoveButtonImage = $('<img src="' + youtubeRemoveButton + '" class="youtubeRemoveButtonImage" />');
+  //$youtubeRemoveButtonImage.appendTo($videoControlsDiv);
+  
+  $(document).on('click', '.youtubeRemoveButtonImage', function () {
+    player.stopVideo();
   });
 
   var $videoVolumeInput = $('<input type="range" value="10" class="videoVolume" />');
@@ -218,42 +227,11 @@ jQuery(document).ready(function ($) {
   var $focusTextTextBox = $('<input class="focusTextTextBox" type="text" value="' + initFocusText + '" />');
   $focusTextTextBox.appendTo($videoChooserSection);
 
-  var $focusTextSaveButton = $('<input class="focusTextSaveButton"  type="button" value="Save"  />');
-  $focusTextSaveButton.appendTo($videoChooserSection);
-
   $(document).on('input', '.focusTextTextBox', function () {
     $(".focusText").html($(this).val());
   });
 
-  $(document).on('click', '.focusTextSaveButton', function () {
-    event.preventDefault();
-
-    var dateObj = new Date();
-    var month = dateObj.getUTCMonth() + 1; //months from 1-12
-    var day = dateObj.getUTCDate();
-    var year = dateObj.getUTCFullYear();
-
-    var sessionTime = Date.now().toUTCString();
-    var focusText = $(".focusTextTextBox").val();
-    var videoID = player.getVideoData()['video_id'];
-    var videoName = getVideobyVideoId(videoID)[0].name;
-    var focusImage = $(".captionText").html().replace('\n', ' ');
-
-    var sessionContent = `Session time: ${sessionTime}\nFocus Text: ${focusText}\nVideo Name: ${videoName}\nVideo Id: ${videoID}\nFocus Image: ${focusImage}`;
-
-    fileName = `${year}_${month}_${day}_${focusText}`;
-
-    // window.location.href="data:application/octet-stream;base64,"+Base64.encode(txtData);
-    var blob = new Blob([sessionContent],
-      { type: "text/plain;charset=utf-8" });
-    saveAs(blob, `${fileName}.txt`);
-  });
-
-  $("#formToSave").submit(function (event) {
-
-  });
-
-  var $removeImage = $('<input class="removeImageButton imageButton" type="button" value="Remove Focus Image" />');
+  var $removeImage = $('<input class="removeImageButton imageButton button" type="button" value="Remove Image" />');
   $removeImage.appendTo($videoChooserSection);
   $(document).on('click', '.removeImageButton', function () {
     $(".imageInnerDiv").css('background-image', '');
@@ -261,7 +239,7 @@ jQuery(document).ready(function ($) {
 
   var $uploadImageHiddenButton = $('<input class="uploadImageHiddenButton" type="file" style="display: none;" />');
   $uploadImageHiddenButton.appendTo($videoChooserSection);
-  var $uploadImageButton = $('<input class="uploadImageButton imageButton" type="button" value="Upload Focus Image" />');
+  var $uploadImageButton = $('<input class="uploadImageButton imageButton button" type="button" value="Upload Image" />');
   $uploadImageButton.appendTo($videoChooserSection);
 
   $(document).on('click', '.uploadImageButton', function () {
@@ -315,10 +293,50 @@ jQuery(document).ready(function ($) {
     }
   });
 
+  var $focusTextSave = $(`<div class="focusTextSave" ></div>`);
+  $focusTextSave.appendTo($videoChooserSection);
+
+  var $focusTextSaveButton = $('<input class="focusTextSaveButton button"  type="button" value="Save Session"  />');
+  $focusTextSaveButton.appendTo($focusTextSave);
+
+  $(document).on('click', '.focusTextSaveButton', function () {
+    saveSession();
+  });
+
+
   initializeEmotionsQuantity();
 
   timedCount();
   timedPrint(32);
+
+  function saveSession() {
+    event.preventDefault();
+
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+    var dateNow = new Date( Date.now() );
+    var sessionTime = dateNow.toUTCString();
+    var focusText = $(".focusTextTextBox").val();
+    var videoID = player.getVideoData()['video_id'];
+    var videoName = getVideobyVideoId(videoID)[0].name;
+    var focusImage = $(".captionText").html().replace('\n', ' ');
+
+    var emotionsText = "\n\nEmotions Quantity\n\n";
+    $(emotionsList).each((i, e) => {
+      emotionsText += `${e.name}: ${e.value}\n`;
+    })
+
+    var sessionContent = `Session time: ${sessionTime}\nFocus Text: ${focusText}\nVideo Name: ${videoName}\nVideo Id: ${videoID}\nFocus Image: ${focusImage}${emotionsText}`;
+
+    fileName = `${year}_${month}_${day}_${focusText}`;
+
+    // window.location.href="data:application/octet-stream;base64,"+Base64.encode(txtData);
+    var blob = new Blob([sessionContent],
+      { type: "text/plain;charset=utf-8" });
+    saveAs(blob, `${fileName}.txt`);
+  }
 
   function getBackgroundVideos() {
     return [
