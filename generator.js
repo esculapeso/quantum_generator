@@ -25,6 +25,18 @@ jQuery(document).ready(function ($) {
     { name: "Willpower", value: 1 },
   ]
 
+  var healthList = [
+    { name: "Heart", value: 4, link: "https://en.wikipedia.org/wiki/Heart" },
+    { name: "Lungs", value: 3, link: "https://en.wikipedia.org/wiki/Lungs"  },
+    { name: "Vagus", value: 4, link: "https://en.wikipedia.org/wiki/Vagus"  },
+    { name: "Liver", value: 1, link: "https://en.wikipedia.org/wiki/Liver"  },
+    { name: "Intestine", value: 1, link: "https://en.wikipedia.org/wiki/Gastrointestinal_tract"  },
+    { name: "Lymph", value: 1, link: "https://en.wikipedia.org/wiki/Lymph"  },
+    { name: "Blood", value: 1, link: "https://en.wikipedia.org/wiki/Blood"  },
+    { name: "Memory", value: 1, link: "https://en.wikipedia.org/wiki/Memory"  },
+    { name: "Neurons", value: 1, link: "https://en.wikipedia.org/wiki/Neuron"  },
+  ]
+
   function getOneHex(index) {
     for (let i = 0; i < 1; i++) {
       jQuery.get("https://qrng.anu.edu.au/API/jsonI.php?length=1024&type=uint8", data => {
@@ -432,59 +444,57 @@ jQuery(document).ready(function ($) {
   }
 
   function initializeEmotionsQuantity() {
-    $emotionalQuantity = $('.emotionalQuantity')
-    var $emotionSections = $('<div class="emotionSections" ></div>');
-    $emotionSections.appendTo($emotionalQuantity);
 
-    $energeticQuantity = $('.energeticQuantity')
-    var $energeticSections = $('<div class="energeticSections" ></div>');
-    $energeticSections.appendTo($energeticQuantity);
+    instantiateStar('.emotionalQuantity', emotionsList) 
+    instantiateStar('.energeticQuantity', energiesList) 
+    instantiateStar('.healthyQuantity', healthList) 
 
-    $(emotionsList).each((i, e) => {
-      var $emotion = $('<div class="emotion"></div>');
-      $emotion.appendTo($emotionSections);
+    drawStar(150, 150, 80, 50, emotionsList, "canvas");
+    updateBars(emotionsList, '.emotionalQuantity .emotionQuantityBarFill')
 
-      var $emotionName = $(`<div class="emotionName">${e.name}</div>`);
-      $emotionName.appendTo($emotion);
+    drawStar(150, 150, 80, 50, energiesList, "canvas_energy");
+    updateBars(energiesList, '.energeticQuantity .emotionQuantityBarFill')
 
-      var $emotionQuantityBar = $(`<div class="emotionQuantityBar"></div>`);
-      $emotionQuantityBar.appendTo($emotion);
+    drawStar(150, 150, 80, 50, healthList, "canvas_health");
+    updateBars(healthList, '.healthyQuantity .emotionQuantityBarFill')
 
-      var $emotionQuantityBarFill = $(`<div class="emotionQuantityBarFill"></div>`);
-      $emotionQuantityBarFill.appendTo($emotionQuantityBar);
-
-      var $emotionQuantity = $(`<input class="emotionQuantity" type="number" emotion="${e.name}" value="${e.value}" min="0" max="10" />`);
-      $emotionQuantity.appendTo($emotion);
-
-    })
-
-    
-    $(energiesList).each((i, e) => {
-      var $emotion = $('<div class="emotion"></div>');
-      $emotion.appendTo($energeticSections);
-
-      var $emotionName = $(`<div class="emotionName">${e.name}</div>`);
-      $emotionName.appendTo($emotion);
-
-      var $emotionQuantityBar = $(`<div class="emotionQuantityBar"></div>`);
-      $emotionQuantityBar.appendTo($emotion);
-
-      var $emotionQuantityBarFill = $(`<div class="emotionQuantityBarFill"></div>`);
-      $emotionQuantityBarFill.appendTo($emotionQuantityBar);
-
-      var $emotionQuantity = $(`<input class="emotionQuantity" type="number" emotion="${e.name}" value="${e.value}" min="0" max="10" />`);
-      $emotionQuantity.appendTo($emotion);
-
-    })
-
-    $(document).on('change', '.emotionSections .emotionQuantity', function () {
-      onQuantityClick(emotionsList, '.emotionSections .emotionQuantityBarFill', $(this), "canvas")
+    $(document).on('change', '.emotionalQuantity .emotionQuantity', function () {
+      onQuantityClick(emotionsList, '.emotionalQuantity .emotionQuantityBarFill', $(this), "canvas")
     });
     
-
-    $(document).on('change', '.energeticSections .emotionQuantity', function () {
-      onQuantityClick(energiesList, '.energeticSections .emotionQuantityBarFill', $(this), "canvas_energy")
+    $(document).on('change', '.energeticQuantity .emotionQuantity', function () {
+      onQuantityClick(energiesList, '.energeticQuantity .emotionQuantityBarFill', $(this), "canvas_energy")
     });
+    
+    $(document).on('change', '.healthyQuantity .emotionQuantity', function () {
+      onQuantityClick(healthList, '.healthyQuantity .emotionQuantityBarFill', $(this), "canvas_health")
+    });
+
+    
+    function instantiateStar(starSelector, list) {
+      $energeticQuantity = $(starSelector)
+      var $energeticSections = $('<div class="Sections" ></div>');
+      $energeticSections.appendTo($energeticQuantity);
+
+      $(list).each((i, e) => {
+        var $emotion = $('<div class="emotion"></div>');
+        $emotion.appendTo($energeticSections);
+  
+        var $emotionName = $(`<div class="emotionName">${e.name}</div>`);
+        if (e.link) $emotionName = $(`<div class="emotionName"><a href=${e.link} target="_blank">${e.name}</a></div>`);
+        $emotionName.appendTo($emotion);
+  
+        var $emotionQuantityBar = $(`<div class="emotionQuantityBar"></div>`);
+        $emotionQuantityBar.appendTo($emotion);
+  
+        var $emotionQuantityBarFill = $(`<div class="emotionQuantityBarFill"></div>`);
+        $emotionQuantityBarFill.appendTo($emotionQuantityBar);
+  
+        var $emotionQuantity = $(`<input class="emotionQuantity" type="number" emotion="${e.name}" value="${e.value}" min="0" max="10" />`);
+        $emotionQuantity.appendTo($emotion);
+  
+      })
+    }
 
     function onQuantityClick(list, contanerSelector, _this, canvasId) {
       console.log({_this})
@@ -493,12 +503,6 @@ jQuery(document).ready(function ($) {
       drawStar(150, 150, 80, 50, list, canvasId);
       updateBars(list, contanerSelector)
     }
-
-    drawStar(150, 150, 80, 50, emotionsList, "canvas");
-    updateBars(emotionsList, '.emotionSections .emotionQuantityBarFill')
-
-    drawStar(150, 150, 80, 50, energiesList, "canvas_energy");
-    updateBars(energiesList, '.energeticSections .emotionQuantityBarFill')
 
   }
 

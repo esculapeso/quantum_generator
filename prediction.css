@@ -293,7 +293,7 @@ End of comment */
   margin: 10px 0;
 }
 
-.emotionName {
+.emotionName, .emotionName a {
   display: inline-block;
   width: 70px;
   text-align: right;
