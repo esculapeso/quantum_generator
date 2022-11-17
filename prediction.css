@@ -9,339 +9,343 @@ For brushing up on your CSS knowledge, check out http://www.w3schools.com/css/cs
 
 End of comment */ 
 
+.quadrupoleImage *{
+  color: #ffd8bc!important;
+}
+
 .videoChooserSection input, .videoChooserSection select {
-	background: #ffd8bc!important;
-    color: #5c150a!important;
+background: #ffd8bc!important;
+  color: #5c150a!important;
 }
 
 .videoChooserSection .button, .videoChooserSection button {
-    padding: 2px 20px;
-	cursor: pointer;
-	background: #ff9b51!important;
-    color: #5c150a!important;
+  padding: 2px 20px;
+cursor: pointer;
+background: #ff9b51!important;
+  color: #5c150a!important;
 }
 
 .wrapperHex {
-  width: 1120px;
-  height: 1287px;
-  background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow.png);
-  background-size: 100%;
-  overflow: hidden;
-  position: relative;
+width: 1120px;
+height: 1287px;
+background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow.png);
+background-size: 100%;
+overflow: hidden;
+position: relative;
 }
 
 
 .coverImage {
-  width: 1120px;
-  height: 1287px;
-  background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow_tr.png);
-  background-size: 100%;
-  position: absolute;
-  z-index: 10;
+width: 1120px;
+height: 1287px;
+background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow_tr.png);
+background-size: 100%;
+position: absolute;
+z-index: 10;
 }
 
 .monoTunnelImage {
-  width: 1120px;
-  height: 464px;
-  background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/08/MonopoleInformationField.png);
-  background-size: 100%;
-  overflow: hidden;
-  position: relative;
+width: 1120px;
+height: 464px;
+background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/08/MonopoleInformationField.png);
+background-size: 100%;
+overflow: hidden;
+position: relative;
 }
 
 .dualTeleportationImage {
-  width: 1120px;
-  height: 844px;
-  background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/08/DipoleInformationField.png);
-  background-size: 100%;
-  overflow: hidden;
-  position: relative;
+width: 1120px;
+height: 844px;
+background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/08/DipoleInformationField.png);
+background-size: 100%;
+overflow: hidden;
+position: relative;
 }
 
 .quadrupoleImage {
-  width: 1120px;
-  height: 798px;
-  background-image: url(https://esculap.org/wp-content/uploads/2022/10/quadrupole_bg_if.png);
-  background-size: 100%;
-  overflow: hidden;
-  position: relative;
-  background-repeat: no-repeat;
-  margin-bottom:30px;
+width: 1120px;
+height: 798px;
+background-image: url(https://esculap.org/wp-content/uploads/2022/10/quadrupole_bg_if.png);
+background-size: 100%;
+overflow: hidden;
+position: relative;
+background-repeat: no-repeat;
+margin-bottom:30px;
 }
 
 .dataHere {
-  position:relative;
-  opacity: .5;
-  font-size: 20px;
-  overflow: hidden;
+position:relative;
+opacity: .5;
+font-size: 20px;
+overflow: hidden;
 }
 
 .quadrupole {
-  width: 300px;
-  height: 81px;
-  overflow: hidden;
-  position: relative;
-  font-size: 10px;
-  line-height: 1;
-  opacity: 0.7;
+width: 300px;
+height: 81px;
+overflow: hidden;
+position: relative;
+font-size: 10px;
+line-height: 1;
+opacity: 0.7;
 }
 
 .quadrupole#dataHereBottom {
-  top: 559px;
-  left: 251px;
+top: 559px;
+left: 251px;
 }
 
 .quadrupole#dataHereRight {
-  top: 276px;
-  left: 450px;
-  transform: rotate(-90deg);
+top: 276px;
+left: 450px;
+transform: rotate(-90deg);
 }
 
 .quadrupole#dataHereTop {
-  top: -3px;
-  left: 249px;
-  transform: rotate(-180deg);
+top: -3px;
+left: 249px;
+transform: rotate(-180deg);
 }
 
 .quadrupole#dataHereLeft {
-  top: 117px;
-  left: 50px;
-  transform: rotate(-270deg);
+top: 117px;
+left: 50px;
+transform: rotate(-270deg);
 }
 
 .dipole {
-  width: 500px;
-  height: 128px;
-  overflow: hidden;
-  position: relative;
-  font-size: 16px;
-  line-height: 1;
-  opacity: 0.7;
+width: 500px;
+height: 128px;
+overflow: hidden;
+position: relative;
+font-size: 16px;
+line-height: 1;
+opacity: 0.7;
 }
 
 .dipole#dataDualTop {
-  top: 161px;
-  left: 430px;
+top: 161px;
+left: 430px;
 }
 
 .dipole#dataDualBottom {
-  top: 411px;
-  left: 430px;
+top: 411px;
+left: 430px;
 }
 
 .monopole {
-  width: 500px;
-  height: 128px;
-  overflow: hidden;
-  position: relative;
-  font-size: 16px;
-  line-height: 1;
-  opacity: 0.7;
+width: 500px;
+height: 128px;
+overflow: hidden;
+position: relative;
+font-size: 16px;
+line-height: 1;
+opacity: 0.7;
 }
 
 .monopole#dataMonopole {
-  top: 161px;
-  left: 430px;
+top: 161px;
+left: 430px;
 }
 
 .leftHex {
-  float:left;
-  -webkit-shape-outside:polygon(2% 75%, 2% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%);
-  shape-outside:polygon(2% 75%, 2% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%);
-  -webkit-clip-path: polygon(2% 75%, 2% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%);
-  clip-path: polygon(2% 75%, 2% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%);
-  width:50%;
-  height:100%;
+float:left;
+-webkit-shape-outside:polygon(2% 75%, 2% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%);
+shape-outside:polygon(2% 75%, 2% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%);
+-webkit-clip-path: polygon(2% 75%, 2% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%);
+clip-path: polygon(2% 75%, 2% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%);
+width:50%;
+height:100%;
 }
 
 .rightHex {
-  float: right;
-  -webkit-shape-outside: polygon(98% 75%, 98% 25%, 0% 0%, 100% 0%, 100% 100%, 0% 100%);
-  shape-outside: polygon(98% 75%, 98% 25%, 0% 0%, 100% 0%, 100% 100%, 0% 100%);
-  -webkit-clip-path: polygon(98% 75%, 98% 25%, 0% 0%, 100% 0%, 100% 100%, 0% 100%);
-  clip-path: polygon(98% 75%, 98% 25%, 0% 0%, 100% 0%, 100% 100%, 0% 100%);
-  width: 50%;
-  height: 100%;
+float: right;
+-webkit-shape-outside: polygon(98% 75%, 98% 25%, 0% 0%, 100% 0%, 100% 100%, 0% 100%);
+shape-outside: polygon(98% 75%, 98% 25%, 0% 0%, 100% 0%, 100% 100%, 0% 100%);
+-webkit-clip-path: polygon(98% 75%, 98% 25%, 0% 0%, 100% 0%, 100% 100%, 0% 100%);
+clip-path: polygon(98% 75%, 98% 25%, 0% 0%, 100% 0%, 100% 100%, 0% 100%);
+width: 50%;
+height: 100%;
 }
 
 .caption {
-  text-align: center;
+text-align: center;
 }
 
 .generatorText {
-  position: absolute;
-  width: 320px;
-  text-align: center;
-  font-size: 24px;
+position: absolute;
+width: 320px;
+text-align: center;
+font-size: 24px;
 }
 
 .focusText {
-  top: 116px;
-  left: 251px;
+top: 116px;
+left: 251px;
 }
 
 .captionText {
-  top: 646px;
-  left: 251px;
+top: 646px;
+left: 251px;
 }
 
 .uploadImageHolder {
-    position: absolute;
-    left: 21.4%;
-    bottom: 30%;
-    width: 320px;
-    height: 320px;
+  position: absolute;
+  left: 21.4%;
+  bottom: 30%;
+  width: 320px;
+  height: 320px;
 }
 
 .imageButton {
-	display: inline-block;
-	margin: 10px 5px 10px 0px;
+display: inline-block;
+margin: 10px 5px 10px 0px;
 }
 
 .imageInnerDiv {
-	position: absolute;
-	z-index: 10;
-	width: 100%;
-	height: 100%;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
+position: absolute;
+z-index: 10;
+width: 100%;
+height: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .uploadImageExample {
-	cursor: pointer;
-	display: inline-block;
-	text-align: center;
-	margin-right: 5px;
+cursor: pointer;
+display: inline-block;
+text-align: center;
+margin-right: 5px;
 }
 
 .uploadImageExample .uploadedImage {
-	height: 100px!important;
+height: 100px!important;
 }
 
 .uploadImageExample .uploadImageCaption {
-	white-space: pre-line;
+white-space: pre-line;
 }
 
 #videoHolder {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+border: 0;
 }
 
 .youtubePlayButtonImage {
-    width: 40px;
-    cursor: pointer;
-    display: inline-block;
-    margin-right: 10px;
-    vertical-align: middle;
+  width: 40px;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
 }
 
 .videoVolume{
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 .videoThumb {
-	width: 43px;
-    display: inline-block;
-    cursor: pointer;
-    height: 24px;
-    background-size: 100%;
-    background-repeat: no-repeat;
-    margin-right: 5px;
-    background-position: center;
+width: 43px;
+  display: inline-block;
+  cursor: pointer;
+  height: 24px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  margin-right: 5px;
+  background-position: center;
 }
 
 .videoCaption, .imageCaption {
-	margin-top: 10px;
-	text-align: center;
+margin-top: 10px;
+text-align: center;
 }
 
 .videoChooserSection {
-	position: absolute;
-    right: 0%;
-    top: 48%;
-	width: 300px;
+position: absolute;
+  right: 0%;
+  top: 48%;
+width: 300px;
 }
 
 .emotionalQuantity {
-	background: #c7c795;
-    text-align: center;
-    padding: 10px 30px;
-    width: 320px;
+background: #c7c795;
+  text-align: center;
+  padding: 10px 30px;
+  width: 320px;
 }
 
 .emotionalQuantity .title {
-    background: #ffccc1;
-    color: #c32300!important;
-    padding: 5px 0px;
-    font-size: 20px;
-    font-weight: bold;
+  background: #ffccc1;
+  color: #c32300!important;
+  padding: 5px 0px;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .emotion {
-	margin: 10px 0;
+margin: 10px 0;
 }
 
 .emotionName {
-	display: inline-block;
-    width: 70px;
-    text-align: right;
-    margin-right: 10px;
-	color: #1a1a00!important;
+display: inline-block;
+  width: 70px;
+  text-align: right;
+  margin-right: 10px;
+color: #1a1a00!important;
 }
 
 .emotionQuantityBar {
-	display: inline-block;
-	width: 117px;
-    background-color: #b8b8b6;
-    height: 22px;
-    margin-bottom: -6px;
-    margin-right: 5px;
+display: inline-block;
+width: 117px;
+  background-color: #b8b8b6;
+  height: 22px;
+  margin-bottom: -6px;
+  margin-right: 5px;
 }
 
 .emotionQuantityBarFill {
-	background-image: url('https://esculap.org/wp-content/uploads/2022/11/emotionbar.png');
-	background-size: contain;
-	width: 10%;
-    height: 22px;
+background-image: url('https://esculap.org/wp-content/uploads/2022/11/emotionbar.png');
+background-size: contain;
+width: 10%;
+  height: 22px;
 }
 
 .emotionQuantity {
-	width: 40px;
+width: 40px;
 }
 
 #canvas {
-	float: right;
+float: right;
 }
 
 .focusTextTextBox {
-	width: 100%;
+width: 100%;
 }
 
 .focusTextSave {
-	width: 100%;
-	text-align: center;
-	margin-top: 10px;
+width: 100%;
+text-align: center;
+margin-top: 10px;
 }
 
 .video-container {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  padding-bottom: 100%;
+position: relative;
+overflow: hidden;
+width: 100%;
+padding-bottom: 100%;
 }
 
 .video-container iframe {
   position: absolute;
   top: 50%!important;
   left: 50%!important;
-  width: 570px!important;
-  height: 570px!important;
+  width: 580px!important;
+  height: 580px!important;
   transform: translate(-50%, -50%);
-	max-width: unset!important;
-	max-height: unset!important;
+  max-width: unset!important;
+  max-height: unset!important;
 }
