@@ -153,18 +153,18 @@ jQuery(document).ready(function ($) {
   $videoControlsDiv.appendTo($videoChooserSection);
 
   var youtubePlayButton = "https://esculap.org/wp-content/uploads/2022/11/playVideo.png"
-  var $youtubePlayButtonImage = $('<img src="' + youtubePlayButton + '" class="youtubePlayButtonImage" />');
+  var $youtubePlayButtonImage = $(`<img src="${youtubePlayButton}" class="youtubePlayButtonImage" />`);
   $youtubePlayButtonImage.appendTo($videoControlsDiv);
-  
+
   $(document).on('click', '.youtubePlayButtonImage', function () {
     player.setVolume($('.videoVolume').val());
     player.playVideo();
   });
 
   var youtubeRemoveButton = "https://esculap.org/wp-content/uploads/2022/11/removeVideo.png"
-  var $youtubeRemoveButtonImage = $('<img src="' + youtubeRemoveButton + '" class="youtubeRemoveButtonImage" />');
+  var $youtubeRemoveButtonImage = $(`<img src="${youtubeRemoveButton}" class="youtubeRemoveButtonImage" />`);
   //$youtubeRemoveButtonImage.appendTo($videoControlsDiv);
-  
+
   $(document).on('click', '.youtubeRemoveButtonImage', function () {
     player.stopVideo();
   });
@@ -178,7 +178,7 @@ jQuery(document).ready(function ($) {
 
 
   var selectVideoMessage = "~~ Choose white noise video ~~"
-  var $videoCaptionDiv = $('<div class="videoCaption" >' + selectVideoMessage + '</div>');
+  var $videoCaptionDiv = $(`<div class="videoCaption" >${selectVideoMessage}</div>`);
   $videoCaptionDiv.appendTo($videoChooserSection);
   var $videoThumbsDiv = $('<div id="videoThumbs" ></div>');
   $videoThumbsDiv.appendTo($videoChooserSection);
@@ -190,15 +190,16 @@ jQuery(document).ready(function ($) {
 
   $(videos).each(function (k, v) {
     var thumbUrl = "https://img.youtube.com/vi/" + v.id + "/0.jpg"
-    var $videoThumbPreviewDiv = $('<div ' +
-      'videoid="' + v.id + '" ' +
-      'videoname="' + v.name + '" ' +
-      'class="videoThumb" ' +
-      'style="background-image:url(' + thumbUrl + ')" ' +
-      '></div>');
+    
+    var $videoThumbPreviewDiv = $(`<div
+        videoid="${v.id}" 
+        videoname="${v.name}"
+        class="videoThumb"
+        style="background-image:url(${thumbUrl})"
+      ></div>`);
     $videoThumbPreviewDiv.appendTo($videoThumbsDiv);
 
-    var $videoOption = $('<option value="' + v.id + '">' + v.name + '</option>');
+    var $videoOption = $(`<option value="${v.id}">${v.name}</option>`);
     $videoOption.appendTo($videoSelect);
   });
 
@@ -221,10 +222,10 @@ jQuery(document).ready(function ($) {
   });
 
   var selectImageMessage = "~~ Choose focus image ~~"
-  var $imageCaptionDiv = $('<div class="imageCaption" >' + selectImageMessage + '</div>');
+  var $imageCaptionDiv = $(`<div class="imageCaption" >${selectImageMessage}</div>`);
   $imageCaptionDiv.appendTo($videoChooserSection);
 
-  var $focusTextTextBox = $('<input class="focusTextTextBox" type="text" value="' + initFocusText + '" />');
+  var $focusTextTextBox = $(`<input class="focusTextTextBox" type="text" value="${initFocusText}" />`);
   $focusTextTextBox.appendTo($videoChooserSection);
 
   $(document).on('input', '.focusTextTextBox', function () {
@@ -281,7 +282,7 @@ jQuery(document).ready(function ($) {
         var reader = new FileReader();
         // Put image in created image tags
         reader.onload = function (e) {
-          $(".imageInnerDiv").css('background-image', 'url("' + e.target.result + '")');
+          $(".imageInnerDiv").css('background-image', `url("${e.target.result}")`);
         }
         reader.readAsDataURL(ff);
       });
@@ -316,7 +317,7 @@ jQuery(document).ready(function ($) {
     var month = dateObj.getUTCMonth() + 1; //months from 1-12
     var day = dateObj.getUTCDate();
     var year = dateObj.getUTCFullYear();
-    var dateNow = new Date( Date.now() );
+    var dateNow = new Date(Date.now());
     var sessionTime = dateNow.toUTCString();
     var focusText = $(".focusTextTextBox").val();
     var videoID = player.getVideoData()['video_id'];
