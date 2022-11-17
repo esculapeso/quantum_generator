@@ -18,6 +18,13 @@ jQuery(document).ready(function ($) {
     { name: "Worried", value: 2 },
   ]
 
+  var energiesList = [
+    { name: "Energy", value: 4 },
+    { name: "Power", value: 3 },
+    { name: "Strength", value: 4 },
+    { name: "Willpower", value: 1 },
+  ]
+
   function getOneHex(index) {
     for (let i = 0; i < 1; i++) {
       jQuery.get("https://qrng.anu.edu.au/API/jsonI.php?length=1024&type=uint8", data => {
@@ -426,9 +433,12 @@ jQuery(document).ready(function ($) {
 
   function initializeEmotionsQuantity() {
     $emotionalQuantity = $('.emotionalQuantity')
-
     var $emotionSections = $('<div class="emotionSections" ></div>');
     $emotionSections.appendTo($emotionalQuantity);
+
+    $energeticQuantity = $('.energeticQuantity')
+    var $energeticSections = $('<div class="energeticSections" ></div>');
+    $energeticSections.appendTo($energeticQuantity);
 
     $(emotionsList).each((i, e) => {
       var $emotion = $('<div class="emotion"></div>');
@@ -448,27 +458,67 @@ jQuery(document).ready(function ($) {
 
     })
 
-    $(document).on('change', '.emotionQuantity', function () {
-      var selectedindex = emotionsList.findIndex((e) => e.name == $(this).attr('emotion'))
-      emotionsList[selectedindex].value = $(this).val();
-      drawStar(150, 150, 80, 50);
+    
+    $(energiesList).each((i, e) => {
+      var $emotion = $('<div class="emotion"></div>');
+      $emotion.appendTo($energeticSections);
+
+      var $emotionName = $(`<div class="emotionName">${e.name}</div>`);
+      $emotionName.appendTo($emotion);
+
+      var $emotionQuantityBar = $(`<div class="emotionQuantityBar"></div>`);
+      $emotionQuantityBar.appendTo($emotion);
+
+      var $emotionQuantityBarFill = $(`<div class="emotionQuantityBarFill"></div>`);
+      $emotionQuantityBarFill.appendTo($emotionQuantityBar);
+
+      var $emotionQuantity = $(`<input class="emotionQuantity" type="number" emotion="${e.name}" value="${e.value}" min="0" max="10" />`);
+      $emotionQuantity.appendTo($emotion);
+
+    })
+
+    $(document).on('change', '.emotionSections .emotionQuantity', function () {
+      onQuantityClick(emotionsList, '.emotionSections .emotionQuantityBarFill', $(this), "canvas")
+    });
+    
+
+    $(document).on('change', '.energeticSections .emotionQuantity', function () {
+      onQuantityClick(energiesList, '.energeticSections .emotionQuantityBarFill', $(this), "canvas_energy")
     });
 
-    drawStar(150, 150, 80, 50);
+    function onQuantityClick(list, contanerSelector, _this, canvasId) {
+      console.log({_this})
+      var selectedindex = list.findIndex((e) => e.name == _this.attr('emotion'))
+      list[selectedindex].value = _this.val();
+      drawStar(150, 150, 80, 50, list, canvasId);
+      updateBars(list, contanerSelector)
+    }
+
+    drawStar(150, 150, 80, 50, emotionsList, "canvas");
+    updateBars(emotionsList, '.emotionSections .emotionQuantityBarFill')
+
+    drawStar(150, 150, 80, 50, energiesList, "canvas_energy");
+    updateBars(energiesList, '.energeticSections .emotionQuantityBarFill')
+
   }
 
-  function drawStar(cx, cy, outerRadius, innerRadius) {
+  function updateBars(list, contanerSelector) {
+    $(contanerSelector).each((i, bar) => {
+      $(bar).css('width', `${list[i].value * 10}%`)
+    })
+  }
 
-    var canvas = document.getElementById("canvas");
+  function drawStar(cx, cy, outerRadius, innerRadius, list, canvasId) {
+
+    var canvas = document.getElementById(canvasId);
     var ctx = canvas.getContext("2d");
     ctx.textAlign = 'center';
     ctx.fillStyle = "pink";
 
-    $('.emotionQuantityBarFill').each((i, bar) => {
-      $(bar).css('width', `${emotionsList[i].value * 10}%`)
-    })
+    console.log({list})
 
-    var selectedEmotions = $(emotionsList).filter((i, e) => e.value > 0)
+
+    var selectedEmotions = $(list).filter((i, e) => e.value > 0)
     spikes = selectedEmotions.length
     emotions = selectedEmotions
 

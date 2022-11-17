@@ -271,14 +271,14 @@ position: absolute;
 width: 300px;
 }
 
-.emotionalQuantity {
+.quantityPanel {
 background: #c7c795;
   text-align: center;
   padding: 10px 30px;
   width: 320px;
 }
 
-.emotionalQuantity .title {
+.quantityPanel .title {
   background: #ffccc1;
   color: #c32300!important;
   padding: 5px 0px;
@@ -318,7 +318,7 @@ width: 10%;
 width: 40px;
 }
 
-#canvas {
+.canvas_star {
 float: right;
 }
 
