@@ -5,7 +5,7 @@ For example:
     color: red;
 }
 
-For brushing up on your CSS knowledge, check out http://www.w3schools.com/css/css_syntax.asp
+For brushing up on your CSS knowledge, check out https://www.w3schools.com/css/css_syntax.asp
 
 End of comment */
 
@@ -30,7 +30,7 @@ End of comment */
 .wrapperHex {
   width: 1120px;
   height: 1287px;
-  background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow.png);
+  background-image: url(https://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow.png);
   background-size: 100%;
   overflow: hidden;
   position: relative;
@@ -40,7 +40,7 @@ End of comment */
 .coverImage {
   width: 1120px;
   height: 1287px;
-  background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow_tr.png);
+  background-image: url(https://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow_tr.png);
   background-size: 100%;
   position: absolute;
   z-index: 10;
@@ -49,7 +49,7 @@ End of comment */
 .monoTunnelImage {
   width: 1120px;
   height: 464px;
-  background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/08/MonopoleInformationField.png);
+  background-image: url(https://quantumholopedia.eu/wp-content/uploads/2021/08/MonopoleInformationField.png);
   background-size: 100%;
   overflow: hidden;
   position: relative;
@@ -58,7 +58,7 @@ End of comment */
 .dualTeleportationImage {
   width: 1120px;
   height: 844px;
-  background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/08/DipoleInformationField.png);
+  background-image: url(https://quantumholopedia.eu/wp-content/uploads/2021/08/DipoleInformationField.png);
   background-size: 100%;
   overflow: hidden;
   position: relative;
