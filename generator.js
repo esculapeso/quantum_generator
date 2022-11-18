@@ -1,28 +1,30 @@
 jQuery(document).ready(function ($) {
 
 
-  let fetcheddata_1 = new Array(1);
+  let fetcheddata_1 = [];
   let isfetched = 0;
 
+  var qrngDisplayInterval = 790;
+  var qrngLength = 16;
+  var qrngFetchInterval = qrngDisplayInterval * qrngLength;
+
   function getOneHex(index) {
-    for (let i = 0; i < 1; i++) {
-      jQuery.get("https://qrng.anu.edu.au/API/jsonI.php?length=1024&type=uint8", data => {
-        fetcheddata_1[i] = fetcheddata_1[i] + data.data.join('');
-        isfetched = isfetched + 1;
-      });
-    }
+    jQuery.get(`https://qrng.anu.edu.au/API/jsonI.php?length=${qrngLength}&type=uint8`, data => {
+      fetcheddata_1 = fetcheddata_1.concat(data.data);
+      isfetched = isfetched + 1;
+    });
   };
 
   function timedCount() {
     getOneHex();
-    t = setTimeout(function () { timedCount(); }, 10240);
+    t = setTimeout(function () { timedCount(); }, qrngFetchInterval);
   };
 
   function printHex(element, dir, index) {
     let ret;
 
     for (let i = 0; i < 1; i++) {
-      let dataToInsert = fetcheddata_1[i][index] ?? '';
+      let dataToInsert = fetcheddata_1[index] ?? '';
       printModHex(element, dir, dataToInsert)
       ret = dataToInsert
     }
@@ -70,6 +72,31 @@ jQuery(document).ready(function ($) {
 
       index = (index + 1);
 
+      var colorDiv = $(`.colorValue[param=1]`);
+      var qrngColorValue = fetcheddata_1[index];
+
+      colorDiv.each((i, cd) => {
+        var newValue = qrngColorValue;
+        if ($(cd).attr('color') == 'false') {
+          newValue = qrngColorValue / 255;
+        }
+        $(cd).val(newValue);
+      })
+
+      var cd = $(`.colorValue`);
+      
+      var col1 = `rgba(${$(cd[0]).val()},${$(cd[1]).val()},${$(cd[2]).val()},${$(cd[3]).val()})`;
+      var col2 = `rgba(${$(cd[4]).val()},${$(cd[5]).val()},${$(cd[6]).val()},${$(cd[7]).val()})`;
+      var col3 = `rgba(${$(cd[8]).val()},${$(cd[9]).val()},${$(cd[10]).val()},${$(cd[11]).val()})`;
+
+
+      // parametry: color, jasność, przezroczystość, obwiednia, promień, kąt
+      gradient = `conic-gradient(${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1}), 
+					conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
+      $('.page-content').css('background', gradient);
+
+
+
       currentNumber = printHex(dataHereBottom, 'afterbegin', index);
       currentNumber = printHex(dataHereRight, 'afterbegin', index - 1);
       currentNumber = printHex(dataHereTop, 'afterbegin', index - 2);
@@ -80,10 +107,10 @@ jQuery(document).ready(function ($) {
 
       currentNumber = printHex(dataMonopole, 'afterbegin', index);
 
-      createBackgroundGradient(dataHereBottom, dataHereRight, dataHereTop, dataHereLeft);
+      //createBackgroundGradient(dataHereBottom, dataHereRight, dataHereTop, dataHereLeft);
 
     }
-    t = setTimeout(function () { timedPrint(index); }, 80);
+    t = setTimeout(function () { timedPrint(index); }, qrngDisplayInterval);
   };
 
   let header = document.getElementsByClassName('quadrupoleImage')[0];
@@ -104,11 +131,11 @@ jQuery(document).ready(function ($) {
   $videoChooserSection.appendTo(header);
 
 
-  
+
   /**********************
           TABS 
   ***********************/
-  
+
   $("#tabs").tabs().appendTo($videoChooserSection);
 
   var $imageDiv = $('<div class="uploadImageHolder" ></div>');
@@ -386,6 +413,106 @@ jQuery(document).ready(function ($) {
     uploadImage(targetSelector, $(this));
   });
 
+
+  /**********************
+            QRNG
+  ***********************/
+
+  var $tab4 = $("#tabs-5");
+
+  var $qrngCaption = $(`<div class="qrngCaption tabHeader" >~~ Choose QRNG settings ~~</div>`);
+  $qrngCaption.appendTo($tab4);
+
+  var $qrngContent = $(`<div class="qrngContent" ></div>`);
+  $qrngContent.appendTo($tab4);
+
+  var $colorTable = $(`<div class="colorTable" ></div>`);
+  $colorTable.appendTo($qrngContent);
+
+  var colors = [`color 1`, `color 2`, `color 3`];
+  var cVariables = [`Red`, `Green`, `Blue`, `Amp`];
+
+  var colorValues = [
+    [200, 225, 160, 0.7],
+    [120, 180, 220, 0.6],
+    [250, 125, 60, 0.4],
+  ]
+
+  var paramValues = [
+    [0, 0, 1, 1],
+    [1, 1, 0, 0],
+    [0, 1, 0, 1],
+  ]
+
+  var $colorHeader = $(`<div class="colorHeader" ></div>`);
+  $colorHeader.appendTo($colorTable);
+
+  var $colorCell = $(`<div class="colorCell" ></div>`);
+  $colorCell.appendTo($colorHeader);
+
+  $(colors).each((i, c) => {
+    var $colorRow = $(`<div class="colorRow" ></div>`);
+    $colorRow.appendTo($colorTable);
+
+    var $colorCell = $(`<div class="colorCell" >${c}</div>`);
+    $colorCell.appendTo($colorRow);
+
+    $(cVariables).each((j, v) => {
+
+      if (i == 0) {
+        var $colorCell = $(`<div class="colorCell" >${v}</div>`);
+        $colorCell.appendTo($colorHeader);
+      }
+
+      var $colorCell = $(`<div class="colorCell" ></div>`);
+      $colorCell.appendTo($colorRow);
+
+      var colorValue = colorValues[i][j];
+      var paramValue = paramValues[i][j];
+
+      var buttonValues = ["CONST", "VAR"];
+      var buttonValue = buttonValues[0];
+
+      if (paramValue) {
+        buttonValue = buttonValues[1];
+      }
+
+      var min, max, step;
+      min = 0
+
+      var isColor = true;
+
+      if (j != 3) {
+        max = 255;
+        step = 1;
+      } else {
+        max = 1;
+        step = 0.1;
+        isColor = false;
+      }
+
+      var matrixIndex = '' + i + j;
+
+      var $colorParam = $(`<div class="colorParam" index="${matrixIndex}" param="${paramValue}">${buttonValue}</div>`);
+      $colorParam.appendTo($colorCell);
+
+      var $colorValue = $(`<input class="colorValue" index="${matrixIndex}" type="number" param="${paramValue}" min="${min}" max="${max}" step="${step}" color="${isColor}" value="${colorValue}" ></div>`);
+      $colorValue.appendTo($colorCell);
+
+    })
+  })
+
+  $(document).on('click', '.colorParam', function () {
+    var param = parseInt($(this).attr('param'));
+    var index = $(this).attr('index');
+    var buttonValues = ["CONST", "VAR"];
+
+    var newParam = (param + 1) % 2;
+
+    $(`.colorValue[index='${index}']`).attr('param', newParam);
+    $(this).attr('param', newParam).html(buttonValues[newParam]);
+  });
+
   /**********************
         SAVE SESSION 
   ***********************/
@@ -404,7 +531,7 @@ jQuery(document).ready(function ($) {
   initializeEmotionsQuantity();
 
   timedCount();
-  timedPrint(32);
+  timedPrint(0);
 
   function saveSession() {
     event.preventDefault();
