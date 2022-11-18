@@ -106,9 +106,6 @@ jQuery(document).ready(function ($) {
       currentNumber = printHex(dataDualBottom, 'afterbegin', index - 1);
 
       currentNumber = printHex(dataMonopole, 'afterbegin', index);
-
-      //createBackgroundGradient(dataHereBottom, dataHereRight, dataHereTop, dataHereLeft);
-
     }
     t = setTimeout(function () { timedPrint(index); }, qrngDisplayInterval);
   };
@@ -562,69 +559,8 @@ jQuery(document).ready(function ($) {
     saveAs(blob, `${fileName}.txt`);
   }
 
-
-
   function getVideobyVideoId(videoId) {
     return videosForFocus.filter(v => v.id == videoId)
-  }
-
-  function createBackgroundGradient(div1, div2, div3, div4) {
-    var coralPalette = [166, 76, 49, 240, 128, 128];
-    var darkGreenPalette = [20, 28, 4, 20, 28, 4];
-
-    var palette = darkGreenPalette;
-    var lowerLeftNumber = $(div1).find('div').html();
-
-    var leftNum = lowerLeftNumber.substring(0, 48)
-    var i = leftNum.length;
-    var lsum = 0
-    while (i--) {
-      lsum += parseInt(leftNum.charAt(i));
-    }
-
-    var lowerRightNumber = $(div2).find('div').html()
-    var rightNum = lowerRightNumber.substring(0, 48)
-    var i = rightNum.length;
-    var rsum = 0
-    while (i--) {
-      rsum += parseInt(rightNum.charAt(i));
-    }
-
-    var rightNumber = $(div3).find('div').html()
-    var rNum = rightNumber.substring(0, 48)
-    var i = rNum.length;
-    var csum = 0
-    while (i--) {
-      csum += parseInt(rNum.charAt(i));
-    }
-
-    var gradient;
-    if ($(div4).find('div').html().length > 48) {
-      var lr = palette[0] + parseInt(lowerLeftNumber.substring(0, 16)) % 8 - 4;
-      var lg = palette[1] + parseInt(lowerLeftNumber.substring(16, 32)) % 16 - 8;
-      var lb = palette[2] + parseInt(lowerLeftNumber.substring(32, 48)) % 16 - 8;
-      var la = lsum / 300;
-
-      var rr = palette[3] + parseInt(lowerRightNumber.substring(0, 16)) % 8 - 4;
-      var rg = palette[4] + parseInt(lowerRightNumber.substring(16, 32)) % 16 - 8;
-      var rb = palette[5] + parseInt(lowerRightNumber.substring(32, 48)) % 16 - 8;
-      var ra = rsum / 300;
-
-      var cr = palette[3] + parseInt(rightNumber.substring(0, 16)) % 8 - 4;
-      var cg = palette[4] + parseInt(rightNumber.substring(16, 32)) % 16 - 8;
-      var cb = palette[5] + parseInt(rightNumber.substring(32, 48)) % 16 - 8;
-      var ca = csum / 300;
-
-      var col1 = `rgba(${lr},${lg},${lb},${la})`;
-      var col2 = `rgba(${rr},${rg},${rb},${ra})`;
-      var col3 = `rgba(${cr},${cg},${cb},${ca})`;
-
-      // parametry: color, jasność, przezroczystość, obwiednia, promień, kąt
-      gradient = `linear-gradient(90deg, rgba(${lr},${lg},${lb},${la}) 0%, rgba(${rr},${rg},${rb},${ra}) 100%)`;
-      gradient = `conic-gradient(${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1}), 
-					conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
-      $('.page-content').css('background', gradient);
-    }
   }
 
   function initializeEmotionsQuantity() {
