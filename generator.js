@@ -93,7 +93,7 @@ jQuery(document).ready(function ($) {
       // parametry: color, jasność, przezroczystość, obwiednia, promień, kąt
       gradient = `conic-gradient(${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1}), 
 					conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
-      $('.page-content').css('background', gradient);
+      $('.page-content, .panel-content').css('background', gradient);
 
 
 
