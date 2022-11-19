@@ -134,7 +134,7 @@ jQuery(document).ready(function ($) {
   $(document).on('click', '.hideOptionsButton', function () {
     $('.ui-tabs, .focusTextSave').toggle();
     var bgImg = $('.quadrupoleImage').css('background-image');
-    var bgSufix = '_med';
+    var bgSufix = '_open';
     
     var newValue = $(this).attr('altvalue');
     var curValue = $(this).attr('value');
