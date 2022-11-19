@@ -5,12 +5,12 @@ For example:
     color: red;
 }
 
-For brushing up on your CSS knowledge, check out https://www.w3schools.com/css/css_syntax.asp
+For brushing up on your CSS knowledge, check out http://www.w3schools.com/css/css_syntax.asp
 
 End of comment */
 
 .quadrupoleImage * {
-  color: #ffd8bc !important;
+  color: #ffd8bc;
 }
 
 .videoChooserSection input,
@@ -27,10 +27,15 @@ End of comment */
   color: #5c150a !important;
 }
 
+.videoControls {
+	text-align: center;
+	margin-top: 10px;
+}
+
 .wrapperHex {
   width: 1120px;
   height: 1287px;
-  background-image: url(https://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow.png);
+  background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow.png);
   background-size: 100%;
   overflow: hidden;
   position: relative;
@@ -40,7 +45,7 @@ End of comment */
 .coverImage {
   width: 1120px;
   height: 1287px;
-  background-image: url(https://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow_tr.png);
+  background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow_tr.png);
   background-size: 100%;
   position: absolute;
   z-index: 10;
@@ -49,7 +54,7 @@ End of comment */
 .monoTunnelImage {
   width: 1120px;
   height: 464px;
-  background-image: url(https://quantumholopedia.eu/wp-content/uploads/2021/08/MonopoleInformationField.png);
+  background-image: url(https://esculap.org/wp-content/uploads/2022/11/singleDNA.png);
   background-size: 100%;
   overflow: hidden;
   position: relative;
@@ -58,7 +63,7 @@ End of comment */
 .dualTeleportationImage {
   width: 1120px;
   height: 844px;
-  background-image: url(https://quantumholopedia.eu/wp-content/uploads/2021/08/DipoleInformationField.png);
+  background-image: url(https://esculap.org/wp-content/uploads/2022/11/doubleDNA.png);
   background-size: 100%;
   overflow: hidden;
   position: relative;
@@ -67,12 +72,13 @@ End of comment */
 .quadrupoleImage {
   width: 1120px;
   height: 798px;
-  background-image: url(https://esculap.org/wp-content/uploads/2022/10/quadrupole_bg_if.png);
+  background-image: url(https://esculap.org/wp-content/uploads/2022/11/quadrupole_bg.png);
   background-size: 100%;
   overflow: hidden;
   position: relative;
   background-repeat: no-repeat;
   margin-bottom: 30px;
+  margin-left: 160px;
 }
 
 .dataHere {
@@ -222,7 +228,7 @@ End of comment */
 }
 
 .uploadImageExample .uploadedImage {
-  height: 100px !important;
+  height: 90px !important;
 }
 
 .uploadImageExample .uploadImageCaption {
@@ -238,7 +244,7 @@ End of comment */
   border: 0;
 }
 
-.youtubePlayButtonImage {
+.redButton {
   width: 40px;
   cursor: pointer;
   display: inline-block;
@@ -251,27 +257,27 @@ End of comment */
 }
 
 .videoThumb {
-  width: 43px;
+  width: 80px;
   display: inline-block;
   cursor: pointer;
-  height: 24px;
+  height: 44px;
   background-size: 100%;
   background-repeat: no-repeat;
   margin-right: 5px;
   background-position: center;
 }
 
-.videoCaption,
-.imageCaption {
-  margin-top: 10px;
+.chooserContent {
   text-align: center;
+	cursor: pointer;
 }
 
 .videoChooserSection {
-  position: absolute;
-  right: 0%;
-  top: 48%;
-  width: 300px;
+	position: absolute;
+	left: -14%;
+	top: 1%;
+	width: 300px;
+	height: 575px;
 }
 
 .quantityPanel {
@@ -336,6 +342,7 @@ End of comment */
 }
 
 .video-container {
+  display: none;
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -351,4 +358,112 @@ End of comment */
   transform: translate(-50%, -50%);
   max-width: unset !important;
   max-height: unset !important;
+}
+
+.tabHeader {
+  text-align: center;
+  margin-bottom: 10px;	
+}
+
+.personImage {
+    position: absolute;
+    width: 106px;
+    height: 106px;
+    background-size: 100%;
+}
+
+.personImageThumb {
+    width: 40px;
+    height: 40px;
+    background-size: 100%;
+    display: inline-block;
+    margin-bottom: -6px;
+}
+
+.personRightPanel {
+	display: inline-block;
+}
+
+.therapistImage.top{
+    top: 0%;
+    left: 48.9%;
+}
+
+.therapistImage.left{
+    top: 18.4%;
+    left: 0.2%;
+}
+
+.therapistImage.bottom{
+    top: 86.5%;
+    left: 13.2%;
+}
+
+.therapistImage.right{
+    top: 68.3%;
+    left: 61.7%;
+}
+
+.person1Image {
+    top: 18.4%;
+    left: 13.1%;
+}
+
+.person2Image {
+    top: 68.4%;
+    left: 13.1%;
+}
+
+.person3Image {
+    top: 68.4%;
+    left: 48.8%;
+}
+
+.person4Image {
+    top: 18.4%;
+    left: 48.8%;
+}
+
+.colorRow, .colorHeader {
+    margin-bottom: 10px;
+}
+
+.colorHeader {
+    font-weight: bold;
+}
+
+.colorCell {
+    display: inline-block;
+    width: 44px;
+    margin-right: 5px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.colorParam {
+	text-align: center;
+	cursor: pointer;
+}
+
+.colorCell input {
+    width: 100%;
+}
+
+img.videoOverlay {
+    position: absolute;
+    z-index: 10;
+    height: 440px;
+    margin-top: -60px;
+}
+
+.boxed-wrapper {
+	max-width: unset !important;
+}
+
+.quadrupolePanel {
+	position: relative;
+}
+
+.imageButtons {
+	margin-bottom: 10px;
 }

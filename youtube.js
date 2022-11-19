@@ -14,7 +14,7 @@ function onYouTubeIframeAPIReady() {
     width: '90',
     videoId: '6f0y1Iaorug',
     playerVars: {
-      'playsinline': 1, 'autoplay': 1, 'controls': 0, 'showinfo': 0, 'autohide': 1
+      'playsinline': 1, 'autoplay': 0, 'controls': 0, 'showinfo': 0, 'autohide': 1
     },
     events: {
       'onReady': onPlayerReady,
@@ -37,8 +37,12 @@ function onPlayerStateChange(event) {
     setTimeout(stopVideo, 6000);
     done = true;
   }
-  if (event.data === YT.PlayerState.ENDED) {
+if (event.data === YT.PlayerState.ENDED) {
       player.playVideo(); 
+  }
+if (event.data === YT.PlayerState.CUED) {
+      $('.youtubePauseButtonImage').hide();
+  $('.youtubePlayButtonImage').show();
   }
 }
 function stopVideo() {
