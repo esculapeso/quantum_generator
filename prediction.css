@@ -9,6 +9,7 @@ For brushing up on your CSS knowledge, check out http://www.w3schools.com/css/cs
 
 End of comment */
 
+
 .quadrupoleImage * {
   color: #ffd8bc;
 }
@@ -405,23 +406,23 @@ End of comment */
 }
 
 .person1Image {
-    top: 18.4%;
-    left: 13.1%;
+    top: 18%;
+    left: 13.2%;
 }
 
 .person2Image {
-    top: 68.4%;
-    left: 13.1%;
+    top: 68.2%;
+    left: 13.2%;
 }
 
 .person3Image {
-    top: 68.4%;
+    top: 68.2%;
     left: 48.8%;
 }
 
 .person4Image {
-    top: 18.4%;
-    left: 48.8%;
+    top: 18%;
+    left: 48.9%;
 }
 
 .colorRow, .colorHeader {
