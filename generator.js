@@ -110,6 +110,7 @@ jQuery(document).ready(function ($) {
     t = setTimeout(function () { timedPrint(index); }, qrngDisplayInterval);
   };
 
+  let $quadrupolePanel = $('.quadrupolePanel');
   let header = document.getElementsByClassName('quadrupoleImage')[0];
 
   appendDataHolder(header, "dataHereBottom", "quadrupole")
@@ -125,9 +126,28 @@ jQuery(document).ready(function ($) {
   appendDataHolder(monopole, "dataMonopole", "monopole")
 
   var $videoChooserSection = $('<div class="videoChooserSection" ></div>');
-  $videoChooserSection.appendTo(header);
+  $videoChooserSection.appendTo($quadrupolePanel);
 
+  var $focusTextSaveButton = $('<input class="hideOptionsButton button" type="button" altvalue="→" value="←"  />');
+  $focusTextSaveButton.appendTo($videoChooserSection);
 
+  $(document).on('click', '.hideOptionsButton', function () {
+    $('.ui-tabs, .focusTextSave').toggle();
+    var bgImg = $('.quadrupoleImage').css('background-image');
+    var bgSufix = '_med';
+    
+    var newValue = $(this).attr('altvalue');
+    var curValue = $(this).attr('value');
+    $(this).attr('altvalue', curValue).attr('value', newValue)
+    
+    if (bgImg.includes(bgSufix)) {
+      bgImg = bgImg.replace(bgSufix, '');
+    } else {
+      bgImg = bgImg.replace('.png', `${bgSufix}.png`);
+    }
+
+    $('.quadrupoleImage').css('background-image', bgImg);
+  });
 
   /**********************
           TABS 
@@ -155,6 +175,8 @@ jQuery(document).ready(function ($) {
           VIDEO 
   ***********************/
 
+  var videos = videosForFocus;
+
   var $videoContainerDiv = $('<div class="video-container" ></div>');
   $videoContainerDiv.appendTo($imageDiv);
 
@@ -175,8 +197,6 @@ jQuery(document).ready(function ($) {
 
   var $videoSelect = $('<select class="videoSelect" ></select>');
   $videoSelect.appendTo($videoChooserContent);
-
-  var videos = videosForFocus;
 
   $(videos).each(function (k, v) {
     var thumbUrl = "https://img.youtube.com/vi/" + v.id + "/0.jpg"
@@ -202,35 +222,60 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('click', '.videoThumb', function () {
-    player.setVolume($('.videoVolume').val());
     player.loadVideoById($(this).attr('videoid'));
+    startFocusVideo();
   });
 
   $(document).on('change', '.videoSelect', function () {
-    player.setVolume($('.videoVolume').val());
     player.loadVideoById($(this).val());
+    startFocusVideo();
   });
 
 
   var $videoControls = $('<div class="videoControls" ></div>');
   $videoControls.appendTo($tab1);
 
-  var youtubePlayButton = "https://esculap.org/wp-content/uploads/2022/11/playVideo.png"
-  var $youtubePlayButtonImage = $(`<img src="${youtubePlayButton}" class="youtubePlayButtonImage" />`);
+  var $youtubeRemoveButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`);
+  $youtubeRemoveButtonImage.appendTo($videoControls);
+
+  $(document).on('click', '.youtubeRemoveButtonImage', function () {
+    stopFocusVideo();
+  });
+
+  var $youtubePlayButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png" class="youtubePauseButtonImage redButton" style="display:none;" />`);
+  $youtubePlayButtonImage.appendTo($videoControls);
+
+  $(document).on('click', '.youtubePauseButtonImage', function () {
+    pauseFocusVideo();
+  });
+
+  var $youtubePlayButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/playVideo.png" class="youtubePlayButtonImage redButton" />`);
   $youtubePlayButtonImage.appendTo($videoControls);
 
   $(document).on('click', '.youtubePlayButtonImage', function () {
+    startFocusVideo();
+  });
+
+  function stopFocusVideo() {
+    $('.youtubePauseButtonImage').hide();
+    $('.youtubePlayButtonImage').show();
+    player.stopVideo();
+    $('.video-container').hide();
+  }
+
+  function pauseFocusVideo() {
+    $('.youtubePauseButtonImage').hide();
+    $('.youtubePlayButtonImage').show();
+    player.pauseVideo();
+  }
+
+  function startFocusVideo() {
+    $('.youtubePlayButtonImage').hide();
+    $('.youtubePauseButtonImage').show();
     player.setVolume($('.videoVolume').val());
     player.playVideo();
-  });
-
-  var youtubeRemoveButton = "https://esculap.org/wp-content/uploads/2022/11/removeVideo.png"
-  var $youtubeRemoveButtonImage = $(`<img src="${youtubeRemoveButton}" class="youtubeRemoveButtonImage" />`);
-  //$youtubeRemoveButtonImage.appendTo($videoControlsDiv);
-
-  $(document).on('click', '.youtubeRemoveButtonImage', function () {
-    player.stopVideo();
-  });
+    $('.video-container').show();
+  }
 
   var $videoVolumeInput = $('<input type="range" value="10" class="videoVolume" />');
   $videoVolumeInput.appendTo($videoControls);
@@ -269,17 +314,18 @@ jQuery(document).ready(function ($) {
   var $imageButtons = $('<div class="imageButtons" ></div>');
   $imageButtons.appendTo($tab3);
 
-  var $removeImage = $('<input class="removeImageButton imageButton button" type="button" value="Hide" />');
+  var $removeImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="removeImageButton redButton" />`);
   $removeImage.appendTo($imageButtons);
+
   $(document).on('click', '.removeImageButton', function () {
     $(".imageInnerDiv").css('background-image', '');
   });
 
+  var $uploadImageButton = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/uploadButtons.png" class="uploadImageButton redButton" />`);
+  $uploadImageButton.appendTo($imageButtons);
+
   var $uploadImageHiddenButton = $('<input class="uploadImageHiddenButton" type="file" style="display: none;" />');
   $uploadImageHiddenButton.appendTo($imageButtons);
-
-  var $uploadImageButton = $('<input class="uploadImageButton imageButton button" type="button" value="Upload" />');
-  $uploadImageButton.appendTo($imageButtons);
 
   $(document).on('click', '.uploadImageButton', function () {
     $(".uploadImageHiddenButton").click();
