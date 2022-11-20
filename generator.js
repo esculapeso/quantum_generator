@@ -84,15 +84,15 @@ jQuery(document).ready(function ($) {
       })
 
       var cd = $(`.colorValue`);
-      
+
       var col1 = `rgba(${$(cd[0]).val()},${$(cd[1]).val()},${$(cd[2]).val()},${$(cd[3]).val()})`;
       var col2 = `rgba(${$(cd[4]).val()},${$(cd[5]).val()},${$(cd[6]).val()},${$(cd[7]).val()})`;
       var col3 = `rgba(${$(cd[8]).val()},${$(cd[9]).val()},${$(cd[10]).val()},${$(cd[11]).val()})`;
 
 
       // parametry: color, jasność, przezroczystość, obwiednia, promień, kąt
-      gradient = `conic-gradient(${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1}), 
-					conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
+      gradient = `conic-gradient(from 0deg at 50% 1810px, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
+      //conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       $('.page-content, .panel-content').css('background', gradient);
 
 
@@ -135,11 +135,11 @@ jQuery(document).ready(function ($) {
     $('.ui-tabs, .focusTextSave').toggle();
     var bgImg = $('.quadrupoleImage').css('background-image');
     var bgSufix = '_open';
-    
+
     var newValue = $(this).attr('altvalue');
     var curValue = $(this).attr('value');
     $(this).attr('altvalue', curValue).attr('value', newValue)
-    
+
     if (bgImg.includes(bgSufix)) {
       bgImg = bgImg.replace(bgSufix, '');
     } else {
@@ -457,7 +457,7 @@ jQuery(document).ready(function ($) {
     uploadImage(targetSelector, $(this));
   });
 
-  
+
   /**********************
             QRNG
   ***********************/

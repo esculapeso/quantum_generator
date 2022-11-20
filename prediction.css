@@ -29,8 +29,8 @@ End of comment */
 }
 
 .videoControls {
-	text-align: center;
-	margin-top: 10px;
+  text-align: center;
+  margin-top: 10px;
 }
 
 .wrapperHex {
@@ -219,6 +219,7 @@ End of comment */
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  cursor: pointer;
 }
 
 .uploadImageExample {
@@ -270,15 +271,15 @@ End of comment */
 
 .chooserContent {
   text-align: center;
-	cursor: pointer;
+  cursor: pointer;
 }
 
 .videoChooserSection {
-	position: absolute;
-	left: -14%;
-	top: 1%;
-	width: 300px;
-	height: 575px;
+  position: absolute;
+  left: -14%;
+  top: 1%;
+  width: 300px;
+  height: 575px;
 }
 
 .quantityPanel {
@@ -300,7 +301,8 @@ End of comment */
   margin: 10px 0;
 }
 
-.emotionName, .emotionName a {
+.emotionName,
+.emotionName a {
   display: inline-block;
   width: 70px;
   text-align: right;
@@ -363,108 +365,110 @@ End of comment */
 
 .tabHeader {
   text-align: center;
-  margin-bottom: 10px;	
+  margin-bottom: 10px;
 }
 
 .personImage {
-    position: absolute;
-    width: 106px;
-    height: 106px;
-    background-size: 100%;
+  position: absolute;
+  width: 106px;
+  height: 106px;
+  background-size: 100%;
+  cursor: pointer;
 }
 
 .personImageThumb {
-    width: 40px;
-    height: 40px;
-    background-size: 100%;
-    display: inline-block;
-    margin-bottom: -6px;
+  width: 40px;
+  height: 40px;
+  background-size: 100%;
+  display: inline-block;
+  margin-bottom: -6px;
 }
 
 .personRightPanel {
-	display: inline-block;
+  display: inline-block;
 }
 
-.therapistImage.top{
-    top: 0%;
-    left: 48.9%;
+.therapistImage.top {
+  top: 0%;
+  left: 48.9%;
 }
 
-.therapistImage.left{
-    top: 18.4%;
-    left: 0.2%;
+.therapistImage.left {
+  top: 18.4%;
+  left: 0.2%;
 }
 
-.therapistImage.bottom{
-    top: 86.5%;
-    left: 13.2%;
+.therapistImage.bottom {
+  top: 86.5%;
+  left: 13.2%;
 }
 
-.therapistImage.right{
-    top: 68.3%;
-    left: 61.7%;
+.therapistImage.right {
+  top: 68.3%;
+  left: 61.7%;
 }
 
 .person1Image {
-    top: 18%;
-    left: 13.2%;
+  top: 18%;
+  left: 13.2%;
 }
 
 .person2Image {
-    top: 68.2%;
-    left: 13.2%;
+  top: 68.2%;
+  left: 13.2%;
 }
 
 .person3Image {
-    top: 68.2%;
-    left: 48.8%;
+  top: 68.2%;
+  left: 48.8%;
 }
 
 .person4Image {
-    top: 18%;
-    left: 48.9%;
+  top: 18%;
+  left: 48.9%;
 }
 
-.colorRow, .colorHeader {
-    margin-bottom: 10px;
+.colorRow,
+.colorHeader {
+  margin-bottom: 10px;
 }
 
 .colorHeader {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .colorCell {
-    display: inline-block;
-    width: 44px;
-    margin-right: 5px;
-    font-size: 12px;
-    text-align: center;
+  display: inline-block;
+  width: 44px;
+  margin-right: 5px;
+  font-size: 12px;
+  text-align: center;
 }
 
 .colorParam {
-	text-align: center;
-	cursor: pointer;
+  text-align: center;
+  cursor: pointer;
 }
 
 .colorCell input {
-    width: 100%;
+  width: 100%;
 }
 
 img.videoOverlay {
-    position: absolute;
-    z-index: 10;
-    height: 440px;
-    margin-top: -60px;
+  position: absolute;
+  z-index: 10;
+  height: 440px;
+  margin-top: -60px;
 }
 
 .boxed-wrapper {
-	max-width: unset !important;
+  max-width: unset !important;
 }
 
 .quadrupolePanel {
-	position: relative;
+  position: relative;
 }
 
 .imageButtons {
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 }
