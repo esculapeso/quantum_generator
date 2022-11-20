@@ -327,7 +327,7 @@ jQuery(document).ready(function ($) {
   var $uploadImageHiddenButton = $('<input class="uploadImageHiddenButton" type="file" style="display: none;" />');
   $uploadImageHiddenButton.appendTo($imageButtons);
 
-  $(document).on('click', '.uploadImageButton', function () {
+  $(document).on('click', '.uploadImageButton, .imageInnerDiv', function () {
     $(".uploadImageHiddenButton").click();
   });
 
@@ -378,6 +378,7 @@ jQuery(document).ready(function ($) {
   }
 
 
+
   /**********************
           PEOPLE 
   ***********************/
@@ -421,31 +422,31 @@ jQuery(document).ready(function ($) {
   })
 
 
-  var $thrapistImage = $('<div class="personImage therapistImage bottom" ></div>');
+  var $thrapistImage = $(`<div role="${people[0].role}" class="personImage therapistImage bottom" ></div>`);
   $thrapistImage.appendTo(header);
 
-  var $thrapistImage = $('<div class="personImage therapistImage right" ></div>');
+  var $thrapistImage = $(`<div role="${people[0].role}" class="personImage therapistImage right" ></div>`);
   $thrapistImage.appendTo(header);
 
-  var $thrapistImage = $('<div class="personImage therapistImage top" ></div>');
+  var $thrapistImage = $(`<div role="${people[0].role}" class="personImage therapistImage top" ></div>`);
   $thrapistImage.appendTo(header);
 
-  var $thrapistImage = $('<div class="personImage therapistImage left" ></div>');
+  var $thrapistImage = $(`<div role="${people[0].role}" class="personImage therapistImage left" ></div>`);
   $thrapistImage.appendTo(header);
 
-  var $person1Image = $('<div class="personImage person1Image" ></div>');
+  var $person1Image = $(`<div role="${people[1].role}" class="personImage person1Image" ></div>`);
   $person1Image.appendTo(header);
 
-  var $person1Image = $('<div class="personImage person2Image" ></div>');
+  var $person1Image = $(`<div role="${people[2].role}" class="personImage person2Image" ></div>`);
   $person1Image.appendTo(header);
 
-  var $person1Image = $('<div class="personImage person3Image" ></div>');
+  var $person1Image = $(`<div role="${people[3].role}" class="personImage person3Image" ></div>`);
   $person1Image.appendTo(header);
 
-  var $person1Image = $('<div class="personImage person4Image" ></div>');
+  var $person1Image = $(`<div role="${people[4].role}" class="personImage person4Image" ></div>`);
   $person1Image.appendTo(header);
 
-  $(document).on('click', '.personUploadButton', function () {
+  $(document).on('click', '.personUploadButton, .personImage', function () {
     var role = $(this).attr('role');
     $(`.${role} .personHiddenUploadButton`).click();
   });
@@ -456,7 +457,7 @@ jQuery(document).ready(function ($) {
     uploadImage(targetSelector, $(this));
   });
 
-
+  
   /**********************
             QRNG
   ***********************/
