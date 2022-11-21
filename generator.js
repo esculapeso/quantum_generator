@@ -128,8 +128,8 @@ jQuery(document).ready(function ($) {
   var $videoChooserSection = $('<div class="videoChooserSection" ></div>');
   $videoChooserSection.appendTo($quadrupolePanel);
 
-  var $focusTextSaveButton = $('<input class="hideOptionsButton button" type="button" altvalue="→" value="←"  />');
-  $focusTextSaveButton.appendTo($videoChooserSection);
+  var $hideOptionsButton = $('<input class="hideOptionsButton button" type="button" altvalue="→" value="←"  />');
+  $hideOptionsButton.appendTo($videoChooserSection);
 
   $(document).on('click', '.hideOptionsButton', function () {
     $('.ui-tabs, .focusTextSave').toggle();
@@ -177,7 +177,7 @@ jQuery(document).ready(function ($) {
 
   var videos = videosForFocus;
 
-  var $videoContainerDiv = $('<div class="video-container" ></div>');
+  var $videoContainerDiv = $('<div class="video-container hidden-container" ></div>');
   $videoContainerDiv.appendTo($imageDiv);
 
   var $videoDiv = $('<div id="videoHolder" ></div>');
@@ -202,11 +202,11 @@ jQuery(document).ready(function ($) {
     var thumbUrl = "https://img.youtube.com/vi/" + v.id + "/0.jpg"
 
     var $videoThumbPreviewDiv = $(`<div
-        videoid="${v.id}" 
-        videoname="${v.name}"
-        class="videoThumb"
-        style="background-image:url(${thumbUrl})"
-      ></div>`);
+          videoid="${v.id}" 
+          videoname="${v.name}"
+          class="videoThumb"
+          style="background-image:url(${thumbUrl})"
+        ></div>`);
     $videoThumbPreviewDiv.appendTo($videoThumbsDiv);
 
     var $videoOption = $(`<option value="${v.id}">${v.name}</option>`);
@@ -260,7 +260,7 @@ jQuery(document).ready(function ($) {
     $('.youtubePauseButtonImage').hide();
     $('.youtubePlayButtonImage').show();
     player.stopVideo();
-    $('.video-container').hide();
+    $('.video-container').addClass('hidden-container');
   }
 
   function pauseFocusVideo() {
@@ -274,7 +274,7 @@ jQuery(document).ready(function ($) {
     $('.youtubePauseButtonImage').show();
     player.setVolume($('.videoVolume').val());
     player.playVideo();
-    $('.video-container').show();
+    $('.video-container').removeClass('hidden-container');
   }
 
   var $videoVolumeInput = $('<input type="range" value="10" class="videoVolume" />');
@@ -365,16 +365,47 @@ jQuery(document).ready(function ($) {
 
       $.each(files, function (index, ff) // loop each image 
       {
-        var reader = new FileReader();
-        // Put image in created image tags
-        reader.onload = function (e) {
-          $(targetImageSelector).css('background-image', `url("${e.target.result}")`);
+        var fileNameSplit = ff.name.split('.')
+        fileExt = fileNameSplit[fileNameSplit.length - 1]
+
+        if (fileExt == 'json') {
+          readJSON(ff);
+        } else {
+          readImage(ff, targetImageSelector);
         }
-        reader.readAsDataURL(ff);
+
       });
 
       return files[0].name.split('.')[0];
     }
+  }
+
+  function readImage(ff, targetImageSelector) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      $(targetImageSelector).css('background-image', `url("${e.target.result}")`);
+    }
+    reader.readAsDataURL(ff)
+  }
+
+  function readJSON(ff) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      json = e.target.result;
+      jsonObject = JSON.parse(json)
+      $('.focusText').html(jsonObject['Focus Text'])
+      $('.therapistImage').css('background-image', jsonObject.people.find(p => p.role == 'therapist').data)
+      $('.person1Image').css('background-image', jsonObject.people.find(p => p.role == 'person1').data)
+      $('.person2Image').css('background-image', jsonObject.people.find(p => p.role == 'person2').data)
+      $('.person3Image').css('background-image', jsonObject.people.find(p => p.role == 'person3').data)
+      $('.person4Image').css('background-image', jsonObject.people.find(p => p.role == 'person4').data)
+      $('.imageInnerDiv').css('background-image', jsonObject.imageData)
+      $(".captionText").html(jsonObject.ImageCaption)
+
+      player.loadVideoById(jsonObject.videoId);
+      startFocusVideo();
+    }
+    reader.readAsText(ff);
   }
 
 
@@ -567,10 +598,23 @@ jQuery(document).ready(function ($) {
   var $focusTextSaveButton = $('<input class="focusTextSaveButton button"  type="button" value="Save Session"  />');
   $focusTextSaveButton.appendTo($focusTextSave);
 
+  var $focusTextSaveButton = $('<input class="focusTextLoadButton button"  type="button" value="Load Session"  />');
+  $focusTextSaveButton.appendTo($focusTextSave);
+
+  var $loadHiddenUploadButton = $(`<input class="loadHiddenUploadButton" type="file" style="display: none;" />`);
+  $loadHiddenUploadButton.appendTo($focusTextSave);
+
   $(document).on('click', '.focusTextSaveButton', function () {
     saveSession();
   });
 
+  $(document).on('click', '.focusTextLoadButton', function () {
+    $('.loadHiddenUploadButton').click();
+  });
+
+  $(document).on('change', '.loadHiddenUploadButton', function () {
+    uploadImage('', $(this));
+  });
 
   initializeEmotionsQuantity();
 
@@ -586,25 +630,50 @@ jQuery(document).ready(function ($) {
     var year = dateObj.getUTCFullYear();
     var dateNow = new Date(Date.now());
     var sessionTime = dateNow.toUTCString();
-    var focusText = $(".focusTextTextBox").val();
+    var focusText = $(".focusText").html();
     var videoID = player.getVideoData()['video_id'];
     var videoName = getVideobyVideoId(videoID)[0].name;
-    var focusImage = $(".captionText").html().replace('\n', ' ');
+    var ImageCaption = $(".captionText").html().replace('\n', ' ');
 
     var emotionsText = "\n\nEmotions Quantity\n\n";
     $(emotionsList).each((i, e) => {
       emotionsText += `${e.name}: ${e.value}\n`;
     })
 
-    var sessionContent = `Session time: ${sessionTime}\nFocus Text: ${focusText}\nVideo Name: ${videoName}\nVideo Id: ${videoID}\nFocus Image: ${focusImage}${emotionsText}`;
+    var sessionObject = { 
+      'Session time': sessionTime, 
+      'Focus Text': focusText,
+      'videoId': videoID,
+      'imageData': $('.imageInnerDiv').css('background-image'),
+      ImageCaption,
+      'people': [
+        { role: 'therapist', data: $('.therapistImage').css('background-image')},
+        { role: 'person1', data: $('.person1Image').css('background-image')},
+        { role: 'person2', data: $('.person2Image').css('background-image')},
+        { role: 'person3', data: $('.person3Image').css('background-image')},
+        { role: 'person4', data: $('.person4Image').css('background-image')}
+      ]
+    };
 
     fileName = `${year}_${month}_${day}_${focusText}`;
+    download(`${fileName}.json`, JSON.stringify(sessionObject));
 
-    // window.location.href="data:application/octet-stream;base64,"+Base64.encode(txtData);
-    var blob = new Blob([sessionContent],
-      { type: "text/plain;charset=utf-8" });
-    saveAs(blob, `${fileName}.txt`);
   }
+
+  function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  }
+
+  // Start file download.
 
   function getVideobyVideoId(videoId) {
     return videosForFocus.filter(v => v.id == videoId)

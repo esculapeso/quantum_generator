@@ -9,6 +9,10 @@ For brushing up on your CSS knowledge, check out http://www.w3schools.com/css/cs
 
 End of comment */
 
+#page-wrap {
+  background-color: white;
+}
+
 
 .quadrupoleImage * {
   color: #ffd8bc;
@@ -345,11 +349,14 @@ End of comment */
 }
 
 .video-container {
-  display: none;
   position: relative;
   overflow: hidden;
   width: 100%;
   padding-bottom: 100%;
+}
+
+.video-container.hidden-container {
+  z-index: -1;
 }
 
 .video-container iframe {
@@ -471,4 +478,8 @@ img.videoOverlay {
 
 .imageButtons {
   margin-bottom: 10px;
+}
+
+.focusTextSaveButton {
+  margin-right: 10px;
 }
