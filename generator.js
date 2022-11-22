@@ -82,6 +82,14 @@ jQuery(document).ready(function ($) {
       var colorDiv = $(`.colorValue[param=1]`);
       var qrngColorValue = fetcheddata_1[index];
 
+      if (isSoundModulation) {
+        if (fetcheddata_1[index] > 127) {
+          player.unMute();
+        } else {
+          player.mute();
+        }
+      }
+
       colorDiv.each((i, cd) => {
         var newValue = qrngColorValue;
         if ($(cd).attr('color') == 'false') {
@@ -504,13 +512,13 @@ jQuery(document).ready(function ($) {
             QRNG
   ***********************/
 
-  var $tab4 = $("#tabs-5");
+  var $tab5 = $("#tabs-5");
 
   var $qrngCaption = $(`<div class="qrngCaption tabHeader" >~~ Choose QRNG settings ~~</div>`);
-  $qrngCaption.appendTo($tab4);
+  $qrngCaption.appendTo($tab5);
 
   var $qrngContent = $(`<div class="qrngContent" ></div>`);
-  $qrngContent.appendTo($tab4);
+  $qrngContent.appendTo($tab5);
 
   var $qrngIntervalCheckbox = $(`<input class="qrngIntervalCheckbox" type="checkbox" />`);
   $qrngIntervalCheckbox.appendTo($qrngContent);
@@ -632,6 +640,33 @@ jQuery(document).ready(function ($) {
 
     $(`.colorValue[index='${index}']`).attr('param', newParam);
     $(this).attr('param', newParam).html(buttonValues[newParam]);
+  });
+
+
+  /**********************
+          SOUND
+  ***********************/
+
+  var isSoundModulation = 0;
+
+  var $tab6 = $("#tabs-6");
+
+  var $soundCaption = $(`<div class="soundCaption tabHeader" >~~ Sound Settings ~~</div>`);
+  $soundCaption.appendTo($tab6);
+
+  var $soundContent = $(`<div class="soundContent" ></div>`);
+  $soundContent.appendTo($tab6);
+
+  var $speakerOutput = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/speaker.png" class="speakerOutput soundButton" />`);
+  $speakerOutput.appendTo($soundContent);
+
+  var $usbOutput = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/usb.png" class="usbOutput soundButton" />`);
+  $usbOutput.appendTo($soundContent);
+
+  $(document).on('click', '.usbOutput', function () {
+    isSoundModulation = (isSoundModulation + 1) % 2;
+    $(this).css('opacity', (isSoundModulation + 1) / 2);
+    if (!isSoundModulation) player.unMute();
   });
 
   /**********************

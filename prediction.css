@@ -507,3 +507,11 @@ img.videoOverlay {
 .qrngInterval {
   width: 100px;
 }
+
+.soundButton {
+  width: 40px;
+  cursor: pointer;
+  margin-left: 10px;
+  opacity: 0.5;
+  display: inline-block;
+}
