@@ -483,3 +483,27 @@ img.videoOverlay {
 .focusTextSaveButton {
   margin-right: 10px;
 }
+
+.qrngLoadCircle, .qrngInterval {
+	width: 40px;
+  display: inline-block;
+}
+
+.qrngIntervalText {
+  line-height: 40px;
+  margin-right: 10px;
+  vertical-align: top;
+}
+
+.qrngIntervalText.disabled {
+  opacity: 0.5;
+}
+
+.qrngIntervalCheckbox, .qrngInterval {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.qrngInterval {
+  width: 100px;
+}

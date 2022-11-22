@@ -4,9 +4,12 @@ jQuery(document).ready(function ($) {
   let fetcheddata_1 = [];
   let isfetched = 0;
 
-  var qrngDisplayInterval = 790;
+  var qrngOrigDisplayInterval = 790;
   var qrngLength = 16;
-  var qrngFetchInterval = qrngDisplayInterval * qrngLength;
+  var qrngFetchInterval = qrngOrigDisplayInterval * qrngLength;
+
+  var currentDisplayInterval = qrngOrigDisplayInterval;
+  var upcomingDisplayInterval = qrngOrigDisplayInterval;
 
   function getOneHex(index) {
     jQuery.get(`https://qrng.anu.edu.au/API/jsonI.php?length=${qrngLength}&type=uint8`, data => {
@@ -17,6 +20,10 @@ jQuery(document).ready(function ($) {
 
   function timedCount() {
     getOneHex();
+    toggleQrngLoadCircle(false);
+    $('.qrngIntervalText').removeClass('disabled')
+    qrngFetchInterval = upcomingDisplayInterval * qrngLength;
+    currentDisplayInterval = upcomingDisplayInterval;
     t = setTimeout(function () { timedCount(); }, qrngFetchInterval);
   };
 
@@ -107,7 +114,8 @@ jQuery(document).ready(function ($) {
 
       currentNumber = printHex(dataMonopole, 'afterbegin', index);
     }
-    t = setTimeout(function () { timedPrint(index); }, qrngDisplayInterval);
+
+    t = setTimeout(function () { timedPrint(index); }, currentDisplayInterval);
   };
 
   let $quadrupolePanel = $('.quadrupolePanel');
@@ -376,6 +384,7 @@ jQuery(document).ready(function ($) {
 
       });
 
+      $this[0].value = '';
       return files[0].name.split('.')[0];
     }
   }
@@ -392,15 +401,17 @@ jQuery(document).ready(function ($) {
     var reader = new FileReader();
     reader.onload = function (e) {
       json = e.target.result;
-      jsonObject = JSON.parse(json)
-      $('.focusText').html(jsonObject['Focus Text'])
-      $('.therapistImage').css('background-image', jsonObject.people.find(p => p.role == 'therapist').data)
-      $('.person1Image').css('background-image', jsonObject.people.find(p => p.role == 'person1').data)
-      $('.person2Image').css('background-image', jsonObject.people.find(p => p.role == 'person2').data)
-      $('.person3Image').css('background-image', jsonObject.people.find(p => p.role == 'person3').data)
-      $('.person4Image').css('background-image', jsonObject.people.find(p => p.role == 'person4').data)
-      $('.imageInnerDiv').css('background-image', jsonObject.imageData)
-      $(".captionText").html(jsonObject.ImageCaption)
+      jsonObject = JSON.parse(json);
+      $('.focusText').html(jsonObject['Focus Text']);
+      $('.therapistImage').css('background-image', jsonObject.people.find(p => p.role == 'therapist').data);
+      $('.person1Image').css('background-image', jsonObject.people.find(p => p.role == 'person1').data);
+      $('.person2Image').css('background-image', jsonObject.people.find(p => p.role == 'person2').data);
+      $('.person3Image').css('background-image', jsonObject.people.find(p => p.role == 'person3').data);
+      $('.person4Image').css('background-image', jsonObject.people.find(p => p.role == 'person4').data);
+      $('.imageInnerDiv').css('background-image', jsonObject.imageData);
+      if (jsonObject.ImageCaption) $(".captionText").html(jsonObject.ImageCaption);
+      if (jsonObject.qrngInterval) changeQrngInterval(jsonObject.qrngInterval)
+
 
       player.loadVideoById(jsonObject.videoId);
       startFocusVideo();
@@ -501,6 +512,41 @@ jQuery(document).ready(function ($) {
   var $qrngContent = $(`<div class="qrngContent" ></div>`);
   $qrngContent.appendTo($tab4);
 
+  var $qrngIntervalCheckbox = $(`<input class="qrngIntervalCheckbox" type="checkbox" />`);
+  $qrngIntervalCheckbox.appendTo($qrngContent);
+
+  var $qrngInterval = $(`<input class="qrngInterval" type="range" min="0.1" max="1" step="0.1" value="0.8" />`);
+  $qrngInterval.appendTo($qrngContent);
+
+  var $qrngIntervalText = $(`<label class="qrngIntervalText">${qrngOrigDisplayInterval} ms</label>`);
+  $qrngIntervalText.appendTo($qrngContent);
+
+  var $qrngLoadCircle = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/load_circle.gif" class="qrngLoadCircle" />`);
+  $qrngLoadCircle.appendTo($qrngContent);
+
+  $(document).on('change', '.qrngIntervalCheckbox', function () {
+    if (this.checked) {
+      changeQrngInterval($('.qrngInterval').val() * 1000);
+    } else {
+      changeQrngInterval(qrngOrigDisplayInterval);
+    }
+  });
+
+  $(document).on('change', '.qrngInterval', function () {
+    $('.qrngIntervalCheckbox').prop('checked', true);
+    changeQrngInterval($(this).val() * 1000);
+  });
+
+  function changeQrngInterval(newInterval) {
+    upcomingDisplayInterval = newInterval;
+    toggleQrngLoadCircle(true);
+    $('.qrngIntervalText').html(`${newInterval} ms`).addClass('disabled')
+  }
+
+  function toggleQrngLoadCircle(isLoading) {
+    $('.qrngLoadCircle').toggle(isLoading);
+  }
+
   var $colorTable = $(`<div class="colorTable" ></div>`);
   $colorTable.appendTo($qrngContent);
 
@@ -571,7 +617,7 @@ jQuery(document).ready(function ($) {
       var $colorParam = $(`<div class="colorParam" index="${matrixIndex}" param="${paramValue}">${buttonValue}</div>`);
       $colorParam.appendTo($colorCell);
 
-      var $colorValue = $(`<input class="colorValue" index="${matrixIndex}" type="number" param="${paramValue}" min="${min}" max="${max}" step="${step}" color="${isColor}" value="${colorValue}" ></div>`);
+      var $colorValue = $(`<input class="colorValue" index="${matrixIndex}" type="number" param="${paramValue}" min="${min}" max="${max}" step="${step}" color="${isColor}" value="${colorValue}" />`);
       $colorValue.appendTo($colorCell);
 
     })
@@ -640,19 +686,20 @@ jQuery(document).ready(function ($) {
       emotionsText += `${e.name}: ${e.value}\n`;
     })
 
-    var sessionObject = { 
-      'Session time': sessionTime, 
+    var sessionObject = {
+      'Session time': sessionTime,
       'Focus Text': focusText,
       'videoId': videoID,
       'imageData': $('.imageInnerDiv').css('background-image'),
       ImageCaption,
       'people': [
-        { role: 'therapist', data: $('.therapistImage').css('background-image')},
-        { role: 'person1', data: $('.person1Image').css('background-image')},
-        { role: 'person2', data: $('.person2Image').css('background-image')},
-        { role: 'person3', data: $('.person3Image').css('background-image')},
-        { role: 'person4', data: $('.person4Image').css('background-image')}
-      ]
+        { role: 'therapist', data: $('.therapistImage').css('background-image') },
+        { role: 'person1', data: $('.person1Image').css('background-image') },
+        { role: 'person2', data: $('.person2Image').css('background-image') },
+        { role: 'person3', data: $('.person3Image').css('background-image') },
+        { role: 'person4', data: $('.person4Image').css('background-image') }
+      ],
+      qrngInterval: currentDisplayInterval
     };
 
     fileName = `${year}_${month}_${day}_${focusText}`;
