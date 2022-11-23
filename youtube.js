@@ -7,11 +7,12 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 // 3. This function creates an <iframe> (and YouTube player)
 //    after the API code downloads.
-var player1, player2, player3, player4
-var players = [player1, player2, player3, player4]
-var startInverval
+var player1, player2, player3, player4, playerFv;
+var players = [player1, player2, player3, player4, playerFv];
+var startInverval;
+var playersReady = false;
 
-var holders = ['northHolder', 'westHolder', 'southHolder', 'eastHolder'];
+var holders = ['northHolder', 'westHolder', 'southHolder', 'eastHolder', 'videoHolder'];
 
 function onYouTubeIframeAPIReady() {
   startInverval = setInterval(startPlayer, 4000);
@@ -42,6 +43,7 @@ function startPlayer() {
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
   console.log('playerready')
+  playersReady = true; 
   //event.target.playVideo();
 }
 

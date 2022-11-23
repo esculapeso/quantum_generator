@@ -602,3 +602,13 @@ img.videoOverlay {
   left: -44%;
   transform: scale(-1, 1);
 }
+
+.piramidToggle {
+  margin-bottom: 10px;
+}
+
+.piramidToggleText {
+  display: inline-block;
+  margin-left: 5px;
+  vertical-align: text-bottom;
+}

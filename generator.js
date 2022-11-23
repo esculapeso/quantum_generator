@@ -189,10 +189,8 @@ jQuery(document).ready(function ($) {
   var $captionText = $(`<div class="captionText generatorText" >${initCaptionText}</div>`);
   $captionText.appendTo(header);
 
-  // var $imageInnerDiv = $('<div class="imageInnerDiv" ></div>');
-  // $imageInnerDiv.appendTo($imageDiv);
-
-
+  var $imageInnerDiv = $('<div class="imageInnerDiv fullView" ></div>');
+  $imageInnerDiv.appendTo($imageDiv);
 
   /**********************
           VIDEO 
@@ -200,13 +198,13 @@ jQuery(document).ready(function ($) {
 
   var videos = videosForFocus;
 
-  var $videoContainerDiv = $('<div class="video-container hidden-container"></div>');
+  var $videoContainerDiv = $('<div class="video-container hidden-container fullView"></div>');
   $videoContainerDiv.appendTo($imageDiv);
 
-  // var $videoDiv = $('<div id="videoHolder" ></div>');
-  // $videoDiv.appendTo($videoContainerDiv);
+  var $videoDiv = $('<div id="videoHolder" ></div>');
+  $videoDiv.appendTo($videoContainerDiv);
 
-  var $pyramid = $('<div class="pyramid" ></div>');
+  var $pyramid = $('<div class="pyramid pyramidView" ></div>');
   $pyramid.appendTo($imageDiv);
 
   var sides = ['north', 'west', 'south', 'east'];
@@ -240,6 +238,40 @@ jQuery(document).ready(function ($) {
   var $videoChooserContent = $('<div class="videoChooserContent chooserContent" ></div>');
   $videoChooserContent.appendTo($tab1);
 
+  /* PYRAMID TOGGLE */
+
+  togglePyramidView(false);
+
+  var $piramidToggle = $('<div class="piramidToggle" ></div>');
+  $piramidToggle.appendTo($videoChooserContent);
+
+  var $piramidToggleCB = $('<input class="piramidToggleCB" type="checkbox" />');
+  $piramidToggleCB.appendTo($piramidToggle);
+
+  $(document).on('change', '.piramidToggleCB', function () {
+    togglePyramidView($(this).is(':checked'));
+  });
+
+  var $piramidToggleText = $('<div class="piramidToggleText" >Pyramid View</div>');
+  $piramidToggleText.appendTo($piramidToggle);
+
+  $(document).on('click', '.piramidToggleText', function () {
+    $('.piramidToggleCB').click();
+  });
+
+  function togglePyramidView(isPyramid) {
+    if (isPyramid) {
+      $('.fullView').hide();
+      $('.pyramidView').show();
+    } else {
+      $('.fullView').show();
+      $('.pyramidView').hide();
+    }
+    startFocusVideo();
+  }
+
+  /* THUMBS */
+
   var $videoThumbsDiv = $('<div id="videoThumbs" ></div>');
   $videoThumbsDiv.appendTo($videoChooserContent);
 
@@ -270,13 +302,11 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('click', '.videoThumb', function () {
-    $(players).each((i, p) => p.loadVideoById($(this).attr('videoid')));
-    startFocusVideo();
+    changeVideo($(this).attr('videoid'))
   });
 
   $(document).on('change', '.videoSelect', function () {
-    $(players).each((i, p) => p.loadVideoById($(this).val()));
-    startFocusVideo();
+    changeVideo($(this).val());
   });
 
 
@@ -307,21 +337,33 @@ jQuery(document).ready(function ($) {
   function stopFocusVideo() {
     $('.youtubePauseButtonImage').hide();
     $('.youtubePlayButtonImage').show();
-    $(players).each((i, p) => p.stopVideo())
-    $('.videoBackground').addClass('hidden-container');
+    $(players).each((i, p) => p.stopVideo());
+    $('.videoBackground, .video-container').addClass('hidden-container');
   }
 
   function pauseFocusVideo() {
     $('.youtubePauseButtonImage').hide();
     $('.youtubePlayButtonImage').show();
-    $(players).each((i, p) => p.pauseVideo())
+    $(players).each((i, p) => p.pauseVideo());
   }
 
   function startFocusVideo() {
+    if (!playersReady) return;
     $('.youtubePlayButtonImage').hide();
     $('.youtubePauseButtonImage').show();
-    $(players).each((i, p) => p.setVolume($('.videoVolume').val()).playVideo().setPlaybackQuality("small"))
-    $('.videoBackground').removeClass('hidden-container');
+    $(players).each((i, p) => p.stopVideo());
+    $(getActivePlayers()).each((i, p) => p.setVolume($('.videoVolume').val()).playVideo().setPlaybackQuality("small"))
+    $('.videoBackground, .video-container').removeClass('hidden-container');
+  }
+
+  function changeVideo(newVideoId) {
+    if (!playersReady) return;
+    $(players).each((i, p) => p.loadVideoById(newVideoId).stopVideo());
+    startFocusVideo();
+  }
+
+  function getActivePlayers() {
+    return ($('.piramidToggleCB').is(':checked')) ? players.slice(0, 4) : players.slice(4, 5);
   }
 
   var $videoVolumeInput = $('<input type="range" value="10" class="videoVolume" />');
@@ -423,8 +465,9 @@ jQuery(document).ready(function ($) {
 
       });
 
+      var retVal = files[0].name.split('.')[0]
       $this[0].value = '';
-      return files[0].name.split('.')[0];
+      return retVal;
     }
   }
 
@@ -448,13 +491,13 @@ jQuery(document).ready(function ($) {
       $('.person3Image').css('background-image', jsonObject.people.find(p => p.role == 'person3').data);
       $('.person4Image').css('background-image', jsonObject.people.find(p => p.role == 'person4').data);
       $('.imageInnerDiv').css('background-image', jsonObject.imageData);
-      if (jsonObject.ImageCaption) $(".captionText").html(jsonObject.ImageCaption);
-      if (jsonObject.qrngInterval) changeQrngInterval(jsonObject.qrngInterval)
-
-
-      $(players).each((i, p) => p.loadVideoById(jsonObject.videoId))
-
-      startFocusVideo();
+      if (typeof jsonObject.ImageCaption !== 'undefined') $(".captionText").html(jsonObject.ImageCaption);
+      if (typeof jsonObject.qrngInterval !== 'undefined') changeQrngInterval(jsonObject.qrngInterval);
+      if (typeof jsonObject.isPyramid !== 'undefined') {
+        $('.piramidToggleCB').prop('checked', jsonObject.isPyramid);
+        togglePyramidView(jsonObject.isPyramid);
+      } 
+      if (typeof jsonObject.videoId !== 'undefined') changeVideo(jsonObject.videoId) 
     }
     reader.readAsText(ff);
   }
@@ -766,7 +809,8 @@ jQuery(document).ready(function ($) {
         { role: 'person3', data: $('.person3Image').css('background-image') },
         { role: 'person4', data: $('.person4Image').css('background-image') }
       ],
-      qrngInterval: currentDisplayInterval
+      qrngInterval: currentDisplayInterval,
+      isPyramid: $('.piramidToggleCB').is(':checked')
     };
 
     fileName = `${year}_${month}_${day}_${focusText}`;
