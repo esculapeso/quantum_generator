@@ -55,10 +55,6 @@ function onPlayerStateChange(event) {
   if (event.data === YT.PlayerState.ENDED) {
     player.playVideo();
   }
-  if (event.data === YT.PlayerState.CUED) {
-    $('.youtubePauseButtonImage').hide();
-    $('.youtubePlayButtonImage').show();
-  }
 }
 function stopVideo() {
   player.stopVideo();
