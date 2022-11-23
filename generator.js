@@ -5,11 +5,12 @@ jQuery(document).ready(function ($) {
   let isfetched = 0;
 
   var qrngOrigDisplayInterval = 790;
-  var qrngLength = 16;
-  var qrngFetchInterval = qrngOrigDisplayInterval * qrngLength;
-
+  var qrngLength;
+  var qrngFetchInterval;
   var currentDisplayInterval = qrngOrigDisplayInterval;
   var upcomingDisplayInterval = qrngOrigDisplayInterval;
+
+  setFetchIntervalAndLength(currentDisplayInterval)
 
   function getOneHex(index) {
     jQuery.get(`https://qrng.anu.edu.au/API/jsonI.php?length=${qrngLength}&type=uint8`, data => {
@@ -18,12 +19,18 @@ jQuery(document).ready(function ($) {
     });
   };
 
+  function setFetchIntervalAndLength(dispInterval) {
+    qrngLength = Math.round(10000 / dispInterval);
+    qrngFetchInterval = qrngLength * dispInterval;
+  }
+
   function timedCount() {
-    getOneHex();
     toggleQrngLoadCircle(false);
     $('.qrngIntervalText').removeClass('disabled')
-    qrngFetchInterval = upcomingDisplayInterval * qrngLength;
     currentDisplayInterval = upcomingDisplayInterval;
+    setFetchIntervalAndLength(currentDisplayInterval)
+    
+    getOneHex();
     t = setTimeout(function () { timedCount(); }, qrngFetchInterval);
   };
 
