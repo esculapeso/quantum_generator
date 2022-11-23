@@ -29,7 +29,7 @@ jQuery(document).ready(function ($) {
     $('.qrngIntervalText').removeClass('disabled')
     currentDisplayInterval = upcomingDisplayInterval;
     setFetchIntervalAndLength(currentDisplayInterval)
-    
+
     getOneHex();
     t = setTimeout(function () { timedCount(); }, qrngFetchInterval);
   };
@@ -91,9 +91,9 @@ jQuery(document).ready(function ($) {
 
       if (isSoundModulation) {
         if (fetcheddata_1[index] > 127) {
-          player.unMute();
+          $(players).each((i, p) => p.unMute());
         } else {
-          player.mute();
+          $(players).each((i, p) => p.mute());
         }
       }
 
@@ -189,8 +189,8 @@ jQuery(document).ready(function ($) {
   var $captionText = $(`<div class="captionText generatorText" >${initCaptionText}</div>`);
   $captionText.appendTo(header);
 
-  var $imageInnerDiv = $('<div class="imageInnerDiv" ></div>');
-  $imageInnerDiv.appendTo($imageDiv);
+  // var $imageInnerDiv = $('<div class="imageInnerDiv" ></div>');
+  // $imageInnerDiv.appendTo($imageDiv);
 
 
 
@@ -200,11 +200,36 @@ jQuery(document).ready(function ($) {
 
   var videos = videosForFocus;
 
-  var $videoContainerDiv = $('<div class="video-container hidden-container" ></div>');
+  var $videoContainerDiv = $('<div class="video-container hidden-container"></div>');
   $videoContainerDiv.appendTo($imageDiv);
 
-  var $videoDiv = $('<div id="videoHolder" ></div>');
-  $videoDiv.appendTo($videoContainerDiv);
+  // var $videoDiv = $('<div id="videoHolder" ></div>');
+  // $videoDiv.appendTo($videoContainerDiv);
+
+  var $pyramid = $('<div class="pyramid" ></div>');
+  $pyramid.appendTo($imageDiv);
+
+  var sides = ['north', 'west', 'south', 'east'];
+
+  $(sides).each((i, s) => {
+    var $side = $(`<div class="side ${s}" ></div>`);
+    $side.appendTo($pyramid);
+
+    var $inside = $(`<div class="inside" ></div>`);
+    $inside.appendTo($side);
+
+    var $imageInnerDiv = $('<div class="imageInnerDiv" ></div>');
+    $imageInnerDiv.appendTo($inside);
+
+    var $videoBackground = $(`<div class="videoBackground hidden-container" ></div>`);
+    $videoBackground.appendTo($inside);
+
+    var $videoForeground = $(`<div class="videoForeground" ></div>`);
+    $videoForeground.appendTo($videoBackground);
+
+    var $videoHolder = $(`<div id="${s}Holder" ></div>`);
+    $videoHolder.appendTo($videoForeground);
+  })
 
   var $tab1 = $("#tabs-1");
 
@@ -245,12 +270,12 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('click', '.videoThumb', function () {
-    player.loadVideoById($(this).attr('videoid'));
+    $(players).each((i, p) => p.loadVideoById($(this).attr('videoid')));
     startFocusVideo();
   });
 
   $(document).on('change', '.videoSelect', function () {
-    player.loadVideoById($(this).val());
+    $(players).each((i, p) => p.loadVideoById($(this).val()));
     startFocusVideo();
   });
 
@@ -282,28 +307,27 @@ jQuery(document).ready(function ($) {
   function stopFocusVideo() {
     $('.youtubePauseButtonImage').hide();
     $('.youtubePlayButtonImage').show();
-    player.stopVideo();
-    $('.video-container').addClass('hidden-container');
+    $(players).each((i, p) => p.stopVideo())
+    $('.videoBackground').addClass('hidden-container');
   }
 
   function pauseFocusVideo() {
     $('.youtubePauseButtonImage').hide();
     $('.youtubePlayButtonImage').show();
-    player.pauseVideo();
+    $(players).each((i, p) => p.pauseVideo())
   }
 
   function startFocusVideo() {
     $('.youtubePlayButtonImage').hide();
     $('.youtubePauseButtonImage').show();
-    player.setVolume($('.videoVolume').val());
-    player.playVideo();
-    $('.video-container').removeClass('hidden-container');
+    $(players).each((i, p) => p.setVolume($('.videoVolume').val()).playVideo().setPlaybackQuality("small"))
+    $('.videoBackground').removeClass('hidden-container');
   }
 
   var $videoVolumeInput = $('<input type="range" value="10" class="videoVolume" />');
   $videoVolumeInput.appendTo($videoControls);
   $(document).on('change', '.videoVolume', function () {
-    player.setVolume($(this).val());
+    $(players).each((i, p) => p.setVolume($(this).val()))
   });
 
 
@@ -428,7 +452,8 @@ jQuery(document).ready(function ($) {
       if (jsonObject.qrngInterval) changeQrngInterval(jsonObject.qrngInterval)
 
 
-      player.loadVideoById(jsonObject.videoId);
+      $(players).each((i, p) => p.loadVideoById(jsonObject.videoId))
+
       startFocusVideo();
     }
     reader.readAsText(ff);
@@ -673,7 +698,7 @@ jQuery(document).ready(function ($) {
   $(document).on('click', '.usbOutput', function () {
     isSoundModulation = (isSoundModulation + 1) % 2;
     $(this).css('opacity', (isSoundModulation + 1) / 2);
-    if (!isSoundModulation) player.unMute();
+    if (!isSoundModulation) $(players).each((i, p) => p.unMute());
   });
 
   /**********************
@@ -719,7 +744,7 @@ jQuery(document).ready(function ($) {
     var dateNow = new Date(Date.now());
     var sessionTime = dateNow.toUTCString();
     var focusText = $(".focusText").html();
-    var videoID = player.getVideoData()['video_id'];
+    var videoID = players[0].getVideoData()['video_id'];
     var videoName = getVideobyVideoId(videoID)[0].name;
     var ImageCaption = $(".captionText").html().replace('\n', ' ');
 
