@@ -290,7 +290,7 @@ End of comment */
   background: #c7c795;
   text-align: center;
   padding: 10px 30px;
-  width: 320px;
+  width: 690px;
 }
 
 .quantityPanel .title {
@@ -302,13 +302,37 @@ End of comment */
 }
 
 .emotion {
-  margin: 10px 0;
+  margin: 3px 0 9px 0;
+}
+
+.emotionHeaders {
+  margin-top: 10px;
+}
+
+.emotionHeaders .name {
+  width: 100px;
+  text-align: right;
+}
+
+.emotionHeaders .intensity {
+  width: 162px;
+}
+
+.emotionHeaders div {
+  display: inline-block;
+  color: #323200;
+  font-weight: bold;
+}
+
+.emotionHeaders .color, .colorQuantity, .balanceQuantity {
+  width: 44px;
+  margin-left: 10px;
 }
 
 .emotionName,
 .emotionName a {
   display: inline-block;
-  width: 70px;
+  width: 100px;
   text-align: right;
   margin-right: 10px;
   color: #1a1a00 !important;

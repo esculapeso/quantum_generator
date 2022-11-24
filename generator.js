@@ -292,7 +292,7 @@ jQuery(document).ready(function ($) {
     var $videoOption = $(`<option value="${v.id}">${v.name}</option>`);
     $videoOption.appendTo($videoSelect);
   });
-  
+
   var $customVideoText = $('<div id="customVideoText" >Custom Video Id</div>');
   $customVideoText.appendTo($videoChooserContent);
 
@@ -506,8 +506,8 @@ jQuery(document).ready(function ($) {
       if (typeof jsonObject.isPyramid !== 'undefined') {
         $('.piramidToggleCB').prop('checked', jsonObject.isPyramid);
         togglePyramidView(jsonObject.isPyramid);
-      } 
-      if (typeof jsonObject.videoId !== 'undefined') changeVideo(jsonObject.videoId) 
+      }
+      if (typeof jsonObject.videoId !== 'undefined') changeVideo(jsonObject.videoId)
     }
     reader.readAsText(ff);
   }
@@ -841,8 +841,6 @@ jQuery(document).ready(function ($) {
     document.body.removeChild(element);
   }
 
-  // Start file download.
-
   function getVideobyVideoId(videoId) {
     return videosForFocus.filter(v => v.id == videoId)
   }
@@ -876,10 +874,45 @@ jQuery(document).ready(function ($) {
 
 
     function instantiateStar(starSelector, list) {
-      $energeticQuantity = $(starSelector)
-      var $energeticSections = $('<div class="Sections" ></div>');
-      $energeticSections.appendTo($energeticQuantity);
 
+      /*** Title ***/
+      
+      var $energeticSections = $('<div class="Sections" ></div>');
+      $energeticSections.appendTo($(starSelector));
+
+      /*** Headers Row ***/
+      
+      var $emotionHeaders = $('<div class="emotionHeaders"></div>');
+      $emotionHeaders.appendTo($energeticSections);
+
+      var $intensityHeader = $('<div class="name header">Name</div>');
+      $intensityHeader.appendTo($emotionHeaders);
+
+      var $intensityHeader = $('<div class="intensity header">Intensity</div>');
+      $intensityHeader.appendTo($emotionHeaders);
+
+      var $intensityHeader = $('<div class="color header">R</div>');
+      $intensityHeader.appendTo($emotionHeaders);
+
+      var $intensityHeader = $('<div class="color header">G</div>');
+      $intensityHeader.appendTo($emotionHeaders);
+
+      var $intensityHeader = $('<div class="color header">B</div>');
+      $intensityHeader.appendTo($emotionHeaders);
+
+      if (!isMobile) {
+        var $intensityHeader = $('<div class="color header">Rw</div>');
+        $intensityHeader.appendTo($emotionHeaders);
+
+        var $intensityHeader = $('<div class="color header">Gw</div>');
+        $intensityHeader.appendTo($emotionHeaders);
+
+        var $intensityHeader = $('<div class="color header">Bw</div>');
+        $intensityHeader.appendTo($emotionHeaders);
+      }
+
+      /*** Quantities Rows ***/
+      
       $(list).each((i, e) => {
         var $emotion = $('<div class="emotion"></div>');
         $emotion.appendTo($energeticSections);
@@ -897,7 +930,39 @@ jQuery(document).ready(function ($) {
         var $emotionQuantity = $(`<input class="emotionQuantity" type="number" emotion="${e.name}" value="${e.value}" min="0" max="10" />`);
         $emotionQuantity.appendTo($emotion);
 
+        colorKeys = ['r', 'g', 'b'];
+
+        $(colorKeys).each((i, c) => {
+          addColorValueInput(e.name, c, e[c], $emotion);
+        })
+
+        if (!isMobile) {
+          $(colorKeys).each((i, c) => {
+            addBalanceValueInput(e.name, c, e[c], e.value, $emotion);
+          })
+        }
+
       })
+    }
+
+    /*** Quantities Helper Function ***/
+
+    function addColorValueInput(name, colorKey, colorVal, container) {
+      var $colorQuantity = $(`<input class="${colorKey} colorQuantity" type="number" emotion="${name}" value="${colorVal}" min="${getMinColorValue(colorVal)}" max="${getMaxColorValue(colorVal)}" />`);
+      $colorQuantity.appendTo(container);
+    }
+
+    function addBalanceValueInput(name, colorKey, colorVal, intensity, container) {
+      var $balanceQuantity = $(`<input class="${colorKey} balanceQuantity" type="number" emotion="${name}" value="${intensity * 10}" min="0" max="100" />`);
+      $balanceQuantity.appendTo(container);
+    }
+
+    function getMaxColorValue(colorValue) {
+      return (colorValue + 33 > 255) ? 255 : colorValue + 33;
+    }
+
+    function getMinColorValue(colorValue) {
+      return (colorValue - 33 < 0) ? 0 : colorValue - 33;
     }
 
     function onQuantityClick(list, contanerSelector, _this, canvasId) {
