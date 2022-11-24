@@ -200,19 +200,19 @@ End of comment */
 
 .generatorText {
   position: absolute;
-  width: 320px;
+  width: 100%;
   text-align: center;
-  font-size: 24px;
+  font-size: 4vh;
 }
 
 .focusText {
-  top: 116px;
-  left: 251px;
+  top: 13%;
+  color: red;
 }
 
 .captionText {
-  top: 646px;
-  left: 251px;
+  bottom: 13%;
+  color: blue;
 }
 
 .uploadImageHolder {
@@ -415,11 +415,17 @@ End of comment */
 
 .personImage {
   position: absolute;
-  width: 106px;
-  height: 106px;
+  width: 12.6vh;
+  height: 12.6vh;
   background-size: 100%;
   cursor: pointer;
 }
+
+.personImage.inner {
+  width: 20%;
+  height: 20%;
+}
+
 
 .personImageThumb {
   width: 40px;
@@ -434,43 +440,43 @@ End of comment */
 }
 
 .therapistImage.top {
-  top: 0%;
-  left: 48.9%;
+  top: 0.5%;
+  left: 68.6%;
 }
 
 .therapistImage.left {
-  top: 18.4%;
-  left: 0.2%;
+  top: 18.8%;
+  left: 0.4%;
 }
 
 .therapistImage.bottom {
-  top: 86.5%;
-  left: 13.2%;
+  bottom: 0.5%;
+  left: 18.7%;
 }
 
 .therapistImage.right {
-  top: 68.3%;
-  left: 61.7%;
+  top: 68.7%;
+  left: 86.9%;
 }
 
 .person1Image {
-  top: 18%;
-  left: 13.2%;
+  top: 0.4%;
+  left: 0.4%;
 }
 
 .person2Image {
-  top: 68.2%;
-  left: 13.2%;
+  bottom: 0.2%;
+  left: 0.4%;
 }
 
 .person3Image {
-  top: 68.2%;
-  left: 48.8%;
+  bottom: 0.2%;
+  right: 0.3%;
 }
 
 .person4Image {
-  top: 18%;
-  left: 48.9%;
+  top: 0.4%;
+  right: 0.3%;
 }
 
 .colorRow,
@@ -661,6 +667,15 @@ img.videoOverlay {
   .pyramid .side {
     perspective: 5.4vw;
   }
+
+  .videoChooserSection {
+    margin: auto;
+    position: static;
+  }
+
+  .generatorText {
+    font-size: 4vw;
+  }
 }
 
 @media screen and (orientation:landscape) {
@@ -671,5 +686,14 @@ img.videoOverlay {
 
   .pyramid .side {
     perspective: 5.4vh;
+  }
+
+  .videoChooserSection {
+    margin: unset;
+    position: absolute;
+  }
+
+  .generatorText {
+    font-size: 4vh;
   }
 }

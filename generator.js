@@ -107,7 +107,7 @@ jQuery(document).ready(function ($) {
 
 
       // parametry: color, jasność, przezroczystość, obwiednia, promień, kąt
-      gradient = `conic-gradient(from 0deg at 50% 1810px, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
+      gradient = `conic-gradient(from 0deg at 50% 1880px, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       //conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       $('.page-content, .panel-content').css('background', gradient);
 
@@ -166,6 +166,13 @@ jQuery(document).ready(function ($) {
     var curValue = $(this).attr('value');
     $(this).attr('altvalue', curValue).attr('value', newValue)
 
+  });
+
+  var $centerGenerator = $('<input class="centerGenerator button" type="button" value="↕"  />');
+  $centerGenerator.appendTo($videoChooserSection);
+
+  $(document).on('click', '.centerGenerator', function () {
+    $(window).scrollTop( $(".quadrupolePanel").offset().top );
   });
 
   /**********************
@@ -255,11 +262,13 @@ jQuery(document).ready(function ($) {
       $('.pyramidView').show();
       $('.quadGenerator').css('width', '100%').css('height', '100%')
       $('.quadrupoleImage').css('background-size', '0')
+      $('.therapistImage, .generatorText').hide()
     } else {
       $('.fullView').show();
       $('.pyramidView').hide();
       $('.quadGenerator').css('width', '63%').css('height', '63%')
       $('.quadrupoleImage').css('background-size', '100%')
+      $('.therapistImage, .generatorText').show()
     }
     setDataFontSize();
     startFocusVideo();
@@ -564,17 +573,17 @@ jQuery(document).ready(function ($) {
   var $thrapistImage = $(`<div role="${people[0].role}" class="personImage therapistImage left" ></div>`);
   $thrapistImage.appendTo(header);
 
-  var $person1Image = $(`<div role="${people[1].role}" class="personImage person1Image" ></div>`);
-  $person1Image.appendTo(header);
+  var $person1Image = $(`<div role="${people[1].role}" class="personImage inner person1Image" ></div>`);
+  $person1Image.appendTo($quadGenerator);
 
-  var $person1Image = $(`<div role="${people[2].role}" class="personImage person2Image" ></div>`);
-  $person1Image.appendTo(header);
+  var $person1Image = $(`<div role="${people[2].role}" class="personImage inner person2Image" ></div>`);
+  $person1Image.appendTo($quadGenerator);
 
-  var $person1Image = $(`<div role="${people[3].role}" class="personImage person3Image" ></div>`);
-  $person1Image.appendTo(header);
+  var $person1Image = $(`<div role="${people[3].role}" class="personImage inner person3Image" ></div>`);
+  $person1Image.appendTo($quadGenerator);
 
-  var $person1Image = $(`<div role="${people[4].role}" class="personImage person4Image" ></div>`);
-  $person1Image.appendTo(header);
+  var $person1Image = $(`<div role="${people[4].role}" class="personImage inner person4Image" ></div>`);
+  $person1Image.appendTo($quadGenerator);
 
   $(document).on('click', '.personUploadButton, .personImage', function () {
     var role = $(this).attr('role');
@@ -1025,10 +1034,10 @@ jQuery(document).ready(function ($) {
     var containerSize = $('.quadrupole').width();
     $('.quadrupole').css('font-size', `${containerSize/40}px`);
 
-    var position = (typeof isMobile !== 'undefined' && isMobile) ? 'static' : 'absolute';
-    $('.videoChooserSection').css('position', position);
-
-    if (typeof isMobile !== 'undefined' && isMobile) $('.videoChooserSection').css('margin', 'auto');
+    if (typeof isMobile !== 'undefined' && isMobile) {
+      $('.videoChooserSection').css('margin', 'auto');
+      $('.videoChooserSection').css('position', 'static');
+    }
     
   }
 
