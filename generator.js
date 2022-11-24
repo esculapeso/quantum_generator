@@ -292,6 +292,16 @@ jQuery(document).ready(function ($) {
     var $videoOption = $(`<option value="${v.id}">${v.name}</option>`);
     $videoOption.appendTo($videoSelect);
   });
+  
+  var $customVideoText = $('<div id="customVideoText" >Custom Video Id</div>');
+  $customVideoText.appendTo($videoChooserContent);
+
+  var $customVideoInput = $('<input class="customVideoInput" type="text" />');
+  $customVideoInput.appendTo($videoChooserContent);
+
+  $(document).on('change', '.customVideoInput', function () {
+    changeVideo($(this).val())
+  });
 
   $(document).on('mouseover', '.videoThumb', function () {
     $(".videoCaption").html($(this).attr('videoname'))
