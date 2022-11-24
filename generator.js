@@ -55,18 +55,12 @@ jQuery(document).ready(function ($) {
   };
 
   function appendDataHolder(container, id, className) {
+    if (container.length) {
+      var $dataDiv = $(`<div id="${id}" class="${className}" ></div>`);
+      $dataDiv.appendTo(container);
 
-    if (container) {
-      var div = document.createElement('div');
-      div.setAttribute("id", id);
-      div.setAttribute("class", className);
-
-      for (let i = 0; i < 1; i++) {
-        div.appendChild(document.createElement('div'));
-      }
-
-
-      container.appendChild(div);
+      var $data = $(`<div></div>`);
+      $data.appendTo($dataDiv);
     }
   };
 
@@ -134,19 +128,30 @@ jQuery(document).ready(function ($) {
   };
 
   let $quadrupolePanel = $('.quadrupolePanel');
-  let header = document.getElementsByClassName('quadrupoleImage')[0];
+  let header = $('.quadrupoleImage');
 
-  appendDataHolder(header, "dataHereBottom", "quadrupole")
-  appendDataHolder(header, "dataHereRight", "quadrupole")
-  appendDataHolder(header, "dataHereTop", "quadrupole")
-  appendDataHolder(header, "dataHereLeft", "quadrupole")
+  var $quadGenerator = $('<div class="quadGenerator" ></div>');
+  $quadGenerator.appendTo(header);
 
-  let dual = document.getElementsByClassName('dualTeleportationImage')[0];
+  appendDataHolder($quadGenerator, "dataHereBottom", "quadrupole")
+  appendDataHolder($quadGenerator, "dataHereRight", "quadrupole")
+  appendDataHolder($quadGenerator, "dataHereTop", "quadrupole")
+  appendDataHolder($quadGenerator, "dataHereLeft", "quadrupole")
+
+  let dual = $('.dualTeleportationImage');
   appendDataHolder(dual, "dataDualTop", "dipole")
   appendDataHolder(dual, "dataDualBottom", "dipole")
 
-  let monopole = document.getElementsByClassName('monoTunnelImage')[0];
+  let monopole = $('.monoTunnelImage');
   appendDataHolder(monopole, "dataMonopole", "monopole")
+  
+
+  var $imageDiv = $('<div class="uploadImageHolder" ></div>');
+  $imageDiv.appendTo($quadGenerator);
+
+  var $imageInnerDiv = $('<div class="imageInnerDiv fullView" ></div>');
+  $imageInnerDiv.appendTo($imageDiv);
+
 
   var $videoChooserSection = $('<div class="videoChooserSection" ></div>');
   $videoChooserSection.appendTo($quadrupolePanel);
@@ -156,20 +161,11 @@ jQuery(document).ready(function ($) {
 
   $(document).on('click', '.hideOptionsButton', function () {
     $('.ui-tabs, .focusTextSave').toggle();
-    var bgImg = $('.quadrupoleImage').css('background-image');
-    var bgSufix = '_open';
 
     var newValue = $(this).attr('altvalue');
     var curValue = $(this).attr('value');
     $(this).attr('altvalue', curValue).attr('value', newValue)
 
-    if (bgImg.includes(bgSufix)) {
-      bgImg = bgImg.replace(bgSufix, '');
-    } else {
-      bgImg = bgImg.replace('.png', `${bgSufix}.png`);
-    }
-
-    $('.quadrupoleImage').css('background-image', bgImg);
   });
 
   /**********************
@@ -178,9 +174,6 @@ jQuery(document).ready(function ($) {
 
   $("#tabs").tabs().appendTo($videoChooserSection);
 
-  var $imageDiv = $('<div class="uploadImageHolder" ></div>');
-  $imageDiv.appendTo(header);
-
   var initFocusText = "Focus";
   var $focusText = $(`<div class="focusText generatorText" >${initFocusText}</div>`);
   $focusText.appendTo(header);
@@ -188,9 +181,6 @@ jQuery(document).ready(function ($) {
   var initCaptionText = "Gold";
   var $captionText = $(`<div class="captionText generatorText" >${initCaptionText}</div>`);
   $captionText.appendTo(header);
-
-  var $imageInnerDiv = $('<div class="imageInnerDiv fullView" ></div>');
-  $imageInnerDiv.appendTo($imageDiv);
 
   /**********************
           VIDEO 
@@ -204,7 +194,7 @@ jQuery(document).ready(function ($) {
   var $videoDiv = $('<div id="videoHolder" ></div>');
   $videoDiv.appendTo($videoContainerDiv);
 
-  var $pyramid = $('<div class="pyramid pyramidView" ></div>');
+  var $pyramid = $('<div class="video-container pyramid pyramidView" ></div>');
   $pyramid.appendTo($imageDiv);
 
   var sides = ['north', 'west', 'south', 'east'];
@@ -263,10 +253,15 @@ jQuery(document).ready(function ($) {
     if (isPyramid) {
       $('.fullView').hide();
       $('.pyramidView').show();
+      $('.quadGenerator').css('width', '100%').css('height', '100%')
+      $('.quadrupoleImage').css('background-size', '0')
     } else {
       $('.fullView').show();
       $('.pyramidView').hide();
+      $('.quadGenerator').css('width', '63%').css('height', '63%')
+      $('.quadrupoleImage').css('background-size', '100%')
     }
+    setDataFontSize();
     startFocusVideo();
   }
 
@@ -876,7 +871,7 @@ jQuery(document).ready(function ($) {
     function instantiateStar(starSelector, list) {
 
       /*** Title ***/
-      
+
       var $energeticSections = $('<div class="Sections" ></div>');
       $energeticSections.appendTo($(starSelector));
 
@@ -900,7 +895,7 @@ jQuery(document).ready(function ($) {
       var $intensityHeader = $('<div class="color header">B</div>');
       $intensityHeader.appendTo($emotionHeaders);
 
-      if (!isMobile) {
+      if (!(typeof isMobile !== 'undefined' && isMobile)) {
         var $intensityHeader = $('<div class="color header">Rw</div>');
         $intensityHeader.appendTo($emotionHeaders);
 
@@ -936,7 +931,7 @@ jQuery(document).ready(function ($) {
           addColorValueInput(e.name, c, e[c], $emotion);
         })
 
-        if (!isMobile) {
+        if (!(typeof isMobile !== 'undefined' && isMobile)) {
           $(colorKeys).each((i, c) => {
             addBalanceValueInput(e.name, c, e[c], e.value, $emotion);
           })
@@ -1025,5 +1020,20 @@ jQuery(document).ready(function ($) {
     ctx.fillStyle = 'pink';
     ctx.fill();
   }
+
+  function setDataFontSize() {
+    var containerSize = $('.quadrupole').width();
+    $('.quadrupole').css('font-size', `${containerSize/40}px`);
+
+    var position = (typeof isMobile !== 'undefined' && isMobile) ? 'static' : 'absolute';
+    $('.videoChooserSection').css('position', position);
+
+    if (typeof isMobile !== 'undefined' && isMobile) $('.videoChooserSection').css('margin', 'auto');
+    
+  }
+
+  $( window ).on( "resize", function( event ) {
+    setDataFontSize()
+  });
 
 });

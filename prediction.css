@@ -75,15 +75,28 @@ End of comment */
 }
 
 .quadrupoleImage {
-  width: 1120px;
-  height: 798px;
-  background-image: url(https://esculap.org/wp-content/uploads/2022/11/quadrupole_bg.png);
+  width: 100vh;
+  height: 100vh;
+  background-image: url(https://esculap.org/wp-content/uploads/2022/11/quadrupole_darq_frame.png);
   background-size: 100%;
   overflow: hidden;
   position: relative;
   background-repeat: no-repeat;
+  margin: auto;
   margin-bottom: 30px;
-  margin-left: 160px;
+}
+
+.quadGenerator {
+  width: 63%;
+  height: 63%;
+  background-image: url(https://esculap.org/wp-content/uploads/2022/11/quadrupole.png);
+  background-size: 100%;
+  overflow: hidden;
+  position: relative;
+  background-repeat: no-repeat;
+  margin: auto;
+  transform: translateY(-50%);
+  top: 50%;
 }
 
 .dataHere {
@@ -94,35 +107,35 @@ End of comment */
 }
 
 .quadrupole {
-  width: 300px;
-  height: 81px;
+  width: 58%;
+  height: 0;
   overflow: hidden;
-  position: relative;
-  font-size: 10px;
+  position: absolute;
   line-height: 1;
   opacity: 0.7;
+  padding-bottom: 16%;
 }
 
 .quadrupole#dataHereBottom {
-  top: 559px;
-  left: 251px;
+  bottom: 2%;
+  left: 21%;
 }
 
 .quadrupole#dataHereRight {
-  top: 276px;
-  left: 450px;
+  top: 42%;
+  left: 60.5%;
   transform: rotate(-90deg);
 }
 
 .quadrupole#dataHereTop {
-  top: -3px;
-  left: 249px;
+  top: 3%;
+  left: 21%;
   transform: rotate(-180deg);
 }
 
 .quadrupole#dataHereLeft {
-  top: 117px;
-  left: 50px;
+  top: 42%;
+  left: -19%;
   transform: rotate(-270deg);
 }
 
@@ -204,10 +217,11 @@ End of comment */
 
 .uploadImageHolder {
   position: absolute;
-  left: 21.4%;
-  bottom: 30%;
-  width: 320px;
-  height: 320px;
+  left: 50%;
+  top: 50%;
+  width: 62%;
+  height: 62%;
+  transform: translate(-50.2%, -49.2%);
 }
 
 .imageButton {
@@ -280,7 +294,7 @@ End of comment */
 
 .videoChooserSection {
   position: absolute;
-  left: -14%;
+  left: -20%;
   top: 1%;
   width: 300px;
   height: 575px;
@@ -387,8 +401,8 @@ End of comment */
   position: absolute;
   top: 50% !important;
   left: 50% !important;
-  width: 580px !important;
-  height: 580px !important;
+  width: 180% !important;
+  height: 180% !important;
   transform: translate(-50%, -50%);
   max-width: unset !important;
   max-height: unset !important;
@@ -492,8 +506,9 @@ img.videoOverlay {
   margin-top: -60px;
 }
 
-.boxed-wrapper {
+.boxed-wrapper, .elementor-column-gap-default>.elementor-column>.elementor-element-populated {
   max-width: unset !important;
+  padding: 0!important;
 }
 
 .quadrupolePanel {
@@ -543,8 +558,8 @@ img.videoOverlay {
 }
 
 .pyramid {
-  width: 320px;
-  height: 320px;
+  width: 100%;
+  height: 100%;
   position: relative;
   margin: auto;
   display: block;
@@ -556,29 +571,29 @@ img.videoOverlay {
   height: 32%;
   width: 32%;
   margin: auto;
-  perspective: 23px;
+  perspective: 43px;
 }
 
 .pyramid .north {
-  top: 34px;
+  top: 7%;
   left: 50%;
   transform: translateX(-50%);
 }
 
 .pyramid .west {
-  left: 34px;
+  left: 7%;
   top: 50%;
   transform: translateY(-50%);
 }
 
 .pyramid .south {
-  bottom: 34px;
+  bottom: 7%;
   left: 50%;
   transform: translateX(-50%);
 }
 
 .pyramid .east {
-  right: 34px;
+  right: 7%;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -621,9 +636,9 @@ img.videoOverlay {
   height: 100%;
   pointer-events: none;
   -webkit-clip-path: polygon(0 100%, 21.8% 0, 78.2% 0, 100% 100%);
-  clip-path: polygon(0 100%, 21.8% 0, 78.2% 0, 100% 100%);
-  width: 188%;
-  left: -44%;
+  clip-path: polygon(0 100%, 21.4% 0, 79.6% 0, 100% 100%);
+  width: 214.8%;
+  left: -57.5%;
   transform: scale(-1, 1);
 }
 
@@ -635,4 +650,26 @@ img.videoOverlay {
   display: inline-block;
   margin-left: 5px;
   vertical-align: text-bottom;
+}
+
+@media screen and (orientation:portrait) {
+  .quadrupoleImage {
+    width: 100vw;
+    height: 100vw;
+  }
+
+  .pyramid .side {
+    perspective: 5.4vw;
+  }
+}
+
+@media screen and (orientation:landscape) {
+  .quadrupoleImage {
+    width: 100vh;
+    height: 100vh;
+  }
+
+  .pyramid .side {
+    perspective: 5.4vh;
+  }
 }
