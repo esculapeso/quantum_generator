@@ -19,7 +19,7 @@ function onYouTubeIframeAPIReady() {
 }
 
 function startPlayer() {
-  for (var i = 0; i < holders.length; i++) {
+  for (var i = 0; i < players.length; i++) {
     players[i] = new YT.Player(holders[i], {
       height: '390',
       width: '90',
@@ -34,16 +34,16 @@ function startPlayer() {
     });
   }
 
-  var player = players[0]
-  if (player && player.h && player.h.id == 'northHolder') {
+  var player = players[4]
+  if (player && player.h && player.h.id == 'videoHolder') {
     clearInterval(startInverval);
+    console.log('playerready')
+    playersReady = true; 
   }
 }
 
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
-  console.log('playerready')
-  playersReady = true; 
   //event.target.playVideo();
 }
 
@@ -53,9 +53,13 @@ function onPlayerReady(event) {
 var done = false;
 function onPlayerStateChange(event) {
   if (event.data === YT.PlayerState.ENDED) {
-    player.playVideo();
+    for (var i = 0; i < players.length; i++) {
+      players[i].playVideo();
+    }
   }
 }
 function stopVideo() {
-  player.stopVideo();
+  for (var i = 0; i < players.length; i++) {
+    players[i].stopVideo();
+  }
 }
