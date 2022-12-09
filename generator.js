@@ -175,6 +175,20 @@ jQuery(document).ready(function ($) {
     $(window).scrollTop( $(".quadrupolePanel").offset().top );
   });
 
+  var $animateGenerator = $('<input class="animateGenerator button" type="button" on="1" value="⥀"  />');
+  $animateGenerator.appendTo($videoChooserSection);
+
+  $(document).on('click', '.animateGenerator', function () {
+    var val = parseInt($(this).attr('on'));
+    var imageUrl = (val)
+      ? "https://esculap.org/wp-content/uploads/2022/11/animatedGen-1.png"
+      : "https://esculap.org/wp-content/uploads/2022/11/Animated-DNA.png";
+
+      $(".quadGenerator").css('background-image', `url(${imageUrl})`)
+
+      $(this).attr('on', (val + 1) % 2);
+  });
+	
   /**********************
           TABS 
   ***********************/

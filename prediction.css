@@ -59,7 +59,7 @@ End of comment */
 .monoTunnelImage {
   width: 1120px;
   height: 464px;
-  background-image: url(https://esculap.org/wp-content/uploads/2022/11/singleDNA.png);
+  background-image: url(https://esculap.org/wp-content/uploads/2022/11/singleDNAsolo.png);
   background-size: 100%;
   overflow: hidden;
   position: relative;
@@ -68,7 +68,7 @@ End of comment */
 .dualTeleportationImage {
   width: 1120px;
   height: 844px;
-  background-image: url(https://esculap.org/wp-content/uploads/2022/11/doubleDNA.png);
+  background-image: url(https://esculap.org/wp-content/uploads/2022/11/doubleDNAssolo.png);
   background-size: 100%;
   overflow: hidden;
   position: relative;
@@ -89,7 +89,7 @@ End of comment */
 .quadGenerator {
   width: 63%;
   height: 63%;
-  background-image: url(https://esculap.org/wp-content/uploads/2022/11/quadrupole.png);
+  background-image: url(https://esculap.org/wp-content/uploads/2022/11/Animated-DNA.png);
   background-size: 100%;
   overflow: hidden;
   position: relative;
@@ -656,6 +656,50 @@ img.videoOverlay {
   display: inline-block;
   margin-left: 5px;
   vertical-align: text-bottom;
+}
+
+.videoChooserSection .button {
+  margin-left: 9px;
+}
+
+.upperText, .lowerText {
+  position: absolute;
+  font-size: 44px;
+  text-align: center;
+}
+
+.upperText * {
+  color: red;
+}
+
+.lowerText * {
+  color: blue;
+}
+
+.helixTunnel {
+  left: 42%;
+  top: 6%;
+}
+
+.lowerText .therapist, .lowerText .mother, .lowerText .daughter {
+  position: absolute;
+  font-size: 34px;
+  width: 200px;
+}
+
+.lowerText .therapist {
+  left: 10%;
+  top: 60%;
+}
+
+.lowerText .mother {
+  left: 30%;
+  top: 60%;
+}
+
+.lowerText .daughter {
+  left: 70%;
+  top: 60%;
 }
 
 @media screen and (orientation:portrait) {
