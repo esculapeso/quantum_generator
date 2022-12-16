@@ -59,7 +59,7 @@ End of comment */
 .monoTunnelImage {
   width: 1120px;
   height: 464px;
-  background-image: url(https://esculap.org/wp-content/uploads/2022/11/singleDNAsolo.png);
+  background-image: url(https://esculap.org/wp-content/uploads/2022/11/singleDNA.png);
   background-size: 100%;
   overflow: hidden;
   position: relative;
@@ -68,7 +68,7 @@ End of comment */
 .dualTeleportationImage {
   width: 1120px;
   height: 844px;
-  background-image: url(https://esculap.org/wp-content/uploads/2022/11/doubleDNAssolo.png);
+  background-image: url(https://esculap.org/wp-content/uploads/2022/11/doubleDNA.png);
   background-size: 100%;
   overflow: hidden;
   position: relative;
@@ -89,7 +89,7 @@ End of comment */
 .quadGenerator {
   width: 63%;
   height: 63%;
-  background-image: url(https://esculap.org/wp-content/uploads/2022/11/Animated-DNA.png);
+  background-image: url(https://esculap.org/wp-content/uploads/2022/12/animateddna.webp);
   background-size: 100%;
   overflow: hidden;
   position: relative;
@@ -107,36 +107,36 @@ End of comment */
 }
 
 .quadrupole {
-  width: 58%;
+  width: 66%;
   height: 0;
   overflow: hidden;
   position: absolute;
   line-height: 1;
   opacity: 0.7;
-  padding-bottom: 16%;
+  padding-bottom: 12%;
 }
 
 .quadrupole#dataHereBottom {
-  bottom: 2%;
-  left: 21%;
+  bottom: 2.6%;
+  left: 17%;
 }
 
 .quadrupole#dataHereRight {
-  top: 42%;
-  left: 60.5%;
-  transform: rotate(-90deg);
+    top: 44.2%;
+    left: 58.5%;
+    transform: rotate(-90deg);
 }
 
 .quadrupole#dataHereTop {
-  top: 3%;
-  left: 21%;
+  top: 2.6%;
+  left: 17%;
   transform: rotate(-180deg);
 }
 
 .quadrupole#dataHereLeft {
-  top: 42%;
-  left: -19%;
-  transform: rotate(-270deg);
+    top: 44%;
+    left: -24.5%;
+    transform: rotate(-270deg);
 }
 
 .dipole {
@@ -210,18 +210,29 @@ End of comment */
   color: red;
 }
 
+.generatorText.pyramidPerson {
+  top: 50%;
+  transform: translatey(-50%);
+  width: 20%;
+	bottom: unset;
+}
+
 .captionText {
   bottom: 13%;
   color: blue;
 }
 
+.captionText.pyramidPerson {
+  right: 0;
+}
+
 .uploadImageHolder {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 62%;
-  height: 62%;
-  transform: translate(-50.2%, -49.2%);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 69%;
+    height: 69%;
+    transform: translate(-50%, -50%);
 }
 
 .imageButton {
@@ -294,8 +305,8 @@ End of comment */
 
 .videoChooserSection {
   position: absolute;
-  left: -20%;
-  top: 1%;
+  left: 0;
+  top: 20vh;
   width: 300px;
   height: 575px;
 }
@@ -421,9 +432,14 @@ End of comment */
   cursor: pointer;
 }
 
+.personImage.pyramidPerson {
+  width: 16vh;
+  height: 16vh;
+}
+
 .personImage.inner {
-  width: 20%;
-  height: 20%;
+  width: 16%;
+  height: 16%;
 }
 
 
@@ -442,6 +458,7 @@ End of comment */
 .therapistImage.top {
   top: 0.5%;
   left: 68.6%;
+	transform: scaleX(-1);
 }
 
 .therapistImage.left {
@@ -457,26 +474,45 @@ End of comment */
 .therapistImage.right {
   top: 68.7%;
   left: 86.9%;
+	transform: scaleX(-1);
+}
+
+.therapistImage.top.pyramidPerson {
+display: none;
+}
+
+.therapistImage.left.pyramidPerson {
+    top: 0.8%;
+    left: 7.3%;
+}
+
+.therapistImage.bottom.pyramidPerson {
+display: none;
+}
+
+.therapistImage.right.pyramidPerson {
+    top: 82.7%;
+    left: 83%;
 }
 
 .person1Image {
-  top: 0.4%;
-  left: 0.4%;
+    top: 0.6%;
+    left: 0.8%;
 }
 
 .person2Image {
-  bottom: 0.2%;
-  left: 0.4%;
+    bottom: 0.5%;
+  left: 0.9%;
 }
 
 .person3Image {
-  bottom: 0.2%;
-  right: 0.3%;
+    bottom: 0.5%;
+    right: 0.9%;
 }
 
 .person4Image {
-  top: 0.4%;
-  right: 0.3%;
+  top: 0.8%;
+  right: 0.8%;
 }
 
 .colorRow,
@@ -658,50 +694,6 @@ img.videoOverlay {
   vertical-align: text-bottom;
 }
 
-.videoChooserSection .button {
-  margin-left: 9px;
-}
-
-.upperText, .lowerText {
-  position: absolute;
-  font-size: 44px;
-  text-align: center;
-}
-
-.upperText * {
-  color: red;
-}
-
-.lowerText * {
-  color: blue;
-}
-
-.helixTunnel {
-  left: 42%;
-  top: 6%;
-}
-
-.lowerText .therapist, .lowerText .mother, .lowerText .daughter {
-  position: absolute;
-  font-size: 34px;
-  width: 200px;
-}
-
-.lowerText .therapist {
-  left: 10%;
-  top: 60%;
-}
-
-.lowerText .mother {
-  left: 30%;
-  top: 60%;
-}
-
-.lowerText .daughter {
-  left: 70%;
-  top: 60%;
-}
-
 @media screen and (orientation:portrait) {
   .quadrupoleImage {
     width: 100vw;
@@ -709,7 +701,7 @@ img.videoOverlay {
   }
 
   .pyramid .side {
-    perspective: 5.4vw;
+    perspective: 6vw;
   }
 
   .videoChooserSection {
@@ -729,7 +721,7 @@ img.videoOverlay {
   }
 
   .pyramid .side {
-    perspective: 5.4vh;
+    perspective: 6vh;
   }
 
   .videoChooserSection {

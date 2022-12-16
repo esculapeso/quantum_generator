@@ -181,8 +181,8 @@ jQuery(document).ready(function ($) {
   $(document).on('click', '.animateGenerator', function () {
     var val = parseInt($(this).attr('on'));
     var imageUrl = (val)
-      ? "https://esculap.org/wp-content/uploads/2022/11/animatedGen-1.png"
-      : "https://esculap.org/wp-content/uploads/2022/11/Animated-DNA.png";
+      ? "https://esculap.org/wp-content/uploads/2022/12/ezgif.com-gif-maker.webp"
+      : "https://esculap.org/wp-content/uploads/2022/12/ezgif.com-gif-maker.webp";
 
       $(".quadGenerator").css('background-image', `url(${imageUrl})`)
 
@@ -274,15 +274,17 @@ jQuery(document).ready(function ($) {
     if (isPyramid) {
       $('.fullView').hide();
       $('.pyramidView').show();
-      $('.quadGenerator').css('width', '100%').css('height', '100%')
-      $('.quadrupoleImage').css('background-size', '0')
-      $('.therapistImage, .generatorText').hide()
+      $('.quadGenerator').css('width', '100vh').css('height', '100vh');
+      $('.quadrupoleImage').css('width', '166vh').css('background-image', `url(https://esculap.org/wp-content/uploads/2022/12/TherapistImage.png)`);
+		$('.personImage, .therapistImage, .generatorText').addClass('pyramidPerson')
+//       $('.therapistImage, .generatorText').hide()
     } else {
       $('.fullView').show();
       $('.pyramidView').hide();
       $('.quadGenerator').css('width', '63%').css('height', '63%')
-      $('.quadrupoleImage').css('background-size', '100%')
-      $('.therapistImage, .generatorText').show()
+      $('.quadrupoleImage').css('width', '100vh').css('background-image', `url(https://esculap.org/wp-content/uploads/2022/11/quadrupole_darq_frame.png)`)
+				$('.personImage, .therapistImage, .generatorText').removeClass('pyramidPerson')
+//       $('.therapistImage, .generatorText').show()
     }
     setDataFontSize();
     startFocusVideo();
@@ -1045,8 +1047,10 @@ jQuery(document).ready(function ($) {
   }
 
   function setDataFontSize() {
-    var containerSize = $('.quadrupole').width();
-    $('.quadrupole').css('font-size', `${containerSize/40}px`);
+    var paddingCss = $('.quadrupole').css('padding-bottom').replace('px', '');
+    var padding = parseInt(paddingCss);
+    console.log({paddingCss, padding})
+    $('.quadrupole').css('font-size', `${padding/9}px`);
 
     if (typeof isMobile !== 'undefined' && isMobile) {
       $('.videoChooserSection').css('margin', 'auto');
