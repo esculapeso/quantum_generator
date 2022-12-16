@@ -30,6 +30,8 @@ End of comment */
   cursor: pointer;
   background: #ff9b51 !important;
   color: #5c150a !important;
+  display: inline-block;
+  margin-right: 5px;
 }
 
 .videoControls {
@@ -398,7 +400,7 @@ End of comment */
 }
 
 .video-container {
-  position: relative;
+  position: absolute;
   overflow: hidden;
   width: 100%;
   padding-bottom: 100%;
@@ -602,7 +604,7 @@ img.videoOverlay {
 .pyramid {
   width: 100%;
   height: 100%;
-  position: relative;
+  position: absolute;
   margin: auto;
   display: block;
   cursor: pointer;
@@ -731,5 +733,25 @@ img.videoOverlay {
 
   .generatorText {
     font-size: 4vh;
+  }
+
+  .callWrapper {
+    display: none;
+    padding-bottom: 100%;
+    height: 0;
+    z-index: 20;
+    position: absolute;
+    width: 100%;
+  }
+
+  .jitsi-wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+  }
+
+  .jitsi-wrapper frame {
+    width: 100%;
+    height: 100%;
   }
 }

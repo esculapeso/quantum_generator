@@ -175,9 +175,6 @@ jQuery(document).ready(function ($) {
     $(window).scrollTop( $(".quadrupolePanel").offset().top );
   });
 
-  var $animateGenerator = $('<input class="animateGenerator button" type="button" on="1" value="⥀"  />');
-  $animateGenerator.appendTo($videoChooserSection);
-
   $(document).on('click', '.animateGenerator', function () {
     var val = parseInt($(this).attr('on'));
     var imageUrl = (val)
@@ -251,26 +248,26 @@ jQuery(document).ready(function ($) {
 
   /* PYRAMID TOGGLE */
 
-  togglePyramidView(false);
+  togglePyramidView(false, true);
 
   var $piramidToggle = $('<div class="piramidToggle" ></div>');
   $piramidToggle.appendTo($videoChooserContent);
 
-  var $piramidToggleCB = $('<input class="piramidToggleCB" type="checkbox" />');
+  var $piramidToggleCB = $('<input class="piramidVideoToggleCB piramidToggleCB" type="checkbox" />');
   $piramidToggleCB.appendTo($piramidToggle);
 
-  $(document).on('change', '.piramidToggleCB', function () {
-    togglePyramidView($(this).is(':checked'));
+  $(document).on('change', '.piramidVideoToggleCB', function () {
+    togglePyramidView($(this).is(':checked'), true);
   });
 
-  var $piramidToggleText = $('<div class="piramidToggleText" >Pyramid View</div>');
+  var $piramidToggleText = $('<div class="piramidVideoToggleText piramidToggleText" >Pyramid View</div>');
   $piramidToggleText.appendTo($piramidToggle);
 
-  $(document).on('click', '.piramidToggleText', function () {
-    $('.piramidToggleCB').click();
+  $(document).on('click', '.piramidVideoToggleText', function () {
+    $('.piramidVideoToggleCB').click();
   });
 
-  function togglePyramidView(isPyramid) {
+  function togglePyramidView(isPyramid, startVideo) {
     if (isPyramid) {
       $('.fullView').hide();
       $('.pyramidView').show();
@@ -287,7 +284,7 @@ jQuery(document).ready(function ($) {
 //       $('.therapistImage, .generatorText').show()
     }
     setDataFontSize();
-    startFocusVideo();
+    if (startVideo) startFocusVideo();
   }
 
   /* THUMBS */
@@ -773,6 +770,52 @@ jQuery(document).ready(function ($) {
     $(this).css('opacity', (isSoundModulation + 1) / 2);
     if (!isSoundModulation) $(players).each((i, p) => p.unMute());
   });
+
+    /**********************
+          CALL 
+  ***********************/
+
+    var $tab7 = $("#tabs-7");
+
+    var $callCaption = $(`<div class="callCaption tabHeader" >~~ Sound Settings ~~</div>`);
+    $callCaption.appendTo($tab7);
+
+    var $callContent = $(`<div class="callContent" ></div>`);
+    $callContent.appendTo($tab7);
+
+    var $piramidToggle = $('<div class="piramidToggle" ></div>');
+    $piramidToggle.appendTo($callContent);
+
+    var $piramidToggleCB = $('<input class="piramidCallToggleCB piramidToggleCB" type="checkbox" />');
+    $piramidToggleCB.appendTo($piramidToggle);
+  
+    $(document).on('change', '.piramidCallToggleCB', function () {
+      togglePyramidView($(this).is(':checked'), false);
+    });
+  
+    var $piramidToggleText = $('<div class="piramidCallToggleText piramidToggleText" >Pyramid View</div>');
+    $piramidToggleText.appendTo($piramidToggle);
+  
+    $(document).on('click', '.piramidCallToggleText', function () {
+      $('.piramidCallToggleCB').click();
+    });
+
+
+    var $callButton = $(`<div class="callButton button" >Call</div>`);
+    $callButton.appendTo($callContent);
+
+    var $endcallButton = $(`<div class="endcallButton button" >End Call</div>`);
+    $endcallButton.appendTo($callContent);
+
+    $(document).on('click', '.callButton', function () {
+      $('.callWrapper').show().appendTo('.uploadImageHolder');
+      stopFocusVideo();
+    });
+
+    $(document).on('click', '.endcallButton', function () {
+      $('.callWrapper').hide().appendTo('.uploadImageHolder');
+      startFocusVideo();
+    });
 
   /**********************
         SAVE SESSION 
