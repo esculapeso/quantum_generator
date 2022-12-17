@@ -124,9 +124,9 @@ End of comment */
 }
 
 #generator1 {
-    top: 44.2%;
-    left: 58.5%;
-    transform: rotate(-90deg);
+  top: 44.2%;
+  left: 58.5%;
+  transform: rotate(-90deg);
 }
 
 #generator2 {
@@ -136,9 +136,9 @@ End of comment */
 }
 
 #generator3 {
-    top: 44%;
-    left: -24.5%;
-    transform: rotate(-270deg);
+  top: 44%;
+  left: -24.5%;
+  transform: rotate(-270deg);
 }
 
 .dipole {
@@ -216,7 +216,7 @@ End of comment */
   top: 50%;
   transform: translatey(-50%);
   width: 20%;
-	bottom: unset;
+  bottom: unset;
 }
 
 .captionText {
@@ -229,12 +229,12 @@ End of comment */
 }
 
 .uploadImageHolder {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 69%;
-    height: 69%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 69%;
+  height: 69%;
+  transform: translate(-50%, -50%);
 }
 
 .imageButton {
@@ -351,7 +351,9 @@ End of comment */
   font-weight: bold;
 }
 
-.emotionHeaders .color, .colorQuantity, .balanceQuantity {
+.emotionHeaders .color,
+.colorQuantity,
+.balanceQuantity {
   width: 44px;
   margin-left: 10px;
 }
@@ -460,7 +462,7 @@ End of comment */
 .therapistImage.top {
   top: 0.5%;
   left: 68.6%;
-	transform: scaleX(-1);
+  transform: scaleX(-1);
 }
 
 .therapistImage.left {
@@ -476,40 +478,40 @@ End of comment */
 .therapistImage.right {
   top: 68.7%;
   left: 86.9%;
-	transform: scaleX(-1);
+  transform: scaleX(-1);
 }
 
 .therapistImage.top.pyramidPerson {
-display: none;
+  display: none;
 }
 
 .therapistImage.left.pyramidPerson {
-    top: 0.8%;
-    left: 7.3%;
+  top: 0.8%;
+  left: 7.3%;
 }
 
 .therapistImage.bottom.pyramidPerson {
-display: none;
+  display: none;
 }
 
 .therapistImage.right.pyramidPerson {
-    top: 82.7%;
-    left: 83%;
+  top: 82.7%;
+  left: 83%;
 }
 
 .person1Image {
-    top: 0.6%;
-    left: 0.8%;
+  top: 0.6%;
+  left: 0.8%;
 }
 
 .person2Image {
-    bottom: 0.5%;
+  bottom: 0.5%;
   left: 0.9%;
 }
 
 .person3Image {
-    bottom: 0.5%;
-    right: 0.9%;
+  bottom: 0.5%;
+  right: 0.9%;
 }
 
 .person4Image {
@@ -550,9 +552,10 @@ img.videoOverlay {
   margin-top: -60px;
 }
 
-.boxed-wrapper, .elementor-column-gap-default>.elementor-column>.elementor-element-populated {
+.boxed-wrapper,
+.elementor-column-gap-default>.elementor-column>.elementor-element-populated {
   max-width: unset !important;
-  padding: 0!important;
+  padding: 0 !important;
 }
 
 .quadrupolePanel {
@@ -745,24 +748,58 @@ img.videoOverlay {
   }
 
   .jitsi-wrapper {
-    width: 90%!important;
-    height: 90%!important;
+    width: 90% !important;
+    height: 90% !important;
     position: absolute;
     top: 5%;
     left: 5%;
   }
-	
-	.jitsi-wrapper.clipped {
-		clip-path: circle(50%)!important;
-	}
+
+  .jitsi-wrapper.clipped {
+    clip-path: circle(50%) !important;
+  }
+
+  .jitsi-wrapper.clippedOctaHor {
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  }
+
+  .jitsi-wrapper.clippedOctaVer {
+    clip-path: polygon(15% 15%, 51% 0, 85% 15%, 100% 50%, 85% 85%, 50% 100%, 15% 85%, 0 50%);
+  }
+
+  .jitsi-wrapper.clippedHexaHor {
+    clip-path: polygon(25% 7%, 75% 7%, 100% 50%, 75% 94%, 25% 93%, 0% 50%);
+  }
+
+  .jitsi-wrapper.clippedHexaVer {
+    clip-path: polygon(7% 25%, 50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%);
+  }
+
+
+  .jitsi-wrapper.clippedHeth {
+    clip-path: polygon(50% 0%, 83% 53%, 50% 100%, 17% 53%);
+  }
+
+  .jitsi-wrapper.clippedDiamond {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
 
   .jitsi-wrapper iframe {
-    width:100%!important;
-    height:100%!important;
+    width: 100% !important;
+    height: 100% !important;
   }
-	
-	.extra-message {
-		display: none;
-	}
-  
+
+  .extra-message {
+    display: none;
+  }
+
+  .clipOptionsSelect {
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+
+  .callResetRange {
+    margin: 0 10px 15px;
+  }
+
 }

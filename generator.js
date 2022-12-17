@@ -809,7 +809,7 @@ jQuery(document).ready(function ($) {
   var $clipOptionsSelect = $('<select class="clipOptionsSelect" ></select>');
   $clipOptionsSelect.appendTo($clipOptionsDiv);
 
-  var clipOptions = ['quad', 'circle', 'hexa', 'heth', 'octa'];
+  var clipOptions = ['quad', 'circle', 'octa (hor)', 'octa (ver)', 'hexa (hor)', 'hexa (ver)', 'diamond', 'heth'];
 
   $(clipOptions).each(function (k, co) {
     var $clipOption = $(`<option value="${co}">${co}</option>`);
@@ -817,21 +817,30 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('change', '.clipOptionsSelect', function () {
-    $('.jitsi-wrapper').removeClass('clipped clippedOcta clippedHexa clippedHeth')
+    $('.jitsi-wrapper').removeClass('clipped clippedOctaHor clippedOctaVer clippedHexaHor clippedHexaVer clippedHeth clippedDiamond')
     switch ($(this).val()) {
       case 'square':
         break;
       case 'circle':
         $('.jitsi-wrapper').addClass('clipped')
         break;
-      case 'octa':
-        $('.jitsi-wrapper').addClass('clippedOcta')
+      case 'octa (hor)':
+        $('.jitsi-wrapper').addClass('clippedOctaHor')
         break;
-      case 'hexa':
-        $('.jitsi-wrapper').addClass('clippedHexa')
+      case 'octa (ver)':
+        $('.jitsi-wrapper').addClass('clippedOctaVer')
+        break;
+      case 'hexa (hor)':
+        $('.jitsi-wrapper').addClass('clippedHexaHor')
+        break;
+      case 'hexa (ver)':
+        $('.jitsi-wrapper').addClass('clippedHexaVer')
         break;
       case 'heth':
         $('.jitsi-wrapper').addClass('clippedHeth')
+        break;
+      case 'diamond':
+        $('.jitsi-wrapper').addClass('clippedDiamond')
         break;
       default:
         break;
