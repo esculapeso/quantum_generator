@@ -68,11 +68,6 @@ jQuery(document).ready(function ($) {
   function timedPrint(index) {
     if (isfetched > 0) {
 
-      let dataHereBottom = document.getElementById('dataHereBottom');
-      let dataHereRight = document.getElementById('dataHereRight');
-      let dataHereTop = document.getElementById('dataHereTop');
-      let dataHereLeft = document.getElementById('dataHereLeft');
-
       let dataDualTop = document.getElementById('dataDualTop');
       let dataDualBottom = document.getElementById('dataDualBottom');
 
@@ -106,17 +101,20 @@ jQuery(document).ready(function ($) {
       var col3 = `rgba(${$(cd[8]).val()},${$(cd[9]).val()},${$(cd[10]).val()},${$(cd[11]).val()})`;
 
 
+      // Calculate the middle of the gradient
+      var genHeight = $('.quadGenerator').height()
+      var genOffTop = $(".quadGenerator").offset().top
+      var graOffTop = $(".page-content").offset().top
+      var gradCenter = genOffTop - graOffTop + genHeight/2;
+
       // parametry: color, jasność, przezroczystość, obwiednia, promień, kąt
-      gradient = `conic-gradient(from 0deg at 50% 1880px, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
+      gradient = `conic-gradient(from 0deg at 50% ${gradCenter}px, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       //conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       $('.page-content, .panel-content').css('background', gradient);
 
-
-
-      currentNumber = printHex(dataHereBottom, 'afterbegin', index);
-      currentNumber = printHex(dataHereRight, 'afterbegin', index - 1);
-      currentNumber = printHex(dataHereTop, 'afterbegin', index - 2);
-      currentNumber = printHex(dataHereLeft, 'afterbegin', index - 3);
+      for (var n = 0; n < generatorsNumber; ++ n) {
+        printHex(document.getElementById('generator' + n), 'afterbegin', index);
+      }
 
       currentNumber = printHex(dataDualTop, 'afterbegin', index);
       currentNumber = printHex(dataDualBottom, 'afterbegin', index - 1);
@@ -133,10 +131,9 @@ jQuery(document).ready(function ($) {
   var $quadGenerator = $('<div class="quadGenerator" ></div>');
   $quadGenerator.appendTo(header);
 
-  appendDataHolder($quadGenerator, "dataHereBottom", "quadrupole")
-  appendDataHolder($quadGenerator, "dataHereRight", "quadrupole")
-  appendDataHolder($quadGenerator, "dataHereTop", "quadrupole")
-  appendDataHolder($quadGenerator, "dataHereLeft", "quadrupole")
+  for (var n = 0; n < generatorsNumber; ++ n) {
+    appendDataHolder($quadGenerator, "generator" + n, "quadrupole")
+  }
 
   let dual = $('.dualTeleportationImage');
   appendDataHolder(dual, "dataDualTop", "dipole")
@@ -146,7 +143,7 @@ jQuery(document).ready(function ($) {
   appendDataHolder(monopole, "dataMonopole", "monopole")
   
 
-  var $imageDiv = $('<div class="uploadImageHolder" ></div>');
+  var $imageDiv = $('<div class="uploadImageHolder clipped" ></div>');
   $imageDiv.appendTo($quadGenerator);
 
   var $imageInnerDiv = $('<div class="imageInnerDiv fullView" ></div>');
@@ -178,8 +175,8 @@ jQuery(document).ready(function ($) {
   $(document).on('click', '.animateGenerator', function () {
     var val = parseInt($(this).attr('on'));
     var imageUrl = (val)
-      ? "https://esculap.org/wp-content/uploads/2022/12/ezgif.com-gif-maker.webp"
-      : "https://esculap.org/wp-content/uploads/2022/12/ezgif.com-gif-maker.webp";
+    ? "https://esculap.org/wp-content/uploads/2022/12/ezgif.com-gif-maker.webp"
+    : "https://esculap.org/wp-content/uploads/2022/12/ezgif.com-gif-maker.webp";
 
       $(".quadGenerator").css('background-image', `url(${imageUrl})`)
 
@@ -273,15 +270,13 @@ jQuery(document).ready(function ($) {
       $('.pyramidView').show();
       $('.quadGenerator').css('width', '100vh').css('height', '100vh');
       $('.quadrupoleImage').css('width', '166vh').css('background-image', `url(https://esculap.org/wp-content/uploads/2022/12/TherapistImage.png)`);
-		$('.personImage, .therapistImage, .generatorText').addClass('pyramidPerson')
-//       $('.therapistImage, .generatorText').hide()
+      $('.personImage, .therapistImage, .generatorText').addClass('pyramidPerson')
     } else {
       $('.fullView').show();
       $('.pyramidView').hide();
       $('.quadGenerator').css('width', '63%').css('height', '63%')
       $('.quadrupoleImage').css('width', '100vh').css('background-image', `url(https://esculap.org/wp-content/uploads/2022/11/quadrupole_darq_frame.png)`)
-				$('.personImage, .therapistImage, .generatorText').removeClass('pyramidPerson')
-//       $('.therapistImage, .generatorText').show()
+      $('.personImage, .therapistImage, .generatorText').removeClass('pyramidPerson')
     }
     setDataFontSize();
     if (startVideo) startFocusVideo();
@@ -390,7 +385,7 @@ jQuery(document).ready(function ($) {
   }
 
   function getActivePlayers() {
-    return ($('.piramidToggleCB').is(':checked')) ? players.slice(0, 4) : players.slice(4, 5);
+    return ($('.piramidVideoToggleCB').is(':checked')) ? players.slice(0, 4) : players.slice(4, 5);
   }
 
   var $videoVolumeInput = $('<input type="range" value="10" class="videoVolume" />');
@@ -549,6 +544,8 @@ jQuery(document).ready(function ($) {
     { name: "Person 2", role: "person2" },
     { name: "Person 3", role: "person3" },
     { name: "Person 4", role: "person4" },
+    { name: "Person 5", role: "person5" },
+    { name: "Person 6", role: "person6" },
   ]
 
   $(people).each((i, p) => {
@@ -596,6 +593,12 @@ jQuery(document).ready(function ($) {
   $person1Image.appendTo($quadGenerator);
 
   var $person1Image = $(`<div role="${people[4].role}" class="personImage inner person4Image" ></div>`);
+  $person1Image.appendTo($quadGenerator);
+
+  var $person1Image = $(`<div role="${people[5].role}" class="personImage inner person5Image" ></div>`);
+  $person1Image.appendTo($quadGenerator);
+
+  var $person1Image = $(`<div role="${people[6].role}" class="personImage inner person6Image" ></div>`);
   $person1Image.appendTo($quadGenerator);
 
   $(document).on('click', '.personUploadButton, .personImage', function () {
@@ -775,49 +778,67 @@ jQuery(document).ready(function ($) {
           CALL 
   ***********************/
 
-    var $tab7 = $("#tabs-7");
+          var $tab7 = $("#tabs-7");
 
-    var $callCaption = $(`<div class="callCaption tabHeader" >~~ Sound Settings ~~</div>`);
-    $callCaption.appendTo($tab7);
+          var $callCaption = $(`<div class="callCaption tabHeader" >~~ Sound Settings ~~</div>`);
+          $callCaption.appendTo($tab7);
+      
+          var $callContent = $(`<div class="callContent" ></div>`);
+          $callContent.appendTo($tab7);
+      
+          var $piramidToggle = $('<div class="piramidToggle callToggle" ></div>');
+          $piramidToggle.appendTo($callContent);
+      
+          var $piramidToggleCB = $('<input class="piramidCallToggleCB piramidToggleCB" type="checkbox" />');
+          $piramidToggleCB.appendTo($piramidToggle);
+        
+          $(document).on('change', '.piramidCallToggleCB', function () {
+            togglePyramidView($(this).is(':checked'), false);
+          }); 
+        
+          var $piramidToggleText = $('<div class="piramidCallToggleText piramidToggleText" >Pyramid View</div>');
+          $piramidToggleText.appendTo($piramidToggle);
+        
+          $(document).on('click', '.piramidCallToggleText', function () {
+            $('.piramidCallToggleCB').click();
+          });
 
-    var $callContent = $(`<div class="callContent" ></div>`);
-    $callContent.appendTo($tab7);
+          
+          var $clipToggle = $('<div class="clipToggle" ></div>');
+          $clipToggle.appendTo($callContent);
+      
+          var $clipToggleCB = $('<input class="clipToggleCB piramidToggleCB" type="checkbox" checked />');
+          $clipToggleCB.appendTo($clipToggle);
+        
+          $(document).on('change', '.clipToggleCB', function () {
+            $('.uploadImageHolder').toggleClass('clipped', $(this).is(':checked'))
+          });
+        
+          var $clipToggleText = $('<div class="clipToggleText piramidToggleText" >Clip</div>');
+          $clipToggleText.appendTo($clipToggle);
+        
+          $(document).on('click', '.clipToggleText', function () {
+            $('.clipToggleCB').click();
+          });
+      
+      
+          var $callButton = $(`<div class="callButton button" >Call</div>`);
+          $callButton.appendTo($callContent);
+      
+          var $endcallButton = $(`<div class="endcallButton button" >End Call</div>`);
+          $endcallButton.appendTo($callContent);
+      
+          $(document).on('click', '.callButton', function () {
+            $('.callWrapper').show().appendTo('.uploadImageHolder');
+            stopFocusVideo();
+          });
+      
+          $(document).on('click', '.endcallButton', function () {
+            $('.callWrapper').hide().appendTo('.uploadImageHolder');
+            startFocusVideo();
+          });
 
-    var $piramidToggle = $('<div class="piramidToggle" ></div>');
-    $piramidToggle.appendTo($callContent);
-
-    var $piramidToggleCB = $('<input class="piramidCallToggleCB piramidToggleCB" type="checkbox" />');
-    $piramidToggleCB.appendTo($piramidToggle);
-  
-    $(document).on('change', '.piramidCallToggleCB', function () {
-      togglePyramidView($(this).is(':checked'), false);
-    });
-  
-    var $piramidToggleText = $('<div class="piramidCallToggleText piramidToggleText" >Pyramid View</div>');
-    $piramidToggleText.appendTo($piramidToggle);
-  
-    $(document).on('click', '.piramidCallToggleText', function () {
-      $('.piramidCallToggleCB').click();
-    });
-
-
-    var $callButton = $(`<div class="callButton button" >Call</div>`);
-    $callButton.appendTo($callContent);
-
-    var $endcallButton = $(`<div class="endcallButton button" >End Call</div>`);
-    $endcallButton.appendTo($callContent);
-
-    $(document).on('click', '.callButton', function () {
-      $('.callWrapper').show().appendTo('.uploadImageHolder');
-      stopFocusVideo();
-    });
-
-    $(document).on('click', '.endcallButton', function () {
-      $('.callWrapper').hide().appendTo('.uploadImageHolder');
-      startFocusVideo();
-    });
-
-  /**********************
+          /**********************
         SAVE SESSION 
   ***********************/
 
@@ -880,7 +901,9 @@ jQuery(document).ready(function ($) {
         { role: 'person1', data: $('.person1Image').css('background-image') },
         { role: 'person2', data: $('.person2Image').css('background-image') },
         { role: 'person3', data: $('.person3Image').css('background-image') },
-        { role: 'person4', data: $('.person4Image').css('background-image') }
+        { role: 'person4', data: $('.person4Image').css('background-image') },
+        { role: 'person5', data: $('.person5Image').css('background-image') },
+        { role: 'person6', data: $('.person6Image').css('background-image') }
       ],
       qrngInterval: currentDisplayInterval,
       isPyramid: $('.piramidToggleCB').is(':checked')
@@ -1060,7 +1083,7 @@ jQuery(document).ready(function ($) {
     var x = cx;
     var y = cy;
     var step = Math.PI / spikes;
-
+    
     ctx.strokeSyle = "#000";
     ctx.beginPath();
     ctx.moveTo(cx, cy - outerRadius)

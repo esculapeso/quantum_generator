@@ -118,24 +118,24 @@ End of comment */
   padding-bottom: 12%;
 }
 
-.quadrupole#dataHereBottom {
+#generator0 {
   bottom: 2.6%;
   left: 17%;
 }
 
-.quadrupole#dataHereRight {
+#generator1 {
     top: 44.2%;
     left: 58.5%;
     transform: rotate(-90deg);
 }
 
-.quadrupole#dataHereTop {
+#generator2 {
   top: 2.6%;
   left: 17%;
   transform: rotate(-180deg);
 }
 
-.quadrupole#dataHereLeft {
+#generator3 {
     top: 44%;
     left: -24.5%;
     transform: rotate(-270deg);
