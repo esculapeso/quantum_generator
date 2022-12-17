@@ -745,14 +745,24 @@ img.videoOverlay {
   }
 
   .jitsi-wrapper {
-    width: 100%;
-    height: 100%;
+    width: 90%!important;
+    height: 90%!important;
     position: absolute;
+    top: 5%;
+    left: 5%;
   }
+	
+	.jitsi-wrapper.clipped {
+		clip-path: circle(50%)!important;
+	}
 
   .jitsi-wrapper iframe {
     width:100%!important;
     height:100%!important;
   }
+	
+	.extra-message {
+		display: none;
+	}
   
 }

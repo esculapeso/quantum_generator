@@ -105,14 +105,14 @@ jQuery(document).ready(function ($) {
       var genHeight = $('.quadGenerator').height()
       var genOffTop = $(".quadGenerator").offset().top
       var graOffTop = $(".page-content").offset().top
-      var gradCenter = genOffTop - graOffTop + genHeight/2;
+      var gradCenter = genOffTop - graOffTop + genHeight / 2;
 
       // parametry: color, jasność, przezroczystość, obwiednia, promień, kąt
       gradient = `conic-gradient(from 0deg at 50% ${gradCenter}px, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       //conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       $('.page-content, .panel-content').css('background', gradient);
 
-      for (var n = 0; n < generatorsNumber; ++ n) {
+      for (var n = 0; n < generatorsNumber; ++n) {
         printHex(document.getElementById('generator' + n), 'afterbegin', index);
       }
 
@@ -131,7 +131,7 @@ jQuery(document).ready(function ($) {
   var $quadGenerator = $('<div class="quadGenerator" ></div>');
   $quadGenerator.appendTo(header);
 
-  for (var n = 0; n < generatorsNumber; ++ n) {
+  for (var n = 0; n < generatorsNumber; ++n) {
     appendDataHolder($quadGenerator, "generator" + n, "quadrupole")
   }
 
@@ -141,7 +141,7 @@ jQuery(document).ready(function ($) {
 
   let monopole = $('.monoTunnelImage');
   appendDataHolder(monopole, "dataMonopole", "monopole")
-  
+
 
   var $imageDiv = $('<div class="uploadImageHolder clipped" ></div>');
   $imageDiv.appendTo($quadGenerator);
@@ -169,20 +169,20 @@ jQuery(document).ready(function ($) {
   $centerGenerator.appendTo($videoChooserSection);
 
   $(document).on('click', '.centerGenerator', function () {
-    $(window).scrollTop( $(".quadrupolePanel").offset().top );
+    $(window).scrollTop($(".quadrupolePanel").offset().top);
   });
 
   $(document).on('click', '.animateGenerator', function () {
     var val = parseInt($(this).attr('on'));
     var imageUrl = (val)
-    ? "https://esculap.org/wp-content/uploads/2022/12/ezgif.com-gif-maker.webp"
-    : "https://esculap.org/wp-content/uploads/2022/12/ezgif.com-gif-maker.webp";
+      ? "https://esculap.org/wp-content/uploads/2022/12/ezgif.com-gif-maker.webp"
+      : "https://esculap.org/wp-content/uploads/2022/12/ezgif.com-gif-maker.webp";
 
-      $(".quadGenerator").css('background-image', `url(${imageUrl})`)
+    $(".quadGenerator").css('background-image', `url(${imageUrl})`)
 
-      $(this).attr('on', (val + 1) % 2);
+    $(this).attr('on', (val + 1) % 2);
   });
-	
+
   /**********************
           TABS 
   ***********************/
@@ -774,73 +774,113 @@ jQuery(document).ready(function ($) {
     if (!isSoundModulation) $(players).each((i, p) => p.unMute());
   });
 
-    /**********************
-          CALL 
-  ***********************/
+  /**********************
+        CALL 
+***********************/
 
-          var $tab7 = $("#tabs-7");
+  var $tab7 = $("#tabs-7");
 
-          var $callCaption = $(`<div class="callCaption tabHeader" >~~ Sound Settings ~~</div>`);
-          $callCaption.appendTo($tab7);
-      
-          var $callContent = $(`<div class="callContent" ></div>`);
-          $callContent.appendTo($tab7);
-      
-          var $piramidToggle = $('<div class="piramidToggle callToggle" ></div>');
-          $piramidToggle.appendTo($callContent);
-      
-          var $piramidToggleCB = $('<input class="piramidCallToggleCB piramidToggleCB" type="checkbox" />');
-          $piramidToggleCB.appendTo($piramidToggle);
-        
-          $(document).on('change', '.piramidCallToggleCB', function () {
-            togglePyramidView($(this).is(':checked'), false);
-          }); 
-        
-          var $piramidToggleText = $('<div class="piramidCallToggleText piramidToggleText" >Pyramid View</div>');
-          $piramidToggleText.appendTo($piramidToggle);
-        
-          $(document).on('click', '.piramidCallToggleText', function () {
-            $('.piramidCallToggleCB').click();
-          });
+  var $callCaption = $(`<div class="callCaption tabHeader" >~~ Sound Settings ~~</div>`);
+  $callCaption.appendTo($tab7);
 
-          
-          var $clipToggle = $('<div class="clipToggle" ></div>');
-          $clipToggle.appendTo($callContent);
-      
-          var $clipToggleCB = $('<input class="clipToggleCB piramidToggleCB" type="checkbox" checked />');
-          $clipToggleCB.appendTo($clipToggle);
-        
-          $(document).on('change', '.clipToggleCB', function () {
-            $('.uploadImageHolder').toggleClass('clipped', $(this).is(':checked'))
-          });
-        
-          var $clipToggleText = $('<div class="clipToggleText piramidToggleText" >Clip</div>');
-          $clipToggleText.appendTo($clipToggle);
-        
-          $(document).on('click', '.clipToggleText', function () {
-            $('.clipToggleCB').click();
-          });
-      
-      
-          var $callButton = $(`<div class="callButton button" >Call</div>`);
-          $callButton.appendTo($callContent);
-      
-          var $endcallButton = $(`<div class="endcallButton button" >End Call</div>`);
-          $endcallButton.appendTo($callContent);
-      
-          $(document).on('click', '.callButton', function () {
-            $('.callWrapper').show().appendTo('.uploadImageHolder');
-            stopFocusVideo();
-          });
-      
-          $(document).on('click', '.endcallButton', function () {
-            $('.callWrapper').hide().appendTo('.uploadImageHolder');
-            startFocusVideo();
-          });
+  var $callContent = $(`<div class="callContent" ></div>`);
+  $callContent.appendTo($tab7);
 
-          /**********************
-        SAVE SESSION 
-  ***********************/
+  var $piramidToggle = $('<div class="piramidToggle callToggle" ></div>');
+  $piramidToggle.appendTo($callContent);
+
+  var $piramidToggleCB = $('<input class="piramidCallToggleCB piramidToggleCB" type="checkbox" />');
+  $piramidToggleCB.appendTo($piramidToggle);
+
+  $(document).on('change', '.piramidCallToggleCB', function () {
+    togglePyramidView($(this).is(':checked'), false);
+  });
+
+  var $piramidToggleText = $('<div class="piramidCallToggleText piramidToggleText" >Pyramid View</div>');
+  $piramidToggleText.appendTo($piramidToggle);
+
+  $(document).on('click', '.piramidCallToggleText', function () {
+    $('.piramidCallToggleCB').click();
+  });
+
+  var $clipOptionsDiv = $(`<div class="clipOptionsDiv" ></div>`);
+  $clipOptionsDiv.appendTo($callContent);
+
+  var $clipOptionsSelect = $('<select class="clipOptionsSelect" ></select>');
+  $clipOptionsSelect.appendTo($clipOptionsDiv);
+
+  var clipOptions = ['quad', 'circle', 'hexa', 'heth', 'octa'];
+
+  $(clipOptions).each(function (k, co) {
+    var $clipOption = $(`<option value="${co}">${co}</option>`);
+    $clipOption.appendTo($clipOptionsSelect);
+  });
+
+  $(document).on('change', '.clipOptionsSelect', function () {
+    $('.jitsi-wrapper').removeClass('clipped clippedOcta clippedHexa clippedHeth')
+    switch ($(this).val()) {
+      case 'square':
+        break;
+      case 'circle':
+        $('.jitsi-wrapper').addClass('clipped')
+        break;
+      case 'octa':
+        $('.jitsi-wrapper').addClass('clippedOcta')
+        break;
+      case 'hexa':
+        $('.jitsi-wrapper').addClass('clippedHexa')
+        break;
+      case 'heth':
+        $('.jitsi-wrapper').addClass('clippedHeth')
+        break;
+      default:
+        break;
+    }
+  });
+
+  var $callRange = $('<input class="callRange" type="range" min="0" max="100" value="90" />');
+  $callRange.appendTo($callContent);
+
+  $(document).on('change', '.callRange', function () {
+    changeCallWindowSize($(this).val())
+  });
+
+
+  var $callResetRange = $('<input class="callResetRange" type="button" value="reset size" />');
+  $callResetRange.appendTo($callContent);
+
+  $(document).on('click', '.callResetRange', function () {
+    var origSize = 90;
+    $('.callRange').val(origSize);
+    changeCallWindowSize(origSize);
+  });
+
+
+  function changeCallWindowSize(size) {
+    var dim = size;
+    var offset = (100 - dim) / 2
+    var newStyle = `width: ${dim}% !important; height: ${dim}% !important; top: ${offset}% !important; left: ${offset}% !important; `
+    $('.jitsi-wrapper').attr('style', newStyle);;
+  }
+
+
+  var $callButton = $(`<div class="callButton button" >Call</div>`);
+  $callButton.appendTo($callContent);
+
+  var $endcallButton = $(`<div class="endcallButton button" >End Call</div>`);
+  $endcallButton.appendTo($callContent);
+
+  $(document).on('click', '.callButton', function () {
+    $('.callWrapper').show().appendTo('.uploadImageHolder');
+  });
+
+  $(document).on('click', '.endcallButton', function () {
+    $('.callWrapper').hide().appendTo('.uploadImageHolder');
+  });
+
+  /**********************
+SAVE SESSION 
+***********************/
 
   var $focusTextSave = $(`<div class="focusTextSave" ></div>`);
   $focusTextSave.appendTo($videoChooserSection);
@@ -967,7 +1007,7 @@ jQuery(document).ready(function ($) {
       $energeticSections.appendTo($(starSelector));
 
       /*** Headers Row ***/
-      
+
       var $emotionHeaders = $('<div class="emotionHeaders"></div>');
       $emotionHeaders.appendTo($energeticSections);
 
@@ -998,7 +1038,7 @@ jQuery(document).ready(function ($) {
       }
 
       /*** Quantities Rows ***/
-      
+
       $(list).each((i, e) => {
         var $emotion = $('<div class="emotion"></div>');
         $emotion.appendTo($energeticSections);
@@ -1083,7 +1123,7 @@ jQuery(document).ready(function ($) {
     var x = cx;
     var y = cy;
     var step = Math.PI / spikes;
-    
+
     ctx.strokeSyle = "#000";
     ctx.beginPath();
     ctx.moveTo(cx, cy - outerRadius)
@@ -1115,17 +1155,17 @@ jQuery(document).ready(function ($) {
   function setDataFontSize() {
     var paddingCss = $('.quadrupole').css('padding-bottom').replace('px', '');
     var padding = parseInt(paddingCss);
-    console.log({paddingCss, padding})
-    $('.quadrupole').css('font-size', `${padding/9}px`);
+    console.log({ paddingCss, padding })
+    $('.quadrupole').css('font-size', `${padding / 9}px`);
 
     if (typeof isMobile !== 'undefined' && isMobile) {
       $('.videoChooserSection').css('margin', 'auto');
       $('.videoChooserSection').css('position', 'static');
     }
-    
+
   }
 
-  $( window ).on( "resize", function( event ) {
+  $(window).on("resize", function (event) {
     setDataFontSize()
   });
 
