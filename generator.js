@@ -243,6 +243,19 @@ jQuery(document).ready(function ($) {
   var $videoChooserContent = $('<div class="videoChooserContent chooserContent" ></div>');
   $videoChooserContent.appendTo($tab1);
 
+
+  var $loadOverlay = $('<div class="loadOverlay loading" ></div>');
+  $loadOverlay.appendTo($videoChooserContent);
+
+  var checkPlayerInverval = setInterval(checkPlayer, 400);
+
+  function checkPlayer() {
+    if (playersReady) {
+      $('.loadOverlay, .focusTextSave').removeClass('loading')
+      clearInterval(checkPlayerInverval);
+    }
+  }
+
   /* PYRAMID TOGGLE */
 
   togglePyramidView(false, true);
@@ -253,7 +266,7 @@ jQuery(document).ready(function ($) {
   var $piramidToggleCB = $('<input class="piramidVideoToggleCB piramidToggleCB" type="checkbox" />');
   $piramidToggleCB.appendTo($piramidToggle);
 
-  $(document).on('change', '.piramidVideoToggleCB', function () {
+  $(document).on('change', '.piramidVideoToggl.focusTextSaveeCB', function () {
     togglePyramidView($(this).is(':checked'), true);
   });
 
@@ -333,7 +346,7 @@ jQuery(document).ready(function ($) {
 
 
   var $videoControls = $('<div class="videoControls" ></div>');
-  $videoControls.appendTo($tab1);
+  $videoControls.appendTo($videoChooserContent);
 
   var $youtubeRemoveButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`);
   $youtubeRemoveButtonImage.appendTo($videoControls);
@@ -507,11 +520,11 @@ jQuery(document).ready(function ($) {
       json = e.target.result;
       jsonObject = JSON.parse(json);
       $('.focusText').html(jsonObject['Focus Text']);
-      $('.therapistImage').css('background-image', jsonObject.people.find(p => p.role == 'therapist').data);
-      $('.person1Image').css('background-image', jsonObject.people.find(p => p.role == 'person1').data);
-      $('.person2Image').css('background-image', jsonObject.people.find(p => p.role == 'person2').data);
-      $('.person3Image').css('background-image', jsonObject.people.find(p => p.role == 'person3').data);
-      $('.person4Image').css('background-image', jsonObject.people.find(p => p.role == 'person4').data);
+
+      $(jsonObject.people).each((i, p) => {
+        $(`.${p.role}Image`).css('background-image', p.data);
+      });
+
       $('.imageInnerDiv').css('background-image', jsonObject.imageData);
       if (typeof jsonObject.ImageCaption !== 'undefined') $(".captionText").html(jsonObject.ImageCaption);
       if (typeof jsonObject.qrngInterval !== 'undefined') changeQrngInterval(jsonObject.qrngInterval);
@@ -519,7 +532,10 @@ jQuery(document).ready(function ($) {
         $('.piramidToggleCB').prop('checked', jsonObject.isPyramid);
         togglePyramidView(jsonObject.isPyramid);
       }
-      if (typeof jsonObject.videoId !== 'undefined') changeVideo(jsonObject.videoId)
+      if (typeof jsonObject.videoId !== 'undefined') changeVideo(jsonObject.videoId);
+      if (typeof jsonObject.callClip !== 'undefined') $('.clipOptionsSelect').val(jsonObject.callClip).change();
+      if (typeof jsonObject.callClipSize !== 'undefined') $('.callRange').val(jsonObject.callClipSize).change();
+
     }
     reader.readAsText(ff);
   }
@@ -809,7 +825,7 @@ jQuery(document).ready(function ($) {
   var $clipOptionsSelect = $('<select class="clipOptionsSelect" ></select>');
   $clipOptionsSelect.appendTo($clipOptionsDiv);
 
-  var clipOptions = ['quad', 'circle', 'octa (hor)', 'octa (ver)', 'hexa (hor)', 'hexa (ver)', 'diamond', 'heth'];
+  var clipOptions = ['quad', 'circle', 'octa (hor)', 'octa (ver)', 'hexa (hor)', 'hexa (ver)', 'diamond', 'heth', 'star'];
 
   $(clipOptions).each(function (k, co) {
     var $clipOption = $(`<option value="${co}">${co}</option>`);
@@ -817,7 +833,7 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('change', '.clipOptionsSelect', function () {
-    $('.jitsi-wrapper').removeClass('clipped clippedOctaHor clippedOctaVer clippedHexaHor clippedHexaVer clippedHeth clippedDiamond')
+    $('.jitsi-wrapper').removeClass('clipped clippedOctaHor clippedOctaVer clippedHexaHor clippedHexaVer clippedHeth clippedDiamond clippedStar')
     switch ($(this).val()) {
       case 'square':
         break;
@@ -841,6 +857,9 @@ jQuery(document).ready(function ($) {
         break;
       case 'diamond':
         $('.jitsi-wrapper').addClass('clippedDiamond')
+        break;
+      case 'star':
+        $('.jitsi-wrapper').addClass('clippedStar')
         break;
       default:
         break;
@@ -873,7 +892,7 @@ jQuery(document).ready(function ($) {
   }
 
 
-  var $callButton = $(`<div class="callButton button" >Call</div>`);
+  var $callButton = $(`<div class="callButton button" >Start Call</div>`);
   $callButton.appendTo($callContent);
 
   var $endcallButton = $(`<div class="endcallButton button" >End Call</div>`);
@@ -891,7 +910,7 @@ jQuery(document).ready(function ($) {
 SAVE SESSION 
 ***********************/
 
-  var $focusTextSave = $(`<div class="focusTextSave" ></div>`);
+  var $focusTextSave = $(`<div class="focusTextSave loading" ></div>`);
   $focusTextSave.appendTo($videoChooserSection);
 
   var $focusTextSaveButton = $('<input class="focusTextSaveButton button"  type="button" value="Save Session"  />');
@@ -955,7 +974,10 @@ SAVE SESSION
         { role: 'person6', data: $('.person6Image').css('background-image') }
       ],
       qrngInterval: currentDisplayInterval,
-      isPyramid: $('.piramidToggleCB').is(':checked')
+      isPyramid: $('.piramidToggleCB').is(':checked'),
+      callClip: $('.clipOptionsSelect').val(),
+      callClipSize: $('.callRange').val(),
+
     };
 
     fileName = `${year}_${month}_${day}_${focusText}`;
@@ -1164,7 +1186,6 @@ SAVE SESSION
   function setDataFontSize() {
     var paddingCss = $('.quadrupole').css('padding-bottom').replace('px', '');
     var padding = parseInt(paddingCss);
-    console.log({ paddingCss, padding })
     $('.quadrupole').css('font-size', `${padding / 9}px`);
 
     if (typeof isMobile !== 'undefined' && isMobile) {
