@@ -266,7 +266,8 @@ jQuery(document).ready(function ($) {
   var $piramidToggleCB = $('<input class="piramidVideoToggleCB piramidToggleCB" type="checkbox" />');
   $piramidToggleCB.appendTo($piramidToggle);
 
-  $(document).on('change', '.piramidVideoToggl.focusTextSaveeCB', function () {
+  $(document).on('change', '.piramidVideoToggleCB', function () {
+    $('.piramidToggleCB').prop( "checked", $(this).is(':checked'));
     togglePyramidView($(this).is(':checked'), true);
   });
 
@@ -387,7 +388,9 @@ jQuery(document).ready(function ($) {
     $('.youtubePlayButtonImage').hide();
     $('.youtubePauseButtonImage').show();
     $(players).each((i, p) => p.stopVideo());
-    $(getActivePlayers()).each((i, p) => p.setVolume($('.videoVolume').val()).playVideo().setPlaybackQuality("small"))
+    var activePlayers = getActivePlayers();
+    $(activePlayers).each((i, p) => p.setVolume($('.videoVolume').val()).playVideo().setPlaybackQuality("small").mute())
+    activePlayers[0].unMute();
     $('.videoBackground, .video-container').removeClass('hidden-container');
   }
 
@@ -398,7 +401,7 @@ jQuery(document).ready(function ($) {
   }
 
   function getActivePlayers() {
-    return ($('.piramidVideoToggleCB').is(':checked')) ? players.slice(0, 4) : players.slice(4, 5);
+    return ($('.piramidToggleCB').is(':checked')) ? players.slice(0, 4) : players.slice(4, 5);
   }
 
   var $videoVolumeInput = $('<input type="range" value="10" class="videoVolume" />');
@@ -809,7 +812,8 @@ jQuery(document).ready(function ($) {
   $piramidToggleCB.appendTo($piramidToggle);
 
   $(document).on('change', '.piramidCallToggleCB', function () {
-    togglePyramidView($(this).is(':checked'), false);
+    $('.piramidToggleCB').prop( "checked", $(this).is(':checked'));
+    togglePyramidView($(this).is(':checked'), true);
   });
 
   var $piramidToggleText = $('<div class="piramidCallToggleText piramidToggleText" >Pyramid View</div>');
