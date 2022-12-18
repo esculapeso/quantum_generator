@@ -319,15 +319,21 @@ jQuery(document).ready(function ($) {
     $videoOption.appendTo($videoSelect);
   });
 
-  var $customVideoText = $('<div id="customVideoText" >Custom Video Id</div>');
+  var $customVideoText = $('<div id="customVideoText" >YouTube Video Link</div>');
   $customVideoText.appendTo($videoChooserContent);
 
   var $customVideoInput = $('<input class="customVideoInput" type="text" />');
   $customVideoInput.appendTo($videoChooserContent);
 
   $(document).on('change', '.customVideoInput', function () {
-    changeVideo($(this).val())
+    changeVideo(youtube_parser($(this).val()))
   });
+
+  function youtube_parser(url){
+    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    var match = url.match(regExp);
+    return (match&&match[7].length==11)? match[7] : false;
+ }
 
   $(document).on('mouseover', '.videoThumb', function () {
     $(".videoCaption").html($(this).attr('videoname'))
