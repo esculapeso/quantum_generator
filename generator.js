@@ -829,6 +829,11 @@ jQuery(document).ready(function ($) {
   var $clipOptionsSelect = $('<select class="clipOptionsSelect" ></select>');
   $clipOptionsSelect.appendTo($clipOptionsDiv);
 
+
+  /*  Call window clipped 
+  paths generated at: https://bennettfeely.com/clippy/
+  */
+
   var clipOptions = ['quad', 'circle', 'octa (hor)', 'octa (ver)', 'hexa (hor)', 'hexa (ver)', 'diamond', 'heth', 'star'];
 
   $(clipOptions).each(function (k, co) {
@@ -837,12 +842,12 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('change', '.clipOptionsSelect', function () {
-    $('.jitsi-wrapper').removeClass('clipped clippedOctaHor clippedOctaVer clippedHexaHor clippedHexaVer clippedHeth clippedDiamond clippedStar')
+    $('.jitsi-wrapper').removeClass('clippedCircle clippedOctaHor clippedOctaVer clippedHexaHor clippedHexaVer clippedHeth clippedDiamond clippedStar')
     switch ($(this).val()) {
       case 'square':
         break;
       case 'circle':
-        $('.jitsi-wrapper').addClass('clipped')
+        $('.jitsi-wrapper').addClass('clippedCircle')
         break;
       case 'octa (hor)':
         $('.jitsi-wrapper').addClass('clippedOctaHor')

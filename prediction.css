@@ -755,7 +755,7 @@ img.videoOverlay {
     left: 5%;
   }
 
-  .jitsi-wrapper.clipped {
+  .jitsi-wrapper.clippedCircle {
     clip-path: circle(50%) !important;
   }
 
