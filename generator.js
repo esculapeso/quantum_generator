@@ -822,23 +822,23 @@ jQuery(document).ready(function ($) {
     togglePyramidView($(this).is(':checked'), true);
   });
 
-  var $piramidToggleText = $('<div class="piramidCallToggleText piramidToggleText" >Pyramid View</div>');
+  var $piramidToggleText = $('<div class="piramidCallToggleText piramidToggleText cbText" >Pyramid View</div>');
   $piramidToggleText.appendTo($piramidToggle);
 
   $(document).on('click', '.piramidCallToggleText', function () {
     $('.piramidCallToggleCB').click();
   });
 
+
+  /*  Call window clipped 
+  paths generated at: https://bennettfeely.com/clippy/
+  */
+
   var $clipOptionsDiv = $(`<div class="clipOptionsDiv" ></div>`);
   $clipOptionsDiv.appendTo($callContent);
 
   var $clipOptionsSelect = $('<select class="clipOptionsSelect" ></select>');
   $clipOptionsSelect.appendTo($clipOptionsDiv);
-
-
-  /*  Call window clipped 
-  paths generated at: https://bennettfeely.com/clippy/
-  */
 
   var clipOptions = ['quad', 'circle', 'octa (hor)', 'octa (ver)', 'hexa (hor)', 'hexa (ver)', 'diamond', 'heth', 'star'];
 
@@ -884,7 +884,7 @@ jQuery(document).ready(function ($) {
   var $callRange = $('<input class="callRange" type="range" min="0" max="100" value="90" />');
   $callRange.appendTo($callContent);
 
-  $(document).on('change', '.callRange', function () {
+  $(document).on('change mousemove', '.callRange', function () {
     changeCallWindowSize($(this).val())
   });
 
@@ -898,6 +898,25 @@ jQuery(document).ready(function ($) {
     changeCallWindowSize(origSize);
   });
 
+
+  // Call window animated toggle
+
+  var $animateCallDiv = $('<div class="animateCallDiv" ></div>');
+  $animateCallDiv.appendTo($callContent);
+
+  var $animateCallWindowCB = $('<input class="animateCallWindowCB" type="checkbox" />');
+  $animateCallWindowCB.appendTo($animateCallDiv);
+
+  $(document).on('change', '.animateCallWindowCB', function () {
+    $('.jitsi-wrapper').toggleClass('animated', $(this).is(':checked'));
+  });
+
+  var $animateCallWindowText = $('<div class="animateCallWindowText cbText" >Animate Call Window</div>');
+  $animateCallWindowText.appendTo($animateCallDiv);
+
+  $(document).on('click', '.animateCallWindowText', function () {
+    $('.animateCallWindowCB').click();
+  });
 
   function changeCallWindowSize(size) {
     var dim = size;

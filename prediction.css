@@ -693,7 +693,7 @@ img.videoOverlay {
   margin-bottom: 10px;
 }
 
-.piramidToggleText {
+.cbText {
   display: inline-block;
   margin-left: 5px;
   vertical-align: text-bottom;
@@ -791,6 +791,19 @@ img.videoOverlay {
   .jitsi-wrapper iframe {
     width: 100% !important;
     height: 100% !important;
+  }
+
+  .jitsi-wrapper.animated {
+    animation: pulse 0.79s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulse {
+    0% {
+        transform: scale(1.0);
+    }
+    100% {
+        transform: scale(1.1);
+    }
   }
 
   .extra-message {
