@@ -848,4 +848,15 @@ img.videoOverlay {
     cursor: unset;
   }
 
+  .affFlags {
+    margin: 10px 0;
+  }
+
+  .affFlag {
+    display: inline-block;
+    width: 25px;
+    margin-right: 5px;
+    cursor: pointer;
+  }
+
 }

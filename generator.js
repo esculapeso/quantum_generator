@@ -149,7 +149,7 @@ jQuery(document).ready(function ($) {
   var $imageInnerDiv = $('<div class="imageInnerDiv fullView" ></div>');
   $imageInnerDiv.appendTo($imageDiv);
 
-
+  
   var $videoChooserSection = $('<div class="videoChooserSection" ></div>');
   $videoChooserSection.appendTo($quadrupolePanel);
 
@@ -267,7 +267,7 @@ jQuery(document).ready(function ($) {
   $piramidToggleCB.appendTo($piramidToggle);
 
   $(document).on('change', '.piramidVideoToggleCB', function () {
-    $('.piramidToggleCB').prop( "checked", $(this).is(':checked'));
+    $('.piramidToggleCB').prop("checked", $(this).is(':checked'));
     togglePyramidView($(this).is(':checked'), true);
   });
 
@@ -329,11 +329,11 @@ jQuery(document).ready(function ($) {
     changeVideo(youtube_parser($(this).val()))
   });
 
-  function youtube_parser(url){
+  function youtube_parser(url) {
     var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
     var match = url.match(regExp);
-    return (match&&match[7].length==11)? match[7] : false;
- }
+    return (match && match[7].length == 11) ? match[7] : false;
+  }
 
   $(document).on('mouseover', '.videoThumb', function () {
     $(".videoCaption").html($(this).attr('videoname'))
@@ -427,12 +427,65 @@ jQuery(document).ready(function ($) {
   var $focusCaption = $(`<div class="focusCaption tabHeader" >${selectFocusMessage}</div>`);
   $focusCaption.appendTo($tab2);
 
+  var $focusContent = $(`<div class="focusContent" ></div>`);
+  $focusContent.appendTo($tab2);
+
   var $focusTextTextBox = $(`<input class="focusTextTextBox" type="text" value="${initFocusText}" />`);
-  $focusTextTextBox.appendTo($tab2);
+  $focusTextTextBox.appendTo($focusContent);
 
   $(document).on('input', '.focusTextTextBox', function () {
     $(".focusText").html($(this).val());
   });
+
+  var selectedLang;
+  var langs = ['GB', 'PL', 'PT', 'DE', 'DK'];
+
+  var $affFlags = $(`<div class="affFlags" ></div>`);
+  $affFlags.appendTo($focusContent);
+
+  $(langs).each((i, l) => {
+
+    var flagUrl = `https://purecatamphetamine.github.io/country-flag-icons/3x2/${l}.svg`;
+    var $affFlag = $(`<img class="affFlag" lang="${l}" src="${flagUrl}" />`);
+    $affFlag.appendTo($affFlags);
+
+  })
+
+  $(document).on('click', '.affFlag', function () {
+    selectedLang = $(this).prop('lang');
+  });
+
+  var $affInsert = $(`<input type="text" class="affInsert" />`);
+  $affInsert.appendTo($focusContent);
+
+  var $affStartButton = $(`<input type="button" class="affStartButton" value="say" />`);
+  $affStartButton.appendTo($focusContent);
+
+  var msg = new SpeechSynthesisUtterance();
+  const synth = window.speechSynthesis;
+  var isPlaying = false;
+
+  $(document).on('click', '.affStartButton', function () {
+    msg.text = $('.affInsert').val();
+    msg.rate = 0.8;
+    msg.lang = selectedLang;
+    console.log({ msg })
+    synth.speak(msg);
+    isPlaying = true;
+
+    msg.onend = (event) => {
+      if (isPlaying) synth.speak(event.utterance);
+    }
+  });
+
+  var $affStopButton = $(`<input type="button" class="affStopButton" value="stop" />`);
+  $affStopButton.appendTo($focusContent);
+
+  $(document).on('click', '.affStopButton', function () {
+    synth.cancel();
+    isPlaying = false;
+  });
+
 
   /**********************
           IMAGES 
@@ -460,9 +513,9 @@ jQuery(document).ready(function ($) {
   var $uploadImageHiddenButton = $('<input class="uploadImageHiddenButton" type="file" style="display: none;" />');
   $uploadImageHiddenButton.appendTo($imageButtons);
 
-  $(document).on('click', '.uploadImageButton, .imageInnerDiv', function () {
-    $(".uploadImageHiddenButton").click();
-  });
+  // $(document).on('click', '.uploadImageButton, .imageInnerDiv', function () {
+  //   $(".uploadImageHiddenButton").click();
+  // });
 
   var focusImages = imagesForFocus;
 
@@ -501,11 +554,21 @@ jQuery(document).ready(function ($) {
         var fileNameSplit = ff.name.split('.')
         fileExt = fileNameSplit[fileNameSplit.length - 1]
 
-        if (fileExt == 'json') {
-          readJSON(ff);
-        } else {
-          readImage(ff, targetImageSelector);
+        switch (fileExt) {
+          case 'json':
+            readJSON(ff);
+            break;
+          case 'txt':
+            read3D(ff, targetImageSelector);
+            break;
+          case 'glb':
+            read3D(ff, targetImageSelector);
+            break;
+          default:
+            readImage(ff, targetImageSelector);
+            break;
         }
+
 
       });
 
@@ -513,6 +576,26 @@ jQuery(document).ready(function ($) {
       $this[0].value = '';
       return retVal;
     }
+  }
+
+  function read3D(ff, targetImageSelector) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      var modelHolder = `<model-viewer
+      alt="Avocado!"
+      src="${e.target.result}"
+      style="width: 100%; height: 100%;"
+      poster="https://assets.website-files.com/5c013e2442f37ff004567ee6/5c02ae2174a7d618520578bb_wf-avocado-loading.jpg"
+      background-color="transparent"
+      preload
+      reveal-when-loaded
+      auto-rotate
+      controls
+    ></model-viewer>`
+      $(targetImageSelector).html(modelHolder);
+    }
+    reader.readAsDataURL(ff)
   }
 
   function readImage(ff, targetImageSelector) {
@@ -799,9 +882,9 @@ jQuery(document).ready(function ($) {
     if (!isSoundModulation) $(players).each((i, p) => p.unMute());
   });
 
-  /**********************
-        CALL 
-***********************/
+  /********************
+          CALL 
+  ********************/
 
   var $tab7 = $("#tabs-7");
 
@@ -818,7 +901,7 @@ jQuery(document).ready(function ($) {
   $piramidToggleCB.appendTo($piramidToggle);
 
   $(document).on('change', '.piramidCallToggleCB', function () {
-    $('.piramidToggleCB').prop( "checked", $(this).is(':checked'));
+    $('.piramidToggleCB').prop("checked", $(this).is(':checked'));
     togglePyramidView($(this).is(':checked'), true);
   });
 
@@ -940,9 +1023,10 @@ jQuery(document).ready(function ($) {
     $('.callWrapper').hide().appendTo('.uploadImageHolder');
   });
 
-  /**********************
-SAVE SESSION 
-***********************/
+
+  /********************
+      SAVE SESSION 
+  ********************/
 
   var $focusTextSave = $(`<div class="focusTextSave loading" ></div>`);
   $focusTextSave.appendTo($videoChooserSection);
