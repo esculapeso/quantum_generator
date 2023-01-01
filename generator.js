@@ -112,7 +112,8 @@ jQuery(document).ready(function ($) {
       //conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       $('.page-content, .panel-content').css('background', gradient);
 
-      for (var n = 0; n < generatorsNumber; ++n) {
+      var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4; 
+      for (var n = 0; n < genCount; ++n) {
         printHex(document.getElementById('generator' + n), 'afterbegin', index);
       }
 
@@ -131,7 +132,8 @@ jQuery(document).ready(function ($) {
   var $quadGenerator = $('<div class="quadGenerator" ></div>');
   $quadGenerator.appendTo(header);
 
-  for (var n = 0; n < generatorsNumber; ++n) {
+  var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4; 
+  for (var n = 0; n < genCount; ++n) {
     appendDataHolder($quadGenerator, "generator" + n, "quadrupole")
   }
 
@@ -149,7 +151,7 @@ jQuery(document).ready(function ($) {
   var $imageInnerDiv = $('<div class="imageInnerDiv fullView" ></div>');
   $imageInnerDiv.appendTo($imageDiv);
 
-  
+
   var $videoChooserSection = $('<div class="videoChooserSection" ></div>');
   $videoChooserSection.appendTo($quadrupolePanel);
 
@@ -283,7 +285,7 @@ jQuery(document).ready(function ($) {
       $('.fullView').hide();
       $('.pyramidView').show();
       $('.quadGenerator').css('width', '100vh').css('height', '100vh');
-      $('.quadrupoleImage').css('width', '166vh').css('background-image', `url(https://esculap.org/wp-content/uploads/2022/12/TherapistImage.png)`);
+      $('.quadrupoleImage').css('width', '166vh').attr('style', `width: 166vh; background-image: url(https://esculap.org/wp-content/uploads/2022/12/TherapistImage.png) !important`);
       $('.personImage, .therapistImage, .generatorText').addClass('pyramidPerson')
     } else {
       $('.fullView').show();
@@ -513,14 +515,14 @@ jQuery(document).ready(function ($) {
   var $uploadImageHiddenButton = $('<input class="uploadImageHiddenButton" type="file" style="display: none;" />');
   $uploadImageHiddenButton.appendTo($imageButtons);
 
-  // $(document).on('click', '.uploadImageButton, .imageInnerDiv', function () {
-  //   $(".uploadImageHiddenButton").click();
-  // });
+  $(document).on('click', '.uploadImageButton', function () {
+    $(".uploadImageHiddenButton").click();
+  });
 
   var focusImages = imagesForFocus;
 
   $(focusImages).each(function (k, fi) {
-    var $imageDiv = $('<div class="uploadImageExample" src="" ></div>');
+    var $imageDiv = $(`<div class="uploadImageExample" text="${fi.text}" src="" ></div>`);
     $imageDiv.appendTo($tab3);
 
     var $image = $(`<img class="uploadedImage" src="${fi.filepath}" />`);
@@ -533,7 +535,7 @@ jQuery(document).ready(function ($) {
   $(document).on('click', '.uploadImageExample', function () {
     var imagePath = $(this).find(".uploadedImage").attr('src');
     $(".imageInnerDiv").css('background-image', `url("${imagePath})`);
-    $(".captionText").html($(this).find(".uploadImageCaption").html());
+    $(".captionText").html($(this).attr("text"));
   });
 
   //var myFile = $('.uploadImageButton').prop('files');
@@ -581,12 +583,17 @@ jQuery(document).ready(function ($) {
   function read3D(ff, targetImageSelector) {
     var reader = new FileReader();
 
+
+
     reader.onload = function (e) {
+      // var source = "https://storage.cloud.google.com/threedimodels/jesus_statues.glb"; 
+      // var source = e.target.result
+      var source = "https://raw.githubusercontent.com/esculapeso/3dmodels/main/jesus_statues.glb"
       var modelHolder = `<model-viewer
       alt="Avocado!"
-      src="${e.target.result}"
+      src="${source}"
       style="width: 100%; height: 100%;"
-      poster="https://assets.website-files.com/5c013e2442f37ff004567ee6/5c02ae2174a7d618520578bb_wf-avocado-loading.jpg"
+      poster="https://esculap.org/wp-content/uploads/2022/12/animateddna.webp"
       background-color="transparent"
       preload
       reveal-when-loaded
@@ -1021,6 +1028,98 @@ jQuery(document).ready(function ($) {
 
   $(document).on('click', '.endcallButton', function () {
     $('.callWrapper').hide().appendTo('.uploadImageHolder');
+  });
+
+
+  /********************
+        OM REIKI 
+  ********************/
+
+  var $tab8 = $("#tabs-8");
+
+  var $omreikiCaption = $(`<div class="omreikiCaption tabHeader" >~~ Om Reiki Settings ~~</div>`);
+  $omreikiCaption.appendTo($tab8);
+
+  var $omreikiContent = $(`<div class="omreikiContent" ></div>`);
+  $omreikiContent.appendTo($tab8);
+
+  var $omreikiAffTextbox = $(`<textarea class="omreikiAffTextbox" rows="8" cols="30" >
+    Persistent Pussy GSpot\nClitorismus Sex Orgasms Syndrome</textarea>`);
+  $omreikiAffTextbox.appendTo($omreikiContent);
+
+  $(document).on('load', '.omreikiAffTextbox', function () {
+    $(".imageInnerDiv").html($(this).val());
+  });
+
+  $(document).on('input', '.omreikiAffTextbox', function () {
+    $(".imageInnerDiv").html($(this).val());
+  });
+
+  var $omreikiAffCount = $(`<input type="number" class="omreikiAffCount" value="8" />`);
+  $omreikiAffCount.appendTo($omreikiContent);
+
+  var $omreikiAffStartButton = $(`<input type="button" class="omreikiAffStartButton" value="Start" />`);
+  $omreikiAffStartButton.appendTo($omreikiContent);
+
+  var msgOm = new SpeechSynthesisUtterance();
+  const synthOm = window.speechSynthesis;
+  var isPlaying = false;
+
+  $(document).on('click', '.omreikiAffStartButton', function () {
+    var repeatCount = $('.omreikiAffCount').val();
+
+    $(".imageInnerDiv").html($('.omreikiAffTextbox').val());
+    msgOm.text = $('.omreikiAffTextbox').val();
+    msgOm.rate = 0.8;
+    synth.speak(msgOm);
+    isPlaying = true;
+
+    msgOm.onend = (event) => {
+
+      if (isPlaying) {
+        repeatCount--;
+        if (repeatCount > 0) {
+          synthOm.speak(event.utterance);
+        } else {
+          //show symbols
+          // $(".imageInnerDiv").html('');
+          // $(".imageInnerDiv").css('background-image', 'url("https://omreiki.uk/wp-content/uploads/2022/07/chokurei.gif)"');
+
+          // var ckrUtt = new SpeechSynthesisUtterance();
+          // ckrUtt.text = 'Cho, Ku, Rey. Cho, Ku, Rey. Cho, Ku, Rey.';
+          // ckrUtt.rate = 0.75;
+          // synthOm.speak(ckrUtt);
+
+          // ckrUtt.onend = (event) => {
+          // $(".imageInnerDiv").css('background-image', 'url("https://omreiki.uk/wp-content/uploads/2022/07/seiheki.gif)"');
+          $(".imageInnerDiv").html('');
+          $(".imageInnerDiv").css('background-image', 'url("https://omreiki.uk/wp-content/uploads/2022/12/linga.gif)"');
+
+          var shkUtt = new SpeechSynthesisUtterance();
+          // shkUtt.text = 'Say, hay, Ki. Say, hay, Ki. Say, hay, Ki.';
+          shkUtt.text = 'linga. linga. linga. linga. linga. linga. linga. linga. ';
+          shkUtt.rate = 0.1;
+          synthOm.speak(shkUtt);
+
+          shkUtt.onend = (event) => {
+            $(".imageInnerDiv").html($('.omreikiAffTextbox').val());
+            $(".imageInnerDiv").css('background-image', '');
+            repeatCount = $('.omreikiAffCount').val();
+
+            synthOm.speak(msgOm);
+          }
+          // }
+        }
+      }
+    }
+  });
+
+  var $affStopButton = $(`<input type="button" class="affStopButton" value="stop" />`);
+  $affStopButton.appendTo($omreikiContent);
+
+  $(document).on('click', '.affStopButton', function () {
+    synthOm.cancel();
+    isPlaying = false;
   });
 
 
