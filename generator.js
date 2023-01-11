@@ -112,7 +112,7 @@ jQuery(document).ready(function ($) {
       //conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       $('.page-content, .panel-content').css('background', gradient);
 
-      var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4; 
+      var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4;
       for (var n = 0; n < genCount; ++n) {
         printHex(document.getElementById('generator' + n), 'afterbegin', index);
       }
@@ -132,7 +132,7 @@ jQuery(document).ready(function ($) {
   var $quadGenerator = $('<div class="quadGenerator" ></div>');
   $quadGenerator.appendTo(header);
 
-  var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4; 
+  var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4;
   for (var n = 0; n < genCount; ++n) {
     appendDataHolder($quadGenerator, "generator" + n, "quadrupole")
   }
@@ -519,23 +519,71 @@ jQuery(document).ready(function ($) {
     $(".uploadImageHiddenButton").click();
   });
 
+  var $urlImageButton = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/uploadButtons.png" class="urlImageButton redButton" />`);
+  $urlImageButton.appendTo($imageButtons);
+
+  var $urlImageTextbox = $('<input class="urlImageTextbox" type="text" />');
+  $urlImageTextbox.appendTo($imageButtons);
+
+  $(document).on('click', '.imageButtons', function () {
+    $('.modelviewer3d').attr('src', $('.urlImageTextbox').val())
+  });
+
   var focusImages = imagesForFocus;
 
   $(focusImages).each(function (k, fi) {
-    var $imageDiv = $(`<div class="uploadImageExample" text="${fi.text}" src="" ></div>`);
+
+    var is3D = fi.filepath.includes('.glb');
+
+    var $imageDiv = $(`<div class="uploadImageExample" text="${fi.text}" src="" ${is3D?'is3d':''} ></div>`);
     $imageDiv.appendTo($tab3);
 
-    var $image = $(`<img class="uploadedImage" src="${fi.filepath}" />`);
-    $image.appendTo($imageDiv);
-
+    if (is3D) {
+      var $modelHolder = $(`<model-viewer
+      class="modelviewer3d"
+      src="${fi.preview}"
+      style="width: 100%; height: 100%;"
+      poster="https://esculap.org/wp-content/uploads/2022/12/animateddna.webp"
+      target="${fi.filepath}"
+      background-color="transparent"
+      preload
+      reveal-when-loaded
+      auto-rotate
+      controls
+      ></model-viewer>`)
+      $modelHolder.appendTo($imageDiv);
+    } else {
+      var $image = $(`<img class="uploadedImage" src="${fi.filepath}" />`);
+      $image.appendTo($imageDiv);
+    }
+      
     var $caption = $(`<div class="uploadImageCaption" >${fi.caption}</div>`);
     $caption.appendTo($imageDiv);
   });
 
   $(document).on('click', '.uploadImageExample', function () {
-    var imagePath = $(this).find(".uploadedImage").attr('src');
-    $(".imageInnerDiv").css('background-image', `url("${imagePath})`);
-    $(".captionText").html($(this).attr("text"));
+
+    clearImageFocus(".imageInnerDiv");
+    
+    if ($(this).is("[is3d]")) {
+      var source = $(this).find('model-viewer').attr('target');
+      var modelHolder = `<model-viewer
+      class="modelviewer3d"
+      src="${source}"
+      style="width: 100%; height: 100%;"
+      poster="https://esculap.org/wp-content/uploads/2022/12/animateddna.webp"
+      background-color="transparent"
+      preload
+      reveal-when-loaded
+      auto-rotate
+      controls
+      ></model-viewer>`
+      $(".imageInnerDiv").html(modelHolder)
+    } else {
+      var imagePath = $(this).find(".uploadedImage").attr('src');
+      $(".imageInnerDiv").css('background-image', `url("${imagePath})`);
+      $(".captionText").html($(this).attr("text"));
+    }
   });
 
   //var myFile = $('.uploadImageButton').prop('files');
@@ -545,6 +593,7 @@ jQuery(document).ready(function ($) {
   });
 
   function uploadImage(targetImageSelector, $this) {
+    clearImageFocus(targetImageSelector);
     var files = $this.prop('files');
     if (files && files[0]) { // got sth
 
@@ -580,26 +629,27 @@ jQuery(document).ready(function ($) {
     }
   }
 
+  function clearImageFocus(targetImageSelector) {
+    $(targetImageSelector).css('background-image', ``);
+    $(targetImageSelector).find('.modelviewer3d').attr('src', `https://raw.githubusercontent.com/esculapeso/3dmodels/main/empty.glb`)
+  }
+
   function read3D(ff, targetImageSelector) {
     var reader = new FileReader();
 
-
-
     reader.onload = function (e) {
-      // var source = "https://storage.cloud.google.com/threedimodels/jesus_statues.glb"; 
-      // var source = e.target.result
-      var source = "https://raw.githubusercontent.com/esculapeso/3dmodels/main/jesus_statues.glb"
+      var source = e.target.result
       var modelHolder = `<model-viewer
-      alt="Avocado!"
-      src="${source}"
-      style="width: 100%; height: 100%;"
-      poster="https://esculap.org/wp-content/uploads/2022/12/animateddna.webp"
-      background-color="transparent"
-      preload
-      reveal-when-loaded
-      auto-rotate
-      controls
-    ></model-viewer>`
+        class="modelviewer3d"
+        src="${source}"
+        style="width: 100%; height: 100%;"
+        poster="https://esculap.org/wp-content/uploads/2022/12/animateddna.webp"
+        background-color="transparent"
+        preload
+        reveal-when-loaded
+        auto-rotate
+        controls
+      ></model-viewer>`
       $(targetImageSelector).html(modelHolder);
     }
     reader.readAsDataURL(ff)
