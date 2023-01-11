@@ -260,8 +260,12 @@ End of comment */
   margin-right: 5px;
 }
 
+.uploadImageExample {
+  height: 90px;
+}
+
 .uploadImageExample .uploadedImage {
-  height: 90px !important;
+  height: 100% !important;
 }
 
 .uploadImageExample .uploadImageCaption {
