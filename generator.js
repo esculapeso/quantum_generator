@@ -404,7 +404,11 @@ jQuery(document).ready(function ($) {
     $('.videoBackground, .video-container').removeClass('hidden-container');
   }
 
-  function changeVideo(newVideoId) {
+  function changeVideo(newVideoId, originalRatio) {
+
+    $('.video-container iframe').toggleClass('originalRatio', originalRatio)
+    $(".imageInnerDiv").removeClass('psalmCover')
+
     if (!playersReady) return;
     $(players).each((i, p) => p.loadVideoById(newVideoId).stopVideo());
     startFocusVideo();
@@ -473,7 +477,6 @@ jQuery(document).ready(function ($) {
     msg.text = $('.affInsert').val();
     msg.rate = 0.8;
     msg.lang = selectedLang;
-    console.log({ msg })
     synth.speak(msg);
     isPlaying = true;
 
@@ -675,9 +678,6 @@ jQuery(document).ready(function ($) {
   }
 
   function checkParamValue(param) {
-    console.log(typeof param !== 'undefined')
-    console.log(param)
-    console.log(typeof param !== 'undefined' && param)
     return typeof param !== 'undefined' && param;
   }
 
@@ -1164,6 +1164,98 @@ jQuery(document).ready(function ($) {
     synthOm.cancel();
     isPlaying = false;
   });
+
+
+  /**********************
+          PSALMS
+  ***********************/
+
+  var isSoundModulation = 0;
+
+  var $tab9 = $("#tabs-9");
+
+  var $psalmsaption = $(`<div class="psalmsaption tabHeader" >~~ Psalms Settings ~~</div>`);
+  $psalmsaption.appendTo($tab9);
+
+  var $psalmsContent = $(`<div class="psalmsContent" ></div>`);
+  $psalmsContent.appendTo($tab9);
+
+  var $psalmLangs = $(`<div class="psalmLangs"></div>`);
+  $psalmLangs.appendTo($psalmsContent);
+
+  var $psalmList = $(`<div class="psalmList"></div>`);
+  $psalmList.appendTo($psalmsContent);
+
+  let selectedPsalmsLang = '';
+
+  $(psalmVideo).each((i, set) => {
+    var $psalmLang = $(`<div class="psalmLang" lang="${set.lang}">${set.lang}</div>`);
+    $psalmLang.appendTo($psalmLangs);
+  })
+
+  $(document).on('click', '.psalmLang', function () {
+    selectedPsalmsLang = $(this).attr('lang');
+
+    $('.psalmLang').removeClass('selected');
+    $(this).addClass('selected');
+
+    let psalms = psalmVideo.find(e => e.lang == selectedPsalmsLang)
+
+    $psalmList.empty();
+    $(psalms.psalms).each((i, p) => {
+      var number = p.name.replace('Psalm ', '')
+      var $psalm = $(`<div class="psalm" number="${number}" lang="${selectedPsalmsLang}">${number}</div>`);
+      $psalm.appendTo($psalmList);
+    })
+  });
+
+
+  var $psalmText = $(`<div class="psalmText" selectedIndex="" ></div>`);
+  $psalmText.appendTo($psalmsContent);
+
+  $(document).on('mouseenter', '.psalm', function () {
+    let number = $(this).attr('number');
+    let psalms = psalmVideo.find(e => e.lang == selectedPsalmsLang)
+    let psalm = psalms.psalms.find(p => p.name == "Psalm " + number);
+    previewPsalm(psalm);
+  });
+
+  $(document).on('mouseleave', '.psalm', function () {
+    let selectedIndex = $(".psalmText").attr('selectedIndex');
+    if (selectedIndex) {
+      let psalms = psalmVideo.find(e => e.lang == selectedPsalmsLang)
+      let psalm = psalms.psalms.find(p => p.name == "Psalm " + selectedIndex);
+      previewPsalm(psalm);
+    } else {
+      $(".psalmText").html('');
+    }
+  });
+
+  $(document).on('click', '.psalm', function () {
+    let number = $(this).attr('number');
+
+    let psalms = psalmVideo.find(e => e.lang == selectedPsalmsLang)
+    let psalm = psalms.psalms.find(p => p.name == "Psalm " + number);
+
+    $('.psalm').removeClass('selected');
+    $(this).addClass('selected');
+
+    $(".psalmText").attr('selectedIndex', number).html(psalm.text);
+
+    clearImageFocus();
+    changeVideo(psalm.youtube, true)
+    $(".imageInnerDiv").addClass('psalmCover').html(psalm.name);
+
+  });
+
+  function previewPsalm(psalm) {
+    let psalmPreview = `
+      <h3>${psalm.name} [${selectedPsalmsLang}]</h3>
+      <div class="wiki"><a target="_blank" href="https://${selectedPsalmsLang.split('_')[0]}.wikipedia.org/wiki/Psalm_${psalm.name.replace('Psalm ', '')}">Wiki</a></div>
+      <div>${psalm.text ?? ''}</div>
+    `
+    $(".psalmText").html(psalmPreview);
+  }
 
 
   /********************

@@ -865,3 +865,49 @@ img.videoOverlay {
   }
 
 }
+
+.psalmCover {
+	opacity: 0;
+}
+
+.fullView.psalmCover {
+  opacity: 1;
+  color: rgb(80, 48, 0);
+  font-weight: bold;
+  text-align: center;
+  line-height: 4;
+}
+
+.video-container iframe.originalRatio {
+	width: 100% !important;
+	height: 56.25% !important;
+}
+
+.pyramidView iframe.originalRatio {
+	width: 100% !important;
+	height: 180% !important;
+}
+
+.psalmLang, .psalm {
+	text-decoration: underline;
+	cursor: pointer;
+	margin-right: 10px;
+	display: inline-block;
+}
+
+.psalmLang.selected, .psalm.selected {
+	font-weight: bold;
+}
+
+.videoChooserSection {
+	z-index: 100;
+}
+
+#tabs {
+	background: #ffd8bc;
+}
+
+.psalmText .wiki {
+	text-decoration: underline;
+	margin-bottom: 10px;
+}
