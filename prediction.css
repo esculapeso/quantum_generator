@@ -877,6 +877,13 @@ img.videoOverlay {
 
 }
 
+
+.ui-tooltip {
+  background: #ff9b51 !important;
+  border: 1px solid #5c152f !important;
+  max-width: 500px !important;
+}
+
 .psalmCover {
 	opacity: 0;
 }
@@ -916,4 +923,20 @@ img.videoOverlay {
 .psalmText .psalmTitle {
   font-size: 20px;
   margin: 18px 0 8px;
+}
+
+.psalmPreview .thumb {
+float: left;
+width: 49%;
+margin-right: 2%;
+}
+
+.psalmPreview .psalmDetails {
+float: right;
+width: 49%;
+}
+
+.psalmPreview .psalmContent {
+font-size: 12px;
+line-height: 1;
 }

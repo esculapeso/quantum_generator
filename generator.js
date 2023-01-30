@@ -1200,14 +1200,21 @@ jQuery(document).ready(function ($) {
     $('.psalmLang').removeClass('selected');
     $(this).addClass('selected');
 
-    let psalms = psalmVideo.find(e => e.lang == selectedPsalmsLang)
+    let set = psalmVideo.find(e => e.lang == selectedPsalmsLang)
 
     $psalmList.empty();
-    $(psalms.psalms).each((i, p) => {
+    $(set.psalms).each((i, p) => {
       var number = p.name.replace('Psalm ', '')
       var $psalm = $(`<div class="psalm" number="${number}" lang="${selectedPsalmsLang}">${number}</div>`);
       $psalm.appendTo($psalmList);
+      addTooltip(p, set, $psalm);
     })
+  });
+
+  $("#tabs-9").tooltip({
+    content: function () {
+      return $(this).prop('title');
+    }
   });
 
   $('.psalmLang[lang="en"]').click();
@@ -1215,40 +1222,37 @@ jQuery(document).ready(function ($) {
   var $psalmText = $(`<div class="psalmText" selectedIndex="" ></div>`);
   $psalmText.appendTo($psalmsContent);
 
-  $(document).on('mouseenter', '.psalm', function () {
-    let number = $(this).attr('number');
-    let set = psalmVideo.find(e => e.lang == selectedPsalmsLang)
-    let psalm = set.psalms.find(p => p.name == "Psalm " + number);
-    previewPsalm(psalm, set);
-  });
-
-  $(document).on('mouseleave', '.psalm', function () {
-    if (selectedPsalm) {
-      let set = psalmVideo.find(e => e.lang == selectedPsalm.split(':')[0])
-      let psalm = set.psalms.find(p => p.name == "Psalm " + selectedPsalm.split(':')[1]);
-      previewPsalm(psalm, set);
-    } else {
-      $(".psalmText").html('');
-    }
-  });
-
   $(document).on('click', '.psalm', function () {
     let number = $(this).attr('number');
     selectedPsalm = `${selectedPsalmsLang}:${number}`
 
-    let psalms = psalmVideo.find(e => e.lang == selectedPsalmsLang)
-    let psalm = psalms.psalms.find(p => p.name == "Psalm " + number);
+    let set = psalmVideo.find(e => e.lang == selectedPsalmsLang)
+    let psalm = set.psalms.find(p => p.name == "Psalm " + number);
 
     $('.psalm').removeClass('selected');
     $(this).addClass('selected');
 
-    $(".psalmText").attr('selectedIndex', number).html(psalm.text);
+    previewPsalm(psalm, set);
 
     clearImageFocus();
     changeVideo(psalm.youtube, true)
     $(".imageInnerDiv").addClass('psalmCover').html(psalm.name);
 
   });
+
+  function addTooltip(psalm, set, $element) {
+    let psalmPreview = `
+      <div class="psalmPreview tooltip">
+        <div class="thumb"><img src="//img.youtube.com/vi/${psalm.youtube}/maxresdefault.jpg"
+          onload="if (this.width < 130) this.src = '//img.youtube.com/vi/${psalm.youtube}/mqdefault.jpg'" /></div>
+        <div class="psalmDetails">
+          <div class="psalmTitle">${set.flag}${set.speaker} ${psalm.name}</div>
+          <div class="psalmContent">${psalm.text ?? ''}</div>
+        </div>
+      </div>
+    `
+    $element.attr('title', psalmPreview);
+  }
 
   function previewPsalm(psalm, set) {
     let psalmPreview = `
