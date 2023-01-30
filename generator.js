@@ -1210,6 +1210,7 @@ jQuery(document).ready(function ($) {
     })
   });
 
+  $('.psalmLang[lang="en"]').click();
 
   var $psalmText = $(`<div class="psalmText" selectedIndex="" ></div>`);
   $psalmText.appendTo($psalmsContent);
@@ -1251,7 +1252,7 @@ jQuery(document).ready(function ($) {
 
   function previewPsalm(psalm, set) {
     let psalmPreview = `
-      <h3>${psalm.name} ${set.flag}${set.speaker}</h3>
+      <div class="psalmTitle">${set.flag}${set.speaker} ${psalm.name}</div>
       <div class="wiki"><a target="_blank" href="https://${selectedPsalmsLang.split('_')[0]}.wikipedia.org/wiki/Psalm_${psalm.name.replace('Psalm ', '')}">Wiki</a></div>
       <div>${psalm.text ?? ''}</div>
     `
