@@ -1187,9 +1187,10 @@ jQuery(document).ready(function ($) {
   $psalmList.appendTo($psalmsContent);
 
   let selectedPsalmsLang = '';
+  let selectedPsalm = '';
 
   $(psalmVideo).each((i, set) => {
-    var $psalmLang = $(`<div class="psalmLang" lang="${set.lang}">${set.lang}</div>`);
+    var $psalmLang = $(`<div class="psalmLang" lang="${set.lang}">${set.flag}${set.speaker}</div>`);
     $psalmLang.appendTo($psalmLangs);
   })
 
@@ -1215,17 +1216,16 @@ jQuery(document).ready(function ($) {
 
   $(document).on('mouseenter', '.psalm', function () {
     let number = $(this).attr('number');
-    let psalms = psalmVideo.find(e => e.lang == selectedPsalmsLang)
-    let psalm = psalms.psalms.find(p => p.name == "Psalm " + number);
-    previewPsalm(psalm);
+    let set = psalmVideo.find(e => e.lang == selectedPsalmsLang)
+    let psalm = set.psalms.find(p => p.name == "Psalm " + number);
+    previewPsalm(psalm, set);
   });
 
   $(document).on('mouseleave', '.psalm', function () {
-    let selectedIndex = $(".psalmText").attr('selectedIndex');
-    if (selectedIndex) {
-      let psalms = psalmVideo.find(e => e.lang == selectedPsalmsLang)
-      let psalm = psalms.psalms.find(p => p.name == "Psalm " + selectedIndex);
-      previewPsalm(psalm);
+    if (selectedPsalm) {
+      let set = psalmVideo.find(e => e.lang == selectedPsalm.split(':')[0])
+      let psalm = set.psalms.find(p => p.name == "Psalm " + selectedPsalm.split(':')[1]);
+      previewPsalm(psalm, set);
     } else {
       $(".psalmText").html('');
     }
@@ -1233,6 +1233,7 @@ jQuery(document).ready(function ($) {
 
   $(document).on('click', '.psalm', function () {
     let number = $(this).attr('number');
+    selectedPsalm = `${selectedPsalmsLang}:${number}`
 
     let psalms = psalmVideo.find(e => e.lang == selectedPsalmsLang)
     let psalm = psalms.psalms.find(p => p.name == "Psalm " + number);
@@ -1248,9 +1249,9 @@ jQuery(document).ready(function ($) {
 
   });
 
-  function previewPsalm(psalm) {
+  function previewPsalm(psalm, set) {
     let psalmPreview = `
-      <h3>${psalm.name} [${selectedPsalmsLang}]</h3>
+      <h3>${psalm.name} ${set.flag}${set.speaker}</h3>
       <div class="wiki"><a target="_blank" href="https://${selectedPsalmsLang.split('_')[0]}.wikipedia.org/wiki/Psalm_${psalm.name.replace('Psalm ', '')}">Wiki</a></div>
       <div>${psalm.text ?? ''}</div>
     `
