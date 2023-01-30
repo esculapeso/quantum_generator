@@ -262,6 +262,7 @@ End of comment */
 
 .uploadImageExample {
   height: 90px;
+  width: 80px;
 }
 
 .uploadImageExample .uploadedImage {

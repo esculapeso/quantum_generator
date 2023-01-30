@@ -10,6 +10,8 @@ jQuery(document).ready(function ($) {
   var currentDisplayInterval = qrngOrigDisplayInterval;
   var upcomingDisplayInterval = qrngOrigDisplayInterval;
 
+  var isMobile = isMobile || false;
+
   setFetchIntervalAndLength(currentDisplayInterval)
 
   function getOneHex(index) {
@@ -535,50 +537,27 @@ jQuery(document).ready(function ($) {
 
     var is3D = fi.filepath.includes('.glb');
 
-    var $imageDiv = $(`<div class="uploadImageExample" text="${fi.text}" src="" ${is3D?'is3d':''} ></div>`);
+    var $imageDiv = $(`<div class="uploadImageExample" text="${fi.text}" src="" ${is3D ? 'is3d' : ''} ></div>`);
     $imageDiv.appendTo($tab3);
 
     if (is3D) {
-      var $modelHolder = $(`<model-viewer
-      class="modelviewer3d"
-      src="${fi.preview}"
-      style="width: 100%; height: 100%;"
-      poster="https://esculap.org/wp-content/uploads/2022/12/animateddna.webp"
-      target="${fi.filepath}"
-      background-color="transparent"
-      preload
-      reveal-when-loaded
-      auto-rotate
-      controls
-      ></model-viewer>`)
-      $modelHolder.appendTo($imageDiv);
+      insert3dModel($imageDiv, fi.preview, fi.filepath)
     } else {
       var $image = $(`<img class="uploadedImage" src="${fi.filepath}" />`);
       $image.appendTo($imageDiv);
     }
-      
+
     var $caption = $(`<div class="uploadImageCaption" >${fi.caption}</div>`);
     $caption.appendTo($imageDiv);
   });
 
   $(document).on('click', '.uploadImageExample', function () {
 
-    clearImageFocus(".imageInnerDiv");
-    
+    clearImageFocus();
+
     if ($(this).is("[is3d]")) {
       var source = $(this).find('model-viewer').attr('target');
-      var modelHolder = `<model-viewer
-      class="modelviewer3d"
-      src="${source}"
-      style="width: 100%; height: 100%;"
-      poster="https://esculap.org/wp-content/uploads/2022/12/animateddna.webp"
-      background-color="transparent"
-      preload
-      reveal-when-loaded
-      auto-rotate
-      controls
-      ></model-viewer>`
-      $(".imageInnerDiv").html(modelHolder)
+      insert3dModel($('.imageInnerDiv'), source)
     } else {
       var imagePath = $(this).find(".uploadedImage").attr('src');
       $(".imageInnerDiv").css('background-image', `url("${imagePath})`);
@@ -592,8 +571,24 @@ jQuery(document).ready(function ($) {
     $(".captionText").html(fileName);
   });
 
+  function insert3dModel($parent, srcUrl, targetUrl) {
+    var modelHolder = `<model-viewer
+      class="modelviewer3d"
+      src="${srcUrl}"
+      style="width: 100%; height: 100%;"
+      poster="https://esculap.org/wp-content/uploads/2022/12/animateddna.webp"
+      target="${targetUrl}"
+      background-color="transparent"
+      preload
+      reveal-when-loaded
+      auto-rotate
+      controls
+      ></model-viewer>`
+    $parent.html(modelHolder);
+  }
+
   function uploadImage(targetImageSelector, $this) {
-    clearImageFocus(targetImageSelector);
+    clearImageFocus();
     var files = $this.prop('files');
     if (files && files[0]) { // got sth
 
@@ -629,9 +624,8 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  function clearImageFocus(targetImageSelector) {
-    $(targetImageSelector).css('background-image', ``);
-    $(targetImageSelector).find('.modelviewer3d').attr('src', `https://raw.githubusercontent.com/esculapeso/3dmodels/main/empty.glb`)
+  function clearImageFocus() {
+    $(".imageInnerDiv").css('background-image', ``).empty();
   }
 
   function read3D(ff, targetImageSelector) {
@@ -639,18 +633,7 @@ jQuery(document).ready(function ($) {
 
     reader.onload = function (e) {
       var source = e.target.result
-      var modelHolder = `<model-viewer
-        class="modelviewer3d"
-        src="${source}"
-        style="width: 100%; height: 100%;"
-        poster="https://esculap.org/wp-content/uploads/2022/12/animateddna.webp"
-        background-color="transparent"
-        preload
-        reveal-when-loaded
-        auto-rotate
-        controls
-      ></model-viewer>`
-      $(targetImageSelector).html(modelHolder);
+      insert3dModel($(targetImageSelector), source)
     }
     reader.readAsDataURL(ff)
   }
@@ -666,6 +649,7 @@ jQuery(document).ready(function ($) {
   function readJSON(ff) {
     var reader = new FileReader();
     reader.onload = function (e) {
+      clearImageFocus()
       json = e.target.result;
       jsonObject = JSON.parse(json);
       $('.focusText').html(jsonObject['Focus Text']);
@@ -674,19 +658,27 @@ jQuery(document).ready(function ($) {
         $(`.${p.role}Image`).css('background-image', p.data);
       });
 
-      $('.imageInnerDiv').css('background-image', jsonObject.imageData);
-      if (typeof jsonObject.ImageCaption !== 'undefined') $(".captionText").html(jsonObject.ImageCaption);
-      if (typeof jsonObject.qrngInterval !== 'undefined') changeQrngInterval(jsonObject.qrngInterval);
-      if (typeof jsonObject.isPyramid !== 'undefined') {
+      if (checkParamValue(jsonObject.imageData)) $('.imageInnerDiv').css('background-image', jsonObject.imageData);
+      if (checkParamValue(jsonObject.image3dData)) insert3dModel($('.imageInnerDiv'), jsonObject.image3dData);
+      if (checkParamValue(jsonObject.ImageCaption)) $(".captionText").html(jsonObject.ImageCaption);
+      if (checkParamValue(jsonObject.qrngInterval)) changeQrngInterval(jsonObject.qrngInterval);
+      if (checkParamValue(jsonObject.isPyramid)) {
         $('.piramidToggleCB').prop('checked', jsonObject.isPyramid);
         togglePyramidView(jsonObject.isPyramid);
       }
-      if (typeof jsonObject.videoId !== 'undefined') changeVideo(jsonObject.videoId);
-      if (typeof jsonObject.callClip !== 'undefined') $('.clipOptionsSelect').val(jsonObject.callClip).change();
-      if (typeof jsonObject.callClipSize !== 'undefined') $('.callRange').val(jsonObject.callClipSize).change();
+      if (checkParamValue(jsonObject.videoId)) { changeVideo(jsonObject.videoId) } else { stopFocusVideo() };
+      if (checkParamValue(jsonObject.callClip)) $('.clipOptionsSelect').val(jsonObject.callClip).change();
+      if (checkParamValue(jsonObject.callClipSize)) $('.callRange').val(jsonObject.callClipSize).change();
 
     }
     reader.readAsText(ff);
+  }
+
+  function checkParamValue(param) {
+    console.log(typeof param !== 'undefined')
+    console.log(param)
+    console.log(typeof param !== 'undefined' && param)
+    return typeof param !== 'undefined' && param;
   }
 
 
@@ -1072,6 +1064,7 @@ jQuery(document).ready(function ($) {
   var $endcallButton = $(`<div class="endcallButton button" >End Call</div>`);
   $endcallButton.appendTo($callContent);
 
+
   $(document).on('click', '.callButton', function () {
     $('.callWrapper').show().appendTo('.uploadImageHolder');
   });
@@ -1216,9 +1209,10 @@ jQuery(document).ready(function ($) {
     var dateNow = new Date(Date.now());
     var sessionTime = dateNow.toUTCString();
     var focusText = $(".focusText").html();
-    var videoID = players[0].getVideoData()['video_id'];
-    var videoName = getVideobyVideoId(videoID)[0].name;
+    var videoID = (!$('.video-container').hasClass('hidden-container')) ? players[0].getVideoData()['video_id'] : '';
     var ImageCaption = $(".captionText").html().replace('\n', ' ');
+    var imageData = $('.imageInnerDiv').css('background-image');
+    var image3dData = $('.imageInnerDiv .modelviewer3d').attr('src');
 
     var emotionsText = "\n\nEmotions Quantity\n\n";
     $(emotionsList).each((i, e) => {
@@ -1229,7 +1223,8 @@ jQuery(document).ready(function ($) {
       'Session time': sessionTime,
       'Focus Text': focusText,
       'videoId': videoID,
-      'imageData': $('.imageInnerDiv').css('background-image'),
+      imageData,
+      image3dData,
       ImageCaption,
       'people': [
         { role: 'therapist', data: $('.therapistImage').css('background-image') },
@@ -1455,7 +1450,7 @@ jQuery(document).ready(function ($) {
     var padding = parseInt(paddingCss);
     $('.quadrupole').css('font-size', `${padding / 9}px`);
 
-    if (typeof isMobile !== 'undefined' && isMobile) {
+    if (checkParamValue(isMobile)) {
       $('.videoChooserSection').css('margin', 'auto');
       $('.videoChooserSection').css('position', 'static');
     }
