@@ -1257,8 +1257,11 @@ jQuery(document).ready(function ($) {
   function previewPsalm(psalm, set) {
     let psalmPreview = `
       <div class="psalmTitle">${set.flag}${set.speaker} ${psalm.name}</div>
-      <div class="wiki"><a target="_blank" href="https://${selectedPsalmsLang.split('_')[0]}.wikipedia.org/wiki/Psalm_${psalm.name.replace('Psalm ', '')}">Wiki</a></div>
-      <div>${psalm.text ?? ''}</div>
+      <div class="linki">
+        <div class="youtube"><a target="_blank" href="https://www.youtube.com/watch?v=${psalm.youtube}"><img src="//img.youtube.com/vi/${psalm.youtube}/mqdefault.jpg" /></a></div>
+        <div class="wiki"><a target="_blank" href="https://${selectedPsalmsLang.split('_')[0]}.wikipedia.org/wiki/Psalm_${psalm.name.replace('Psalm ', '')}"><img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Wikipedia_svg_logo.svg" /></a></div>
+      </div>
+      <div class="psalmDesc">${psalm.text ?? ''}</div>
     `
     $(".psalmText").html(psalmPreview);
   }

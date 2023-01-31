@@ -429,13 +429,13 @@ End of comment */
 }
 
 .video-container iframe.originalRatio {
-	width: 100% !important;
-	height: 56.25% !important;
+  width: 100% !important;
+  height: 56.25% !important;
 }
 
 .pyramidView iframe.originalRatio {
-	width: 100% !important;
-	height: 180% !important;
+  width: 100% !important;
+  height: 180% !important;
 }
 
 
@@ -815,10 +815,11 @@ img.videoOverlay {
 
   @keyframes pulse {
     0% {
-        transform: scale(1.0);
+      transform: scale(1.0);
     }
+
     100% {
-        transform: scale(1.1);
+      transform: scale(1.1);
     }
   }
 
@@ -885,7 +886,7 @@ img.videoOverlay {
 }
 
 .psalmCover {
-	opacity: 0;
+  opacity: 0;
 }
 
 .fullView.psalmCover {
@@ -896,28 +897,30 @@ img.videoOverlay {
   line-height: 4;
 }
 
-.psalmLang, .psalm {
-	text-decoration: underline;
-	cursor: pointer;
-	padding: 0 5px;
-	display: inline-block;
-    border: 1px solid transparent;
+.psalmLang,
+.psalm {
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0 5px;
+  display: inline-block;
+  border: 1px solid transparent;
 }
 
-.psalmLang.selected, .psalm.selected {
-	font-weight: bold;
-    background: #ff9b51;
-    border-color: #5c152f;
-    border-radius: 3px;
+.psalmLang.selected,
+.psalm.selected {
+  font-weight: bold;
+  background: #ff9b51;
+  border-color: #5c152f;
+  border-radius: 3px;
 }
 
 #tabs {
-	background: #ffd8bc;
+  background: #ffd8bc;
 }
 
 .psalmText .wiki {
-	text-decoration: underline;
-	margin-bottom: 10px;
+  text-decoration: underline;
+  margin-bottom: 10px;
 }
 
 .psalmText .psalmTitle {
@@ -926,17 +929,36 @@ img.videoOverlay {
 }
 
 .psalmPreview .thumb {
-float: left;
-width: 49%;
-margin-right: 2%;
+  float: left;
+  width: 49%;
+  margin-right: 2%;
 }
 
 .psalmPreview .psalmDetails {
-float: right;
-width: 49%;
+  float: right;
+  width: 49%;
+}
+
+.psalmDesc {
+  white-space: pre-line;
 }
 
 .psalmPreview .psalmContent {
-font-size: 12px;
-line-height: 1;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.linki {
+  display: inline-flex;
+  align-items: center;
+}
+
+.linki div {
+  width: 60px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.linki div img {
+  width: 100%;
 }
