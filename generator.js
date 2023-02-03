@@ -11,6 +11,8 @@ jQuery(document).ready(function ($) {
   var upcomingDisplayInterval = qrngOrigDisplayInterval;
 
   var isMobile = isMobile || false;
+  var videos = videosForFocus;
+
 
   setFetchIntervalAndLength(currentDisplayInterval)
 
@@ -150,8 +152,188 @@ jQuery(document).ready(function ($) {
   var $imageDiv = $('<div class="uploadImageHolder clipped" ></div>');
   $imageDiv.appendTo($quadGenerator);
 
+  var $focusControls = $('<div class="focusControls" ></div>');
+  $focusControls.appendTo($imageDiv);
+
+
+  var $focusChangers = $('<div class="focusChangers" ></div>');
+  $focusChangers.appendTo($focusControls);
+
+  var $subImageControls = $('<div class="subImageControls" ></div>');
+  $subImageControls.appendTo($focusControls);
+
+  var $imageChooser = $('<div class="imageChooser" ></div>');
+  $imageChooser.appendTo($subImageControls);
+
+  $('<div class="videoSelectsTitle" >Image:</div>').appendTo($imageChooser);
+
+  var $imageSelect = $('<select class="imageSelect" ></select>');
+  $imageSelect.appendTo($imageChooser);
+
+  var focusImages = imagesForFocus;
+
+  $(focusImages).each(function (k, fi) {
+
+    var is3D = fi.filepath.includes('.glb');
+
+    var $videoOption = $(`<option value="${fi.filepath}" ${is3D ? 'is3d' : ''} >${fi.text}</option>`);
+    $videoOption.appendTo($imageSelect);
+
+  });
+
+  $(document).on('change', '.imageSelect', function () {
+    var imagePath = $(this).val();
+    var caption = $(this).find('option:selected').text();
+    var is3D = $(this).find('option:selected').is("[is3d]");
+
+    clearImageFocus();
+
+    if (is3D) {
+      insert3dModel($('.imageInnerDiv'), imagePath)
+    } else {
+      $(".imageInnerDiv").css('background-image', `url("${imagePath})`);
+    }
+    $(".captionText").html(caption);
+  });
+
+
+
+  var $focusChooser = $('<div class="focusChooser" ></div>');
+  $focusChooser.appendTo($focusChangers);
+
+  $('<div class="videoSelectsTitle" >Focus:</div>').appendTo($focusChooser);
+  $('<input type="text" class="focusTextTextBox" />').appendTo($focusChooser);
+
+  var $videoSelects = $('<div class="videoSelects" ></div>');
+  $videoSelects.appendTo($subImageControls);
+
+  var $videoControlsAndFocus = $('<div class="videoControlsAndFocus" ></div>');
+  $videoControlsAndFocus.appendTo($subImageControls);
+
+  $('<div class="videoSelectsTitle" >Controls:</div>').appendTo($videoControlsAndFocus);
+
+  $('<div class="videoSelectsTitle" >Video:</div>').appendTo($videoSelects);
+
+  var $videoCategorySelect = $('<select class="videoCategorySelect" ></select>');
+  $videoCategorySelect.appendTo($videoSelects);
+
+  $(`<option value="empty">~ Select ~</option>`).appendTo($videoCategorySelect);
+  $(`<option value="meditation">Meditation</option>`).appendTo($videoCategorySelect);
+  $(`<option value="psalms">Psalms</option>`).appendTo($videoCategorySelect);
+
+  var $videoSubcategorySelect = $('<select class="videoSubcategorySelect" ></select>').hide();
+  $videoSubcategorySelect.appendTo($videoSelects);
+
+
+
+  $(document).on('click', '.psalmLang', function () {
+    selectedPsalmsLang = $(this).attr('lang');
+
+    $('.psalmLang').removeClass('selected');
+    $(this).addClass('selected');
+
+    let set = psalmVideo.find(e => e.lang == selectedPsalmsLang)
+
+    $psalmList.empty();
+    $(set.psalms).each((i, p) => {
+      var number = p.name.replace('Psalm ', '')
+      var $psalm = $(`<div class="psalm" number="${number}" lang="${selectedPsalmsLang}">${number}</div>`);
+      $psalm.appendTo($psalmList);
+      addTooltip(p, set, $psalm);
+    })
+  });
+
+
+
+  var $videoSelectInFocus = $('<select class="videoSelect" ></select>');
+  $videoSelectInFocus.appendTo($videoSelects);
+
+  var languages = [
+    { lang: 'en', name: 'British' },
+    { lang: 'de', name: 'German' },
+    { lang: 'pl', name: 'Polish' },
+  ]
+
+
+  var gerders = [
+    { gender: 'f', name: 'Female' },
+    { gender: 'm', name: 'Male' },
+  ]
+
+
+  $(document).on('change', '.videoCategorySelect', function () {
+    $videoSelectInFocus.empty()
+    $videoSubcategorySelect.empty().hide();
+
+    switch ($(this).val()) {
+
+      case 'meditation':
+        $(`<option value="empty">~ Select ~</option>`).appendTo($videoSelectInFocus);
+        $(videos).each(function (k, v) {
+          var $videoOption = $(`<option value="${v.id}">${v.name}</option>`);
+          $videoOption.appendTo($videoSelectInFocus);
+        });
+        break;
+
+      case 'psalms':
+        $videoSubcategorySelect.show();
+        $(`<option value="empty">~ Select ~</option>`).appendTo($videoSubcategorySelect);
+        $(psalmVideo).each((i, set) => {
+          var langSplit = set.lang.split('_')
+          var lang = langSplit[0]
+          var langName = languages.find(l => l.lang == lang).name;
+          var speaker = (langSplit.length > 1) ? gerders.find(g => g.gender == langSplit[1]).name : '';
+          var $langOption = $(`<option value="${set.lang}">${langName} ${speaker}</option>`);
+          $langOption.appendTo($videoSubcategorySelect);
+        });
+        break;
+
+      default:
+        break;
+    }
+  });
+
+
+  $(document).on('change', '.videoSubcategorySelect', function () {
+    $focusVideoSelect = $('.focusControls .videoSelect');
+    $focusVideoSelect.empty()
+    let lang = $(this).val();
+    let set = psalmVideo.find(e => e.lang == lang)
+
+    $(`<option value="empty">~ Select ~</option>`).appendTo($focusVideoSelect);
+    $(set.psalms).each((i, p) => {
+      var number = p.name.replace('Psalm ', '')
+      $(`<option value="${p.youtube}">${number}</option>`).appendTo($focusVideoSelect);
+    })
+  });
+
+  var $videoControls = $('<div class="videoControls" ></div>');
+  $videoControls.appendTo($videoControlsAndFocus);
+
+  var $youtubeRemoveButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`);
+  $youtubeRemoveButtonImage.appendTo($videoControls);
+
+  var $youtubePlayButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png" class="youtubePauseButtonImage redButton" style="display:none;" />`);
+  $youtubePlayButtonImage.appendTo($videoControls);
+
+  var $youtubePlayButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/playVideo.png" class="youtubePlayButtonImage redButton" />`);
+  $youtubePlayButtonImage.appendTo($videoControls);
+
+  var $videoVolumeInput = $('<input type="range" value="10" class="videoVolume" />');
+  $videoVolumeInput.appendTo($videoControls);
+
   var $imageInnerDiv = $('<div class="imageInnerDiv fullView" ></div>');
   $imageInnerDiv.appendTo($imageDiv);
+
+  $(document).on('mouseenter', '.uploadImageHolder', function () {
+    if (playersReady || true) {
+      $('.focusControls').show();
+    }
+  });
+
+  $(document).on('mouseleave', '.uploadImageHolder', function () {
+    $('.focusControls').hide();
+  });
 
 
   var $videoChooserSection = $('<div class="videoChooserSection" ></div>');
@@ -194,8 +376,11 @@ jQuery(document).ready(function ($) {
   $("#tabs").tabs().appendTo($videoChooserSection);
 
   var initFocusText = "Focus";
-  var $focusText = $(`<div class="focusText generatorText" >${initFocusText}</div>`);
+  var $focusText = $(`<div class="focusText generatorText" ></div>`);
   $focusText.appendTo(header);
+
+  $('.focusText').html(initFocusText);
+  $('.focusTextTextBox').val(initFocusText);
 
   var initCaptionText = "Gold";
   var $captionText = $(`<div class="captionText generatorText" >${initCaptionText}</div>`);
@@ -205,7 +390,6 @@ jQuery(document).ready(function ($) {
           VIDEO 
   ***********************/
 
-  var videos = videosForFocus;
 
   var $videoContainerDiv = $('<div class="video-container hidden-container fullView"></div>');
   $videoContainerDiv.appendTo($imageDiv);
@@ -362,23 +546,34 @@ jQuery(document).ready(function ($) {
   var $youtubeRemoveButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`);
   $youtubeRemoveButtonImage.appendTo($videoControls);
 
+  var $youtubePlayButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png" class="youtubePauseButtonImage redButton" style="display:none;" />`);
+  $youtubePlayButtonImage.appendTo($videoControls);
+
+  var $youtubePlayButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/playVideo.png" class="youtubePlayButtonImage redButton" />`);
+  $youtubePlayButtonImage.appendTo($videoControls);
+
+  var $videoVolumeInput = $('<input type="range" value="10" class="videoVolume" />');
+  $videoVolumeInput.appendTo($videoControls);
+
+
   $(document).on('click', '.youtubeRemoveButtonImage', function () {
     stopFocusVideo();
   });
-
-  var $youtubePlayButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png" class="youtubePauseButtonImage redButton" style="display:none;" />`);
-  $youtubePlayButtonImage.appendTo($videoControls);
 
   $(document).on('click', '.youtubePauseButtonImage', function () {
     pauseFocusVideo();
   });
 
-  var $youtubePlayButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/playVideo.png" class="youtubePlayButtonImage redButton" />`);
-  $youtubePlayButtonImage.appendTo($videoControls);
-
   $(document).on('click', '.youtubePlayButtonImage', function () {
     startFocusVideo();
   });
+
+  $(document).on('change', '.videoVolume', function () {
+    var curVal = $(this).val()
+    $(players).each((i, p) => p.setVolume(curVal));
+    $('.videoVolume').val(curVal);
+  });
+
 
   function stopFocusVideo() {
     $('.youtubePauseButtonImage').hide();
@@ -418,12 +613,6 @@ jQuery(document).ready(function ($) {
     return ($('.piramidToggleCB').is(':checked')) ? players.slice(0, 4) : players.slice(4, 5);
   }
 
-  var $videoVolumeInput = $('<input type="range" value="10" class="videoVolume" />');
-  $videoVolumeInput.appendTo($videoControls);
-  $(document).on('change', '.videoVolume', function () {
-    $(players).each((i, p) => p.setVolume($(this).val()))
-  });
-
 
   /**********************
         FOCUS TEXT 
@@ -443,6 +632,7 @@ jQuery(document).ready(function ($) {
 
   $(document).on('input', '.focusTextTextBox', function () {
     $(".focusText").html($(this).val());
+    $(".focusTextTextBox").val($(this).val());
   });
 
   var selectedLang;
