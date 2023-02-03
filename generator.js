@@ -204,19 +204,51 @@ jQuery(document).ready(function ($) {
 
 
 
+  var $focusAndSession = $('<div class="focusAndSession" ></div>');
+  $focusAndSession.appendTo($focusChangers);
+
   var $focusChooser = $('<div class="focusChooser" ></div>');
-  $focusChooser.appendTo($focusChangers);
+  $focusChooser.appendTo($focusAndSession);
 
   $('<div class="videoSelectsTitle" >Focus:</div>').appendTo($focusChooser);
   $('<input type="text" class="focusTextTextBox" />').appendTo($focusChooser);
 
+
+  var $sessionButtons = $('<div class="sessionButtons" ></div>');
+  $sessionButtons.appendTo($focusAndSession);
+
+  $('<input class="focusTextSaveButton button" type="button" value="Save"  />').appendTo($sessionButtons);
+  $('<input class="focusTextLoadButton button" type="button" value="Load"  />').appendTo($sessionButtons);
+
+
+
+  var $videoControlsAndFocus = $('<div class="videoControlsAndFocus" ></div>');
+  $videoControlsAndFocus.appendTo($focusChangers);
+
+  $('<div class="videoSelectsTitle" >Controls:</div>').appendTo($videoControlsAndFocus);
+
+  var $videoControls = $('<div class="videoControls" ></div>');
+  $videoControls.appendTo($videoControlsAndFocus);
+
+  var $youtubeRemoveButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`);
+  $youtubeRemoveButtonImage.appendTo($videoControls);
+
+  var $youtubePlayButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png" class="youtubePauseButtonImage redButton" style="display:none;" />`);
+  $youtubePlayButtonImage.appendTo($videoControls);
+
+  var $youtubePlayButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/playVideo.png" class="youtubePlayButtonImage redButton" />`);
+  $youtubePlayButtonImage.appendTo($videoControls);
+
+  var $videoVolumeInput = $('<input type="range" value="10" class="videoVolume" />');
+  $videoVolumeInput.appendTo($videoControls);
+
+
+
   var $videoSelects = $('<div class="videoSelects" ></div>');
   $videoSelects.appendTo($subImageControls);
 
-  var $videoControlsAndFocus = $('<div class="videoControlsAndFocus" ></div>');
-  $videoControlsAndFocus.appendTo($subImageControls);
-
-  $('<div class="videoSelectsTitle" >Controls:</div>').appendTo($videoControlsAndFocus);
+  var $videoSubcategorySelect = $('<select class="videoSubcategorySelect" ></select>').hide();
+  $videoSubcategorySelect.appendTo($videoSelects);
 
   $('<div class="videoSelectsTitle" >Video:</div>').appendTo($videoSelects);
 
@@ -226,10 +258,6 @@ jQuery(document).ready(function ($) {
   $(`<option value="empty">~ Select ~</option>`).appendTo($videoCategorySelect);
   $(`<option value="meditation">Meditation</option>`).appendTo($videoCategorySelect);
   $(`<option value="psalms">Psalms</option>`).appendTo($videoCategorySelect);
-
-  var $videoSubcategorySelect = $('<select class="videoSubcategorySelect" ></select>').hide();
-  $videoSubcategorySelect.appendTo($videoSelects);
-
 
 
   $(document).on('click', '.psalmLang', function () {
@@ -313,20 +341,6 @@ jQuery(document).ready(function ($) {
     })
   });
 
-  var $videoControls = $('<div class="videoControls" ></div>');
-  $videoControls.appendTo($videoControlsAndFocus);
-
-  var $youtubeRemoveButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`);
-  $youtubeRemoveButtonImage.appendTo($videoControls);
-
-  var $youtubePlayButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png" class="youtubePauseButtonImage redButton" style="display:none;" />`);
-  $youtubePlayButtonImage.appendTo($videoControls);
-
-  var $youtubePlayButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/playVideo.png" class="youtubePlayButtonImage redButton" />`);
-  $youtubePlayButtonImage.appendTo($videoControls);
-
-  var $videoVolumeInput = $('<input type="range" value="10" class="videoVolume" />');
-  $videoVolumeInput.appendTo($videoControls);
 
   var $imageInnerDiv = $('<div class="imageInnerDiv fullView" ></div>');
   $imageInnerDiv.appendTo($imageDiv);
@@ -338,7 +352,7 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('mouseleave', '.uploadImageHolder', function () {
-    // $('.focusControls').hide();
+    $('.focusControls').hide();
   });
 
 
