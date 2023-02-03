@@ -167,17 +167,23 @@ jQuery(document).ready(function ($) {
 
   $('<div class="videoSelectsTitle" >Image:</div>').appendTo($imageChooser);
 
+  var $removeImage = $(`<div class="removeImageButton button" >X</div>`);
+  $removeImage.appendTo($imageChooser);
+
+  var $uploadImageButton = $(`<div class="uploadImageButton button" >🡅</div>`);
+  $uploadImageButton.appendTo($imageChooser);
+
   var $imageSelect = $('<select class="imageSelect" ></select>');
   $imageSelect.appendTo($imageChooser);
 
   var focusImages = imagesForFocus;
 
+  $(`<option value="empty" >~ Select ~</option>`).appendTo($imageSelect);
   $(focusImages).each(function (k, fi) {
 
     var is3D = fi.filepath.includes('.glb');
 
-    var $videoOption = $(`<option value="${fi.filepath}" ${is3D ? 'is3d' : ''} >${fi.text}</option>`);
-    $videoOption.appendTo($imageSelect);
+    $(`<option value="${fi.filepath}" ${is3D ? 'is3d' : ''} >${fi.text}</option>`).appendTo($imageSelect);
 
   });
 
@@ -300,7 +306,7 @@ jQuery(document).ready(function ($) {
     let lang = $(this).val();
     let set = psalmVideo.find(e => e.lang == lang)
 
-    $(`<option value="empty">~ Select ~</option>`).appendTo($focusVideoSelect);
+    $(`<option value="empty">~Sel~</option>`).appendTo($focusVideoSelect);
     $(set.psalms).each((i, p) => {
       var number = p.name.replace('Psalm ', '')
       $(`<option value="${p.youtube}">${number}</option>`).appendTo($focusVideoSelect);
@@ -332,7 +338,7 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('mouseleave', '.uploadImageHolder', function () {
-    $('.focusControls').hide();
+    // $('.focusControls').hide();
   });
 
 
@@ -845,11 +851,18 @@ jQuery(document).ready(function ($) {
       clearImageFocus()
       json = e.target.result;
       jsonObject = JSON.parse(json);
-      $('.focusText').html(jsonObject['Focus Text']);
 
       $(jsonObject.people).each((i, p) => {
         $(`.${p.role}Image`).css('background-image', p.data);
       });
+
+      
+
+      if (checkParamValue(jsonObject['Focus Text'])) {
+        var initFocusText = jsonObject['Focus Text']
+        $('.focusText').html(initFocusText);
+        $('.focusTextTextBox').val(initFocusText);
+      }
 
       if (checkParamValue(jsonObject.imageData)) $('.imageInnerDiv').css('background-image', jsonObject.imageData);
       if (checkParamValue(jsonObject.image3dData)) insert3dModel($('.imageInnerDiv'), jsonObject.image3dData);
