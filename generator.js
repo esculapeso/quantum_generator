@@ -11,7 +11,10 @@ jQuery(document).ready(function ($) {
   var upcomingDisplayInterval = qrngOrigDisplayInterval;
 
   var isMobile = isMobile || false;
-  var videos = videosForFocus;
+  var videos = (typeof videosForFocus !== 'undefined' && videosForFocus) ? videosForFocus : null;;
+  var psalmVideoVar = (typeof psalmVideo !== 'undefined' && psalmVideo) ? psalmVideo : null;
+  var view360VideoVar = (typeof view360Video !== 'undefined' && view360Video) ? view360Video : null;
+  var focusImages = (typeof imagesForFocus !== 'undefined' && imagesForFocus) ? imagesForFocus : null;
 
 
   setFetchIntervalAndLength(currentDisplayInterval)
@@ -108,13 +111,13 @@ jQuery(document).ready(function ($) {
       // Calculate the middle of the gradient
       var genHeight = $('.quadGenerator').height()
       var genOffTop = $(".quadGenerator").offset().top
-      var graOffTop = $(".page-content").offset().top
+      var graOffTop = $(".et_pb_fullwidth_section").offset().top
       var gradCenter = genOffTop - graOffTop + genHeight / 2;
 
       // parametry: color, jasność, przezroczystość, obwiednia, promień, kąt
       gradient = `conic-gradient(from 0deg at 50% ${gradCenter}px, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       //conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
-      $('.page-content, .panel-content').css('background', gradient);
+      $('.et_pb_fullwidth_section').css('background', gradient);
 
       var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4;
       for (var n = 0; n < genCount; ++n) {
@@ -162,8 +165,11 @@ jQuery(document).ready(function ($) {
   var $subImageControls = $('<div class="subImageControls" ></div>');
   $subImageControls.appendTo($focusControls);
 
+  var $previewSelector = $('<div class="previewSelector" ></div>');
+  $previewSelector.appendTo($subImageControls);
+
   var $imageChooser = $('<div class="imageChooser" ></div>');
-  $imageChooser.appendTo($subImageControls);
+  $imageChooser.hide().appendTo($subImageControls);
 
   $('<div class="videoSelectsTitle" >Image:</div>').appendTo($imageChooser);
 
@@ -175,8 +181,6 @@ jQuery(document).ready(function ($) {
 
   var $imageSelect = $('<select class="imageSelect" ></select>');
   $imageSelect.appendTo($imageChooser);
-
-  var focusImages = imagesForFocus;
 
   $(`<option value="empty" >~ Select ~</option>`).appendTo($imageSelect);
   $(focusImages).each(function (k, fi) {
@@ -257,16 +261,17 @@ jQuery(document).ready(function ($) {
 
   $(`<option value="empty">~ Select ~</option>`).appendTo($videoCategorySelect);
   $(`<option value="meditation">Meditation</option>`).appendTo($videoCategorySelect);
-  $(`<option value="psalms">Psalms</option>`).appendTo($videoCategorySelect);
+  if (psalmVideoVar) $(`<option value="psalms">Psalms</option>`).appendTo($videoCategorySelect);
+  if (view360VideoVar) $(`<option value="view360">360 view</option>`).appendTo($videoCategorySelect);
 
-
+  
   $(document).on('click', '.psalmLang', function () {
     selectedPsalmsLang = $(this).attr('lang');
 
     $('.psalmLang').removeClass('selected');
     $(this).addClass('selected');
 
-    let set = psalmVideo.find(e => e.lang == selectedPsalmsLang)
+    let set = psalmVideoVar.find(e => e.lang == selectedPsalmsLang)
 
     $psalmList.empty();
     $(set.psalms).each((i, p) => {
@@ -312,13 +317,21 @@ jQuery(document).ready(function ($) {
       case 'psalms':
         $videoSubcategorySelect.show();
         $(`<option value="empty">~ Select ~</option>`).appendTo($videoSubcategorySelect);
-        $(psalmVideo).each((i, set) => {
+        $(psalmVideoVar).each((i, set) => {
           var langSplit = set.lang.split('_')
           var lang = langSplit[0]
           var langName = languages.find(l => l.lang == lang).name;
           var speaker = (langSplit.length > 1) ? gerders.find(g => g.gender == langSplit[1]).name : '';
           var $langOption = $(`<option value="${set.lang}">${langName} ${speaker}</option>`);
           $langOption.appendTo($videoSubcategorySelect);
+        });
+        break;
+
+      case 'view360':
+        $(`<option value="empty">~ Select ~</option>`).appendTo($videoSelectInFocus);
+        $(view360VideoVar).each(function (k, v) {
+          var $videoOption = $(`<option isView="isView" value="${v.url}">${v.name}</option>`);
+          $videoOption.appendTo($videoSelectInFocus);
         });
         break;
 
@@ -332,7 +345,7 @@ jQuery(document).ready(function ($) {
     $focusVideoSelect = $('.focusControls .videoSelect');
     $focusVideoSelect.empty()
     let lang = $(this).val();
-    let set = psalmVideo.find(e => e.lang == lang)
+    let set = psalmVideoVar.find(e => e.lang == lang)
 
     $(`<option value="empty">~Sel~</option>`).appendTo($focusVideoSelect);
     $(set.psalms).each((i, p) => {
@@ -344,7 +357,11 @@ jQuery(document).ready(function ($) {
 
   var $imageInnerDiv = $('<div class="imageInnerDiv fullView" ></div>');
   $imageInnerDiv.appendTo($imageDiv);
+    
+  var $view360InnerDiv = $('<div class="view360InnerDiv" ></div>');
+  $view360InnerDiv.appendTo($imageDiv);
 
+  
   $(document).on('mouseenter', '.uploadImageHolder', function () {
     if (playersReady || true) {
       $('.focusControls').show();
@@ -392,7 +409,6 @@ jQuery(document).ready(function ($) {
   /**********************
           TABS 
   ***********************/
-
   $("#tabs").tabs().appendTo($videoChooserSection);
 
   var initFocusText = "Focus";
@@ -409,6 +425,7 @@ jQuery(document).ready(function ($) {
   /**********************
           VIDEO 
   ***********************/
+
 
 
   var $videoContainerDiv = $('<div class="video-container hidden-container fullView"></div>');
@@ -434,6 +451,9 @@ jQuery(document).ready(function ($) {
 
     var $videoBackground = $(`<div class="videoBackground hidden-container" ></div>`);
     $videoBackground.appendTo($inside);
+    
+    var $view360InnerDiv = $('<div class="view360InnerDiv" ></div>');
+    $view360InnerDiv.appendTo($inside);
 
     var $videoForeground = $(`<div class="videoForeground" ></div>`);
     $videoForeground.appendTo($videoBackground);
@@ -556,7 +576,7 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('change', '.videoSelect', function () {
-    changeVideo($(this).val());
+    changeVideo($(this).val(), null, $(this).find('option:selected').is("[isView]"));
   });
 
 
@@ -619,14 +639,22 @@ jQuery(document).ready(function ($) {
     $('.videoBackground, .video-container').removeClass('hidden-container');
   }
 
-  function changeVideo(newVideoId, originalRatio) {
+  function changeVideo(newVideoId, originalRatio, isView) {
 
-    $('.video-container iframe').toggleClass('originalRatio', originalRatio)
+    // $('.video-container iframe').toggleClass('originalRatio', originalRatio)
     $(".imageInnerDiv").removeClass('psalmCover')
+    $(".view360InnerDiv").empty()
 
-    if (!playersReady) return;
-    $(players).each((i, p) => p.loadVideoById(newVideoId).stopVideo());
-    startFocusVideo();
+    if (isView) {
+      $(`
+      <iframe width="100%" height="100%" title="Esculap ESA ESOC" scrolling="no" 
+        src="${newVideoId}">
+      </iframe>`).appendTo('.view360InnerDiv');
+
+    } else {
+      if (!playersReady) return;
+      $(players).each((i, p) => p.loadVideoById(newVideoId).stopVideo());
+    }
   }
 
   function getActivePlayers() {
@@ -744,7 +772,7 @@ jQuery(document).ready(function ($) {
     $('.modelviewer3d').attr('src', $('.urlImageTextbox').val())
   });
 
-  var focusImages = imagesForFocus;
+
 
   $(focusImages).each(function (k, fi) {
 
@@ -1406,7 +1434,7 @@ jQuery(document).ready(function ($) {
   let selectedPsalmsLang = '';
   let selectedPsalm = '';
 
-  $(psalmVideo).each((i, set) => {
+  $(psalmVideoVar).each((i, set) => {
     var $psalmLang = $(`<div class="psalmLang" lang="${set.lang}">${set.flag}${set.speaker}</div>`);
     $psalmLang.appendTo($psalmLangs);
   })
@@ -1417,7 +1445,7 @@ jQuery(document).ready(function ($) {
     $('.psalmLang').removeClass('selected');
     $(this).addClass('selected');
 
-    let set = psalmVideo.find(e => e.lang == selectedPsalmsLang)
+    let set = psalmVideoVar.find(e => e.lang == selectedPsalmsLang)
 
     $psalmList.empty();
     $(set.psalms).each((i, p) => {
@@ -1443,7 +1471,7 @@ jQuery(document).ready(function ($) {
     let number = $(this).attr('number');
     selectedPsalm = `${selectedPsalmsLang}:${number}`
 
-    let set = psalmVideo.find(e => e.lang == selectedPsalmsLang)
+    let set = psalmVideoVar.find(e => e.lang == selectedPsalmsLang)
     let psalm = set.psalms.find(p => p.name == "Psalm " + number);
 
     $('.psalm').removeClass('selected');
@@ -1579,7 +1607,7 @@ jQuery(document).ready(function ($) {
   }
 
   function getVideobyVideoId(videoId) {
-    return videosForFocus.filter(v => v.id == videoId)
+    return videos.filter(v => v.id == videoId)
   }
 
   function initializeEmotionsQuantity() {

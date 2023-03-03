@@ -9,10 +9,13 @@ For brushing up on your CSS knowledge, check out http://www.w3schools.com/css/cs
 
 End of comment */
 
+body * {
+	font-family: georgia;
+}
+
 #page-wrap {
   background-color: white;
 }
-
 
 .quadrupoleImage * {
   color: #ffd8bc;
@@ -961,4 +964,98 @@ img.videoOverlay {
 
 .linki div img {
   width: 100%;
+}
+
+
+
+.focusControls{
+	position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+	display: none;
+}
+
+.focusControls .redButton {
+	width: 8% !important;
+}
+
+.focusControls .focusChangers, .focusControls  .subImageControls {
+    margin: 0px !important;
+    position: absolute;
+    background: #ffd8bc;
+    padding: 0 2%;
+	width: 100%;
+}
+
+.focusControls select, .focusControls input {
+	border-color: #5c152f !important;
+	border-radius: 3px;
+}
+
+.focusChangers {
+    top: 0;
+}
+
+.subImageControls {
+    bottom: 0;
+}
+
+.videoSelectsTitle {
+	display: inline-block;
+	margin-right: 5px;
+	font-weight: bold;
+}
+
+.focusControls *{
+	color: #5c152f !important;
+	font-size: 1.7vh !important;
+	line-height: 1;
+}
+
+.focusControls .videoControls {
+    text-align: left !important;
+	display: inline;
+}
+
+.videoControlsAndFocus, .videoSelects, .focusChooser, .imageChooser {
+    margin: 0.8vh 0px !important;
+}
+
+.imageChooser {
+	display: inline-flex;
+    align-items: center;
+}
+
+.focusTextTextBox {
+	width: unset !important;
+}
+
+.ui-tabs, .focusTextSave {
+	display: none;
+}
+
+.focusControls .button {
+	border: 1px solid #5c152f;
+	border-radius: 3px;
+    padding: 0.4vh 1vh;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+	font-weight: bold;
+	margin-right: 0.5vh;
+}
+
+.focusAndSession {
+	display: flex;
+	align-items: center;
+}
+
+.focusAndSession > div {
+	flex: 1 0 50%;
+}
+
+.focusTextTextBox {
+    width: 60% !important;
 }
