@@ -654,6 +654,7 @@ jQuery(document).ready(function ($) {
     } else {
       if (!playersReady) return;
       $(players).each((i, p) => p.loadVideoById(newVideoId).stopVideo());
+      startFocusVideo();
     }
   }
 
