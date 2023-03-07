@@ -109,9 +109,9 @@ jQuery(document).ready(function ($) {
 
 
       // Calculate the middle of the gradient
-      var genHeight = $('.quadGenerator').height()
-      var genOffTop = $(".quadGenerator").offset().top
-      var graOffTop = $(".et_pb_fullwidth_section").offset().top
+      var genHeight = $('.quadGenerator').height();
+      var genOffTop = $(".quadGenerator").offset() ? $(".quadGenerator").offset().top : 0;
+      var graOffTop = $(".et_pb_fullwidth_section").offset() ? $(".et_pb_fullwidth_section").offset().top : 0;
       var gradCenter = genOffTop - graOffTop + genHeight / 2;
 
       // parametry: color, jasność, przezroczystość, obwiednia, promień, kąt
