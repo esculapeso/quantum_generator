@@ -16,6 +16,10 @@ jQuery(document).ready(function ($) {
   var view360VideoVar = (typeof view360Video !== 'undefined' && view360Video) ? view360Video : null;
   var focusImages = (typeof imagesForFocus !== 'undefined' && imagesForFocus) ? imagesForFocus : null;
 
+  function setFetchIntervalAndLength(dispInterval) {
+    qrngLength = Math.round(10000 / dispInterval);
+    qrngFetchInterval = qrngLength * dispInterval;
+  }
 
   setFetchIntervalAndLength(currentDisplayInterval)
 
@@ -25,11 +29,6 @@ jQuery(document).ready(function ($) {
       isfetched = isfetched + 1;
     });
   };
-
-  function setFetchIntervalAndLength(dispInterval) {
-    qrngLength = Math.round(10000 / dispInterval);
-    qrngFetchInterval = qrngLength * dispInterval;
-  }
 
   function timedCount() {
     toggleQrngLoadCircle(false);
