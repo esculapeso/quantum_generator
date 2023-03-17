@@ -4,11 +4,11 @@ jQuery(document).ready(function ($) {
   let fetcheddata_1 = [];
   let isfetched = 0;
 
-  var qrngOrigDisplayInterval = 790;
+  var qrngOrigDisplayInterval = 60000;
   var qrngLength;
   var qrngFetchInterval;
-  var currentDisplayInterval = qrngOrigDisplayInterval;
-  var upcomingDisplayInterval = qrngOrigDisplayInterval;
+  var currentDisplayInterval = 938;
+  var upcomingDisplayInterval = 938;
 
   var isMobile = isMobile || false;
   var videos = (typeof videosForFocus !== 'undefined' && videosForFocus) ? videosForFocus : null;;
@@ -18,14 +18,22 @@ jQuery(document).ready(function ($) {
 
   function setFetchIntervalAndLength(dispInterval) {
     qrngLength = Math.round(10000 / dispInterval);
-    qrngFetchInterval = qrngLength * dispInterval;
+    // qrngFetchInterval = qrngLength * dispInterval;
+    qrngFetchInterval = qrngOrigDisplayInterval;
   }
 
   setFetchIntervalAndLength(currentDisplayInterval)
 
   function getOneHex(index) {
-    jQuery.get(`https://qrng.anu.edu.au/API/jsonI.php?length=${qrngLength}&type=uint8`, data => {
-      fetcheddata_1 = fetcheddata_1.concat(data.data);
+
+    
+    // jQuery.get(`https://qrng.anu.edu.au/API/jsonI.php?length=${qrngLength}&type=uint8`, data => {
+    jQuery.get(`https://beacon.nist.gov/beacon/2.0/pulse/last`, data => {
+      const result = data.pulse.outputValue.match(/.{1,2}/g) ?? [];
+      var resultHex = result.map(function (x) { 
+        return parseInt(x, 16); 
+      });
+      fetcheddata_1 = fetcheddata_1.concat(resultHex);
       isfetched = isfetched + 1;
     });
   };
@@ -116,7 +124,7 @@ jQuery(document).ready(function ($) {
       // parametry: color, jasność, przezroczystość, obwiednia, promień, kąt
       gradient = `conic-gradient(from 0deg at 50% ${gradCenter}px, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       //conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
-      $('.et_pb_fullwidth_section').css('background', gradient);
+      $('.page-content').css('background', gradient);
 
       var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4;
       for (var n = 0; n < genCount; ++n) {
