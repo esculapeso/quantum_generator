@@ -1409,8 +1409,7 @@ jQuery(document).ready(function ($) {
   var $omreikiContent = $(`<div class="omreikiContent" ></div>`);
   $omreikiContent.appendTo($tab8);
 
-  var $omreikiAffTextbox = $(`<textarea class="omreikiAffTextbox" rows="8" cols="30" >
-      Persistent Pussy GSpot\nClitorismus Sex Orgasms Syndrome</textarea>`);
+  var $omreikiAffTextbox = $(`<textarea class="omreikiAffTextbox" rows="8" cols="30" ></textarea>`);
   $omreikiAffTextbox.appendTo($omreikiContent);
 
   $(document).on('load', '.omreikiAffTextbox', function () {
