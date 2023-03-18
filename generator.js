@@ -15,6 +15,7 @@ jQuery(document).ready(function ($) {
   var psalmVideoVar = (typeof psalmVideo !== 'undefined' && psalmVideo) ? psalmVideo : null;
   var view360VideoVar = (typeof view360Video !== 'undefined' && view360Video) ? view360Video : null;
   var focusImages = (typeof imagesForFocus !== 'undefined' && imagesForFocus) ? imagesForFocus : null;
+  var roundViewImagesVar = (typeof roundViewImages !== 'undefined' && roundViewImages) ? roundViewImages : null;
 
   function setFetchIntervalAndLength(dispInterval) {
     qrngLength = Math.round(10000 / dispInterval);
@@ -26,12 +27,12 @@ jQuery(document).ready(function ($) {
 
   function getOneHex(index) {
 
-    
+
     // jQuery.get(`https://qrng.anu.edu.au/API/jsonI.php?length=${qrngLength}&type=uint8`, data => {
     jQuery.get(`https://beacon.nist.gov/beacon/2.0/pulse/last`, data => {
       const result = data.pulse.outputValue.match(/.{1,2}/g) ?? [];
-      var resultHex = result.map(function (x) { 
-        return parseInt(x, 16); 
+      var resultHex = result.map(function (x) {
+        return parseInt(x, 16);
       });
       fetcheddata_1 = fetcheddata_1.concat(resultHex);
       isfetched = isfetched + 1;
@@ -143,6 +144,11 @@ jQuery(document).ready(function ($) {
   let $quadrupolePanel = $('.quadrupolePanel');
   let header = $('.quadrupoleImage');
 
+  var $roundView = $('<div class="roundView" ></div>');
+  $roundView.appendTo(header);
+
+  $('<div class="roundViewInner" ></div>').appendTo($roundView);
+
   var $quadGenerator = $('<div class="quadGenerator" ></div>');
   $quadGenerator.appendTo(header);
 
@@ -157,6 +163,7 @@ jQuery(document).ready(function ($) {
 
   let monopole = $('.monoTunnelImage');
   appendDataHolder(monopole, "dataMonopole", "monopole")
+
 
 
   var $imageDiv = $('<div class="uploadImageHolder clipped" ></div>');
@@ -271,7 +278,7 @@ jQuery(document).ready(function ($) {
   if (psalmVideoVar) $(`<option value="psalms">Psalms</option>`).appendTo($videoCategorySelect);
   if (view360VideoVar) $(`<option value="view360">360 view</option>`).appendTo($videoCategorySelect);
 
-  
+
   $(document).on('click', '.psalmLang', function () {
     selectedPsalmsLang = $(this).attr('lang');
 
@@ -364,11 +371,11 @@ jQuery(document).ready(function ($) {
 
   var $imageInnerDiv = $('<div class="imageInnerDiv fullView" ></div>');
   $imageInnerDiv.appendTo($imageDiv);
-    
+
   var $view360InnerDiv = $('<div class="view360InnerDiv" ></div>');
   $view360InnerDiv.appendTo($imageDiv);
 
-  
+
   $(document).on('mouseenter', '.uploadImageHolder', function () {
     if (playersReady || true) {
       $('.focusControls').show();
@@ -458,7 +465,7 @@ jQuery(document).ready(function ($) {
 
     var $videoBackground = $(`<div class="videoBackground hidden-container" ></div>`);
     $videoBackground.appendTo($inside);
-    
+
     var $view360InnerDiv = $('<div class="view360InnerDiv" ></div>');
     $view360InnerDiv.appendTo($inside);
 
@@ -513,19 +520,29 @@ jQuery(document).ready(function ($) {
     $('.piramidVideoToggleCB').click();
   });
 
-  function togglePyramidView(isPyramid, startVideo) {
-    if (isPyramid) {
+  function togglePyramidView(isPyramid, startVideo, zoom, ratio) {
+    if (zoom) {
       $('.fullView').hide();
       $('.pyramidView').show();
-      $('.quadGenerator').css('width', '100vh').css('height', '100vh');
-      $('.quadrupoleImage').css('width', '166vh').attr('style', `width: 166vh; background-image: url(https://esculap.org/wp-content/uploads/2022/12/TherapistImage.png) !important`);
+      $('.quadGenerator, .roundView').css('width', `${zoom}vh`).css('height', `${zoom}vh`);
+      $('.quadGenerator').css('transform', `translateY(-50%) scale(${ratio}, 1)`);
+      $('.roundView').css('transform', `translate(-50%, -50%) scale(${ratio}, 1)`);
+      $('.quadrupoleImage').attr('style', `width: 100vw; background-image: url(https://esculap.org/wp-content/uploads/2022/12/TherapistImage.png) !important`);
       $('.personImage, .therapistImage, .generatorText').addClass('pyramidPerson')
     } else {
-      $('.fullView').show();
-      $('.pyramidView').hide();
-      $('.quadGenerator').css('width', '63%').css('height', '63%')
-      $('.quadrupoleImage').css('width', '100vh').css('background-image', `url(https://esculap.org/wp-content/uploads/2022/11/quadrupole_darq_frame.png)`)
-      $('.personImage, .therapistImage, .generatorText').removeClass('pyramidPerson')
+      if (isPyramid) {
+        $('.fullView').hide();
+        $('.pyramidView').show();
+        $('.quadGenerator').css('width', '100vh').css('height', '100vh');
+        $('.quadrupoleImage').css('width', '166vh').attr('style', `width: 166vh; background-image: url(https://esculap.org/wp-content/uploads/2022/12/TherapistImage.png) !important`);
+        $('.personImage, .therapistImage, .generatorText').addClass('pyramidPerson')
+      } else {
+        $('.fullView').show();
+        $('.pyramidView').hide();
+        $('.quadGenerator').css('width', '63%').css('height', '63%')
+        $('.quadrupoleImage').css('width', '100vh').css('background-image', `url(https://esculap.org/wp-content/uploads/2022/11/quadrupole_darq_frame.png)`)
+        $('.personImage, .therapistImage, .generatorText').removeClass('pyramidPerson')
+      }
     }
     setDataFontSize();
     if (startVideo) startFocusVideo();
@@ -543,11 +560,11 @@ jQuery(document).ready(function ($) {
     var thumbUrl = "https://img.youtube.com/vi/" + v.id + "/0.jpg"
 
     var $videoThumbPreviewDiv = $(`<div
-          videoid="${v.id}" 
-          videoname="${v.name}"
-          class="videoThumb"
-          style="background-image:url(${thumbUrl})"
-        ></div>`);
+            videoid="${v.id}" 
+            videoname="${v.name}"
+            class="videoThumb"
+            style="background-image:url(${thumbUrl})"
+          ></div>`);
     $videoThumbPreviewDiv.appendTo($videoThumbsDiv);
 
     var $videoOption = $(`<option value="${v.id}">${v.name}</option>`);
@@ -654,9 +671,9 @@ jQuery(document).ready(function ($) {
 
     if (isView) {
       $(`
-      <iframe width="100%" height="100%" title="Esculap ESA ESOC" scrolling="no" 
-        src="${newVideoId}">
-      </iframe>`).appendTo('.view360InnerDiv');
+        <iframe width="100%" height="100%" title="Esculap ESA ESOC" scrolling="no" 
+          src="${newVideoId}">
+        </iframe>`).appendTo('.view360InnerDiv');
 
     } else {
       if (!playersReady) return;
@@ -822,17 +839,17 @@ jQuery(document).ready(function ($) {
 
   function insert3dModel($parent, srcUrl, targetUrl) {
     var modelHolder = `<model-viewer
-      class="modelviewer3d"
-      src="${srcUrl}"
-      style="width: 100%; height: 100%;"
-      poster="https://esculap.org/wp-content/uploads/2022/12/animateddna.webp"
-      target="${targetUrl}"
-      background-color="transparent"
-      preload
-      reveal-when-loaded
-      auto-rotate
-      controls
-      ></model-viewer>`
+        class="modelviewer3d"
+        src="${srcUrl}"
+        style="width: 100%; height: 100%;"
+        poster="https://esculap.org/wp-content/uploads/2022/12/animateddna.webp"
+        target="${targetUrl}"
+        background-color="transparent"
+        preload
+        reveal-when-loaded
+        auto-rotate
+        controls
+        ></model-viewer>`
     $parent.html(modelHolder);
   }
 
@@ -906,7 +923,7 @@ jQuery(document).ready(function ($) {
         $(`.${p.role}Image`).css('background-image', p.data);
       });
 
-      
+
 
       if (checkParamValue(jsonObject['Focus Text'])) {
         var initFocusText = jsonObject['Focus Text']
@@ -1327,6 +1344,59 @@ jQuery(document).ready(function ($) {
   });
 
 
+
+
+  /**********************
+          360
+  ***********************/
+
+  var $tab10 = $("#tabs-10");
+
+  var $soundCaption = $(`<div class="soundCaption tabHeader" >~~ 360 Settings ~~</div>`);
+  $soundCaption.appendTo($tab10);
+
+  var $roundViewSizeSlider = $(`<input type="range" class="roundViewSizeSlider" min=40 max=150 value=63 />`);
+  $roundViewSizeSlider.appendTo($tab10);
+
+  var $roundViewSizeText = $(`<input type="text" class="roundViewSizeText" value=63 />`);
+  $roundViewSizeText.appendTo($tab10);
+
+  var $roundViewRatioSlider = $(`<input type="range" class="roundViewRatioSlider" min=1 max=3 step=0.01 value=1 />`);
+  $roundViewRatioSlider.appendTo($tab10);
+
+  var $roundViewRatioText = $(`<input type="text" class="roundViewRatioText" value=1 />`);
+  $roundViewRatioText.appendTo($tab10);
+
+  var $roundViewContent = $(`<div class="roundViewContent" ></div>`);
+  $roundViewContent.appendTo($tab10);
+
+  $(document).on('input', '.roundViewSizeSlider', function () {
+    $('.roundViewSizeText').val($(this).val());
+    togglePyramidView(false, false, $(this).val(), $('.roundViewRatioSlider').val());
+  });
+
+  $(document).on('input', '.roundViewRatioSlider', function () {
+    $('.roundViewRatioText').val($(this).val());
+    togglePyramidView(false, false, $('.roundViewSizeSlider').val(), $(this).val());
+  });
+
+  $(roundViewImagesVar).each(function (k, fi) {
+    var $roundViewImageWrap = $(`<div class="roundViewImageWrap"></div>`);
+    $roundViewImageWrap.appendTo($roundViewContent);
+
+    var $roundViewImage = $(`<img class="roundViewImage" src="${fi.filepath}" />`);
+    $roundViewImage.appendTo($roundViewImageWrap);
+
+    var $caption = $(`<div class="uploadImageCaption" >${fi.caption}</div>`);
+    $caption.appendTo($roundViewImageWrap);
+  });
+
+  $(document).on('click', '.roundViewImageWrap', function () {
+    var imagePath = $(this).find(".roundViewImage").attr('src');
+    $(".roundViewInner").css('background-image', `url("${imagePath})`);
+  });
+
+
   /********************
         OM REIKI 
   ********************/
@@ -1340,7 +1410,7 @@ jQuery(document).ready(function ($) {
   $omreikiContent.appendTo($tab8);
 
   var $omreikiAffTextbox = $(`<textarea class="omreikiAffTextbox" rows="8" cols="30" >
-    Persistent Pussy GSpot\nClitorismus Sex Orgasms Syndrome</textarea>`);
+      Persistent Pussy GSpot\nClitorismus Sex Orgasms Syndrome</textarea>`);
   $omreikiAffTextbox.appendTo($omreikiContent);
 
   $(document).on('load', '.omreikiAffTextbox', function () {
@@ -1495,27 +1565,27 @@ jQuery(document).ready(function ($) {
 
   function addTooltip(psalm, set, $element) {
     let psalmPreview = `
-      <div class="psalmPreview tooltip">
-        <div class="thumb"><img src="//img.youtube.com/vi/${psalm.youtube}/maxresdefault.jpg"
-          onload="if (this.width < 130) this.src = '//img.youtube.com/vi/${psalm.youtube}/mqdefault.jpg'" /></div>
-        <div class="psalmDetails">
-          <div class="psalmTitle">${set.flag}${set.speaker} ${psalm.name}</div>
-          <div class="psalmContent">${psalm.text ?? ''}</div>
+        <div class="psalmPreview tooltip">
+          <div class="thumb"><img src="//img.youtube.com/vi/${psalm.youtube}/maxresdefault.jpg"
+            onload="if (this.width < 130) this.src = '//img.youtube.com/vi/${psalm.youtube}/mqdefault.jpg'" /></div>
+          <div class="psalmDetails">
+            <div class="psalmTitle">${set.flag}${set.speaker} ${psalm.name}</div>
+            <div class="psalmContent">${psalm.text ?? ''}</div>
+          </div>
         </div>
-      </div>
-    `
+      `
     $element.attr('title', psalmPreview);
   }
 
   function previewPsalm(psalm, set) {
     let psalmPreview = `
-      <div class="psalmTitle">${set.flag}${set.speaker} ${psalm.name}</div>
-      <div class="linki">
-        <div class="youtube"><a target="_blank" href="https://www.youtube.com/watch?v=${psalm.youtube}"><img src="//img.youtube.com/vi/${psalm.youtube}/mqdefault.jpg" /></a></div>
-        <div class="wiki"><a target="_blank" href="https://${selectedPsalmsLang.split('_')[0]}.wikipedia.org/wiki/Psalm_${psalm.name.replace('Psalm ', '')}"><img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Wikipedia_svg_logo.svg" /></a></div>
-      </div>
-      <div class="psalmDesc">${psalm.text ?? ''}</div>
-    `
+        <div class="psalmTitle">${set.flag}${set.speaker} ${psalm.name}</div>
+        <div class="linki">
+          <div class="youtube"><a target="_blank" href="https://www.youtube.com/watch?v=${psalm.youtube}"><img src="//img.youtube.com/vi/${psalm.youtube}/mqdefault.jpg" /></a></div>
+          <div class="wiki"><a target="_blank" href="https://${selectedPsalmsLang.split('_')[0]}.wikipedia.org/wiki/Psalm_${psalm.name.replace('Psalm ', '')}"><img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Wikipedia_svg_logo.svg" /></a></div>
+        </div>
+        <div class="psalmDesc">${psalm.text ?? ''}</div>
+      `
     $(".psalmText").html(psalmPreview);
   }
 
