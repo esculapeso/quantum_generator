@@ -3,6 +3,7 @@ jQuery(document).ready(function ($) {
 
   let fetcheddata_1 = [];
   let isfetched = 0;
+  let sessionObj = {}
 
   var qrngOrigDisplayInterval = 60000;
   var qrngLength;
@@ -16,6 +17,7 @@ jQuery(document).ready(function ($) {
   var view360VideoVar = (typeof view360Video !== 'undefined' && view360Video) ? view360Video : null;
   var focusImages = (typeof imagesForFocus !== 'undefined' && imagesForFocus) ? imagesForFocus : null;
   var roundViewImagesVar = (typeof roundViewImages !== 'undefined' && roundViewImages) ? roundViewImages : null;
+  var customVideosVar = (typeof customVideos !== 'undefined' && customVideos) ? customVideos : null;
 
   function setFetchIntervalAndLength(dispInterval) {
     qrngLength = Math.round(10000 / dispInterval);
@@ -451,7 +453,7 @@ jQuery(document).ready(function ($) {
   var $pyramid = $('<div class="video-container pyramid pyramidView" ></div>');
   $pyramid.appendTo($imageDiv);
 
-  var sides = ['north', 'west', 'south', 'east'];
+  var sides = [];// ['north', 'west', 'south', 'east'];
 
   $(sides).each((i, s) => {
     var $side = $(`<div class="side ${s}" ></div>`);
@@ -557,13 +559,23 @@ jQuery(document).ready(function ($) {
   $videoSelect.appendTo($videoChooserContent);
 
   $(videos).each(function (k, v) {
-    var thumbUrl = "https://img.youtube.com/vi/" + v.id + "/0.jpg"
+
+    let style = '';
+    if (v.isView) {
+      style = (v.thumbUrl) 
+        ? `background-image:url(${v.thumbUrl});` 
+        : `background-image:url(https://ww2.e-s-p.com/wp-content/uploads/2018/12/youtube-play.png);`
+    }
+    else {
+      style = `background-image:url(https://img.youtube.com/vi/${v.id}/0.jpg);`
+    }
 
     var $videoThumbPreviewDiv = $(`<div
             videoid="${v.id}" 
             videoname="${v.name}"
+            isView="${v.isView}"
             class="videoThumb"
-            style="background-image:url(${thumbUrl})"
+            style="${style}"
           ></div>`);
     $videoThumbPreviewDiv.appendTo($videoThumbsDiv);
 
@@ -596,11 +608,11 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('click', '.videoThumb', function () {
-    changeVideo($(this).attr('videoid'))
+    changeVideo($(this).attr('videoid'), $(this).attr("isView"))
   });
 
   $(document).on('change', '.videoSelect', function () {
-    changeVideo($(this).val(), null, $(this).find('option:selected').is("[isView]"));
+    changeVideo($(this).val(), $(this).find('option:selected').attr("isView"));
   });
 
 
@@ -640,6 +652,8 @@ jQuery(document).ready(function ($) {
 
 
   function stopFocusVideo() {
+    return;
+    console.log({players})
     $('.youtubePauseButtonImage').hide();
     $('.youtubePlayButtonImage').show();
     $(players).each((i, p) => p.stopVideo());
@@ -647,6 +661,7 @@ jQuery(document).ready(function ($) {
   }
 
   function pauseFocusVideo() {
+    if (!playersReady) return;
     $('.youtubePauseButtonImage').hide();
     $('.youtubePlayButtonImage').show();
     $(players).each((i, p) => p.pauseVideo());
@@ -663,23 +678,32 @@ jQuery(document).ready(function ($) {
     $('.videoBackground, .video-container').removeClass('hidden-container');
   }
 
-  function changeVideo(newVideoId, originalRatio, isView) {
+  function changeVideo(newVideoId, mode) {
 
-    // $('.video-container iframe').toggleClass('originalRatio', originalRatio)
+    sessionObj['videoId'] = newVideoId;
+    sessionObj['videoMode'] = mode;
+
     $(".imageInnerDiv").removeClass('psalmCover')
     $(".view360InnerDiv").empty()
 
-    if (isView) {
-      $(`
-        <iframe width="100%" height="100%" title="Esculap ESA ESOC" scrolling="no" 
-          src="${newVideoId}">
-        </iframe>`).appendTo('.view360InnerDiv');
-
-    } else {
-      if (!playersReady) return;
-      $(players).each((i, p) => p.loadVideoById(newVideoId).stopVideo());
-      startFocusVideo();
+    switch (mode) {
+      case 'isView':
+        $(`<iframe width="100%" height="100%" title="Esculap ESA ESOC" scrolling="no" 
+            src="${newVideoId}">
+          </iframe>`).appendTo('.view360InnerDiv');
+        break;
+      case 'isVideo':
+        $(`<video width="100%" height="100%" autoplay loop>
+            <source src="${newVideoId}" type="video/mp4">
+          </video>`).appendTo('.view360InnerDiv');
+        break;
+      default:
+        if (!playersReady) return;
+        $(players).each((i, p) => p.loadVideoById(newVideoId).stopVideo());
+        startFocusVideo();
+        break;
     }
+
   }
 
   function getActivePlayers() {
@@ -920,6 +944,7 @@ jQuery(document).ready(function ($) {
       jsonObject = JSON.parse(json);
 
       $(jsonObject.people).each((i, p) => {
+        console.log(p.data)
         $(`.${p.role}Image`).css('background-image', p.data);
       });
 
@@ -939,7 +964,8 @@ jQuery(document).ready(function ($) {
         $('.piramidToggleCB').prop('checked', jsonObject.isPyramid);
         togglePyramidView(jsonObject.isPyramid);
       }
-      if (checkParamValue(jsonObject.videoId)) { changeVideo(jsonObject.videoId) } else { stopFocusVideo() };
+      let videoMode = (checkParamValue(jsonObject.videoMode)) ? jsonObject.videoMode : null;
+      if (checkParamValue(jsonObject.videoId)) { changeVideo(jsonObject.videoId, videoMode) } else { stopFocusVideo() };
       if (checkParamValue(jsonObject.callClip)) $('.clipOptionsSelect').val(jsonObject.callClip).change();
       if (checkParamValue(jsonObject.callClipSize)) $('.callRange').val(jsonObject.callClipSize).change();
 
@@ -1557,7 +1583,7 @@ jQuery(document).ready(function ($) {
     previewPsalm(psalm, set);
 
     clearImageFocus();
-    changeVideo(psalm.youtube, true)
+    changeVideo(psalm.youtube)
     $(".imageInnerDiv").addClass('psalmCover').html(psalm.name);
 
   });
@@ -1632,7 +1658,8 @@ jQuery(document).ready(function ($) {
     var dateNow = new Date(Date.now());
     var sessionTime = dateNow.toUTCString();
     var focusText = $(".focusText").html();
-    var videoID = (!$('.video-container').hasClass('hidden-container')) ? players[0].getVideoData()['video_id'] : '';
+    var videoID = sessionObj['videoId']
+    var videoMode = sessionObj['videoMode']
     var ImageCaption = $(".captionText").html().replace('\n', ' ');
     var imageData = $('.imageInnerDiv').css('background-image');
     var image3dData = $('.imageInnerDiv .modelviewer3d').attr('src');
@@ -1646,6 +1673,7 @@ jQuery(document).ready(function ($) {
       'Session time': sessionTime,
       'Focus Text': focusText,
       'videoId': videoID,
+      videoMode,
       imageData,
       image3dData,
       ImageCaption,
