@@ -17,6 +17,10 @@ body * {
   background-color: white;
 }
 
+.main-container {
+  width: 100%!important;
+}
+
 .quadrupoleImage * {
   color: #ffd8bc;
 }
