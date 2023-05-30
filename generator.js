@@ -968,11 +968,13 @@ jQuery(document).ready(function ($) {
         $('.focusText').html(initFocusText);
         $('.focusTextTextBox').val(initFocusText);
       }
+      if (checkParamValue(jsonObject.ImageCaption)) {
+        $(".captionText").html(jsonObject.ImageCaption);
+        $('.captionTextTextBox').val(jsonObject.ImageCaption);
+      }
 
-      if (checkParamValue(jsonObject.ImageCaption)) $('.captionTextTextBox').val(jsonObject.ImageCaption);;
       if (checkParamValue(jsonObject.imageData)) $('.imageInnerDiv').css('background-image', jsonObject.imageData);
       if (checkParamValue(jsonObject.image3dData)) insert3dModel($('.imageInnerDiv'), jsonObject.image3dData);
-      if (checkParamValue(jsonObject.ImageCaption)) $(".captionText").html(jsonObject.ImageCaption);
       if (checkParamValue(jsonObject.qrngInterval)) changeQrngInterval(jsonObject.qrngInterval);
       if (checkParamValue(jsonObject.isPyramid)) {
         $('.piramidToggleCB').prop('checked', jsonObject.isPyramid);
