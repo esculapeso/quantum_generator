@@ -230,8 +230,21 @@ jQuery(document).ready(function ($) {
   var $focusChooser = $('<div class="focusChooser" ></div>');
   $focusChooser.appendTo($focusAndSession);
 
-  $('<div class="videoSelectsTitle" >Focus:</div>').appendTo($focusChooser);
-  $('<input type="text" class="focusTextTextBox" />').appendTo($focusChooser);
+  var $focusTextChooser = $('<div class="focusTextChooser" ></div>');
+  $focusTextChooser.appendTo($focusChooser);
+
+  $('<div class="videoSelectsTitle" >Focus:</div>').appendTo($focusTextChooser);
+  $('<input type="text" class="focusTextTextBox" />').appendTo($focusTextChooser);
+
+  var $captionTextChooser = $('<div class="captionTextChooser" ></div>');
+  $captionTextChooser.appendTo($focusChooser);
+
+  $('<div class="videoSelectsTitle" >Caption:</div>').appendTo($captionTextChooser);
+  $('<input type="text" class="captionTextTextBox" />').appendTo($captionTextChooser);
+
+  $(document).on('input', '.captionTextTextBox', function () {
+    $(".captionText").html($(this).val());
+  });
 
 
   var $sessionButtons = $('<div class="sessionButtons" ></div>');
@@ -956,6 +969,7 @@ jQuery(document).ready(function ($) {
         $('.focusTextTextBox').val(initFocusText);
       }
 
+      if (checkParamValue(jsonObject.ImageCaption)) $('.captionTextTextBox').val(jsonObject.ImageCaption);;
       if (checkParamValue(jsonObject.imageData)) $('.imageInnerDiv').css('background-image', jsonObject.imageData);
       if (checkParamValue(jsonObject.image3dData)) insert3dModel($('.imageInnerDiv'), jsonObject.image3dData);
       if (checkParamValue(jsonObject.ImageCaption)) $(".captionText").html(jsonObject.ImageCaption);
