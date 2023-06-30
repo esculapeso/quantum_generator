@@ -986,9 +986,7 @@ jQuery(document).ready(function ($) {
         $('.focusText').html(initFocusText);
         $('.focusTextTextBox').val(initFocusText);
       }
-      if (checkParamValue(jsonObject.ImageCaption)) {
-        updateCaptionText(jsonObject.ImageCaption);
-      }
+      if (checkParamValue(jsonObject.ImageCaption)) updateCaptionText(jsonObject.ImageCaption);
       if (checkParamValue(jsonObject.imageData)) $('.imageInnerDiv').css('background-image', jsonObject.imageData);
       if (checkParamValue(jsonObject.image3dData)) insert3dModel($('.imageInnerDiv'), jsonObject.image3dData);
       if (checkParamValue(jsonObject.qrngInterval)) changeQrngInterval(jsonObject.qrngInterval);

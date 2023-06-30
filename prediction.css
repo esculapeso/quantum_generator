@@ -17,6 +17,10 @@ body * {
   background-color: white;
 }
 
+.main-container {
+  width: 100%!important;
+}
+
 .quadrupoleImage * {
   color: #ffd8bc;
 }
@@ -208,11 +212,16 @@ body * {
   position: absolute;
   width: 100%;
   text-align: center;
-  font-size: 4vh;
+  font-size: 2.6vh;
+  line-height: 0.8;
+  height: 8vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .focusText {
-  top: 13%;
+  top: 12%;
   color: red;
 }
 
@@ -734,9 +743,6 @@ img.videoOverlay {
     position: static;
   }
 
-  .generatorText {
-    font-size: 4vw;
-  }
 }
 
 @media screen and (orientation:landscape) {
@@ -752,10 +758,6 @@ img.videoOverlay {
   .videoChooserSection {
     margin: unset;
     position: absolute;
-  }
-
-  .generatorText {
-    font-size: 4vh;
   }
 
   .callWrapper {
@@ -1060,11 +1062,7 @@ img.videoOverlay {
 }
 
 .focusAndSession>div {
-  flex: 1 0 50%;
-}
-
-.focusTextTextBox {
-  width: 60% !important;
+  flex: 1 0 60%;
 }
 
 .roundViewContent {
