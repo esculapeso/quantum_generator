@@ -17,7 +17,8 @@ jQuery(document).ready(function ($) {
   var view360VideoVar = (typeof view360Video !== 'undefined' && view360Video) ? view360Video : null;
   var focusImages = (typeof imagesForFocus !== 'undefined' && imagesForFocus) ? imagesForFocus : null;
   var roundViewImagesVar = (typeof roundViewImages !== 'undefined' && roundViewImages) ? roundViewImages : null;
-  var customVideosVar = (typeof customVideos !== 'undefined' && customVideos) ? customVideos : null;
+  var randomBackgroundMiddleVar = (typeof randomBackgroundMiddle !== 'undefined' && randomBackgroundMiddle) ? randomBackgroundMiddle : null;
+  var focusTextsVar = (typeof focusTexts !== 'undefined' && focusTexts) ? focusTexts : null;
 
   function setFetchIntervalAndLength(dispInterval) {
     qrngLength = Math.round(10000 / dispInterval);
@@ -118,14 +119,21 @@ jQuery(document).ready(function ($) {
       var col3 = `rgba(${$(cd[8]).val()},${$(cd[9]).val()},${$(cd[10]).val()},${$(cd[11]).val()})`;
 
 
-      // Calculate the middle of the gradient
-      var genHeight = $('.quadGenerator').height();
-      var genOffTop = $(".quadGenerator").offset() ? $(".quadGenerator").offset().top : 0;
-      var graOffTop = $(".et_pb_fullwidth_section").offset() ? $(".et_pb_fullwidth_section").offset().top : 0;
-      var gradCenter = genOffTop - graOffTop + genHeight / 2;
+      var gradVerCenter;
+      if (randomBackgroundMiddleVar) {
+        gradVerCenter = randomBackgroundMiddleVar
+      } else {
+        // Calculate the middle of the gradient
+        var genHeight = $('.quadGenerator').height();
+        var genOffTop = $(".quadGenerator").offset() ? $(".quadGenerator").offset().top : 0;
+        var graOffTop = $(".et_pb_fullwidth_section").offset() ? $(".et_pb_fullwidth_section").offset().top : 0;
+        var gradCenter = genOffTop - graOffTop + genHeight / 2;
+
+        gradVerCenter = `${gradCenter}px`;
+      }
 
       // parametry: color, jasność, przezroczystość, obwiednia, promień, kąt
-      gradient = `conic-gradient(from 0deg at 50% ${gradCenter}px, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
+      gradient = `conic-gradient(from 0deg at 50% ${gradVerCenter}, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       //conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       $('.page-content').css('background', gradient);
 
@@ -219,7 +227,7 @@ jQuery(document).ready(function ($) {
     } else {
       $(".imageInnerDiv").css('background-image', `url("${imagePath})`);
     }
-    $(".captionText").html(caption);
+    updateCaptionText(caption);
   });
 
 
@@ -230,9 +238,21 @@ jQuery(document).ready(function ($) {
   var $focusChooser = $('<div class="focusChooser" ></div>');
   $focusChooser.appendTo($focusAndSession);
 
-  $('<div class="videoSelectsTitle" >Focus:</div>').appendTo($focusChooser);
-  $('<input type="text" class="focusTextTextBox" />').appendTo($focusChooser);
+  var $focusTextChooser = $('<div class="focusTextChooser" ></div>');
+  $focusTextChooser.appendTo($focusChooser);
 
+  $('<div class="videoSelectsTitle" >Focus:</div>').appendTo($focusTextChooser);
+  $('<input type="text" class="focusTextTextBox" />').appendTo($focusTextChooser);
+
+  var $captionTextChooser = $('<div class="captionTextChooser" ></div>');
+  $captionTextChooser.appendTo($focusChooser);
+
+  $('<div class="videoSelectsTitle" >Caption:</div>').appendTo($captionTextChooser);
+  $('<input type="text" class="captionTextTextBox" />').appendTo($captionTextChooser);
+
+  $(document).on('input', '.captionTextTextBox', function () {
+    $(".captionText").html($(this).val());
+  });
 
   var $sessionButtons = $('<div class="sessionButtons" ></div>');
   $sessionButtons.appendTo($focusAndSession);
@@ -433,10 +453,8 @@ jQuery(document).ready(function ($) {
 
   $('.focusText').html(initFocusText);
   $('.focusTextTextBox').val(initFocusText);
-
-  var initCaptionText = "Gold";
-  var $captionText = $(`<div class="captionText generatorText" >${initCaptionText}</div>`);
-  $captionText.appendTo(header);
+  $(`<div class="captionText generatorText" ></div>`).appendTo(header);
+  updateCaptionText("Gold");
 
   /**********************
           VIDEO 
@@ -453,7 +471,7 @@ jQuery(document).ready(function ($) {
   var $pyramid = $('<div class="video-container pyramid pyramidView" ></div>');
   $pyramid.appendTo($imageDiv);
 
-  var sides = [];// ['north', 'west', 'south', 'east'];
+  var sides = ['north', 'west', 'south', 'east'];
 
   $(sides).each((i, s) => {
     var $side = $(`<div class="side ${s}" ></div>`);
@@ -652,8 +670,6 @@ jQuery(document).ready(function ($) {
 
 
   function stopFocusVideo() {
-    return;
-    console.log({players})
     $('.youtubePauseButtonImage').hide();
     $('.youtubePlayButtonImage').show();
     $(players).each((i, p) => p.stopVideo());
@@ -667,11 +683,11 @@ jQuery(document).ready(function ($) {
     $(players).each((i, p) => p.pauseVideo());
   }
 
-  function startFocusVideo() {
+  function startFocusVideo(newVideoId) {
     if (!playersReady) return;
     $('.youtubePlayButtonImage').hide();
     $('.youtubePauseButtonImage').show();
-    $(players).each((i, p) => p.stopVideo());
+    $(players).each((i, p) => p.loadVideoById(newVideoId).stopVideo());
     var activePlayers = getActivePlayers();
     $(activePlayers).each((i, p) => p.setVolume($('.videoVolume').val()).playVideo().setPlaybackQuality("small").mute())
     activePlayers[0].unMute();
@@ -699,15 +715,15 @@ jQuery(document).ready(function ($) {
         break;
       default:
         if (!playersReady) return;
-        $(players).each((i, p) => p.loadVideoById(newVideoId).stopVideo());
-        startFocusVideo();
+        startFocusVideo(newVideoId);
         break;
     }
 
   }
 
   function getActivePlayers() {
-    return ($('.piramidToggleCB').is(':checked')) ? players.slice(0, 4) : players.slice(4, 5);
+    var singleVideoHolderId = "videoHolder"
+    return ($('.piramidToggleCB').is(':checked')) ? players.filter(p => p.g.id != singleVideoHolderId) : players.filter(p => p.g.id == singleVideoHolderId);
   }
 
 
@@ -717,7 +733,7 @@ jQuery(document).ready(function ($) {
 
   var $tab2 = $("#tabs-2");
 
-  var selectFocusMessage = "~~ Choose Focus ~~"
+  var selectFocusMessage = "~~ Choose Main Focus ~~"
   var $focusCaption = $(`<div class="focusCaption tabHeader" >${selectFocusMessage}</div>`);
   $focusCaption.appendTo($tab2);
 
@@ -731,6 +747,21 @@ jQuery(document).ready(function ($) {
     $(".focusText").html($(this).val());
     $(".focusTextTextBox").val($(this).val());
   });
+
+  var $focusDictionary = $(`<div class="focusDictionary" ></div>`);
+  $focusDictionary.appendTo($focusContent);
+
+  $(focusTextsVar).each((i, f) => {
+    var $focusPhrase = $(`<div class="focusPhrase" >${f}</div>`);
+    $focusPhrase.appendTo($focusDictionary);
+  });
+
+  $(document).on('click', '.focusPhrase', function () {
+    $(".focusText").html($(this).html());
+    $(".focusTextTextBox").val($(this).html());
+  });
+
+
 
   var selectedLang;
   var langs = ['GB', 'PL', 'PT', 'DE', 'DK'];
@@ -851,14 +882,14 @@ jQuery(document).ready(function ($) {
     } else {
       var imagePath = $(this).find(".uploadedImage").attr('src');
       $(".imageInnerDiv").css('background-image', `url("${imagePath})`);
-      $(".captionText").html($(this).attr("text"));
+      updateCaptionText($(this).attr("text"));
     }
   });
 
   //var myFile = $('.uploadImageButton').prop('files');
   $(document).on('change', '.uploadImageHiddenButton', function () {
     var fileName = uploadImage(".imageInnerDiv", $(this));
-    $(".captionText").html(fileName);
+    updateCaptionText(fileName);
   });
 
   function insert3dModel($parent, srcUrl, targetUrl) {
@@ -955,10 +986,11 @@ jQuery(document).ready(function ($) {
         $('.focusText').html(initFocusText);
         $('.focusTextTextBox').val(initFocusText);
       }
-
+      if (checkParamValue(jsonObject.ImageCaption)) {
+        updateCaptionText(jsonObject.ImageCaption);
+      }
       if (checkParamValue(jsonObject.imageData)) $('.imageInnerDiv').css('background-image', jsonObject.imageData);
       if (checkParamValue(jsonObject.image3dData)) insert3dModel($('.imageInnerDiv'), jsonObject.image3dData);
-      if (checkParamValue(jsonObject.ImageCaption)) $(".captionText").html(jsonObject.ImageCaption);
       if (checkParamValue(jsonObject.qrngInterval)) changeQrngInterval(jsonObject.qrngInterval);
       if (checkParamValue(jsonObject.isPyramid)) {
         $('.piramidToggleCB').prop('checked', jsonObject.isPyramid);
@@ -1906,6 +1938,11 @@ jQuery(document).ready(function ($) {
       $('.videoChooserSection').css('position', 'static');
     }
 
+  }
+
+  function updateCaptionText(text) {
+    $(".captionText").html(text);
+    $('.captionTextTextBox').val(text);
   }
 
   $(window).on("resize", function (event) {
