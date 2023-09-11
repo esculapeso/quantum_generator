@@ -177,6 +177,7 @@
 .personImage.inner {
     width: 10vh !important;
     height: 10vh !important;
+    border-radius: 50%;
 }
 
 .uploadImageHolder {
