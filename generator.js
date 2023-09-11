@@ -1058,7 +1058,10 @@ jQuery(document).ready(function ($) {
     var $personHiddenUploadButton = $(`<input class="personHiddenUploadButton" target="${p.role}" type="file" style="display: none;" />`);
     $personHiddenUploadButton.appendTo($personRightPanel);
 
-    var $personUploadButton = $(`<input role="${p.role}" class="personUploadButton" type="button" value="Upload Image" />`);
+    var $personUploadButton = $(`<input role="${p.role}" class="personUploadButton" type="button" value="Upload" />`);
+    $personUploadButton.appendTo($personRightPanel);
+
+    var $personUploadButton = $(`<input role="${p.role}" class="personDeleteButton" type="button" value="Delete" />`);
     $personUploadButton.appendTo($personRightPanel);
 
   })
@@ -1097,6 +1100,12 @@ jQuery(document).ready(function ($) {
   $(document).on('click', '.personUploadButton, .personImage', function () {
     var role = $(this).attr('role');
     $(`.${role} .personHiddenUploadButton`).click();
+  });
+
+  $(document).on('click', '.personDeleteButton, .personImage', function () {
+    var role = $(this).attr('role');
+    var targetSelector = `.${role}Image, .${role}Thumb`;
+    $(targetSelector).css('background-image', ``);
   });
 
   $(document).on('change', '.personHiddenUploadButton', function () {

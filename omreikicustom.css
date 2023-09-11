@@ -178,6 +178,7 @@
     width: 10vh !important;
     height: 10vh !important;
     border-radius: 50%;
+    background-size: cover;
 }
 
 .uploadImageHolder {
