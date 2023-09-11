@@ -66,13 +66,13 @@ jQuery(document).ready(function ($) {
 
   function printModHex(element, dir, currentDigit) {
     if (element) {
-      let streamElems = element.getElementsByTagName('div');
-      streamElems[0].insertAdjacentHTML(dir, currentDigit);
+      let streamElems = element.find('div');
+      streamElems.prepend(currentDigit);
 
     }
   };
 
-  function appendDataHolder(container, id, className) {
+  function  appendDataHolder(container, id, className) {
     if (container.length) {
       var $dataDiv = $(`<div id="${id}" class="${className}" ></div>`);
       $dataDiv.appendTo(container);
@@ -86,10 +86,10 @@ jQuery(document).ready(function ($) {
   function timedPrint(index) {
     if (isfetched > 0) {
 
-      let dataDualTop = document.getElementById('dataDualTop');
-      let dataDualBottom = document.getElementById('dataDualBottom');
+      let dataDualTop = $('#dataDualTop');
+      let dataDualBottom = $('#dataDualBottom');
 
-      let dataMonopole = document.getElementById('dataMonopole');
+      let dataMonopole = $('#dataMonopole');
 
       index = (index + 1);
 
@@ -139,7 +139,7 @@ jQuery(document).ready(function ($) {
 
       var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4;
       for (var n = 0; n < genCount; ++n) {
-        printHex(document.getElementById('generator' + n), 'afterbegin', index);
+        printHex($('#generator' + n), 'afterbegin', index);
       }
 
       currentNumber = printHex(dataDualTop, 'afterbegin', index);
@@ -159,8 +159,9 @@ jQuery(document).ready(function ($) {
 
   $('<div class="roundViewInner" ></div>').appendTo($roundView);
 
-  var $quadGenerator = $('<div class="quadGenerator" ></div>');
-  $quadGenerator.appendTo(header);
+  $('<div class="quadGenerator" ></div>').appendTo(header);
+  var $quadGenerator = $('.quadGenerator');
+  console.log("QUAD LEN: ", $quadGenerator.length);
 
   var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4;
   for (var n = 0; n < genCount; ++n) {
@@ -400,7 +401,7 @@ jQuery(document).ready(function ($) {
 
   $(document).on('mouseenter', '.uploadImageHolder', function () {
     if (playersReady || true) {
-      $('.focusControls').show();
+      // $('.focusControls').show();
     }
   });
 
@@ -447,14 +448,15 @@ jQuery(document).ready(function ($) {
   ***********************/
   $("#tabs").tabs().appendTo($videoChooserSection);
 
-  var initFocusText = "Focus";
+  var initFocusText = "Sacrum";
+  var initCaptionText = "Quantum";
   var $focusText = $(`<div class="focusText generatorText" ></div>`);
   $focusText.appendTo(header);
 
   $('.focusText').html(initFocusText);
   $('.focusTextTextBox').val(initFocusText);
   $(`<div class="captionText generatorText" ></div>`).appendTo(header);
-  updateCaptionText("Gold");
+  updateCaptionText(initCaptionText);
 
   /**********************
           VIDEO 
@@ -740,12 +742,20 @@ jQuery(document).ready(function ($) {
   var $focusContent = $(`<div class="focusContent" ></div>`);
   $focusContent.appendTo($tab2);
 
-  var $focusTextTextBox = $(`<input class="focusTextTextBox" type="text" value="${initFocusText}" />`);
+  var $focusTextTextBox = $(`<input class="focusTextTextBox focustextClass" type="text" value="${initFocusText}" />`);
   $focusTextTextBox.appendTo($focusContent);
 
   $(document).on('input', '.focusTextTextBox', function () {
     $(".focusText").html($(this).val());
     $(".focusTextTextBox").val($(this).val());
+  });
+
+  var $captionTextTextBox = $(`<input class="captionTextTextBox focustextClass" type="text" value="${initCaptionText}" />`);
+  $captionTextTextBox.appendTo($focusContent);
+
+  $(document).on('input', '.captionTextTextBox', function () {
+    $(".captionText").html($(this).val());
+    $(".captionTextTextBox").val($(this).val());
   });
 
   var $focusDictionary = $(`<div class="focusDictionary" ></div>`);
@@ -881,15 +891,15 @@ jQuery(document).ready(function ($) {
       insert3dModel($('.imageInnerDiv'), source)
     } else {
       var imagePath = $(this).find(".uploadedImage").attr('src');
-      $(".imageInnerDiv").css('background-image', `url("${imagePath})`);
-      updateCaptionText($(this).attr("text"));
+      $(".imageInnerDiv").css('background-image', `url(${imagePath})`);
+      // updateCaptionText($(this).attr("text"));
     }
   });
 
   //var myFile = $('.uploadImageButton').prop('files');
   $(document).on('change', '.uploadImageHiddenButton', function () {
     var fileName = uploadImage(".imageInnerDiv", $(this));
-    updateCaptionText(fileName);
+    // updateCaptionText(fileName);
   });
 
   function insert3dModel($parent, srcUrl, targetUrl) {
@@ -1459,38 +1469,61 @@ jQuery(document).ready(function ($) {
 
   var $tab8 = $("#tabs-8");
 
-  var $omreikiCaption = $(`<div class="omreikiCaption tabHeader" >~~ Om Reiki Settings ~~</div>`);
-  $omreikiCaption.appendTo($tab8);
+  var $omegaCaption = $(`<div class="omegaCaption tabHeader" >~~ Om Reiki Settings ~~</div>`);
+  $omegaCaption.appendTo($tab8);
 
-  var $omreikiContent = $(`<div class="omreikiContent" ></div>`);
-  $omreikiContent.appendTo($tab8);
+  var $omegaContent = $(`<div class="omegaContent" ></div>`);
+  $omegaContent.appendTo($tab8);
 
-  var $omreikiAffTextbox = $(`<textarea class="omreikiAffTextbox" rows="8" cols="30" ></textarea>`);
-  $omreikiAffTextbox.appendTo($omreikiContent);
+  var $omegaSelect = $(`<select class="omegaSelect"></select>`);
+  $omegaSelect.appendTo($omegaContent);
 
-  $(document).on('load', '.omreikiAffTextbox', function () {
+  $(`<option value="empty">~ Select ~</option>`).appendTo($omegaSelect);
+  $(`<option value="invocation">Invocation</option>`).appendTo($omegaSelect);
+  $(`<option value="affirmation">Affirmation</option>`).appendTo($omegaSelect);
+  $(`<option value="symbols">Symbols</option>`).appendTo($omegaSelect);
+  $(`<option value="grail">Grail</option>`).appendTo($omegaSelect);
+  $(`<option value="song">Song</option>`).appendTo($omegaSelect);
+
+  $(document).on('change', '.omegaSelect', function () {
+    var step = $(this).val();
+    $(".omegaStep").hide();
+    $("." + step).show();
+  });
+
+  var $omegaAffTextbox = $(`<textarea class="omegaAffTextbox omegaStep invocation" rows="8" cols="30" ></textarea>`);
+  $omegaAffTextbox.appendTo($omegaContent);
+
+  // $(document).on('load', '.omegaAffTextbox', function () {
+  //   $(".imageInnerDiv").html($(this).val());
+  // });
+
+  $(document).on('input', '.omegaAffTextbox', function () {
     $(".imageInnerDiv").html($(this).val());
   });
 
-  $(document).on('input', '.omreikiAffTextbox', function () {
-    $(".imageInnerDiv").html($(this).val());
-  });
+  var $omegaAffTextbox = $(`<textarea class="omegaAffTextbox omegaStep affirmation" rows="8" cols="30" ></textarea>`);
+  $omegaAffTextbox.appendTo($omegaContent);
 
-  var $omreikiAffCount = $(`<input type="number" class="omreikiAffCount" value="8" />`);
-  $omreikiAffCount.appendTo($omreikiContent);
+  var $omegaAffCount = $(`<input type="number" class="omegaAffCount" value="8" />`);
+  $omegaAffCount.appendTo($omegaContent);
 
-  var $omreikiAffStartButton = $(`<input type="button" class="omreikiAffStartButton" value="Start" />`);
-  $omreikiAffStartButton.appendTo($omreikiContent);
+  var $omegaAffStartButton = $(`<input type="button" class="omegaAffStartButton" value="Start" />`);
+  $omegaAffStartButton.appendTo($omegaContent);
 
   var msgOm = new SpeechSynthesisUtterance();
   const synthOm = window.speechSynthesis;
   var isPlaying = false;
 
-  $(document).on('click', '.omreikiAffStartButton', function () {
-    var repeatCount = $('.omreikiAffCount').val();
+  $(document).on('click', '.omegaAffStartButton', function () {
 
-    $(".imageInnerDiv").html($('.omreikiAffTextbox').val());
-    msgOm.text = $('.omreikiAffTextbox').val();
+  });
+
+  $(document).on('suspended', '.omegaAffStartButton', function () {
+    var repeatCount = $('.omegaAffCount').val();
+
+    $(".imageInnerDiv").html($('.omegaAffTextbox').val());
+    msgOm.text = $('.omegaAffTextbox').val();
     msgOm.rate = 0.8;
     synth.speak(msgOm);
     isPlaying = true;
@@ -1523,9 +1556,9 @@ jQuery(document).ready(function ($) {
           synthOm.speak(shkUtt);
 
           shkUtt.onend = (event) => {
-            $(".imageInnerDiv").html($('.omreikiAffTextbox').val());
+            $(".imageInnerDiv").html($('.omegaAffTextbox').val());
             $(".imageInnerDiv").css('background-image', '');
-            repeatCount = $('.omreikiAffCount').val();
+            repeatCount = $('.omegaAffCount').val();
 
             synthOm.speak(msgOm);
           }
@@ -1536,7 +1569,7 @@ jQuery(document).ready(function ($) {
   });
 
   var $affStopButton = $(`<input type="button" class="affStopButton" value="stop" />`);
-  $affStopButton.appendTo($omreikiContent);
+  $affStopButton.appendTo($omegaContent);
 
   $(document).on('click', '.affStopButton', function () {
     synthOm.cancel();
