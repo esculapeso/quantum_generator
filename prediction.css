@@ -1,1112 +1,1122 @@
-/* Add your CSS code here.
-
-For example:
-.example {
-    color: red;
-}
-
-For brushing up on your CSS knowledge, check out http://www.w3schools.com/css/css_syntax.asp
-
-End of comment */
-
-body * {
-  font-family: georgia;
-}
-
-#page-wrap {
-  background-color: white;
-}
-
-.main-container {
-  width: 100%!important;
-}
-
-.quadrupoleImage * {
-  color: #ffd8bc;
-}
-
-.videoChooserSection input,
-.videoChooserSection select {
-  background: #ffd8bc !important;
-  color: #5c150a !important;
-}
-
-.videoChooserSection .button,
-.videoChooserSection button {
-  padding: 2px 20px;
-  cursor: pointer;
-  background: #ff9b51 !important;
-  color: #5c150a !important;
-  display: inline-block;
-  margin-right: 5px;
-}
-
-.videoControls {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.wrapperHex {
-  width: 1120px;
-  height: 1287px;
-  background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow.png);
-  background-size: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-
-.coverImage {
-  width: 1120px;
-  height: 1287px;
-  background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow_tr.png);
-  background-size: 100%;
-  position: absolute;
-  z-index: 10;
-}
-
-.monoTunnelImage {
-  width: 1120px;
-  height: 464px;
-  background-image: url(https://esculap.org/wp-content/uploads/2022/11/singleDNA.png);
-  background-size: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-.dualTeleportationImage {
-  width: 1120px;
-  height: 844px;
-  background-image: url(https://esculap.org/wp-content/uploads/2022/11/doubleDNA.png);
-  background-size: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-.quadrupoleImage {
-  width: 100vh;
-  height: 100vh;
-  background-image: url(https://esculap.org/wp-content/uploads/2022/11/quadrupole_darq_frame.png);
-  background-size: 100%;
-  overflow: hidden;
-  position: relative;
-  background-repeat: no-repeat;
-  margin: auto;
-  margin-bottom: 30px;
-}
-
-.quadGenerator {
-  width: 63%;
-  height: 63%;
-  background-image: url(https://esculap.org/wp-content/uploads/2022/12/animateddna.webp);
-  background-size: 100%;
-  overflow: hidden;
-  position: relative;
-  background-repeat: no-repeat;
-  margin: auto;
-  transform: translateY(-50%);
-  top: 50%;
-}
-
-.dataHere {
-  position: relative;
-  opacity: .5;
-  font-size: 20px;
-  overflow: hidden;
-}
-
-.quadrupole {
-  width: 66%;
-  height: 0;
-  overflow: hidden;
-  position: absolute;
-  line-height: 1;
-  opacity: 0.7;
-  padding-bottom: 12%;
-  word-break: break-word;
-}
-
-#generator0 {
-  bottom: 2.6%;
-  left: 17%;
-}
-
-#generator1 {
-  top: 44.2%;
-  left: 58.5%;
-  transform: rotate(-90deg);
-}
-
-#generator2 {
-  top: 2.6%;
-  left: 17%;
-  transform: rotate(-180deg);
-}
-
-#generator3 {
-  top: 44%;
-  left: -24.5%;
-  transform: rotate(-270deg);
-}
-
-.dipole {
-  width: 500px;
-  height: 128px;
-  overflow: hidden;
-  position: relative;
-  font-size: 16px;
-  line-height: 1;
-  opacity: 0.7;
-}
-
-.dipole#dataDualTop {
-  top: 161px;
-  left: 430px;
-}
-
-.dipole#dataDualBottom {
-  top: 411px;
-  left: 430px;
-}
-
-.monopole {
-  width: 500px;
-  height: 128px;
-  overflow: hidden;
-  position: relative;
-  font-size: 16px;
-  line-height: 1;
-  opacity: 0.7;
-}
-
-.monopole#dataMonopole {
-  top: 161px;
-  left: 430px;
-}
-
-.leftHex {
-  float: left;
-  -webkit-shape-outside: polygon(2% 75%, 2% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%);
-  shape-outside: polygon(2% 75%, 2% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%);
-  -webkit-clip-path: polygon(2% 75%, 2% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%);
-  clip-path: polygon(2% 75%, 2% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%);
-  width: 50%;
-  height: 100%;
-}
-
-.rightHex {
-  float: right;
-  -webkit-shape-outside: polygon(98% 75%, 98% 25%, 0% 0%, 100% 0%, 100% 100%, 0% 100%);
-  shape-outside: polygon(98% 75%, 98% 25%, 0% 0%, 100% 0%, 100% 100%, 0% 100%);
-  -webkit-clip-path: polygon(98% 75%, 98% 25%, 0% 0%, 100% 0%, 100% 100%, 0% 100%);
-  clip-path: polygon(98% 75%, 98% 25%, 0% 0%, 100% 0%, 100% 100%, 0% 100%);
-  width: 50%;
-  height: 100%;
-}
-
-.caption {
-  text-align: center;
-}
-
-.generatorText {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  font-size: 2.6vh;
-  line-height: 0.8;
-  height: 8vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.focusText {
-  top: 12%;
-  color: red;
-}
-
-.generatorText.pyramidPerson {
-  top: 50%;
-  transform: translatey(-50%);
-  width: 20%;
-  bottom: unset;
-}
-
-.captionText {
-  bottom: 13%;
-  color: blue;
-}
-
-.captionText.pyramidPerson {
-  right: 0;
-}
-
-.uploadImageHolder {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 69%;
-  height: 69%;
-  transform: translate(-50%, -50%);
-}
-
-.imageButton {
-  display: inline-block;
-  margin: 10px 5px 10px 0px;
-}
-
-.imageInnerDiv {
-  position: absolute;
-  z-index: 10;
-  width: 100%;
-  height: 100%;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  cursor: pointer;
-}
-
-.uploadImageExample {
-  cursor: pointer;
-  display: inline-block;
-  text-align: center;
-  margin-right: 5px;
-}
-
-.uploadImageExample {
-  height: 84px;
-}
-
-.uploadImageExample .uploadedImage {
-  height: 100% !important;
-}
-
-.uploadImageExample .uploadImageCaption {
-  white-space: pre-line;
-}
-
-#videoHolder {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-
-.redButton {
-  width: 40px;
-  cursor: pointer;
-  display: inline-block;
-  margin-right: 10px;
-  vertical-align: middle;
-}
-
-.videoVolume {
-  vertical-align: middle;
-}
-
-.videoThumb {
-  width: 80px;
-  display: inline-block;
-  cursor: pointer;
-  height: 44px;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  margin-right: 5px;
-  background-position: center;
-}
-
-.chooserContent {
-  text-align: center;
-  cursor: pointer;
-}
-
-.videoChooserSection {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 300px;
-  height: 575px;
-  z-index: 100;
-}
-
-.quantityPanel {
-  background: #c7c795;
-  text-align: center;
-  padding: 10px 30px;
-  width: 690px;
-}
-
-.quantityPanel .title {
-  background: #ffccc1;
-  color: #c32300 !important;
-  padding: 5px 0px;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.emotion {
-  margin: 3px 0 9px 0;
-}
-
-.emotionHeaders {
-  margin-top: 10px;
-}
-
-.emotionHeaders .name {
-  width: 100px;
-  text-align: right;
-}
-
-.emotionHeaders .intensity {
-  width: 162px;
-}
-
-.emotionHeaders div {
-  display: inline-block;
-  color: #323200;
-  font-weight: bold;
-}
-
-.emotionHeaders .color,
-.colorQuantity,
-.balanceQuantity {
-  width: 44px;
-  margin-left: 10px;
-}
-
-.emotionName,
-.emotionName a {
-  display: inline-block;
-  width: 100px;
-  text-align: right;
-  margin-right: 10px;
-  color: #1a1a00 !important;
-}
-
-.emotionQuantityBar {
-  display: inline-block;
-  width: 117px;
-  background-color: #b8b8b6;
-  height: 22px;
-  margin-bottom: -6px;
-  margin-right: 5px;
-}
-
-.emotionQuantityBarFill {
-  background-image: url('https://esculap.org/wp-content/uploads/2022/11/emotionbar.png');
-  background-size: contain;
-  width: 10%;
-  height: 22px;
-}
-
-.emotionQuantity {
-  width: 40px;
-}
-
-.canvas_star {
-  float: right;
-}
-
-.focusTextTextBox {
-  width: 100%;
-}
-
-.focusTextSave {
-  width: 100%;
-  text-align: center;
-  margin-top: 10px;
-}
-
-.video-container {
-  position: absolute;
-  overflow: hidden;
-  width: 100%;
-  padding-bottom: 100%;
-}
-
-.hidden-container {
-  opacity: 0;
-}
-
-.video-container iframe {
-  position: absolute;
-  top: 50% !important;
-  left: 50% !important;
-  width: 180% !important;
-  height: 180% !important;
-  transform: translate(-50%, -50%);
-  max-width: unset !important;
-  max-height: unset !important;
-}
-
-.video-container iframe.originalRatio {
-  width: 100% !important;
-  height: 56.25% !important;
-}
-
-.pyramidView iframe.originalRatio {
-  width: 100% !important;
-  height: 180% !important;
-}
-
-
-.tabHeader {
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.personImage {
-  position: absolute;
-  width: 12.6vh;
-  height: 12.6vh;
-  background-size: 100%;
-  cursor: pointer;
-}
-
-.personImage.pyramidPerson {
-  width: 16vh;
-  height: 16vh;
-}
-
-.personImage.inner {
-  width: 16%;
-  height: 16%;
-}
-
-
-.personImageThumb {
-  width: 40px;
-  height: 40px;
-  background-size: 100%;
-  display: inline-block;
-  margin-bottom: -6px;
-}
-
-.personRightPanel {
-  display: inline-block;
-}
-
-.therapistImage.top {
-  top: 0.5%;
-  left: 68.6%;
-  transform: scaleX(-1);
-}
-
-.therapistImage.left {
-  top: 18.8%;
-  left: 0.4%;
-}
-
-.therapistImage.bottom {
-  bottom: 0.5%;
-  left: 18.7%;
-}
-
-.therapistImage.right {
-  top: 68.7%;
-  left: 86.9%;
-  transform: scaleX(-1);
-}
-
-.therapistImage.top.pyramidPerson {
-  display: none;
-}
-
-.therapistImage.left.pyramidPerson {
-  top: 0.8%;
-  left: 7.3%;
-}
-
-.therapistImage.bottom.pyramidPerson {
-  display: none;
-}
-
-.therapistImage.right.pyramidPerson {
-  top: 82.7%;
-  left: 83%;
-}
-
-.person1Image {
-  top: 0.6%;
-  left: 0.8%;
-}
-
-.person2Image {
-  bottom: 0.5%;
-  left: 0.9%;
-}
-
-.person3Image {
-  bottom: 0.5%;
-  right: 0.9%;
-}
-
-.person4Image {
-  top: 0.8%;
-  right: 0.8%;
-}
-
-.colorRow,
-.colorHeader {
-  margin-bottom: 10px;
-}
-
-.colorHeader {
-  font-weight: bold;
-}
-
-.colorCell {
-  display: inline-block;
-  width: 44px;
-  margin-right: 5px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.colorParam {
-  text-align: center;
-  cursor: pointer;
-}
-
-.colorCell input {
-  width: 100%;
-}
-
-img.videoOverlay {
-  position: absolute;
-  z-index: 10;
-  height: 440px;
-  margin-top: -60px;
-}
-
-.boxed-wrapper,
-.elementor-column-gap-default>.elementor-column>.elementor-element-populated {
-  max-width: unset !important;
-  padding: 0 !important;
-}
-
-.quadrupolePanel {
-  position: relative;
-}
-
-.imageButtons {
-  margin-bottom: 10px;
-}
-
-.focusTextSaveButton {
-  margin-right: 10px;
-}
-
-.qrngLoadCircle,
-.qrngInterval {
-  width: 40px;
-  display: inline-block;
-}
-
-.qrngIntervalText {
-  line-height: 40px;
-  margin-right: 10px;
-  vertical-align: top;
-}
-
-.qrngIntervalText.disabled {
-  opacity: 0.5;
-}
-
-.qrngIntervalCheckbox,
-.qrngInterval {
-  height: 40px;
-  margin-right: 10px;
-}
-
-.qrngInterval {
-  width: 100px;
-}
-
-.soundButton {
-  width: 40px;
-  cursor: pointer;
-  margin-left: 10px;
-  opacity: 0.5;
-  display: inline-block;
-}
-
-.pyramid {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  margin: auto;
-  display: block;
-  cursor: pointer;
-}
-
-.pyramid .side {
-  position: absolute;
-  height: 32%;
-  width: 32%;
-  margin: auto;
-  perspective: 43px;
-}
-
-.pyramid .north {
-  top: 7%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.pyramid .west {
-  left: 7%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.pyramid .south {
-  bottom: 7%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.pyramid .east {
-  right: 7%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.pyramid .inside {
-  width: 100%;
-  height: 100%;
-}
-
-.pyramid .north .inside {
-  transform: rotateZ(180deg) rotateX(10deg);
-}
-
-.pyramid .west .inside {
-  transform: rotateZ(90deg) rotateX(10deg);
-}
-
-.pyramid .south .inside {
-  transform: rotateZ(0deg) rotateX(10deg);
-}
-
-.pyramid .east .inside {
-  transform: rotateZ(270deg) rotateX(10deg);
-}
-
-.videoBackground {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.videoForeground {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  -webkit-clip-path: polygon(0 100%, 21.8% 0, 78.2% 0, 100% 100%);
-  clip-path: polygon(0 100%, 21.4% 0, 79.6% 0, 100% 100%);
-  width: 214.8%;
-  left: -57.5%;
-  transform: scale(-1, 1);
-}
-
-.piramidToggle {
-  margin-bottom: 10px;
-}
-
-.cbText {
-  display: inline-block;
-  margin-left: 5px;
-  vertical-align: text-bottom;
-}
-
-@media screen and (orientation:portrait) {
-  .quadrupoleImage {
-    width: 100vw;
-    height: 100vw;
+  /* Add your CSS code here.
+
+  For example:
+  .example {
+      color: red;
   }
 
-  .pyramid .side {
-    perspective: 6vw;
+  For brushing up on your CSS knowledge, check out http://www.w3schools.com/css/css_syntax.asp
+
+  End of comment */
+
+  body * {
+    font-family: georgia;
   }
 
-  .videoChooserSection {
-    margin: auto;
-    position: static;
+  #page-wrap {
+    background-color: white;
   }
 
-}
-
-@media screen and (orientation:landscape) {
-  .quadrupoleImage {
-    width: 100vh;
-    height: 100vh;
+  .main-container {
+    width: 100%!important;
   }
 
-  .pyramid .side {
-    perspective: 6vh;
+  .quadrupoleImage * {
+    color: #ffd8bc;
   }
 
-  .videoChooserSection {
-    margin: unset;
-    position: absolute;
+  .videoChooserSection input,
+  .videoChooserSection select {
+    background: #ffd8bc !important;
+    color: #5c150a !important;
   }
 
-  .callWrapper {
-    display: none;
-    padding-bottom: 100%;
-    height: 0;
-    z-index: 20;
-    position: absolute;
-    width: 100%;
+  .videoChooserSection .button,
+  .videoChooserSection button {
+    padding: 2px 20px;
+    cursor: pointer;
+    background: #ff9b51 !important;
+    color: #5c150a !important;
+    display: inline-block;
+    margin-right: 5px;
   }
 
-  .jitsi-wrapper {
-    width: 90% !important;
-    height: 90% !important;
-    position: absolute;
-    top: 5%;
-    left: 5%;
+  .videoControls {
+    text-align: center;
+    margin-top: 10px;
   }
 
-  .jitsi-wrapper.clippedCircle {
-    clip-path: circle(50%) !important;
-  }
-
-  .jitsi-wrapper.clippedOctaHor {
-    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-  }
-
-  .jitsi-wrapper.clippedOctaVer {
-    clip-path: polygon(15% 15%, 51% 0, 85% 15%, 100% 50%, 85% 85%, 50% 100%, 15% 85%, 0 50%);
-  }
-
-  .jitsi-wrapper.clippedHexaHor {
-    clip-path: polygon(25% 7%, 75% 7%, 100% 50%, 75% 94%, 25% 93%, 0% 50%);
-  }
-
-  .jitsi-wrapper.clippedHexaVer {
-    clip-path: polygon(7% 25%, 50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%);
-  }
-
-
-  .jitsi-wrapper.clippedHeth {
-    clip-path: polygon(50% 0%, 83% 53%, 50% 100%, 17% 53%);
-  }
-
-  .jitsi-wrapper.clippedDiamond {
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  }
-
-  .jitsi-wrapper.clippedStar {
-    clip-path: polygon(50% 0%, 58% 9%, 69% 4%, 74% 15%, 85% 15%, 85% 27%, 96% 31%, 92% 42%, 100% 50%, 92% 59%, 96% 69%, 85% 74%, 85% 85%, 74% 85%, 69% 96%, 58% 92%, 50% 100%, 42% 92%, 31% 96%, 26% 85%, 15% 85%, 15% 74%, 4% 69%, 8% 59%, 0 50%, 8% 42%, 4% 31%, 15% 27%, 15% 15%, 26% 15%, 31% 4%, 42% 9%);
-  }
-
-  .jitsi-wrapper iframe {
-    width: 100% !important;
-    height: 100% !important;
-  }
-
-  .jitsi-wrapper.animated {
-    animation: pulse 0.79s ease-in-out infinite alternate;
-  }
-
-  @keyframes pulse {
-    0% {
-      transform: scale(1.0);
-    }
-
-    100% {
-      transform: scale(1.1);
-    }
-  }
-
-  .extra-message {
-    display: none;
-  }
-
-  .clipOptionsSelect {
-    padding: 5px;
-    margin-bottom: 10px;
-  }
-
-  .callResetRange {
-    margin: 0 10px 15px;
-  }
-
-  .videoChooserContent {
+  .wrapperHex {
+    width: 1120px;
+    height: 1287px;
+    background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow.png);
+    background-size: 100%;
+    overflow: hidden;
     position: relative;
   }
 
-  .loadOverlay.loading {
-    background-position: center;
-    background-size: 50%;
+
+  .coverImage {
+    width: 1120px;
+    height: 1287px;
+    background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow_tr.png);
+    background-size: 100%;
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: #1f2600de;
-    top: 0;
-    background-image: url(https://esculap.org/wp-content/uploads/2022/12/animateddna.webp);
-    background-repeat: no-repeat;
+    z-index: 10;
   }
 
-  .loadOverlay.loading::after {
-    content: "Loading";
-    position: absolute;
+  .monoTunnelImage {
+    width: 1120px;
+    height: 464px;
+    background-image: url(https://esculap.org/wp-content/uploads/2022/11/singleDNA.png);
+    background-size: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .dualTeleportationImage {
+    width: 1120px;
+    height: 844px;
+    background-image: url(https://esculap.org/wp-content/uploads/2022/11/doubleDNA.png);
+    background-size: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .quadrupoleImage {
+    width: 100vh;
+    height: 100vh;
+    background-image: url(https://esculap.org/wp-content/uploads/2022/11/quadrupole_darq_frame.png);
+    background-size: 100%;
+    overflow: hidden;
+    position: relative;
+    background-repeat: no-repeat;
+    margin: auto;
+    margin-bottom: 30px;
+  }
+
+  .quadGenerator {
+    width: 63%;
+    height: 63%;
+    background-image: url(https://esculap.org/wp-content/uploads/2022/12/animateddna.webp);
+    background-size: 100%;
+    overflow: hidden;
+    position: relative;
+    background-repeat: no-repeat;
+    margin: auto;
+    transform: translateY(-50%);
     top: 50%;
+  }
+
+  .dataHere {
+    position: relative;
+    opacity: .5;
+    font-size: 20px;
+    overflow: hidden;
+  }
+
+  .quadrupole {
+    width: 66%;
+    height: 0;
+    overflow: hidden;
+    position: absolute;
+    line-height: 1;
+    opacity: 0.7;
+    padding-bottom: 12%;
+    word-break: break-word;
+  }
+
+  #generator0 {
+    bottom: 2.6%;
+    left: 17%;
+  }
+
+  #generator1 {
+    top: 44.2%;
+    left: 58.5%;
+    transform: rotate(-90deg);
+  }
+
+  #generator2 {
+    top: 2.6%;
+    left: 17%;
+    transform: rotate(-180deg);
+  }
+
+  #generator3 {
+    top: 44%;
+    left: -24.5%;
+    transform: rotate(-270deg);
+  }
+
+  .dipole {
+    width: 500px;
+    height: 128px;
+    overflow: hidden;
+    position: relative;
+    font-size: 16px;
+    line-height: 1;
+    opacity: 0.7;
+  }
+
+  .dipole#dataDualTop {
+    top: 161px;
+    left: 430px;
+  }
+
+  .dipole#dataDualBottom {
+    top: 411px;
+    left: 430px;
+  }
+
+  .monopole {
+    width: 500px;
+    height: 128px;
+    overflow: hidden;
+    position: relative;
+    font-size: 16px;
+    line-height: 1;
+    opacity: 0.7;
+  }
+
+  .monopole#dataMonopole {
+    top: 161px;
+    left: 430px;
+  }
+
+  .leftHex {
+    float: left;
+    -webkit-shape-outside: polygon(2% 75%, 2% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%);
+    shape-outside: polygon(2% 75%, 2% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%);
+    -webkit-clip-path: polygon(2% 75%, 2% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%);
+    clip-path: polygon(2% 75%, 2% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%);
+    width: 50%;
+    height: 100%;
+  }
+
+  .rightHex {
+    float: right;
+    -webkit-shape-outside: polygon(98% 75%, 98% 25%, 0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    shape-outside: polygon(98% 75%, 98% 25%, 0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    -webkit-clip-path: polygon(98% 75%, 98% 25%, 0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    clip-path: polygon(98% 75%, 98% 25%, 0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    width: 50%;
+    height: 100%;
+  }
+
+  .caption {
+    text-align: center;
+  }
+
+  .generatorText {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 2.6vh;
+    line-height: 0.8;
+    height: 8vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .focusText {
+    top: 12%;
+    color: red;
+  }
+
+  .generatorText.pyramidPerson {
+    top: 50%!important;
+    transform: translatey(-50%);
+    width: 20%;
+    bottom: unset;
+  }
+
+  .captionText {
+    bottom: 13%;
+    color: blue;
+  }
+
+  .captionText.pyramidPerson {
+    right: 0;
+  }
+
+  .uploadImageHolder {
+    position: absolute;
     left: 50%;
+    top: 50%;
+    width: 69%;
+    height: 69%;
     transform: translate(-50%, -50%);
   }
 
-  .focusTextSave.loading {
-    opacity: 0.3;
-    cursor: unset;
-  }
-
-  .affFlags {
-    margin: 10px 0;
-  }
-
-  .affFlag {
+  .imageButton {
     display: inline-block;
-    width: 25px;
-    margin-right: 5px;
+    margin: 10px 5px 10px 0px;
+  }
+
+  .imageInnerDiv {
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
     cursor: pointer;
   }
 
-}
-
-
-.ui-tooltip {
-  background: #ff9b51 !important;
-  border: 1px solid #5c152f !important;
-  max-width: 500px !important;
-}
-
-.psalmCover {
-  opacity: 0;
-}
-
-.fullView.psalmCover {
-  opacity: 1;
-  color: rgb(80, 48, 0);
-  font-weight: bold;
-  text-align: center;
-  line-height: 4;
-}
-
-.psalmLang,
-.psalm {
-  text-decoration: underline;
-  cursor: pointer;
-  padding: 0 5px;
-  display: inline-block;
-  border: 1px solid transparent;
-}
-
-.psalmLang.selected,
-.psalm.selected {
-  font-weight: bold;
-  background: #ff9b51;
-  border-color: #5c152f;
-  border-radius: 3px;
-}
-
-#tabs {
-  background: #ffd8bc;
-}
-
-.psalmText .wiki {
-  text-decoration: underline;
-  margin-bottom: 10px;
-}
-
-.psalmText .psalmTitle {
-  font-size: 20px;
-  margin: 18px 0 8px;
-}
-
-.psalmPreview .thumb {
-  float: left;
-  width: 49%;
-  margin-right: 2%;
-}
-
-.psalmPreview .psalmDetails {
-  float: right;
-  width: 49%;
-}
-
-.psalmDesc {
-  white-space: pre-line;
-}
-
-.psalmPreview .psalmContent {
-  font-size: 12px;
-  line-height: 1;
-}
-
-.linki {
-  display: inline-flex;
-  align-items: center;
-}
-
-.linki div {
-  width: 60px;
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-.linki div img {
-  width: 100%;
-}
-
-
-
-.focusControls {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 20;
-  display: none;
-}
-
-.focusControls .redButton {
-  width: 8% !important;
-}
-
-.focusControls .focusChangers,
-.focusControls .subImageControls {
-  margin: 0px !important;
-  position: absolute;
-  background: #ffd8bc;
-  padding: 0 2%;
-  width: 100%;
-}
-
-.focusControls select,
-.focusControls input {
-  border-color: #5c152f !important;
-  border-radius: 3px;
-}
-
-.focusChangers {
-  top: 0;
-}
-
-.subImageControls {
-  bottom: 0;
-}
-
-.videoSelectsTitle {
-  display: inline-block;
-  margin-right: 5px;
-  font-weight: bold;
-}
-
-.focusControls * {
-  color: #5c152f !important;
-  font-size: 1.7vh !important;
-  line-height: 1;
-}
-
-.focusControls .videoControls {
-  text-align: left !important;
-  display: inline;
-}
-
-.videoControlsAndFocus,
-.videoSelects,
-.focusChooser,
-.imageChooser {
-  margin: 0.8vh 0px !important;
-}
-
-.imageChooser {
-  display: inline-flex;
-  align-items: center;
-}
-
-.focusTextTextBox {
-  width: unset !important;
-}
-
-.ui-tabs,
-.focusTextSave {
-  display: none;
-}
-
-.focusControls .button {
-  border: 1px solid #5c152f;
-  border-radius: 3px;
-  padding: 0.4vh 1vh;
-  cursor: pointer;
-  display: inline-block;
-  vertical-align: middle;
-  text-align: center;
-  font-weight: bold;
-  margin-right: 0.5vh;
-}
-
-.focusAndSession {
-  display: flex;
-  align-items: center;
-}
-
-.focusAndSession>div {
-  flex: 1 0 60%;
-}
-
-.roundViewContent {
-  cursor: pointer;
-  display: inline-block;
-  text-align: center;
-  margin-right: 5px;
-}
-
-.roundViewImageWrap {
-  width: 50%;
-  display: inline-block;
-}
-
-.roundView {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 60%;
-  height: 60%;
-  transform: translate(-50%, -50%);
-}
-
-.roundViewInner {
-  position: absolute;
-  z-index: 10;
-  width: 100%;
-  height: 100%;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  cursor: pointer;
-}
-
-.roundViewInner {
-  animation: rotation 60s reverse infinite linear;
-}
-
-@keyframes rotation {
-  from {
-    transform: rotate(0deg);
+  .uploadImageExample {
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    margin-right: 5px;
   }
 
-  to {
-    transform: rotate(359deg);
+  .uploadImageExample {
+    height: 84px;
   }
-}
+
+  .uploadImageExample .uploadedImage {
+    height: 100% !important;
+  }
+
+  .uploadImageExample .uploadImageCaption {
+    white-space: pre-line;
+  }
+
+  #videoHolder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .redButton {
+    width: 40px;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  .videoVolume {
+    vertical-align: middle;
+  }
+
+  .videoThumb {
+    width: 80px;
+    display: inline-block;
+    cursor: pointer;
+    height: 44px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    margin-right: 5px;
+    background-position: center;
+  }
+
+  .chooserContent {
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .videoChooserSection {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 300px;
+    height: 575px;
+    z-index: 100;
+  }
+
+  .quantityPanel {
+    background: #c7c795;
+    text-align: center;
+    padding: 10px 30px;
+    width: 690px;
+  }
+
+  .quantityPanel .title {
+    background: #ffccc1;
+    color: #c32300 !important;
+    padding: 5px 0px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .emotion {
+    margin: 3px 0 9px 0;
+  }
+
+  .emotionHeaders {
+    margin-top: 10px;
+  }
+
+  .emotionHeaders .name {
+    width: 100px;
+    text-align: right;
+  }
+
+  .emotionHeaders .intensity {
+    width: 162px;
+  }
+
+  .emotionHeaders div {
+    display: inline-block;
+    color: #323200;
+    font-weight: bold;
+  }
+
+  .emotionHeaders .color,
+  .colorQuantity,
+  .balanceQuantity {
+    width: 44px;
+    margin-left: 10px;
+  }
+
+  .emotionName,
+  .emotionName a {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    margin-right: 10px;
+    color: #1a1a00 !important;
+  }
+
+  .emotionQuantityBar {
+    display: inline-block;
+    width: 117px;
+    background-color: #b8b8b6;
+    height: 22px;
+    margin-bottom: -6px;
+    margin-right: 5px;
+  }
+
+  .emotionQuantityBarFill {
+    background-image: url('https://esculap.org/wp-content/uploads/2022/11/emotionbar.png');
+    background-size: contain;
+    width: 10%;
+    height: 22px;
+  }
+
+  .emotionQuantity {
+    width: 40px;
+  }
+
+  .canvas_star {
+    float: right;
+  }
+
+  .focusTextTextBox {
+    width: 100%;
+  }
+
+  .focusTextSave {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .video-container {
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    padding-bottom: 100%;
+  }
+
+  .hidden-container {
+    opacity: 0;
+  }
+
+  .video-container iframe {
+    position: absolute;
+    top: 50% !important;
+    left: 50% !important;
+    width: 180% !important;
+    height: 180% !important;
+    transform: translate(-50%, -50%);
+    max-width: unset !important;
+    max-height: unset !important;
+  }
+
+  .video-container iframe.originalRatio {
+    width: 100% !important;
+    height: 56.25% !important;
+  }
+
+  .pyramidView iframe.originalRatio {
+    width: 100% !important;
+    height: 180% !important;
+  }
+
+
+  .tabHeader {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .personImage {
+    position: absolute;
+    width: 12.6vh;
+    height: 12.6vh;
+    background-size: 100%;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+
+  .personImage.pyramidPerson {
+    width: 16vh;
+    height: 16vh;
+  }
+
+  .personImage.inner {
+    width: 16%;
+    height: 16%;
+  }
+
+
+  .personImageThumb {
+    width: 40px;
+    height: 40px;
+    background-size: 100%;
+    display: inline-block;
+    margin-bottom: -6px;
+  }
+
+  .personRightPanel {
+    display: inline-block;
+  }
+
+  .therapistImage.top {
+    top: 0.5%;
+    left: 68.6%;
+    transform: scaleX(-1);
+  }
+
+  .therapistImage.left {
+    top: 18.8%;
+    left: 0.4%;
+  }
+
+  .therapistImage.bottom {
+    bottom: 0.5%;
+    left: 18.7%;
+  }
+
+  .therapistImage.right {
+    top: 68.7%;
+    left: 86.9%;
+    transform: scaleX(-1);
+  }
+
+  .therapistImage.top.pyramidPerson {
+    display: none;
+  }
+
+  .therapistImage.left.pyramidPerson {
+    top: 0.8%;
+    left: 7.3%;
+  }
+
+  .therapistImage.bottom.pyramidPerson {
+    display: none;
+  }
+
+  .therapistImage.right.pyramidPerson {
+    top: 82.7%;
+    left: 83%;
+  }
+
+  .person1Image {
+    top: 0.6%;
+    left: 0.8%;
+  }
+
+  .person2Image {
+    bottom: 0.8%;
+    left: 0.5%;
+  }
+
+  .person3Image {
+    bottom: 0.5%;
+    right: 0.9%;
+  }
+
+  .person4Image {
+    top: 0.8%;
+    right: 0.6%;
+  }
+
+  .person6Image {
+    top: 0.6%;
+    left: 0.8%;
+  }
+
+  .colorRow,
+  .colorHeader {
+    margin-bottom: 10px;
+  }
+
+  .colorHeader {
+    font-weight: bold;
+  }
+
+  .colorCell {
+    display: inline-block;
+    width: 44px;
+    margin-right: 5px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .colorParam {
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .colorCell input {
+    width: 100%;
+  }
+
+  img.videoOverlay {
+    position: absolute;
+    z-index: 10;
+    height: 440px;
+    margin-top: -60px;
+  }
+
+  .boxed-wrapper,
+  .elementor-column-gap-default>.elementor-column>.elementor-element-populated {
+    max-width: unset !important;
+    padding: 0 !important;
+  }
+
+  .quadrupolePanel {
+    position: relative;
+  }
+
+  .imageButtons {
+    margin-bottom: 10px;
+  }
+
+  .focusTextSaveButton {
+    margin-right: 10px;
+  }
+
+  .qrngLoadCircle,
+  .qrngInterval {
+    width: 40px;
+    display: inline-block;
+  }
+
+  .qrngIntervalText {
+    line-height: 40px;
+    margin-right: 10px;
+    vertical-align: top;
+  }
+
+  .qrngIntervalText.disabled {
+    opacity: 0.5;
+  }
+
+  .qrngIntervalCheckbox,
+  .qrngInterval {
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .qrngInterval {
+    width: 100px;
+  }
+
+  .soundButton {
+    width: 40px;
+    cursor: pointer;
+    margin-left: 10px;
+    opacity: 0.5;
+    display: inline-block;
+  }
+
+  .pyramid {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    margin: auto;
+    display: block;
+    cursor: pointer;
+  }
+
+  .pyramid .side {
+    position: absolute;
+    height: 32%;
+    width: 32%;
+    margin: auto;
+    perspective: 43px;
+  }
+
+  .pyramid .north {
+    top: 7%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .pyramid .west {
+    left: 7%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .pyramid .south {
+    bottom: 7%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .pyramid .east {
+    right: 7%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .pyramid .inside {
+    width: 100%;
+    height: 100%;
+  }
+
+  .pyramid .north .inside {
+    transform: rotateZ(180deg) rotateX(10deg);
+  }
+
+  .pyramid .west .inside {
+    transform: rotateZ(90deg) rotateX(10deg);
+  }
+
+  .pyramid .south .inside {
+    transform: rotateZ(0deg) rotateX(10deg);
+  }
+
+  .pyramid .east .inside {
+    transform: rotateZ(270deg) rotateX(10deg);
+  }
+
+  .videoBackground {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .videoForeground {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    -webkit-clip-path: polygon(0 100%, 21.8% 0, 78.2% 0, 100% 100%);
+    clip-path: polygon(0 100%, 21.4% 0, 79.6% 0, 100% 100%);
+    width: 214.8%;
+    left: -57.5%;
+    transform: scale(-1, 1);
+  }
+
+  .piramidToggle {
+    margin-bottom: 10px;
+  }
+
+  .cbText {
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: text-bottom;
+  }
+
+  @media screen and (orientation:portrait) {
+    .quadrupoleImage {
+      width: 100vw;
+      height: 100vw;
+    }
+
+    .pyramid .side {
+      perspective: 6vw;
+    }
+
+    .videoChooserSection {
+      margin: auto;
+      position: static;
+    }
+
+  }
+
+  @media screen and (orientation:landscape) {
+    .quadrupoleImage {
+      width: 100vh;
+      height: 100vh;
+    }
+
+    .pyramid .side {
+      perspective: 6vh;
+    }
+
+    .videoChooserSection {
+      margin: unset;
+      position: absolute;
+    }
+
+    .callWrapper {
+      display: none;
+      padding-bottom: 100%;
+      height: 0;
+      z-index: 20;
+      position: absolute;
+      width: 100%;
+    }
+
+    .jitsi-wrapper {
+      width: 90% !important;
+      height: 90% !important;
+      position: absolute;
+      top: 5%;
+      left: 5%;
+    }
+
+    .jitsi-wrapper.clippedCircle {
+      clip-path: circle(50%) !important;
+    }
+
+    .jitsi-wrapper.clippedOctaHor {
+      clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    }
+
+    .jitsi-wrapper.clippedOctaVer {
+      clip-path: polygon(15% 15%, 51% 0, 85% 15%, 100% 50%, 85% 85%, 50% 100%, 15% 85%, 0 50%);
+    }
+
+    .jitsi-wrapper.clippedHexaHor {
+      clip-path: polygon(25% 7%, 75% 7%, 100% 50%, 75% 94%, 25% 93%, 0% 50%);
+    }
+
+    .jitsi-wrapper.clippedHexaVer {
+      clip-path: polygon(7% 25%, 50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%);
+    }
+
+
+    .jitsi-wrapper.clippedHeth {
+      clip-path: polygon(50% 0%, 83% 53%, 50% 100%, 17% 53%);
+    }
+
+    .jitsi-wrapper.clippedDiamond {
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    }
+
+    .jitsi-wrapper.clippedStar {
+      clip-path: polygon(50% 0%, 58% 9%, 69% 4%, 74% 15%, 85% 15%, 85% 27%, 96% 31%, 92% 42%, 100% 50%, 92% 59%, 96% 69%, 85% 74%, 85% 85%, 74% 85%, 69% 96%, 58% 92%, 50% 100%, 42% 92%, 31% 96%, 26% 85%, 15% 85%, 15% 74%, 4% 69%, 8% 59%, 0 50%, 8% 42%, 4% 31%, 15% 27%, 15% 15%, 26% 15%, 31% 4%, 42% 9%);
+    }
+
+    .jitsi-wrapper iframe {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .jitsi-wrapper.animated {
+      animation: pulse 0.79s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1.0);
+      }
+
+      100% {
+        transform: scale(1.1);
+      }
+    }
+
+    .extra-message {
+      display: none;
+    }
+
+    .clipOptionsSelect {
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+
+    .callResetRange {
+      margin: 0 10px 15px;
+    }
+
+    .videoChooserContent {
+      position: relative;
+    }
+
+    .loadOverlay.loading {
+      background-position: center;
+      background-size: 50%;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: #1f2600de;
+      top: 0;
+      background-image: url(https://esculap.org/wp-content/uploads/2022/12/animateddna.webp);
+      background-repeat: no-repeat;
+    }
+
+    .loadOverlay.loading::after {
+      content: "Loading";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .focusTextSave.loading {
+      opacity: 0.3;
+      cursor: unset;
+    }
+
+    .affFlags {
+      margin: 10px 0;
+    }
+
+    .affFlag {
+      display: inline-block;
+      width: 25px;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+
+  }
+
+
+  .ui-tooltip {
+    background: #ff9b51 !important;
+    border: 1px solid #5c152f !important;
+    max-width: 500px !important;
+  }
+
+  .psalmCover {
+    opacity: 0;
+  }
+
+  .fullView.psalmCover {
+    opacity: 1;
+    color: rgb(80, 48, 0);
+    font-weight: bold;
+    text-align: center;
+    line-height: 4;
+  }
+
+  .psalmLang,
+  .psalm {
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0 5px;
+    display: inline-block;
+    border: 1px solid transparent;
+  }
+
+  .psalmLang.selected,
+  .psalm.selected {
+    font-weight: bold;
+    background: #ff9b51;
+    border-color: #5c152f;
+    border-radius: 3px;
+  }
+
+  #tabs {
+    background: #ffd8bc;
+  }
+
+  .psalmText .wiki {
+    text-decoration: underline;
+    margin-bottom: 10px;
+  }
+
+  .psalmText .psalmTitle {
+    font-size: 20px;
+    margin: 18px 0 8px;
+  }
+
+  .psalmPreview .thumb {
+    float: left;
+    width: 49%;
+    margin-right: 2%;
+  }
+
+  .psalmPreview .psalmDetails {
+    float: right;
+    width: 49%;
+  }
+
+  .psalmDesc {
+    white-space: pre-line;
+  }
+
+  .psalmPreview .psalmContent {
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  .linki {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .linki div {
+    width: 60px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .linki div img {
+    width: 100%;
+  }
+
+
+
+  .focusControls {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    display: none;
+  }
+
+  .focusControls .redButton {
+    width: 8% !important;
+  }
+
+  .focusControls .focusChangers,
+  .focusControls .subImageControls {
+    margin: 0px !important;
+    position: absolute;
+    background: #ffd8bc;
+    padding: 0 2%;
+    width: 100%;
+  }
+
+  .focusControls select,
+  .focusControls input {
+    border-color: #5c152f !important;
+    border-radius: 3px;
+  }
+
+  .focusChangers {
+    top: 0;
+  }
+
+  .subImageControls {
+    bottom: 0;
+  }
+
+  .videoSelectsTitle {
+    display: inline-block;
+    margin-right: 5px;
+    font-weight: bold;
+  }
+
+  .focusControls * {
+    color: #5c152f !important;
+    font-size: 1.7vh !important;
+    line-height: 1;
+  }
+
+  .focusControls .videoControls {
+    text-align: left !important;
+    display: inline;
+  }
+
+  .videoControlsAndFocus,
+  .videoSelects,
+  .focusChooser,
+  .imageChooser {
+    margin: 0.8vh 0px !important;
+  }
+
+  .imageChooser {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .focusTextTextBox {
+    width: unset !important;
+  }
+
+  .ui-tabs,
+  .focusTextSave {
+    display: none;
+  }
+
+  .focusControls .button {
+    border: 1px solid #5c152f;
+    border-radius: 3px;
+    padding: 0.4vh 1vh;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    font-weight: bold;
+    margin-right: 0.5vh;
+  }
+
+  .focusAndSession {
+    display: flex;
+    align-items: center;
+  }
+
+  .focusAndSession>div {
+    flex: 1 0 60%;
+  }
+
+  .roundViewContent {
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    margin-right: 5px;
+  }
+
+  .roundViewImageWrap {
+    width: 50%;
+    display: inline-block;
+  }
+
+  .roundView {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 60%;
+    height: 60%;
+    transform: translate(-50%, -50%);
+  }
+
+  .roundViewInner {
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+
+  .roundViewInner {
+    animation: rotation 60s reverse infinite linear;
+  }
+
+  .quadGenerator.right {
+    right:0;
+  }
+
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(359deg);
+    }
+  }
