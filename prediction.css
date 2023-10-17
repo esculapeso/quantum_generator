@@ -23,8 +23,9 @@
 
   .quadrupoleImage * {
     color: #2e0701;
-    font-size: 13.4px;
-  }
+    font-size: 1.9vh;
+    font-weight: bold;
+}
 
   .videoChooserSection input,
   .videoChooserSection select {
