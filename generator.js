@@ -832,6 +832,15 @@ jQuery(document).ready(function ($) {
   var $imageCaptionDiv = $(`<div class="imageCaption tabHeader" >${selectImageMessage}</div>`);
   $imageCaptionDiv.appendTo($tab3);
 
+  $('<input class="bgColorLeftTextbox changeInnerBg" type="text" />').appendTo($imageButtons);
+  $('<input class="bgColorRightTextbox changeInnerBg" type="text" />').appendTo($imageButtons);
+
+  $(document).on('input', '.removeImageButton', function () {
+    const leftColor = $(".bgColorLeftTextbox").val();
+    const rightColor = $(".bgColorRightTextbox").val();
+    $(".uploadImageHolder").css('background-image', `linear-gradient(to right, ${leftColor}, ${rightColor})`);
+  });
+
   var $imageButtons = $('<div class="imageButtons" ></div>');
   $imageButtons.appendTo($tab3);
 
@@ -861,7 +870,6 @@ jQuery(document).ready(function ($) {
   $(document).on('click', '.imageButtons', function () {
     $('.modelviewer3d').attr('src', $('.urlImageTextbox').val())
   });
-
 
 
   $(focusImages).each(function (k, fi) {
