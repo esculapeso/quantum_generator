@@ -411,6 +411,39 @@
       $('.focusControls').hide();
     });
 
+    var $liveSection = $('<div class="liveSection" ></div>');
+    $liveSection.appendTo($quadrupolePanel);
+
+    $( `<div class="hideLivePanel">
+          <input class="hideLiveButton button" type="button" value="Live"  />
+          <input class="hideLiveButton button" type="button" value="Live"  />
+        </div>`).appendTo($liveSection);
+
+    $(document).on('click', '.hideLiveButton', function () {
+      $('#lives').toggle();
+    });
+
+    $("#lives").tabs().appendTo($liveSection);
+    var $live1 = $("#lives-1");
+    var $massLive = $(`<div class="aspect-ratio"><iframe 
+      class="lagiewnikiVideo" 
+      id="ls_embed_1676270103" 
+      src="https://livestream.com/accounts/11477776/events/10760824/player?width=640&height=360&enableInfoAndActivity=true&defaultDrawer=&autoPlay=true&mute=false" 
+      width="640" height="360" frameborder="0" scrolling="no" allowfullscreen> 
+    </iframe></div>`);
+    $massLive.appendTo($live1);
+
+    var elem = body.getElementById("ls_embed_1676270103");
+    function openFullscreen() {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    }
+
 
     var $videoChooserSection = $('<div class="videoChooserSection" ></div>');
     $videoChooserSection.appendTo($quadrupolePanel);
@@ -419,13 +452,15 @@
     $hideOptionsButton.appendTo($videoChooserSection);
 
     $(document).on('click', '.hideOptionsButton', function () {
-      $('.ui-tabs, .focusTextSave').toggle();
+      $('#tabs, .focusTextSave').toggle();
 
       var newValue = $(this).attr('altvalue');
       var curValue = $(this).attr('value');
       $(this).attr('altvalue', curValue).attr('value', newValue)
 
     });
+
+
 
     var $centerGenerator = $('<input class="centerGenerator button" type="button" value="↕"  />');
     $centerGenerator.appendTo($videoChooserSection);
@@ -1803,6 +1838,8 @@
 
     function initializeEmotionsQuantity() {
 
+      console.log("instantiating")
+
       instantiateStar('.emotionalQuantity', emotionsList)
       instantiateStar('.energeticQuantity', energiesList)
       instantiateStar('.healthyQuantity', healthList)
@@ -1931,7 +1968,9 @@
     }
 
     function updateBars(list, contanerSelector) {
+      console.log({list})
       $(contanerSelector).each((i, bar) => {
+        console.log({i, val: list[i]})
         $(bar).css('width', `${list[i].value * 10}%`)
       })
     }
