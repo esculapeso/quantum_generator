@@ -243,6 +243,28 @@
     right: 0;
   }
 
+  .sideText {
+    position: absolute;
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+    font-size: 15vh !important;
+    color: #ff9f58;
+    -webkit-text-stroke: 2px #361700;
+	  line-height: 1.2;
+  }
+
+  .sideText.left {
+    top: 31vh;
+    left: 7vh;
+	  transform: translateX(-50%);
+  }
+
+  .sideText.right {
+    right: 7vh;
+    bottom: 31vh;
+	  transform: translateX(50%);
+  }
+
   .uploadImageHolder {
     position: absolute;
     left: 50%;
