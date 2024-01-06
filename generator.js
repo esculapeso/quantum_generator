@@ -19,6 +19,9 @@ jQuery(document).ready(function ($) {
   var randomBackgroundMiddleVar = (typeof randomBackgroundMiddle !== 'undefined' && randomBackgroundMiddle) ? randomBackgroundMiddle : null;
   var focusTextsVar = (typeof focusText !== 'undefined' && focusText) ? focusText : "";
   var sideTextsVar = (typeof customSideText !== 'undefined' && customSideText) ? customSideText : "";
+  var sideTextsOptionsVar = (typeof sideTextsOptions !== 'undefined' && sideTextsOptions) ? sideTextsOptions : [];
+  var jesusMantrasVar = (typeof jesusMantras !== 'undefined' && jesusMantras) ? jesusMantras : [];
+  var defaultSessionVar = (typeof defaultSession !== 'undefined' && defaultSession) ? defaultSession : {};
 
   function setFetchIntervalAndLength(dispInterval) {
     qrngLength = Math.round(10000 / dispInterval);
@@ -410,29 +413,142 @@ jQuery(document).ready(function ($) {
     $('.focusControls').hide();
   });
 
-  // var $liveSection = $('<div class="liveSection" ></div>');
-  // $liveSection.appendTo($quadrupolePanel);
+  var $liveSection = $('<div class="liveSection" ></div>');
+  $liveSection.appendTo($quadrupolePanel);
 
-  // $( `<div class="hideLivePanel">
-  //       <input class="hideLiveButton button" type="button" value="Live"  />
-  //       <input class="hideLiveButton button" type="button" value="Live"  />
-  //     </div>`).appendTo($liveSection);
 
-  // $(document).on('click', '.hideLiveButton', function () {
-  //   $('#lives').toggle();
-  // });
 
-  // $("#lives").tabs().appendTo($liveSection);
-  // var $live1 = $("#lives-1");
-  // var $massLive = $(`<div class="aspect-ratio"><iframe 
-  //   class="lagiewnikiVideo" 
-  //   id="ls_embed_1676270103" 
-  //   src="https://livestream.com/accounts/11477776/events/10760824/player?width=640&height=360&enableInfoAndActivity=true&defaultDrawer=&autoPlay=true&mute=false" 
-  //   width="640" height="360" frameborder="0" scrolling="no" allowfullscreen> 
-  // </iframe></div>`);
-  // $massLive.appendTo($live1);
+  $( `<div class="hideLivePanel">
+        <input class="hideLiveButton button" type="button" value="Live"  />
+      </div>`).appendTo($liveSection);
 
-  // var elem = body.getElementById("ls_embed_1676270103");
+  $(document).on('click', '.hideLiveButton', function () {
+    $('#lives').toggle();
+  });
+
+
+  $("#lives").tabs().appendTo($liveSection);
+
+  var $live1 = $("#lives-1");
+  var $massLive = $(`<div class="aspect-ratio"><iframe 
+  class="lagiewnikiVideo" 
+  src="https://www.youtube.com/embed/LSwCKFaklHI" 
+  width="640" height="360" frameborder="0" scrolling="no" allowfullscreen> 
+</iframe></div>`);
+  $massLive.appendTo($live1);
+  var $live2 = $("#lives-2");
+  var $massLive = $(`<div class="aspect-ratio"><iframe 
+  class="lagiewnikiVideo" 
+  src="https://www.youtube.com/embed/J8NzgrmGH_Q" 
+  width="640" height="360" frameborder="0" scrolling="no" allowfullscreen> 
+</iframe></div>`);
+  $massLive.appendTo($live2);
+  var $live3 = $("#lives-3");
+  var $massLive = $(`<div class="aspect-ratio"><iframe 
+  class="lagiewnikiVideo" 
+  src="https://www.youtube.com/embed/Zz2lqOMiBeo" 
+  width="640" height="360" frameborder="0" scrolling="no" allowfullscreen> 
+</iframe></div>`);
+  $massLive.appendTo($live3);
+
+  
+
+
+  var $jusesLitania = $('<div class="jusesLitania" ></div>');
+  $jusesLitania.appendTo($liveSection);
+
+  var $affStartButton = $(`<input type="number" class="jesusAmountTextbox" value="4" />`);
+  $affStartButton.appendTo($jusesLitania);
+
+  var $affStartButton = $(`<input type="button" class="jesusStartButton" value="Start" />`);
+  $affStartButton.appendTo($jusesLitania);
+
+  var jesusUtter = new SpeechSynthesisUtterance();
+  var jesusSynth = window.speechSynthesis;
+  var jesusIsPlaying = false;
+
+  function repeatStringWithComma(string, num) {
+    if (num <= 0) {
+        return "";
+    }
+    return Array(num).fill(string).join(", ");
+  }
+
+  var jesusMantraTextsForAudio = [];
+
+  $(document).on('click', '.jesusStartButton', function () {
+
+    $(".jusesLang").hide();
+    $(".jusesLang:has(input:checked)").show()
+
+
+    jesusMantraTextsForAudio = [];
+    var repeatAmount = $('.jesusAmountTextbox').val();
+    var number = parseInt(repeatAmount, 10);
+    $( ".jusesLang input:checked" ).each((i, box) => {
+      var lang = $(box).attr('id');
+      var text = $(`label[for="${lang}"]`).text();
+      jesusMantraTextsForAudio.push({lang, text});
+    });
+    
+    sayMantra(jesusMantraTextsForAudio, 0, number);
+    // var repeatAmount = $('.jesusAmountTextbox').val();
+    // var repeatAmount = $('.jesusAmountTextbox').val();
+    // var result = repeatStringWithComma(exampleString, repeatAmount);
+
+
+  });
+
+  function sayMantra(array, index, repeat) {
+    var text = array[index].text;
+    var lang = array[index].lang;
+    UpdateFocusText(text);
+    $(`.imageInnerDiv`).css('background-image', `url("/wp-content/uploads/2022/12/${lang}.jpg")`);
+    $(`.person2Image`).css('background-image', `url("/wp-content/uploads/2024/01/jesus_bevel.png")`);
+    
+    jesusUtter.text = repeatStringWithComma(text, repeat);
+    msg.rate = 0.8;
+    jesusUtter.lang = lang;
+    jesusSynth.speak(jesusUtter);
+    jesusIsPlaying = true;
+
+    jesusUtter.onend = (event) => {
+      index = (index + 1) % array.length;
+      if (jesusIsPlaying) sayMantra(array, index, repeat);
+    }
+  }
+
+
+  var $affStopButton = $(`<input type="button" class="jesusStopButton" value="Stop" />`);
+  $affStopButton.appendTo($jusesLitania);
+
+  $(document).on('click', '.jesusStopButton', function () {
+    jesusSynth.cancel();
+    jesusIsPlaying = false;
+    $(".jusesLang").show();
+    $(`.person2Image`).css('background-image', `url("/wp-content/uploads/2022/12/la.jpg")`);
+    $('.imageInnerDiv').css('background-image', 'url("/wp-content/uploads/2024/01/jesus_bevel.png")');
+  });
+
+
+  var $jusesLanguages = $('<div class="jusesLanguages" ></div>');
+  $jusesLanguages.appendTo($jusesLitania);
+
+  $.each(jesusMantrasVar, function(index, value) {
+    var isChecked = (value.default) ? "checked" : "";
+    $(`
+      <div class="jusesLang" >
+        <input type="checkbox" id="${value.lang}" name="${value.lang}" ${isChecked} />
+        <img class="flagImg" src="https://purecatamphetamine.github.io/country-flag-icons/3x2/${value.lang.toUpperCase()}.svg" />
+        <label>(${value.lang}) </label>
+        <label for="${value.lang}">${value.mantra}</label>
+      </div>
+    `).appendTo($jusesLanguages);
+  });
+  
+  
+
+  // var elem = document.body.getElementById("ls_embed_1676270103");
   // function openFullscreen() {
   //   if (elem.requestFullscreen) {
   //     elem.requestFullscreen();
@@ -485,14 +601,13 @@ jQuery(document).ready(function ($) {
 
   var initFocusText = focusTextsVar;
   var initCaptionText = "Quantum";
-  var initSideText = sideTextsVar;
+  var initSideText = "";
   $(`<div class="focusText generatorText" ></div>`).appendTo(header);
   $(`<div class="sideText left" ></div>`).appendTo(header);
   $(`<div class="sideText right" ></div>`).appendTo(header);
 
-  $('.focusText').html(initFocusText);
-  $('.sideText').html(initSideText);
-  $('.focusTextTextBox').val(initFocusText);
+  UpdateFocusText(initFocusText);
+  UpdateSideText(initSideText)
   $(`<div class="captionText generatorText" ></div>`).appendTo(header);
   updateCaptionText(initCaptionText);
 
@@ -784,20 +899,23 @@ jQuery(document).ready(function ($) {
   $focusTextTextBox.appendTo($focusContent);
 
   $(document).on('input', '.focusTextTextBox', function () {
-    $(".focusText").html($(this).val());
-    $(".focusTextTextBox").val($(this).val());
+    UpdateFocusText($(this).val())
   });
 
   var $captionTextTextBox = $(`<input class="captionTextTextBox focustextClass" type="text" value="${initCaptionText}" />`);
   $captionTextTextBox.appendTo($focusContent);
 
   $(document).on('input', '.captionTextTextBox', function () {
-    $(".captionText").html($(this).val());
-    $(".captionTextTextBox").val($(this).val());
+    updateCaptionText($(this).val())
   });
 
-  var $sideTextTextBox = $(`<input class="sideTextTextBox focustextClass" type="text" value="${initSideText}" />`);
-  $sideTextTextBox.appendTo($focusContent);
+  $(`<input class="sideTextTextBox focustextClass" type="text" value="${initSideText}" list="sideTexts" />`).appendTo($focusContent);
+  var $sideTextDataList = $(`<datalist id="sideTexts"></datalist>`);
+  $sideTextDataList.appendTo($focusContent);
+
+  $.each(sideTextsOptionsVar, function(index, value) {
+    $(`<option>${value}</option>`).appendTo($sideTextDataList);
+  });
 
   $(document).on('input', '.sideTextTextBox', function () {
     UpdateSideText($(this).val());
@@ -808,6 +926,13 @@ jQuery(document).ready(function ($) {
     $(".sideTextTextBox").val(text);
     $(".sideText").attr('style', `font-size: ${CalculateSideTextSize(text.length)}vh !important`);
   }
+
+  function UpdateFocusText(text) {
+    $('.focusText').html(text);
+    $('.focusTextTextBox').val(text);
+  }
+
+
 
   function CalculateSideTextSize(textLength) {
     var newFontSize = 15;
@@ -825,8 +950,7 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('click', '.focusPhrase', function () {
-    $(".focusText").html($(this).html());
-    $(".focusTextTextBox").val($(this).html());
+    UpdateFocusText($(this).html())
   });
 
 
@@ -968,6 +1092,7 @@ jQuery(document).ready(function ($) {
     // updateCaptionText(fileName);
   });
 
+
   function insert3dModel($parent, srcUrl, targetUrl) {
     var modelHolder = `<model-viewer
           class="modelviewer3d"
@@ -1048,38 +1173,36 @@ jQuery(document).ready(function ($) {
     reader.onload = function (e) {
       clearImageFocus()
       json = e.target.result;
-      jsonObject = JSON.parse(json);
-
-      $(jsonObject.people).each((i, p) => {
-        $(`.${p.role}Image`).css('background-image', p.data);
-      });
-
-
-
-      if (checkParamValue(jsonObject['Focus Text'])) {
-        var initFocusText = jsonObject['Focus Text']
-        $('.focusText').html(initFocusText);
-        $('.focusTextTextBox').val(initFocusText);
-      }
-
-      if (checkParamValue(jsonObject.sideText)) UpdateSideText(jsonObject.sideText);
-      if (checkParamValue(jsonObject.ImageCaption)) updateCaptionText(jsonObject.ImageCaption);
-      if (checkParamValue(jsonObject.imageData)) $('.imageInnerDiv').css('background-image', jsonObject.imageData);
-      if (checkParamValue(jsonObject.image3dData)) insert3dModel($('.imageInnerDiv'), jsonObject.image3dData);
-      if (checkParamValue(jsonObject.qrngInterval)) changeQrngInterval(jsonObject.qrngInterval);
-      if (checkParamValue(jsonObject.isPyramid)) {
-        $('.piramidToggleCB').prop('checked', jsonObject.isPyramid);
-        togglePyramidView(jsonObject.isPyramid);
-      }
-      let videoMode = (checkParamValue(jsonObject.videoMode)) ? jsonObject.videoMode : null;
-      if (checkParamValue(jsonObject.videoId)) { changeVideo(jsonObject.videoId, videoMode) } else { stopFocusVideo() };
-      if (checkParamValue(jsonObject.callClip)) $('.clipOptionsSelect').val(jsonObject.callClip).change();
-      if (checkParamValue(jsonObject.callClipSize)) $('.callRange').val(jsonObject.callClipSize).change();
-      if (checkParamValue(jsonObject.innerBgColorLeft)) $('.bgColorLeftTextbox').val(jsonObject.innerBgColorLeft).change();
-      if (checkParamValue(jsonObject.innerBgColorRight)) $('.bgColorRightTextbox').val(jsonObject.innerBgColorRight).change();
-      $('.changeInnerBg').trigger("input");
+      updateElementsFromSession(JSON.parse(json));
     }
     reader.readAsText(ff);
+  }
+
+
+
+  function updateElementsFromSession(jsonObject) {
+    console.log({jsonObject})
+    $(jsonObject.people).each((i, p) => {
+      $(`.${p.role}Image`).css('background-image', p.data);
+    });
+  
+    if (checkParamValue(jsonObject['Focus Text'])) UpdateFocusText(jsonObject['Focus Text']);
+    if (checkParamValue(jsonObject.sideText)) UpdateSideText(jsonObject.sideText);
+    if (checkParamValue(jsonObject.ImageCaption)) updateCaptionText(jsonObject.ImageCaption);
+    if (checkParamValue(jsonObject.imageData)) $('.imageInnerDiv').css('background-image', jsonObject.imageData);
+    if (checkParamValue(jsonObject.image3dData)) insert3dModel($('.imageInnerDiv'), jsonObject.image3dData);
+    if (checkParamValue(jsonObject.qrngInterval)) changeQrngInterval(jsonObject.qrngInterval);
+    if (checkParamValue(jsonObject.isPyramid)) {
+      $('.piramidToggleCB').prop('checked', jsonObject.isPyramid);
+      togglePyramidView(jsonObject.isPyramid);
+    }
+    let videoMode = (checkParamValue(jsonObject.videoMode)) ? jsonObject.videoMode : null;
+    if (checkParamValue(jsonObject.videoId)) { changeVideo(jsonObject.videoId, videoMode) } else { stopFocusVideo() };
+    if (checkParamValue(jsonObject.callClip)) $('.clipOptionsSelect').val(jsonObject.callClip).change();
+    if (checkParamValue(jsonObject.callClipSize)) $('.callRange').val(jsonObject.callClipSize).change();
+    if (checkParamValue(jsonObject.innerBgColorLeft)) $('.bgColorLeftTextbox').val(jsonObject.innerBgColorLeft).change();
+    if (checkParamValue(jsonObject.innerBgColorRight)) $('.bgColorRightTextbox').val(jsonObject.innerBgColorRight).change();
+    $('.changeInnerBg').trigger("input");
   }
 
   function checkParamValue(param) {
@@ -2061,5 +2184,10 @@ jQuery(document).ready(function ($) {
   $(window).on("resize", function (event) {
     setDataFontSize()
   });
+
+  if ($(".quadrupolePanel").hasClass("jesus")) {
+    updateElementsFromSession(defaultSessionVar);
+    $('.liveSection').show();
+  };
 
 });

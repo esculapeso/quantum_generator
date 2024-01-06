@@ -385,6 +385,16 @@
     text-align: right;
   }
 
+  .flagImg {
+    width: 20px;
+    display: inline;
+    vertical-align: middle;
+  }
+
+  .jusesLang input {
+    vertical-align: middle;
+  }
+
   .quantityPanel {
     background: #c7c795;
     text-align: center;
@@ -515,7 +525,8 @@
     position: absolute;
     width: 12.6vh;
     height: 12.6vh;
-    background-size: 100%;
+    background-size: contain;
+    background-position: center;
     cursor: pointer;
     border-radius: 50%;
   }
@@ -1099,7 +1110,6 @@
     width: unset !important;
   }
 
-  .ui-tabs,
   .focusTextSave {
     display: none;
   }
