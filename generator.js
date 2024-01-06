@@ -4,6 +4,7 @@ jQuery(document).ready(function ($) {
   let fetcheddata_hex = [];
   let isfetched = 0;
   let sessionObj = {}
+  let isVideoPlaying = false;
 
   var qrngOrigDisplayInterval = 60000;
   var qrngLength;
@@ -22,7 +23,7 @@ jQuery(document).ready(function ($) {
   var sideTextsVar = (typeof customSideText !== 'undefined' && customSideText) ? customSideText : "";
   var sideTextsOptionsVar = (typeof sideTextsOptions !== 'undefined' && sideTextsOptions) ? sideTextsOptions : [];
   var jesusMantrasVar = (typeof jesusMantras !== 'undefined' && jesusMantras) ? jesusMantras : [];
-  var defaultSessionVar = (typeof defaultSession !== 'undefined' && defaultSession) ? defaultSession : {};
+  var defaultSessionVar = (typeof defaultSession !== 'undefined' && defaultSession) ? defaultSession : [];
 
   function setFetchIntervalAndLength(dispInterval) {
     qrngLength = Math.round(10000 / dispInterval);
@@ -621,7 +622,7 @@ jQuery(document).ready(function ($) {
 
 
 
-  var $videoContainerDiv = $('<div class="video-container hidden-container fullView"></div>');
+  var $videoContainerDiv = $('<div class="videoBackground hidden-container fullView"></div>');
   $videoContainerDiv.appendTo($imageDiv);
 
   var $videoDiv = $('<div id="videoHolder" ></div>');
@@ -724,7 +725,7 @@ jQuery(document).ready(function ($) {
       }
     }
     setDataFontSize();
-    if (startVideo) startFocusVideo();
+    if (isVideoPlaying) startFocusVideo();
   }
 
   /* THUMBS */
@@ -832,7 +833,8 @@ jQuery(document).ready(function ($) {
     $('.youtubePauseButtonImage').hide();
     $('.youtubePlayButtonImage').show();
     $(players).each((i, p) => p.stopVideo());
-    $('.videoBackground, .video-container').addClass('hidden-container');
+    $('.videoBackground').addClass('hidden-container');
+    isVideoPlaying = false;
   }
 
   function pauseFocusVideo() {
@@ -840,23 +842,33 @@ jQuery(document).ready(function ($) {
     $('.youtubePauseButtonImage').hide();
     $('.youtubePlayButtonImage').show();
     $(players).each((i, p) => p.pauseVideo());
+    isVideoPlaying = false;
   }
 
   function startFocusVideo(newVideoId) {
-    if (!playersReady) return;
+    console.log("trying: ", playersReady);
+    if (!playersReady) {
+      t = setTimeout(function () { startFocusVideo(newVideoId); }, 2000);
+      return;
+    };
+    console.log("made it");
     $('.youtubePlayButtonImage').hide();
     $('.youtubePauseButtonImage').show();
     $(players).each((i, p) => p.loadVideoById(newVideoId).stopVideo());
     var activePlayers = getActivePlayers();
+    console.log({activePlayers})
     $(activePlayers).each((i, p) => p.setVolume($('.videoVolume').val()).playVideo().setPlaybackQuality("small").mute())
     activePlayers[0].unMute();
-    $('.videoBackground, .video-container').removeClass('hidden-container');
+    $('.videoBackground').removeClass('hidden-container');
+    isVideoPlaying = true;
   }
 
   function changeVideo(newVideoId, mode) {
 
     sessionObj['videoId'] = newVideoId;
     sessionObj['videoMode'] = mode;
+
+    console.log("vid: ", playersReady)
 
     $(".imageInnerDiv").removeClass('psalmCover')
     $(".view360InnerDiv").empty()
@@ -873,7 +885,6 @@ jQuery(document).ready(function ($) {
             </video>`).appendTo('.view360InnerDiv');
         break;
       default:
-        if (!playersReady) return;
         startFocusVideo(newVideoId);
         break;
     }
@@ -1487,7 +1498,7 @@ jQuery(document).ready(function ($) {
   $piramidToggleCB.appendTo($piramidToggle);
 
   $(document).on('change', '.piramidCallToggleCB', function () {
-    togglePyramidView($(this).is(':checked'), true);
+    togglePyramidView($(this).is(':checked'));
   });
 
   var $piramidToggleText = $('<div class="piramidCallToggleText piramidToggleText cbText" >Pyramid View</div>');
@@ -2185,7 +2196,7 @@ jQuery(document).ready(function ($) {
   });
 
   if ($(".quadrupolePanel").hasClass("jesus")) {
-    updateElementsFromSession(defaultSessionVar);
+    updateElementsFromSession(defaultSessionVar[0]);
     $('.liveSection').show();
   };
 

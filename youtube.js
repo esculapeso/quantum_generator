@@ -38,10 +38,10 @@ function startPlayer() {
 
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
-  playersReady = true; 
   players.push(event.target)
 	
   if (players.length == playersCount) {
+    playersReady = true; 
     clearInterval(startInverval);
   }
 	
