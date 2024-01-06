@@ -1,6 +1,7 @@
 jQuery(document).ready(function ($) {
 
-  let fetcheddata_1 = [];
+  let fetcheddata_dec = [];
+  let fetcheddata_hex = [];
   let isfetched = 0;
   let sessionObj = {}
 
@@ -36,11 +37,13 @@ jQuery(document).ready(function ($) {
 
     // jQuery.get(`https://qrng.anu.edu.au/API/jsonI.php?length=${qrngLength}&type=uint8`, data => {
     jQuery.get(`https://beacon.nist.gov/beacon/2.0/pulse/last`, data => {
-      const result = data.pulse.outputValue.match(/.{1,2}/g) ?? [];
-      var resultHex = result.map(function (x) {
+      var resultHex = data.pulse.outputValue.match(/.{1,2}/g) ?? [];
+      var resultDec = resultHex.map(function (x) {
         return parseInt(x, 16);
       });
-      fetcheddata_1 = fetcheddata_1.concat(resultHex);
+
+      fetcheddata_dec = fetcheddata_dec.concat(resultDec);
+      fetcheddata_hex = fetcheddata_hex.concat(resultHex);
       isfetched = isfetched + 1;
     });
   };
@@ -56,22 +59,17 @@ jQuery(document).ready(function ($) {
   };
 
   function printHex(element, dir, index) {
-    let ret;
-
     for (let i = 0; i < 1; i++) {
-      let dataToInsert = fetcheddata_1[index] ?? '';
-      printModHex(element, dir, dataToInsert)
-      ret = dataToInsert
+      let decToInsert = fetcheddata_dec[index] ?? '';
+      let hexToInsert = fetcheddata_hex[index] ?? '';
+      printModHex(element, dir, decToInsert, hexToInsert)
     }
-
-    return ret
   };
 
-  function printModHex(element, dir, currentDigit) {
+  function printModHex(element, dir, currentDec, currentHex) {
     if (element) {
-      let streamElems = element.find('div');
-      streamElems.prepend(currentDigit);
-
+      element.find('div.dec').prepend(currentDec);
+      element.find('div.hex').prepend(currentHex);
     }
   };
 
@@ -80,7 +78,7 @@ jQuery(document).ready(function ($) {
       var $dataDiv = $(`<div id="${id}" class="${className}" ></div>`);
       $dataDiv.appendTo(container);
 
-      var $data = $(`<div></div>`);
+      var $data = $(`<div class="dec" style="display:none;"></div><div class="hex"></div>`);
       $data.appendTo($dataDiv);
     }
   };
@@ -97,10 +95,10 @@ jQuery(document).ready(function ($) {
       index = (index + 1);
 
       var colorDiv = $(`.colorValue[param=1]`);
-      var qrngColorValue = fetcheddata_1[index];
+      var qrngColorValue = fetcheddata_dec[index];
 
       if (isSoundModulation) {
-        if (fetcheddata_1[index] > 127) {
+        if (fetcheddata_dec[index] > 127) {
           $(players).each((i, p) => p.unMute());
         } else {
           $(players).each((i, p) => p.mute());
@@ -145,14 +143,20 @@ jQuery(document).ready(function ($) {
         printHex($('#generator' + n), 'afterbegin', index);
       }
 
-      currentNumber = printHex(dataDualTop, 'afterbegin', index);
-      currentNumber = printHex(dataDualBottom, 'afterbegin', index - 1);
+      printHex(dataDualTop, 'afterbegin', index);
+      printHex(dataDualBottom, 'afterbegin', index - 1);
 
-      currentNumber = printHex(dataMonopole, 'afterbegin', index);
+      printHex(dataMonopole, 'afterbegin', index);
     }
 
     t = setTimeout(function () { timedPrint(index); }, currentDisplayInterval);
+    toggleHexDecNumbers();
+    d = setTimeout(function () { toggleHexDecNumbers(); }, currentDisplayInterval/2);
   };
+
+  function toggleHexDecNumbers() {
+    $('div.hex, div.dec').toggle();
+  }
 
   let $quadrupolePanel = $('.quadrupolePanel');
   let header = $('.quadrupoleImage');
@@ -1181,7 +1185,6 @@ jQuery(document).ready(function ($) {
 
 
   function updateElementsFromSession(jsonObject) {
-    console.log({jsonObject})
     $(jsonObject.people).each((i, p) => {
       $(`.${p.role}Image`).css('background-image', p.data);
     });
