@@ -848,7 +848,7 @@ jQuery(document).ready(function ($) {
   function startFocusVideo(newVideoId) {
     console.log("trying: ", playersReady);
     if (!playersReady) {
-      t = setTimeout(function () { startFocusVideo(newVideoId); }, 2000);
+      t = setTimeout(function () { startFocusVideo(newVideoId); }, 1000);
       return;
     };
     console.log("made it");
@@ -867,8 +867,6 @@ jQuery(document).ready(function ($) {
 
     sessionObj['videoId'] = newVideoId;
     sessionObj['videoMode'] = mode;
-
-    console.log("vid: ", playersReady)
 
     $(".imageInnerDiv").removeClass('psalmCover')
     $(".view360InnerDiv").empty()
