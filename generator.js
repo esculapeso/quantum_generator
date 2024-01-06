@@ -684,7 +684,6 @@ jQuery(document).ready(function ($) {
   $piramidToggleCB.appendTo($piramidToggle);
 
   $(document).on('change', '.piramidVideoToggleCB', function () {
-    $('.piramidToggleCB').prop("checked", $(this).is(':checked'));
     togglePyramidView($(this).is(':checked'), true);
   });
 
@@ -705,6 +704,7 @@ jQuery(document).ready(function ($) {
       $('.quadrupoleImage').attr('style', `width: 100vw; background-image: url(https://esculap.org/wp-content/uploads/2022/12/TherapistImage.png) !important`);
       $('.personImage, .therapistImage, .generatorText').addClass('pyramidPerson')
     } else {
+      $('.piramidToggleCB').prop('checked', isPyramid);
       if (isPyramid) {
         $('.fullView').hide();
         $('.pyramidView').show();
@@ -1192,10 +1192,7 @@ jQuery(document).ready(function ($) {
     if (checkParamValue(jsonObject.imageData)) $('.imageInnerDiv').css('background-image', jsonObject.imageData);
     if (checkParamValue(jsonObject.image3dData)) insert3dModel($('.imageInnerDiv'), jsonObject.image3dData);
     if (checkParamValue(jsonObject.qrngInterval)) changeQrngInterval(jsonObject.qrngInterval);
-    if (checkParamValue(jsonObject.isPyramid)) {
-      $('.piramidToggleCB').prop('checked', jsonObject.isPyramid);
-      togglePyramidView(jsonObject.isPyramid);
-    }
+    if (checkParamValue(jsonObject.isPyramid)) togglePyramidView(jsonObject.isPyramid);
     let videoMode = (checkParamValue(jsonObject.videoMode)) ? jsonObject.videoMode : null;
     if (checkParamValue(jsonObject.videoId)) { changeVideo(jsonObject.videoId, videoMode) } else { stopFocusVideo() };
     if (checkParamValue(jsonObject.callClip)) $('.clipOptionsSelect').val(jsonObject.callClip).change();
@@ -1487,7 +1484,6 @@ jQuery(document).ready(function ($) {
   $piramidToggleCB.appendTo($piramidToggle);
 
   $(document).on('change', '.piramidCallToggleCB', function () {
-    $('.piramidToggleCB').prop("checked", $(this).is(':checked'));
     togglePyramidView($(this).is(':checked'), true);
   });
 
