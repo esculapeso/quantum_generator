@@ -710,13 +710,13 @@ jQuery(document).ready(function ($) {
         $('.pyramidView').show();
         $('.quadGenerator').css('width', '100vh').css('height', '100vh');
         $('.quadrupoleImage').css('width', '166vh').attr('style', `width: 166vh; background-image: url(https://esculap.org/wp-content/uploads/2022/12/TherapistImage.png) !important`);
-        $('.personImage, .therapistImage, .generatorText').addClass('pyramidPerson')
+        $('.personImage, .therapistImage, .generatorText, .sideText, .liveSection').addClass('pyramidPerson')
       } else {
         $('.fullView').show();
         $('.pyramidView').hide();
         $('.quadGenerator').css('width', '63%').css('height', '63%')
         $('.quadrupoleImage').css('width', '100vh').css('background-image', `url(https://esculap.org/wp-content/uploads/2022/11/quadrupole_darq_frame.png)`)
-        $('.personImage, .therapistImage, .generatorText').removeClass('pyramidPerson')
+        $('.personImage, .therapistImage, .generatorText, .sideText, .liveSection').removeClass('pyramidPerson')
       }
     }
     setDataFontSize();

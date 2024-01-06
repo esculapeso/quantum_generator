@@ -228,19 +228,28 @@
   }
 
   .generatorText.pyramidPerson {
-    top: 50%!important;
-    transform: translatey(-50%);
-    width: 20%;
-    bottom: unset;
+    width: 12vh!important;
+    font-size: 3.6vh!important;
+    line-height: 1 !important;
+  }
+
+  .generatorText.pyramidPerson.focusText {
+      transform: translate(-50%, -50%);
+      top: 25vh !important;
+      bottom: unset !important;
+      left: 20vh;
+  }
+
+  .generatorText.pyramidPerson.captionText {
+      transform: translate(50%, 50%);
+      top: unset !important;
+      bottom: 25vh !important;
+      right: 20vh;
   }
 
   .captionText {
     bottom: 13%;
     color: blue;
-  }
-
-  .captionText.pyramidPerson {
-    right: 0;
   }
 
   .sideText {
@@ -254,15 +263,23 @@
   }
 
   .sideText.left {
-    top: 31vh;
+    bottom: 0;
     left: 7vh;
 	  transform: translateX(-50%);
   }
 
   .sideText.right {
     right: 7vh;
-    bottom: 31vh;
+    top: 0;
 	  transform: translateX(50%);
+  }
+
+  .sideText.left.pyramidPerson {
+    left: 20vh;
+  }
+
+  .sideText.right.pyramidPerson {
+    right: 20vh;
   }
 
   .uploadImageHolder {
