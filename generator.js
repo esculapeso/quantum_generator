@@ -571,7 +571,7 @@ jQuery(document).ready(function ($) {
   $hideOptionsButton.appendTo($videoChooserSection);
 
   $(document).on('click', '.hideOptionsButton', function () {
-    $('#tabs, .focusTextSave').toggle();
+    $('#tabs').toggle();
 
     var newValue = $(this).attr('altvalue');
     var curValue = $(this).attr('value');
@@ -615,6 +615,62 @@ jQuery(document).ready(function ($) {
   UpdateSideText(initSideText)
   $(`<div class="captionText generatorText" ></div>`).appendTo(header);
   updateCaptionText(initCaptionText);
+
+
+  /**********************
+        SESSION
+  ***********************/
+
+  var $tab0 = $("#tabs-0");
+  $(`<div class="soundCaption tabHeader" >~~ Session Settings ~~</div>`).appendTo($tab0);
+
+  var $sessionContent = $(`<div class="sessionContent" ></div>`);
+  $sessionContent.appendTo($tab0);
+
+  var $selectSession = $(`<select class="selectSession"></select>`);
+  $selectSession.appendTo($sessionContent);
+
+  function getPageSessions() {
+    let pageType = $(".quadrupolePanel").attr('page');
+    return defaultSessionVar.filter((s) => s.page == pageType);
+  }
+
+  let sessions = getPageSessions();
+  console.log({sessions});
+  $.each(sessions, function(i, value) {
+    $(`<option value="${value.name}">${value.name}</option>`).appendTo($selectSession);
+  });
+
+  $(document).on('change', '.selectSession', function () {
+    let session = defaultSessionVar.find((s) => s.name == $(this).val());
+    console.log({session});
+    updateElementsFromSession(session);
+  });
+
+  var $focusTextSave = $(`<div class="focusTextSave" ></div>`);
+  $focusTextSave.appendTo($sessionContent);
+
+  var $focusTextSaveButton = $('<input class="focusTextSaveButton button"  type="button" value="Save Session"  />');
+  $focusTextSaveButton.appendTo($focusTextSave);
+
+  var $focusTextSaveButton = $('<input class="focusTextLoadButton button"  type="button" value="Load Session"  />');
+  $focusTextSaveButton.appendTo($focusTextSave);
+
+  var $loadHiddenUploadButton = $(`<input class="loadHiddenUploadButton" type="file" style="display: none;" />`);
+  $loadHiddenUploadButton.appendTo($focusTextSave);
+
+  $(document).on('click', '.focusTextSaveButton', function () {
+    saveSession();
+  });
+
+  $(document).on('click', '.focusTextLoadButton', function () {
+    $('.loadHiddenUploadButton').click();
+  });
+
+  $(document).on('change', '.loadHiddenUploadButton', function () {
+    uploadImage('', $(this));
+  });
+
 
   /**********************
           VIDEO 
@@ -673,7 +729,7 @@ jQuery(document).ready(function ($) {
 
   function checkPlayer() {
     if (playersReady) {
-      $('.loadOverlay, .focusTextSave').removeClass('loading')
+      $('.loadOverlay').removeClass('loading')
       clearInterval(checkPlayerInverval);
     }
   }
@@ -737,6 +793,9 @@ jQuery(document).ready(function ($) {
   $videoSelect.appendTo($videoChooserContent);
 
   $(videos).each(function (k, v) {
+
+    let pageType = $(".quadrupolePanel").attr('page');
+    if(v.only  && !v.only.includes(pageType)) return;
 
     let style = '';
     if (v.isView) {
@@ -1891,29 +1950,6 @@ jQuery(document).ready(function ($) {
       SAVE SESSION 
   ********************/
 
-  var $focusTextSave = $(`<div class="focusTextSave loading" ></div>`);
-  $focusTextSave.appendTo($videoChooserSection);
-
-  var $focusTextSaveButton = $('<input class="focusTextSaveButton button"  type="button" value="Save Session"  />');
-  $focusTextSaveButton.appendTo($focusTextSave);
-
-  var $focusTextSaveButton = $('<input class="focusTextLoadButton button"  type="button" value="Load Session"  />');
-  $focusTextSaveButton.appendTo($focusTextSave);
-
-  var $loadHiddenUploadButton = $(`<input class="loadHiddenUploadButton" type="file" style="display: none;" />`);
-  $loadHiddenUploadButton.appendTo($focusTextSave);
-
-  $(document).on('click', '.focusTextSaveButton', function () {
-    saveSession();
-  });
-
-  $(document).on('click', '.focusTextLoadButton', function () {
-    $('.loadHiddenUploadButton').click();
-  });
-
-  $(document).on('change', '.loadHiddenUploadButton', function () {
-    uploadImage('', $(this));
-  });
 
   initializeEmotionsQuantity();
 
@@ -2193,8 +2229,9 @@ jQuery(document).ready(function ($) {
     setDataFontSize()
   });
 
+  let currentSessions = getPageSessions();
+  if (currentSessions.length > 0) updateElementsFromSession(currentSessions[0]);
   if ($(".quadrupolePanel").hasClass("jesus")) {
-    updateElementsFromSession(defaultSessionVar[0]);
     $('.liveSection').show();
   };
 
