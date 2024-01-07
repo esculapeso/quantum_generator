@@ -762,7 +762,7 @@ jQuery(document).ready(function ($) {
       $('.quadGenerator, .roundView').css('width', `${zoom}vh`).css('height', `${zoom}vh`);
       $('.quadGenerator').css('transform', `translateY(-50%) scale(${ratio}, 1)`);
       $('.roundView').css('transform', `translate(-50%, -50%) scale(${ratio}, 1)`);
-      $('.quadrupoleImage').addClass('pyramid');
+      $('.quadrupoleImage').addClass('pyramidImage');
       $('.personImage, .therapistImage, .generatorText').addClass('pyramidPerson')
     } else {
       $('.piramidToggleCB').prop('checked', isPyramid);
@@ -770,13 +770,13 @@ jQuery(document).ready(function ($) {
         $('.fullView').hide();
         $('.pyramidView').show();
         $('.quadGenerator').css('width', '100vh').css('height', '100vh');
-        $('.quadrupoleImage').addClass('pyramid');
+        $('.quadrupoleImage').addClass('pyramidImage');
         $('.personImage, .therapistImage, .generatorText, .sideText, .liveSection').addClass('pyramidPerson')
       } else {
         $('.fullView').show();
         $('.pyramidView').hide();
         $('.quadGenerator').css('width', '63%').css('height', '63%')
-        $('.quadrupoleImage').removeClass('pyramid');
+        $('.quadrupoleImage').removeClass('pyramidImage');
         $('.personImage, .therapistImage, .generatorText, .sideText, .liveSection').removeClass('pyramidPerson')
       }
     }
