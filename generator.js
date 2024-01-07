@@ -418,7 +418,7 @@ jQuery(document).ready(function ($) {
     $('.focusControls').hide();
   });
 
-  var $liveSection = $('<div class="liveSection" ></div>');
+  var $liveSection = $('<div class="liveSection" ></div>').hide();
   $liveSection.appendTo($quadrupolePanel);
 
 
