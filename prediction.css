@@ -113,6 +113,11 @@
     margin: auto;
     margin-bottom: 30px;
   }
+  
+  .quadrupoleImage.pyramid {
+    width: 166vh;
+    background-image: url(https://esculap.org/wp-content/uploads/2022/12/TherapistImage.png);
+  }
 
   .quadGenerator {
     width: 63%;
