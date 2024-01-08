@@ -6,6 +6,8 @@ jQuery(document).ready(function ($) {
   let sessionObj = {}
   let isVideoPlaying = false;
 
+  let pageType = $(".quadrupolePanel").attr('page');
+
   var qrngOrigDisplayInterval = 60000;
   var qrngLength;
   var qrngFetchInterval;
@@ -24,6 +26,7 @@ jQuery(document).ready(function ($) {
   var sideTextsOptionsVar = (typeof sideTextsOptions !== 'undefined' && sideTextsOptions) ? sideTextsOptions : [];
   var jesusMantrasVar = (typeof jesusMantras !== 'undefined' && jesusMantras) ? jesusMantras : [];
   var defaultSessionVar = (typeof defaultSession !== 'undefined' && defaultSession) ? defaultSession : [];
+  var liveTransmissionsVar = (typeof liveTransmissions !== 'undefined' && liveTransmissions) ? liveTransmissions : [];
 
   function setFetchIntervalAndLength(dispInterval) {
     qrngLength = Math.round(10000 / dispInterval);
@@ -434,30 +437,11 @@ jQuery(document).ready(function ($) {
 
   $("#lives").tabs().appendTo($liveSection);
 
-  var $live1 = $("#lives-1");
-  var $massLive = $(`<div class="aspect-ratio"><iframe 
-  class="lagiewnikiVideo" 
-  src="https://www.youtube.com/embed/LSwCKFaklHI" 
-  width="640" height="360" frameborder="0" scrolling="no" allowfullscreen> 
-</iframe></div>`);
-  $massLive.appendTo($live1);
-  var $live2 = $("#lives-2");
-  var $massLive = $(`<div class="aspect-ratio"><iframe 
-  class="lagiewnikiVideo" 
-  src="https://www.youtube.com/embed/J8NzgrmGH_Q" 
-  width="640" height="360" frameborder="0" scrolling="no" allowfullscreen> 
-</iframe></div>`);
-  $massLive.appendTo($live2);
-  var $live3 = $("#lives-3");
-  var $massLive = $(`<div class="aspect-ratio"><iframe 
-  class="lagiewnikiVideo" 
-  src="https://www.youtube.com/embed/Zz2lqOMiBeo" 
-  width="640" height="360" frameborder="0" scrolling="no" allowfullscreen> 
-</iframe></div>`);
-  $massLive.appendTo($live3);
-
-  
-
+  var transmissions = liveTransmissionsVar.filter((s) => s.page == pageType)
+  $.each(transmissions, (i, transmission) => {
+    var $liveTab = $(`#lives-${i+1}`);
+    $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
+  });
 
   var $jusesLitania = $('<div class="jusesLitania" ></div>');
   $jusesLitania.appendTo($liveSection);
@@ -631,7 +615,6 @@ jQuery(document).ready(function ($) {
   $selectSession.appendTo($sessionContent);
 
   function getPageSessions() {
-    let pageType = $(".quadrupolePanel").attr('page');
     return defaultSessionVar.filter((s) => s.page == pageType);
   }
 
@@ -794,7 +777,6 @@ jQuery(document).ready(function ($) {
 
   $(videos).each(function (k, v) {
 
-    let pageType = $(".quadrupolePanel").attr('page');
     if(v.only  && !v.only.includes(pageType)) return;
 
     let style = '';
@@ -2231,7 +2213,8 @@ jQuery(document).ready(function ($) {
 
   let currentSessions = getPageSessions();
   if (currentSessions.length > 0) updateElementsFromSession(currentSessions[0]);
-  if ($(".quadrupolePanel").hasClass("jesus")) {
+  var pageAttr = $(".quadrupolePanel").attr('page');
+  if (typeof pageAttr !== 'undefined' && pageAttr !== false) {
     $('.liveSection').show();
   };
 

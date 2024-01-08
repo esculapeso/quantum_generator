@@ -2,7 +2,24 @@ let customSideText = "JESUS";
 let sideTextsOptions = ["JESUS", "HOLY"];
 let randomBackgroundMiddle = "calc(50vh + 50px)";
 
-let defaultSession = {"Session time":"Fri, 05 Jan 2024 16:50:13 GMT","Focus Text":"Jezu ufam Tobie","imageData":"url(\"https://jesus.omreiki.uk/wp-content/uploads/2024/01/jesus_bevel.png\")","ImageCaption":"HOLY HOLY","sideText":"JESUS","people":[{"role":"therapist","data":"url(\"/wp-content/uploads/2024/01/shroudgif.gif\")"},{"role":"person1","data":"url(\"/wp-content/uploads/2024/01/JesusLungs.png\")"},{"role":"person2","data":"url(\"/wp-content/uploads/2022/12/la.jpg\")"},{"role":"person3","data":"url(\"/wp-content/uploads/2024/01/ImageToStl.com_orto_xl_jesus_gold_up.gif\")"},{"role":"person4","data":"url(\"/wp-content/uploads/2023/01/Jesus-Healthy-Mikkel.webp\")"},{"role":"person5","data":"none"},{"role":"person6","data":"none"}],"qrngInterval":938,"isPyramid":false,"callClip":"quad","callClipSize":"90","innerBgColorLeft":"","innerBgColorRight":""}
+let liveTransmissions = [
+	{"page": "Jesus", "name": "Faustyna", "url": "https://www.youtube.com/embed/LSwCKFaklHI"},
+	{"page": "Jesus", "name": "Niepokalanów", "url": "https://www.youtube.com/embed/J8NzgrmGH_Q"},
+	{"page": "Jesus", "name": "Lourdes", "url": "https://www.youtube.com/embed/Zz2lqOMiBeo"},
+	{"page": "Rect", "name": "Zbiornik", "url": "https://zbiornik.com/live/"},
+]
+
+let defaultSession = [
+	
+	{"page": "Jesus", "name":"Jesus Lungs", "Session time":"Sat, 06 Jan 2024 19:06:22 GMT","Focus Text":"Χριστός σε εμπιστεύομαι","videoId":"yT6D7U9T1rY","videoMode":"undefined","imageData":"url(\"https://jesus.omreiki.uk/wp-content/uploads/2023/01/Jesus-Healthy-Lungs.webp\")","ImageCaption":"άγιος άγιος","sideText":"Χριστός","people":[{"role":"therapist","data":"url(\"https://jesus.omreiki.uk/wp-content/uploads/2024/01/shroudgif.gif\")"},{"role":"person1","data":"url(\"https://jesus.omreiki.uk/wp-content/uploads/2024/01/JesusLungs.png\")"},{"role":"person2","data":"url(\"https://jesus.omreiki.uk/wp-content/uploads/2022/12/la.jpg\")"},{"role":"person3","data":"url(\"https://jesus.omreiki.uk/wp-content/uploads/2024/01/ImageToStl.com_orto_xl_jesus_gold_up.gif\")"},{"role":"person4","data":"url(\"https://jesus.omreiki.uk/wp-content/uploads/2023/01/Jesus-Healthy-Mikkel.webp\")"},{"role":"person5","data":"none"},{"role":"person6","data":"none"}],"qrngInterval":938,"isPyramid":true,"callClip":"quad","callClipSize":"90","innerBgColorLeft":"","innerBgColorRight":""},
+	
+	{"page": "Jesus", "name":"Jesus Faustyna", "Session time":"Fri, 05 Jan 2024 16:50:13 GMT","Focus Text":"Jezu ufam Tobie","imageData":"url(\"https://jesus.omreiki.uk/wp-content/uploads/2024/01/jesus_bevel.png\")","ImageCaption":"HOLY HOLY","sideText":"JESUS","people":[{"role":"therapist","data":"url(\"/wp-content/uploads/2024/01/shroudgif.gif\")"},{"role":"person1","data":"url(\"/wp-content/uploads/2024/01/JesusLungs.png\")"},{"role":"person2","data":"url(\"/wp-content/uploads/2022/12/la.jpg\")"},{"role":"person3","data":"url(\"/wp-content/uploads/2024/01/ImageToStl.com_orto_xl_jesus_gold_up.gif\")"},{"role":"person4","data":"url(\"/wp-content/uploads/2023/01/Jesus-Healthy-Mikkel.webp\")"},{"role":"person5","data":"none"},{"role":"person6","data":"none"}],"qrngInterval":938,"isPyramid":false,"callClip":"quad","callClipSize":"90","innerBgColorLeft":"","innerBgColorRight":""},
+	
+	{"page": "Angeloi", "name":"285 Hz", "Session time":"Sun, 07 Jan 2024 12:17:34 GMT","Focus Text":"Jesus I trust in You","videoId":"2pB1yzdU8JU","videoMode":"undefined","imageData":"none","ImageCaption":"Quantum","sideText":"ANGELOI","people":[{"role":"therapist","data":"none"},{"role":"person1","data":"none"},{"role":"person2","data":"none"},{"role":"person3","data":"none"},{"role":"person4","data":"none"},{"role":"person5","data":"none"},{"role":"person6","data":"none"}],"qrngInterval":938,"isPyramid":false,"callClip":"quad","callClipSize":"90","innerBgColorLeft":"","innerBgColorRight":""},
+	
+]
+
+
 
 let focusText = "Jesus I trust in You";
 
@@ -42,12 +59,14 @@ let jesusMantras = [
 ]
 
 let videosForFocus = [
+	{ id: "RfopVeAih9k", name: "285 Hz Pure Tone", only: ["Angeloi"] },
+	{ id: "2pB1yzdU8JU", name: "285 Hz Marimba", only: ["Angeloi"] },
 	{ id: "xHPFm46Hyek", name: "Bee Hive Hex" },
-	{ id: "ixrk1aM5KkA", name: "Bee Healing" },
+	{ id: "yT6D7U9T1rY", name: "Bee Noises" },
 	{ id: "HduDtC7meZo", name: "Arrival to Hive" },
 	{ id: "Fq4Aul-i4C8", name: "Clean Energy" },
 	{ id: "xphwtv6N_nk", name: "Clean Energy" },
-	{ id: "0alWwLqDKBg", name: "Angelina" },
+	{ id: "0alWwLqDKBg", name: "Angelina", only: ["Jesus", "Angeloi"]  },
 	{ id: "6f0y1Iaorug", name: "Waves 1" },
 	{ id: "LTmXmskEMas", name: "Waves 2" },
 	{ id: "5Lzi4T6mu0U", name: "Meditation" },
