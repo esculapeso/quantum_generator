@@ -27,6 +27,9 @@ jQuery(document).ready(function ($) {
   var jesusMantrasVar = (typeof jesusMantras !== 'undefined' && jesusMantras) ? jesusMantras : [];
   var defaultSessionVar = (typeof defaultSession !== 'undefined' && defaultSession) ? defaultSession : [];
   var liveTransmissionsVar = (typeof liveTransmissions !== 'undefined' && liveTransmissions) ? liveTransmissions : [];
+  var emotionsListVar = (typeof emotionsList !== 'undefined' && emotionsList) ? emotionsList : [];
+  var energiesListVar = (typeof energiesList !== 'undefined' && energiesList) ? energiesList : [];
+  var healthListVar = (typeof healthList !== 'undefined' && healthList) ? healthList : [];
 
   function setFetchIntervalAndLength(dispInterval) {
     qrngLength = Math.round(10000 / dispInterval);
@@ -440,8 +443,31 @@ jQuery(document).ready(function ($) {
   var transmissions = liveTransmissionsVar.filter((s) => s.page == pageType)
   $.each(transmissions, (i, transmission) => {
     var $liveTab = $(`#lives-${i+1}`);
-    $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
+    $liveTab.html(transmission.name);
+    if (transmission.type == "embedLink") $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
+    if (transmission.type == "imageFetch") {
+      console.log("IN imageFetch")
+      fetchImageUrls(transmission.url).then(imageUrls => {
+        console.log(imageUrls)
+        imageUrls.forEach(url => $(`<img src="${url}" />`).appendTo($liveTab));
+      });
+      
+    };
   });
+
+  async function fetchImageUrls(apiUrl) {
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const imageUrls = await response.json();
+        console.log("Fetched Image URLs:", imageUrls);
+        return imageUrls;
+    } catch (error) {
+        console.error("Error fetching image URLs:", error);
+    }
+  }
 
   var $jusesLitania = $('<div class="jusesLitania" ></div>');
   $jusesLitania.appendTo($liveSection);
@@ -619,14 +645,12 @@ jQuery(document).ready(function ($) {
   }
 
   let sessions = getPageSessions();
-  console.log({sessions});
   $.each(sessions, function(i, value) {
     $(`<option value="${value.name}">${value.name}</option>`).appendTo($selectSession);
   });
 
   $(document).on('change', '.selectSession', function () {
     let session = defaultSessionVar.find((s) => s.name == $(this).val());
-    console.log({session});
     updateElementsFromSession(session);
   });
 
@@ -887,17 +911,14 @@ jQuery(document).ready(function ($) {
   }
 
   function startFocusVideo(newVideoId) {
-    console.log("trying: ", playersReady);
     if (!playersReady) {
       t = setTimeout(function () { startFocusVideo(newVideoId); }, 1000);
       return;
     };
-    console.log("made it");
     $('.youtubePlayButtonImage').hide();
     $('.youtubePauseButtonImage').show();
     $(players).each((i, p) => p.loadVideoById(newVideoId).stopVideo());
     var activePlayers = getActivePlayers();
-    console.log({activePlayers})
     $(activePlayers).each((i, p) => p.setVolume($('.videoVolume').val()).playVideo().setPlaybackQuality("small").mute())
     activePlayers[0].unMute();
     $('.videoBackground').removeClass('hidden-container');
@@ -1956,7 +1977,7 @@ jQuery(document).ready(function ($) {
     var sideText = $(".sideTextTextBox").val();
 
     var emotionsText = "\n\nEmotions Quantity\n\n";
-    $(emotionsList).each((i, e) => {
+    $(emotionsListVar).each((i, e) => {
       emotionsText += `${e.name}: ${e.value}\n`;
     })
 
@@ -2011,33 +2032,24 @@ jQuery(document).ready(function ($) {
 
   function initializeEmotionsQuantity() {
 
-    instantiateStar('.emotionalQuantity', emotionsList)
-    instantiateStar('.energeticQuantity', energiesList)
-    instantiateStar('.healthyQuantity', healthList)
-
-    drawStar(150, 150, 80, 50, emotionsList, "canvas");
-    updateBars(emotionsList, '.emotionalQuantity .emotionQuantityBarFill')
-
-    drawStar(150, 150, 80, 50, energiesList, "canvas_energy");
-    updateBars(energiesList, '.energeticQuantity .emotionQuantityBarFill')
-
-    drawStar(150, 150, 80, 50, healthList, "canvas_health");
-    updateBars(healthList, '.healthyQuantity .emotionQuantityBarFill')
+    instantiateStar(emotionsListVar, "canvas", '.emotionalQuantity')
+    instantiateStar(energiesListVar, "canvas_energy", '.energeticQuantity')
+    instantiateStar(healthListVar, "healthyQuantity", '.healthyQuantity')
 
     $(document).on('change', '.emotionalQuantity .emotionQuantity', function () {
-      onQuantityClick(emotionsList, '.emotionalQuantity .emotionQuantityBarFill', $(this), "canvas")
+      onQuantityClick(emotionsListVar, '.emotionalQuantity', $(this), "canvas")
     });
 
     $(document).on('change', '.energeticQuantity .emotionQuantity', function () {
-      onQuantityClick(energiesList, '.energeticQuantity .emotionQuantityBarFill', $(this), "canvas_energy")
+      onQuantityClick(energiesListVar, '.energeticQuantity', $(this), "canvas_energy")
     });
 
     $(document).on('change', '.healthyQuantity .emotionQuantity', function () {
-      onQuantityClick(healthList, '.healthyQuantity .emotionQuantityBarFill', $(this), "canvas_health")
+      onQuantityClick(healthListVar, '.healthyQuantity', $(this), "canvas_health")
     });
 
 
-    function instantiateStar(starSelector, list) {
+    function instantiateStar(list, canvasId, starSelector) {
 
       /*** Title ***/
 
@@ -2107,8 +2119,15 @@ jQuery(document).ready(function ($) {
         }
 
       })
+
+      initializeStarAndTable(list, canvasId, starSelector);
+
     }
 
+    function initializeStarAndTable(list, canvasId, quantitiesClass){
+      drawStar(150, 150, 80, 50, list, canvasId);
+      updateBars(list, quantitiesClass + ' .emotionQuantityBarFill')
+    }
     /*** Quantities Helper Function ***/
 
     function addColorValueInput(name, colorKey, colorVal, container) {
@@ -2132,8 +2151,7 @@ jQuery(document).ready(function ($) {
     function onQuantityClick(list, contanerSelector, _this, canvasId) {
       var selectedindex = list.findIndex((e) => e.name == _this.attr('emotion'))
       list[selectedindex].value = _this.val();
-      drawStar(150, 150, 80, 50, list, canvasId);
-      updateBars(list, contanerSelector)
+      initializeStarAndTable(list, canvasId, contanerSelector);
     }
 
   }
@@ -2199,7 +2217,6 @@ jQuery(document).ready(function ($) {
       $('.videoChooserSection').css('margin', 'auto');
       $('.videoChooserSection').css('position', 'static');
     }
-
   }
 
   function updateCaptionText(text) {
