@@ -443,13 +443,11 @@ jQuery(document).ready(function ($) {
   var transmissions = liveTransmissionsVar.filter((s) => s.page == pageType)
   $.each(transmissions, (i, transmission) => {
     var $liveTab = $(`#lives-${i+1}`);
-    $liveTab.html(transmission.name);
+    $(`a[href='#lives-${i+1}']`).html(transmission.name);
     if (transmission.type == "embedLink") $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
     if (transmission.type == "imageFetch") {
-      console.log("IN imageFetch")
       fetchImageUrls(transmission.url).then(imageUrls => {
-        console.log(imageUrls)
-        imageUrls.forEach(url => $(`<img src="${url}" />`).appendTo($liveTab));
+        $.each(imageUrls, (i, url) => $(`<img src="${url}" />`).appendTo($liveTab));
       });
       
     };
@@ -462,10 +460,8 @@ jQuery(document).ready(function ($) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const imageUrls = await response.json();
-        console.log("Fetched Image URLs:", imageUrls);
         return imageUrls;
     } catch (error) {
-        console.error("Error fetching image URLs:", error);
     }
   }
 

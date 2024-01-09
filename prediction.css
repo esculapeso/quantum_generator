@@ -401,6 +401,11 @@
     width: 300px;
     height: 575px;
     z-index: 100;
+    width: calc((100vw - 100vh)/2) !important;
+  }
+
+  .liveSection.pyramidPerson {
+    width: calc((100vw - 142vh)/2) !important;
   }
 
   .aspect-ratio {
