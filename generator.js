@@ -448,12 +448,17 @@ jQuery(document).ready(function ($) {
     if (transmission.type == "imageFetch") {
       $imagesFetched = $(`<div class="imagesFetched"></div>`);
       $imagesFetched.appendTo($liveTab);
-      fetchImageUrls(transmission.url).then(imageUrls => {
-        $.each(imageUrls.slice(0, 15), (i, url) => $(`<img src="${url}" />`).appendTo($imagesFetched));
-      });
-      
+      updateFetchedImages(transmission.url)
     };
   });
+
+  function updateFetchedImages(urlToFetch) {
+    $imagesFetched.empty();
+    fetchImageUrls(urlToFetch).then(imageUrls => {
+      $.each(imageUrls.slice(0, 15), (i, url) => $(`<img src="${url}" />`).appendTo($imagesFetched));
+    });
+    setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);
+  }
 
   async function fetchImageUrls(apiUrl) {
     try {
