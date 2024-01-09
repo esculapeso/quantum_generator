@@ -456,7 +456,7 @@ jQuery(document).ready(function ($) {
     fetchImageUrls(urlToFetch).then(imageUrls => {
       if ($imagesFetched.find('img').length == 0)
         $.each(imageUrls.slice(0, 15), (i, thumb) => $(`
-          <a index="${i}" href="${thumb.href}" target="_blank"
+          <a index="${i}" href="${thumb.href}" target="_blank">
             <img index="${i}" src="${thumb.url}" />
           </a>
         `).appendTo($imagesFetched));
