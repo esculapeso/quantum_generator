@@ -453,8 +453,8 @@ jQuery(document).ready(function ($) {
   });
 
   function updateFetchedImages(urlToFetch) {
-    $imagesFetched.empty();
     fetchImageUrls(urlToFetch).then(imageUrls => {
+      $imagesFetched.empty();
       $.each(imageUrls.slice(0, 15), (i, url) => $(`<img src="${url}" />`).appendTo($imagesFetched));
     });
     setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);
