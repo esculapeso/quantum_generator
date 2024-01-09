@@ -446,8 +446,10 @@ jQuery(document).ready(function ($) {
     $(`a[href='#lives-${i+1}']`).html(transmission.name);
     if (transmission.type == "embedLink") $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
     if (transmission.type == "imageFetch") {
+      $imagesFetched = $(`<div class="imagesFetched"></div>`);
+      $imagesFetched.appendTo($liveTab);
       fetchImageUrls(transmission.url).then(imageUrls => {
-        $.each(imageUrls, (i, url) => $(`<img src="${url}" />`).appendTo($liveTab));
+        $.each(imageUrls, (i, url) => $(`<img src="${url}" />`).appendTo($imagesFetched));
       });
       
     };

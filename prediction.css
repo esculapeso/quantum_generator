@@ -408,6 +408,11 @@
     width: calc((100vw - 142vh)/2) !important;
   }
 
+  .imagesFetched {
+    width: 25%;
+    display: inline-block;
+  }
+
   .aspect-ratio {
     position: relative;
     width: 100%;
