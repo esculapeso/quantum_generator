@@ -455,9 +455,16 @@ jQuery(document).ready(function ($) {
   function updateFetchedImages(urlToFetch) {
     fetchImageUrls(urlToFetch).then(imageUrls => {
       if ($imagesFetched.find('img').length == 0)
-        $.each(imageUrls.slice(0, 15), (i, url) => $(`<img index="${i}" src="${url}" />`).appendTo($imagesFetched));
+        $.each(imageUrls.slice(0, 15), (i, thumb) => $(`
+          <a index="${i}" href="${thumb.href}" target="_blank"
+            <img index="${i}" src="${thumb.url}" />
+          </a>
+        `).appendTo($imagesFetched));
       else
-        $.each(imageUrls.slice(0, 15), (i, url) => $(`img[index="${i}"]`).attr('src', url));
+        $.each(imageUrls.slice(0, 15), (i, thumb) => {
+          $(`a[index="${i}"]`).attr('href', thumb.href);
+          $(`img[index="${i}"]`).attr('src', thumb.url);
+        });
     });
     setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);
   }
