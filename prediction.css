@@ -409,8 +409,8 @@
   }
 
   .imagesFetched {
-    width: 25%;
-    display: inline-block;
+    display: grid;
+    grid-template-columns: auto auto auto;
   }
 
   .aspect-ratio {

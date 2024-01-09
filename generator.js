@@ -449,7 +449,7 @@ jQuery(document).ready(function ($) {
       $imagesFetched = $(`<div class="imagesFetched"></div>`);
       $imagesFetched.appendTo($liveTab);
       fetchImageUrls(transmission.url).then(imageUrls => {
-        $.each(imageUrls, (i, url) => $(`<img src="${url}" />`).appendTo($imagesFetched));
+        $.each(imageUrls.slice(0, 15), (i, url) => $(`<img src="${url}" />`).appendTo($imagesFetched));
       });
       
     };
