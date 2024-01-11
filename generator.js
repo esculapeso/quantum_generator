@@ -464,13 +464,14 @@ jQuery(document).ready(function ($) {
       updateFetchedImages($imagesFetched, transmission.url)
     };
     if (transmission.type == "coin") {
-      coinsData = fetchImageUrls(transmission.url);
-      console.log({coinsData});
-
       $imagesFetched = $(`<div class="imagesFetched"></div>`);
       $imagesFetched.appendTo($liveTab);
       generateCoin($liveTab);
-      updateCoin(coinsData);
+
+      fetchImageUrls(transmission.url).then(coinsData => {
+        console.log({coinsData});
+        updateCoin(coinsData);
+      });
     };
 
     function generateCoin(container) {
