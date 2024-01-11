@@ -158,7 +158,7 @@ jQuery(document).ready(function ($) {
 
     t = setTimeout(function () { timedPrint(index); }, currentDisplayInterval);
     toggleHexDecNumbers();
-    d = setTimeout(function () { toggleHexDecNumbers(); }, currentDisplayInterval/2);
+    d = setTimeout(function () { toggleHexDecNumbers(); }, currentDisplayInterval / 2);
   };
 
   function toggleHexDecNumbers() {
@@ -429,7 +429,7 @@ jQuery(document).ready(function ($) {
 
 
 
-  $( `<div class="hideLivePanel">
+  $(`<div class="hideLivePanel">
         <input class="hideLiveButton button" type="button" value="Live"  />
       </div>`).appendTo($liveSection);
 
@@ -440,10 +440,12 @@ jQuery(document).ready(function ($) {
 
   $("#lives").tabs().appendTo($liveSection);
 
+  var coinsData = [];
+
   var transmissions = liveTransmissionsVar.filter((s) => s.page == pageType)
   $.each(transmissions, (i, transmission) => {
-    var $liveTab = $(`#lives-${i+1}`);
-    $(`a[href='#lives-${i+1}']`).html(transmission.name);
+    var $liveTab = $(`#lives-${i + 1}`);
+    $(`a[href='#lives-${i + 1}']`).html(transmission.name);
     if (transmission.type == "embedLink") $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
     if (transmission.type == "imageFetch") {
       $imagesFetched = $(`<div class="imagesFetched"></div>`);
@@ -451,25 +453,45 @@ jQuery(document).ready(function ($) {
       updateFetchedImages($imagesFetched, transmission.url)
     };
     if (transmission.type == "coin") {
+      coinsData = fetchImageUrls(transmission.url);
+
       $imagesFetched = $(`<div class="imagesFetched"></div>`);
       $imagesFetched.appendTo($liveTab);
-      updateFetchedImages(transmission.url)
-      generateCoin($liveTab, "https://esculap.us/wp-content/uploads/2023/02/esa_gold_100.png", "https://esculap.us/wp-content/uploads/2023/02/esa_gold_100.png")
+      updateFetchedImages(transmission.url);
+      generateCoin($liveTab);
+      updateCoin(coinsData);
     };
 
-    function generateCoin(container, reverseUrl, obserseUrl) {
+    function generateCoin(container) {
       $mainCoin = $(`<div class="coincontainer coin2" style="height: 230px;"></div>`).appendTo(container);
       $tridiv = $(`<div id="tridiv"></div>`).appendTo($mainCoin);
       $scene = $(`<div class="scene"></div>`).appendTo($tridiv);
       $shape = $(`<div class="shape cylinder-2 cyl-2"></div>`).appendTo($scene);
-      
-      $(`<div class="face bm" style="background-image: url('${reverseUrl}');"><div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.1);"></div></div>`).appendTo($shape)
-      $(`<div class="face tp" style="background-image: url('${obserseUrl}');"><div class="photon-shader obverse"></div></div>`).appendTo($shape)
+
+      $(`<div class="face bm" style="background-image: url('');"><div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.1);"></div></div>`).appendTo($shape);
+      $(`<div class="face tp" style="background-image: url('');"><div class="photon-shader obverse"></div></div>`).appendTo($shape);
       $.each([0.1, 0.125, 0.16, 0.21, 0.267, 0.325, 0.38, 0.43, 0.475, 0.498, 0.498, 0.475, 0.44, 0.39, 0.333, 0.275, 0.22, 0.17, 0.125, 0.1], (i, alpha) => {
         $(`<div class="face side s${i}"><div class="photon-shader" style="background-color: rgba(0, 0, 0, ${alpha});"></div></div>`).appendTo($shape);
       });
     }
-      
+
+    function updateCoin(list) {
+      getTokenData(list[getRandomArrayIndex(list)].id, '.bm');
+      getTokenData(list[getRandomArrayIndex(list)].id, '.tp');
+    }
+
+    function getRandomArrayIndex(array) {
+      return Math.floor(Math.random() * array.length);
+    }
+
+    function getTokenData(coinId, faceSelector) {
+      console.log({coinId, faceSelector});
+      fetchImageUrls(`https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false`).then(coinData => {
+        let imageUrl = coinData.image.large;
+        $(`.face${faceSelector}`).css('background-image', `url('${imageUrl}')`)
+      });
+    }
+
 
   });
 
@@ -492,12 +514,12 @@ jQuery(document).ready(function ($) {
 
   async function fetchImageUrls(apiUrl) {
     try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const imageUrls = await response.json();
-        return imageUrls;
+      const response = await fetch(apiUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const imageUrls = await response.json();
+      return imageUrls;
     } catch (error) {
     }
   }
@@ -517,7 +539,7 @@ jQuery(document).ready(function ($) {
 
   function repeatStringWithComma(string, num) {
     if (num <= 0) {
-        return "";
+      return "";
     }
     return Array(num).fill(string).join(", ");
   }
@@ -533,12 +555,12 @@ jQuery(document).ready(function ($) {
     jesusMantraTextsForAudio = [];
     var repeatAmount = $('.jesusAmountTextbox').val();
     var number = parseInt(repeatAmount, 10);
-    $( ".jusesLang input:checked" ).each((i, box) => {
+    $(".jusesLang input:checked").each((i, box) => {
       var lang = $(box).attr('id');
       var text = $(`label[for="${lang}"]`).text();
-      jesusMantraTextsForAudio.push({lang, text});
+      jesusMantraTextsForAudio.push({ lang, text });
     });
-    
+
     sayMantra(jesusMantraTextsForAudio, 0, number);
     // var repeatAmount = $('.jesusAmountTextbox').val();
     // var repeatAmount = $('.jesusAmountTextbox').val();
@@ -553,7 +575,7 @@ jQuery(document).ready(function ($) {
     UpdateFocusText(text);
     $(`.imageInnerDiv`).css('background-image', `url("/wp-content/uploads/2022/12/${lang}.jpg")`);
     $(`.person2Image`).css('background-image', `url("/wp-content/uploads/2024/01/jesus_bevel.png")`);
-    
+
     jesusUtter.text = repeatStringWithComma(text, repeat);
     msg.rate = 0.8;
     jesusUtter.lang = lang;
@@ -582,7 +604,7 @@ jQuery(document).ready(function ($) {
   var $jusesLanguages = $('<div class="jusesLanguages" ></div>');
   $jusesLanguages.appendTo($jusesLitania);
 
-  $.each(jesusMantrasVar, function(index, value) {
+  $.each(jesusMantrasVar, function (index, value) {
     var isChecked = (value.default) ? "checked" : "";
     $(`
       <div class="jusesLang" >
@@ -593,8 +615,8 @@ jQuery(document).ready(function ($) {
       </div>
     `).appendTo($jusesLanguages);
   });
-  
-  
+
+
 
   // var elem = document.body.getElementById("ls_embed_1676270103");
   // function openFullscreen() {
@@ -678,7 +700,7 @@ jQuery(document).ready(function ($) {
   }
 
   let sessions = getPageSessions();
-  $.each(sessions, function(i, value) {
+  $.each(sessions, function (i, value) {
     $(`<option value="${value.name}">${value.name}</option>`).appendTo($selectSession);
   });
 
@@ -834,7 +856,7 @@ jQuery(document).ready(function ($) {
 
   $(videos).each(function (k, v) {
 
-    if(v.only  && !v.only.includes(pageType)) return;
+    if (v.only && !v.only.includes(pageType)) return;
 
     let style = '';
     if (v.isView) {
@@ -1021,7 +1043,7 @@ jQuery(document).ready(function ($) {
   var $sideTextDataList = $(`<datalist id="sideTexts"></datalist>`);
   $sideTextDataList.appendTo($focusContent);
 
-  $.each(sideTextsOptionsVar, function(index, value) {
+  $.each(sideTextsOptionsVar, function (index, value) {
     $(`<option>${value}</option>`).appendTo($sideTextDataList);
   });
 
@@ -1292,7 +1314,7 @@ jQuery(document).ready(function ($) {
     $(jsonObject.people).each((i, p) => {
       $(`.${p.role}Image`).css('background-image', p.data);
     });
-  
+
     if (checkParamValue(jsonObject['Focus Text'])) UpdateFocusText(jsonObject['Focus Text']);
     if (checkParamValue(jsonObject.sideText)) UpdateSideText(jsonObject.sideText);
     if (checkParamValue(jsonObject.ImageCaption)) updateCaptionText(jsonObject.ImageCaption);
@@ -2157,7 +2179,7 @@ jQuery(document).ready(function ($) {
 
     }
 
-    function initializeStarAndTable(list, canvasId, quantitiesClass){
+    function initializeStarAndTable(list, canvasId, quantitiesClass) {
       drawStar(150, 150, 80, 50, list, canvasId);
       updateBars(list, quantitiesClass + ' .emotionQuantityBarFill')
     }
