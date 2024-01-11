@@ -461,7 +461,7 @@ jQuery(document).ready(function ($) {
       $mainCoin = $(`<div class="coincontainer coin2" style="height: 230px;"></div>`).appendTo(container);
       $tridiv = $(`<div id="tridiv"></div>`).appendTo($mainCoin);
       $scene = $(`<div class="scene"></div>`).appendTo($tridiv);
-      $shape = $(`<div class="shape cylinder-2 cyl-2"></div>`).appendTo($shape);
+      $shape = $(`<div class="shape cylinder-2 cyl-2"></div>`).appendTo($scene);
       
       $(`<div class="face bm" style="background-image: url('${reverseUrl}');"><div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.1);"></div></div>`).appendTo($shape)
       $(`<div class="face tp" style="background-image: url('${obserseUrl}');"><div class="photon-shader obverse"></div></div>`).appendTo($shape)
