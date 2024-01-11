@@ -14,7 +14,7 @@ jQuery(document).ready(function ($) {
   var currentDisplayInterval = 938;
   var upcomingDisplayInterval = 938;
 
-  var isMobile = isMobile || false;
+  var isMobile = doOnOrientationChange() || false;
   var videos = (typeof videosForFocus !== 'undefined' && videosForFocus) ? videosForFocus : null;;
   var psalmVideoVar = (typeof psalmVideo !== 'undefined' && psalmVideo) ? psalmVideo : null;
   var view360VideoVar = (typeof view360Video !== 'undefined' && view360Video) ? view360Video : null;
@@ -30,6 +30,17 @@ jQuery(document).ready(function ($) {
   var emotionsListVar = (typeof emotionsList !== 'undefined' && emotionsList) ? emotionsList : [];
   var energiesListVar = (typeof energiesList !== 'undefined' && energiesList) ? energiesList : [];
   var healthListVar = (typeof healthList !== 'undefined' && healthList) ? healthList : [];
+
+
+  function doOnOrientationChange() {
+    switch(window.orientation) {
+      case 90: return false;
+      case -90: return false;
+      case 0: return true;
+      case 180: return true;
+    }
+}
+
 
   function setFetchIntervalAndLength(dispInterval) {
     qrngLength = Math.round(10000 / dispInterval);
@@ -457,7 +468,7 @@ jQuery(document).ready(function ($) {
 
       $imagesFetched = $(`<div class="imagesFetched"></div>`);
       $imagesFetched.appendTo($liveTab);
-      updateFetchedImages(transmission.url);
+      updateFetchedImages($imagesFetched, transmission.url);
       generateCoin($liveTab);
       updateCoin(coinsData);
     };
@@ -476,12 +487,19 @@ jQuery(document).ready(function ($) {
     }
 
     function updateCoin(list) {
-      getTokenData(list[getRandomArrayIndex(list)].id, '.bm');
-      getTokenData(list[getRandomArrayIndex(list)].id, '.tp');
+      let revItem = list[getRandomArrayIndex(list)];
+      let obvItem = list[getRandomArrayIndex(list)];
+      console.log({revItem, obvItem});
+      if (revItem && obvItem) {
+        getTokenData(revItem.id, '.bm');
+        getTokenData(obvItem.id, '.tp');
+      }
     }
 
     function getRandomArrayIndex(array) {
-      return Math.floor(Math.random() * array.length);
+      var numb = Math.floor(Math.random() * array.length);
+      console.log({numb});
+      return numb;
     }
 
     function getTokenData(coinId, faceSelector) {
@@ -818,6 +836,8 @@ jQuery(document).ready(function ($) {
   });
 
   function togglePyramidView(isPyramid, startVideo, zoom, ratio) {
+    console.log({isPyramid, startVideo, zoom, ratio})
+
     if (zoom) {
       $('.fullView').hide();
       $('.pyramidView').show();
@@ -829,6 +849,7 @@ jQuery(document).ready(function ($) {
     } else {
       $('.piramidToggleCB').prop('checked', isPyramid);
       if (isPyramid) {
+        console.log("im in toggle pyramid")
         $('.fullView').hide();
         $('.pyramidView').show();
         $('.quadGenerator').css('width', '100vh').css('height', '100vh');
@@ -1332,7 +1353,7 @@ jQuery(document).ready(function ($) {
   }
 
   function checkParamValue(param) {
-    return typeof param !== 'undefined' && param;
+    return typeof param !== 'undefined';
   }
 
 
