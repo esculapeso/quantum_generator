@@ -465,10 +465,10 @@ jQuery(document).ready(function ($) {
     };
     if (transmission.type == "coin") {
       coinsData = fetchImageUrls(transmission.url);
+      console.log({coinsData});
 
       $imagesFetched = $(`<div class="imagesFetched"></div>`);
       $imagesFetched.appendTo($liveTab);
-      updateFetchedImages($imagesFetched, transmission.url);
       generateCoin($liveTab);
       updateCoin(coinsData);
     };
