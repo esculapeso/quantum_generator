@@ -450,6 +450,25 @@ jQuery(document).ready(function ($) {
       $imagesFetched.appendTo($liveTab);
       updateFetchedImages(transmission.url)
     };
+    if (transmission.type == "coin") {
+      $imagesFetched = $(`<div class="imagesFetched"></div>`);
+      $imagesFetched.appendTo($liveTab);
+      updateFetchedImages(transmission.url)
+      generateCoin("https://esculap.us/wp-content/uploads/2023/02/esa_gold_100.png", "https://esculap.us/wp-content/uploads/2023/02/esa_gold_100.png")
+    };
+
+    function generateCoin(reverseUrl, obserseUrl) {
+      $mainCoin = $(`<div class="coincontainer coin2" style="height: 230px;"><div id="tridiv"><div class="scene"><div class="shape cylinder-2 cyl-2"></div></div></div></div>`);
+      $mainCoin.appendTo($liveTab);
+      
+      $(`<div class="face bm" style="background-image: url('${reverseUrl}');"><div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.1);"></div></div>`).appendTo($liveTab)
+      $(`<div class="face tp" style="background-image: url('${obserseUrl}');"><div class="photon-shader obverse"></div></div>`).appendTo($mainCoin)
+      $.each([0.1, 0.125, 0.16, 0.21, 0.267, 0.325, 0.38, 0.43, 0.475, 0.498, 0.498, 0.475, 0.44, 0.39, 0.333, 0.275, 0.22, 0.17, 0.125, 0.1], (i, alpha) => {
+        $(`<div class="face side s${i}"><div class="photon-shader" style="background-color: rgba(0, 0, 0, ${alpha});"></div></div>`).appendTo($mainCoin);
+      });
+    }
+      
+
   });
 
   function updateFetchedImages(urlToFetch) {

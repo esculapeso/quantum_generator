@@ -1,0 +1,212 @@
+@keyframes spin { 
+    0% { transform:rotateZ(-180deg); 
+    } 
+    100% { transform:rotateZ(180deg); 
+    } 
+  }
+  
+  .coincontainer {
+      position: relative;
+      height: 314px;
+      height: 900px; /*for icon*/
+      text-align: center;
+  }
+  
+  .scene {
+        transform: rotateX(-90deg) rotateZ(90deg); 
+  }
+  
+  .cylinder-2 {
+     animation:spin 6s linear infinite;
+     cursor: pointer;
+  }
+  
+  .cylinder-2:hover {
+     animation:spin 0s linear;
+     transition: transform 1s;
+     transform: rotate(-90deg); 
+  }
+  
+  #tridiv {
+    perspective: 800px;
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    font-size: 175%;
+  }
+  .face {
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0);
+  }
+  .scene, .shape, .face, .face-wrapper, .cr {
+    position: absolute;
+    transform-style: preserve-3d;
+  }
+  .scene {
+    width: 80em;
+    height: 80em;
+    top: 50%;
+    left: 50%;
+    margin: -40em 0 0 -40em;
+  }
+  .shape {
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    transform-origin: 50%;
+  }
+  .face, .face-wrapper {
+    overflow: hidden;
+    transform-origin: 0 0;
+    backface-visibility: hidden;
+    /* hidden by default, prevent blinking and other weird rendering glitchs */
+  }
+  .face {
+    background-size: 100% 100%;
+    background-position: center;
+  }
+  .face-wrapper .face {
+    left: 100%;
+    width: 100%;
+    height: 100%
+  }
+  .photon-shader {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%
+  }
+  .photon-shader.obverse {
+    background-color: rgba(0, 0, 0, 0.1); 
+    padding-top: 100px;
+    font-size: 30px;
+  }
+  .side {
+    left: 50%;
+  }
+  .cr, .cr .side {
+    height: 100%;
+  }
+  [class*="cylinder"] .tp {
+    transform: rotateX(90deg) translateY(-50%);
+  }
+  [class*="cylinder"] .bm {
+    transform: rotateX(-90deg) translateY(50%) translateX(100%) rotateZ(180deg);
+  }
+  [class*="cylinder"] .tp, [class*="cylinder"] .bm, [class*="cylinder"] .tp .photon-shader, [class*="cylinder"] .bm .photon-shader {
+    border-radius: 50%;
+  }
+  [class*="cylinder"] .bm {
+    top: 100%;
+  }
+  /* .cyl-2 styles */
+  .cyl-2 {
+    transform:translate3D(0em, 0em, 0em) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    opacity:1;
+    width:8.5em;
+    height:0.589285714285714em;
+    /* margin:-0.294642857142857em 0 0 -4.25em;*/
+  }
+  .cyl-2 .tp, .cyl-2 .bm {
+    width:8.5em;
+    height:8.5em;
+  }
+  .cyl-2 .side {
+    width:1.3712677427585582em;
+    height:0.589285714285714em;
+  }
+  .cyl-2 .s0 {
+    transform: rotateY(9deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s1 {
+    transform: rotateY(27deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s2 {
+    transform: rotateY(45deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s3 {
+    transform: rotateY(63deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s4 {
+    transform: rotateY(81deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s5 {
+    transform: rotateY(99deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s6 {
+    transform: rotateY(117deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s7 {
+    transform: rotateY(135deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s8 {
+    transform: rotateY(153deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s9 {
+    transform: rotateY(171deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s10 {
+    transform: rotateY(189deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s11 {
+    transform: rotateY(207deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s12 {
+    transform: rotateY(225deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s13 {
+    transform: rotateY(243deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s14 {
+    transform: rotateY(261deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s15 {
+    transform: rotateY(279deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s16 {
+    transform: rotateY(297deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s17 {
+    transform: rotateY(315deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s18 {
+    transform: rotateY(333deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .s19 {
+    transform: rotateY(351deg) translate3D(-50%, 0, 4.225em);
+  }
+  .cyl-2 .face, .cyl-2 .side {
+    background-color:#FFFFFF;
+  }
+  .coincontainer.coin10 .cyl-2 .tp {
+    background:url(http://quantumfoundation.eu/wp-content/uploads/2017/06/FCTcoins_10_512.png);
+  }
+  .coincontainer.coin5 .cyl-2 .tp {
+    background:url(http://quantumfoundation.eu/wp-content/uploads/2019/02/HoloHotCoinGold.png);
+  }
+  .coincontainer.coin2 .cyl-2 .tp {
+    background:url(http://quantumfoundation.eu/wp-content/uploads/2019/02/HoloHotCoinGold.png);
+    background-size: 100%;
+  }
+  .coincontainer.coin2 .cyl-2 .bm {
+    background:url(http://quantumfoundation.eu/wp-content/uploads/2019/07/NiYSKAUr_400x400.png);
+    background-size: 100%;
+  }
+  .coincontainer.coin1 .cyl-2 .tp {
+    background:url(http://quantumfoundation.eu/wp-content/uploads/2017/06/FCTcoins_1_512.png);
+  }
+  .coincontainer.coinhalf .cyl-2 .tp {
+    background:url(http://quantumfoundation.eu/wp-content/uploads/2017/06/FCTcoins_.5_512.png);
+  }
+  .coincontainer.coinfifth .cyl-2 .tp {
+    background:url(http://quantumfoundation.eu/wp-content/uploads/2017/06/FCTcoins_.2_512.png);
+  }
+  .cyl-2 .side {
+    background:url(http://quantumfoundation.eu/wp-content/uploads/2018/08/coin_edge90.png);
+  }
+  .underneith {
+    font-size: 248px;
+  }
