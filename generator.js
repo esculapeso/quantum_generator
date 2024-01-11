@@ -448,37 +448,39 @@ jQuery(document).ready(function ($) {
     if (transmission.type == "imageFetch") {
       $imagesFetched = $(`<div class="imagesFetched"></div>`);
       $imagesFetched.appendTo($liveTab);
-      updateFetchedImages(transmission.url)
+      updateFetchedImages($imagesFetched, transmission.url)
     };
     if (transmission.type == "coin") {
       $imagesFetched = $(`<div class="imagesFetched"></div>`);
       $imagesFetched.appendTo($liveTab);
       updateFetchedImages(transmission.url)
-      generateCoin("https://esculap.us/wp-content/uploads/2023/02/esa_gold_100.png", "https://esculap.us/wp-content/uploads/2023/02/esa_gold_100.png")
+      generateCoin($liveTab, "https://esculap.us/wp-content/uploads/2023/02/esa_gold_100.png", "https://esculap.us/wp-content/uploads/2023/02/esa_gold_100.png")
     };
 
-    function generateCoin(reverseUrl, obserseUrl) {
-      $mainCoin = $(`<div class="coincontainer coin2" style="height: 230px;"><div id="tridiv"><div class="scene"><div class="shape cylinder-2 cyl-2"></div></div></div></div>`);
-      $mainCoin.appendTo($liveTab);
+    function generateCoin(container, reverseUrl, obserseUrl) {
+      $mainCoin = $(`<div class="coincontainer coin2" style="height: 230px;"></div>`).appendTo(container);
+      $tridiv = $(`<div id="tridiv"></div>`).appendTo($mainCoin);
+      $scene = $(`<div class="scene"></div>`).appendTo($tridiv);
+      $shape = $(`<div class="shape cylinder-2 cyl-2"></div>`).appendTo($shape);
       
-      $(`<div class="face bm" style="background-image: url('${reverseUrl}');"><div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.1);"></div></div>`).appendTo($liveTab)
-      $(`<div class="face tp" style="background-image: url('${obserseUrl}');"><div class="photon-shader obverse"></div></div>`).appendTo($mainCoin)
+      $(`<div class="face bm" style="background-image: url('${reverseUrl}');"><div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.1);"></div></div>`).appendTo($shape)
+      $(`<div class="face tp" style="background-image: url('${obserseUrl}');"><div class="photon-shader obverse"></div></div>`).appendTo($shape)
       $.each([0.1, 0.125, 0.16, 0.21, 0.267, 0.325, 0.38, 0.43, 0.475, 0.498, 0.498, 0.475, 0.44, 0.39, 0.333, 0.275, 0.22, 0.17, 0.125, 0.1], (i, alpha) => {
-        $(`<div class="face side s${i}"><div class="photon-shader" style="background-color: rgba(0, 0, 0, ${alpha});"></div></div>`).appendTo($mainCoin);
+        $(`<div class="face side s${i}"><div class="photon-shader" style="background-color: rgba(0, 0, 0, ${alpha});"></div></div>`).appendTo($shape);
       });
     }
       
 
   });
 
-  function updateFetchedImages(urlToFetch) {
+  function updateFetchedImages(container, urlToFetch) {
     fetchImageUrls(urlToFetch).then(imageUrls => {
-      if ($imagesFetched.find('img').length == 0)
+      if (container.find('img').length == 0)
         $.each(imageUrls.slice(0, 15), (i, thumb) => $(`
           <a index="${i}" href="${thumb.href}" target="_blank">
             <img index="${i}" src="${thumb.url}" />
           </a>
-        `).appendTo($imagesFetched));
+        `).appendTo(container));
       else
         $.each(imageUrls.slice(0, 15), (i, thumb) => {
           $(`a[index="${i}"]`).attr('href', thumb.href);
