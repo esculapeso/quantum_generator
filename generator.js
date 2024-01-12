@@ -471,7 +471,7 @@ jQuery(document).ready(function ($) {
       $(`<div class="face bm" style="background-image: url('');"><div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.1);"></div></div>`).appendTo($shape);
       $(`<div class="face tp" style="background-image: url('');"><div class="photon-shader obverse"></div></div>`).appendTo($shape);
       $.each([0.1, 0.125, 0.16, 0.21, 0.267, 0.325, 0.38, 0.43, 0.475, 0.498, 0.498, 0.475, 0.44, 0.39, 0.333, 0.275, 0.22, 0.17, 0.125, 0.1], (i, alpha) => {
-        $(`<div class="face side s${i}"><div class="photon-shader" style="background-color: rgba(0, 0, 0, ${alpha});"></div></div>`).appendTo($shape);
+        $(`<div class="face sidecoin s${i}"><div class="photon-shader" style="background-color: rgba(0, 0, 0, ${alpha});"></div></div>`).appendTo($shape);
       });
     }
 
@@ -504,7 +504,7 @@ jQuery(document).ready(function ($) {
   function updateFetchedImages(container, urlToFetch) {
     fetchImageUrls(urlToFetch).then(imageUrls => {
       if (container.find('img').length == 0)
-        $.each(imageUrls.slice(0, 15), (i, thumb) => $(`
+        $.each(imageUrls, (i, thumb) => $(`
           <a index="${i}" href="${thumb.href}" target="_blank">
             <img index="${i}" src="${thumb.url}" />
           </a>
