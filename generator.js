@@ -14,7 +14,7 @@ jQuery(document).ready(function ($) {
   var currentDisplayInterval = 938;
   var upcomingDisplayInterval = 938;
 
-  var isMobile = window.innerHeight > window.innerWidth || false; // checks if portrait mode 
+  var isMobile = window.innerHeight > window.innerWidth; // checks if portrait mode 
   var videos = (typeof videosForFocus !== 'undefined' && videosForFocus) ? videosForFocus : null;;
   var psalmVideoVar = (typeof psalmVideo !== 'undefined' && psalmVideo) ? psalmVideo : null;
   var view360VideoVar = (typeof view360Video !== 'undefined' && view360Video) ? view360Video : null;
@@ -448,7 +448,7 @@ jQuery(document).ready(function ($) {
 
     $(`#lives ul li`).hide();
     $(`#lives ul li:has(a[href='#lives-${i + 1}'])`).show().find('a').html(transmission.name);
-    var $liveTab = $(`#lives-${i + 1}`).show();
+    var $liveTab = $(`#lives-${i + 1}`);
     if (transmission.type == "embedLink") $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
     if (transmission.type == "imageFetch") {
       $imagesFetched = $(`<div class="imagesFetched"></div>`);
@@ -2282,7 +2282,7 @@ jQuery(document).ready(function ($) {
     var padding = parseInt(paddingCss);
     $('.quadrupole').css('font-size', `${padding / 9}px`);
 
-    if (checkParamValue(isMobile)) {
+    if (isMobile) {
       $('.videoChooserSection').css('margin', 'auto');
       $('.videoChooserSection').css('position', 'static');
     }
