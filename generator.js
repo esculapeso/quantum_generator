@@ -468,7 +468,7 @@ jQuery(document).ready(function ($) {
       $coinInfoContainer = $(`<div class="coinInfoContainer ${type}"></div>`).appendTo(container);
       $coinHeader = $(`<div class="coinHeader">${type.toUpperCase()}</div>`).appendTo($coinInfoContainer);
       $coinBody = $(`<div class="coinBody"></div>`).appendTo($coinInfoContainer);
-      $coinImage = $(`<div class="coinImage"></div>`).appendTo($coinBody);
+      $coinImage = $(`<div class="coinImage"><img /></div>`).appendTo($coinBody);
       $coinInfo = $(`<div class="coinInfo"></div>`).appendTo($coinBody);
       $coinName = $(`<div class="coinName"></div>`).appendTo($coinInfo);
       $coinSymbol = $(`<div class="coinSymbol"></div>`).appendTo($coinInfo);
@@ -506,7 +506,7 @@ jQuery(document).ready(function ($) {
       fetchImageUrls(`https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false`).then(coinData => {
         let imageUrl = coinData.image.large;
         $(`.face${faceSelector}`).css('background-image', `url('${imageUrl}')`)
-        $(`.${type} .coinImage`).css('background-image', `url('${imageUrl}')`)
+        $(`.${type} .coinImage img`).attr('src', `${imageUrl}`)
         $(`.${type} .coinName`).html(coinData.name);
         $(`.${type} .coinSymbol`).html(coinData.symbol);
       });
