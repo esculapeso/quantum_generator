@@ -458,7 +458,6 @@ jQuery(document).ready(function ($) {
       generateCoin($liveTab);
 
       fetchImageUrls(transmission.url).then(coinsData => {
-        console.log({ coinsData });
         updateCoin(coinsData);
       });
     };
@@ -479,11 +478,11 @@ jQuery(document).ready(function ($) {
     function updateCoin(list) {
       let revItem = list[getRandomArrayIndex(list)];
       let obvItem = list[getRandomArrayIndex(list)];
-      console.log({ revItem, obvItem });
       if (revItem && obvItem) {
         getTokenData(revItem.id, '.bm');
         getTokenData(obvItem.id, '.tp');
       }
+      setTimeout(function () { updateCoin(list); }, 6000);
     }
 
     function getRandomArrayIndex(array) {
@@ -493,7 +492,6 @@ jQuery(document).ready(function ($) {
     }
 
     function getTokenData(coinId, faceSelector) {
-      console.log({ coinId, faceSelector });
       fetchImageUrls(`https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false`).then(coinData => {
         let imageUrl = coinData.image.large;
         $(`.face${faceSelector}`).css('background-image', `url('${imageUrl}')`)
@@ -517,7 +515,7 @@ jQuery(document).ready(function ($) {
           $(`img[index="${i}"]`).attr('src', thumb.url);
         });
     });
-    setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);
+    setTimeout(function () { updateFetchedImages(container, urlToFetch); }, 10000);
   }
 
   async function fetchImageUrls(apiUrl) {
