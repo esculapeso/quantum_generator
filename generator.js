@@ -499,7 +499,6 @@ jQuery(document).ready(function ($) {
 
     function getRandomArrayIndex(array) {
       var numb = Math.floor(Math.random() * array.length);
-      console.log({ numb });
       return numb;
     }
 
@@ -509,7 +508,7 @@ jQuery(document).ready(function ($) {
         $(`.face${faceSelector}`).css('background-image', `url('${imageUrl}')`)
         $(`.${type} .coinImage`).css('background-image', `url('${imageUrl}')`)
         $(`.${type} .coinName`).html(coinData.name);
-        $(`.${type} .coinSymbol`).html(coinData.$coinSymbol);
+        $(`.${type} .coinSymbol`).html(coinData.symbol);
       });
     }
 
@@ -840,8 +839,6 @@ jQuery(document).ready(function ($) {
   });
 
   function togglePyramidView(isPyramid, startVideo, zoom, ratio) {
-    console.log({ isPyramid, startVideo, zoom, ratio })
-
     if (zoom) {
       $('.fullView').hide();
       $('.pyramidView').show();
@@ -853,7 +850,6 @@ jQuery(document).ready(function ($) {
     } else {
       $('.piramidToggleCB').prop('checked', isPyramid);
       if (isPyramid) {
-        console.log("im in toggle pyramid")
         $('.fullView').hide();
         $('.pyramidView').show();
         $('.quadGenerator').css('width', '100vh').css('height', '100vh');
