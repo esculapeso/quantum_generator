@@ -482,7 +482,7 @@ jQuery(document).ready(function ($) {
         getTokenData(revItem.id, '.bm');
         getTokenData(obvItem.id, '.tp');
       }
-      setTimeout(function () { updateCoin(list); }, 6000);
+      setTimeout(function () { updateCoin(list); }, 24000);
     }
 
     function getRandomArrayIndex(array) {
