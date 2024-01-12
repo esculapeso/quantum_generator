@@ -33,6 +33,7 @@ jQuery(document).ready(function ($) {
 
 
   function doOnOrientationChange() {
+    console.log("ORIENT: ", window.orientation)
     switch(window.orientation) {
       case 90: return false;
       case -90: return false;
@@ -455,8 +456,10 @@ jQuery(document).ready(function ($) {
 
   var transmissions = liveTransmissionsVar.filter((s) => s.page == pageType)
   $.each(transmissions, (i, transmission) => {
-    var $liveTab = $(`#lives-${i + 1}`);
-    $(`a[href='#lives-${i + 1}']`).html(transmission.name);
+
+    $(`#lives ul li`).hide();
+    $(`#lives ul li:has(a[href='#lives-${i + 1}'])`).show().find('a').html(transmission.name);
+    var $liveTab = $(`#lives-${i + 1}`).show();
     if (transmission.type == "embedLink") $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
     if (transmission.type == "imageFetch") {
       $imagesFetched = $(`<div class="imagesFetched"></div>`);
