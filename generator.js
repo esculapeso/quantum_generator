@@ -440,13 +440,10 @@ jQuery(document).ready(function ($) {
 
 
   $("#lives").tabs().appendTo($liveSection);
-
-  var coinsData = [];
+  $(`#lives ul li`).hide();
 
   var transmissions = liveTransmissionsVar.filter((s) => s.page == pageType)
   $.each(transmissions, (i, transmission) => {
-
-    $(`#lives ul li`).hide();
     $(`#lives ul li:has(a[href='#lives-${i + 1}'])`).show().find('a').html(transmission.name);
     var $liveTab = $(`#lives-${i + 1}`);
     if (transmission.type == "embedLink") $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
