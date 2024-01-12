@@ -14,7 +14,7 @@ jQuery(document).ready(function ($) {
   var currentDisplayInterval = 938;
   var upcomingDisplayInterval = 938;
 
-  var isMobile = doOnOrientationChange() || false;
+  var isMobile = window.innerHeight > window.innerWidth || false; // checks if portrait mode 
   var videos = (typeof videosForFocus !== 'undefined' && videosForFocus) ? videosForFocus : null;;
   var psalmVideoVar = (typeof psalmVideo !== 'undefined' && psalmVideo) ? psalmVideo : null;
   var view360VideoVar = (typeof view360Video !== 'undefined' && view360Video) ? view360Video : null;
@@ -30,17 +30,6 @@ jQuery(document).ready(function ($) {
   var emotionsListVar = (typeof emotionsList !== 'undefined' && emotionsList) ? emotionsList : [];
   var energiesListVar = (typeof energiesList !== 'undefined' && energiesList) ? energiesList : [];
   var healthListVar = (typeof healthList !== 'undefined' && healthList) ? healthList : [];
-
-
-  function doOnOrientationChange() {
-    console.log("ORIENT: ", window.orientation)
-    switch(window.orientation) {
-      case 90: return false;
-      case -90: return false;
-      case 0: return true;
-      case 180: return true;
-    }
-}
 
 
   function setFetchIntervalAndLength(dispInterval) {
@@ -472,7 +461,7 @@ jQuery(document).ready(function ($) {
       generateCoin($liveTab);
 
       fetchImageUrls(transmission.url).then(coinsData => {
-        console.log({coinsData});
+        console.log({ coinsData });
         updateCoin(coinsData);
       });
     };
@@ -493,7 +482,7 @@ jQuery(document).ready(function ($) {
     function updateCoin(list) {
       let revItem = list[getRandomArrayIndex(list)];
       let obvItem = list[getRandomArrayIndex(list)];
-      console.log({revItem, obvItem});
+      console.log({ revItem, obvItem });
       if (revItem && obvItem) {
         getTokenData(revItem.id, '.bm');
         getTokenData(obvItem.id, '.tp');
@@ -502,12 +491,12 @@ jQuery(document).ready(function ($) {
 
     function getRandomArrayIndex(array) {
       var numb = Math.floor(Math.random() * array.length);
-      console.log({numb});
+      console.log({ numb });
       return numb;
     }
 
     function getTokenData(coinId, faceSelector) {
-      console.log({coinId, faceSelector});
+      console.log({ coinId, faceSelector });
       fetchImageUrls(`https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false`).then(coinData => {
         let imageUrl = coinData.image.large;
         $(`.face${faceSelector}`).css('background-image', `url('${imageUrl}')`)
@@ -840,7 +829,7 @@ jQuery(document).ready(function ($) {
   });
 
   function togglePyramidView(isPyramid, startVideo, zoom, ratio) {
-    console.log({isPyramid, startVideo, zoom, ratio})
+    console.log({ isPyramid, startVideo, zoom, ratio })
 
     if (zoom) {
       $('.fullView').hide();
