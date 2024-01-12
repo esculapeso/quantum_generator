@@ -456,11 +456,23 @@ jQuery(document).ready(function ($) {
       $imagesFetched = $(`<div class="imagesFetched"></div>`);
       $imagesFetched.appendTo($liveTab);
       generateCoin($liveTab);
+      generateTokensContent($liveTab, "parent");
+      generateTokensContent($liveTab, "child");
 
       fetchImageUrls(transmission.url).then(coinsData => {
         updateCoin(coinsData);
       });
     };
+
+    function generateTokensContent(container, type) {
+      $coinInfoContainer = $(`<div class="coinInfoContainer ${type}"></div>`).appendTo(container);
+      $coinHeader = $(`<div class="coinHeader">${type.toUpperCase()}</div>`).appendTo($coinInfoContainer);
+      $coinBody = $(`<div class="coinBody"></div>`).appendTo($coinInfoContainer);
+      $coinImage = $(`<div class="coinImage"></div>`).appendTo($coinBody);
+      $coinInfo = $(`<div class="coinInfo"></div>`).appendTo($coinBody);
+      $coinName = $(`<div class="coinName"></div>`).appendTo($coinInfo);
+      $coinSymbol = $(`<div class="coinSymbol"></div>`).appendTo($coinInfo);
+    }
 
     function generateCoin(container) {
       $mainCoin = $(`<div class="coincontainer coin2" style="height: 230px;"></div>`).appendTo(container);
@@ -479,11 +491,11 @@ jQuery(document).ready(function ($) {
       let revItem = list[getRandomArrayIndex(list)];
       let obvItem = list[getRandomArrayIndex(list)];
       if (revItem && obvItem) {
-        getTokenData(revItem.id, '.bm');
-        getTokenData(obvItem.id, '.tp');
+        getTokenData(revItem.id, '.bm', 'parent');
+        getTokenData(obvItem.id, '.tp', 'child');
       }
-      setTimeout(function () { updateCoin(list); }, 24000);
-    }
+      setTimeout(function () { updateCoin(list); }, 60000);
+    } 
 
     function getRandomArrayIndex(array) {
       var numb = Math.floor(Math.random() * array.length);
@@ -491,10 +503,13 @@ jQuery(document).ready(function ($) {
       return numb;
     }
 
-    function getTokenData(coinId, faceSelector) {
+    function getTokenData(coinId, faceSelector, type) {
       fetchImageUrls(`https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false`).then(coinData => {
         let imageUrl = coinData.image.large;
         $(`.face${faceSelector}`).css('background-image', `url('${imageUrl}')`)
+        $(`.${type} .coinImage`).css('background-image', `url('${imageUrl}')`)
+        $(`.${type} .coinName`).html(coinData.name);
+        $(`.${type} .coinSymbol`).html(coinData.$coinSymbol);
       });
     }
 
