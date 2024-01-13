@@ -79,3 +79,11 @@ function stopVideo() {
     players[i].stopVideo();
   }
 }
+
+window.onerror = function(message, source, lineno, colno, error) {
+  if (error && error.message.includes('503')) {
+    // Handle 503 error specifically
+    console.error("Network error: ", error);
+  }
+  return false; // Propagates the error to the console
+};
