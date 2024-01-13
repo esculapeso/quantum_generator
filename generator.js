@@ -445,7 +445,9 @@ jQuery(document).ready(function ($) {
   var transmissions = liveTransmissionsVar.filter((s) => s.page == pageType)
   $.each(transmissions, (i, transmission) => {
     $(`#lives ul li:has(a[href='#lives-${i + 1}'])`).show().find('a').html(transmission.name);
+    
     var $liveTab = $(`#lives-${i + 1}`);
+    
     if (transmission.type == "embedLink") $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
     if (transmission.type == "imageFetch") {
       $imagesFetched = $(`<div class="imagesFetched"></div>`);
@@ -453,7 +455,6 @@ jQuery(document).ready(function ($) {
       updateFetchedImages($imagesFetched, transmission.url)
     };
     if (transmission.type == "coin") {
-      $(".cryptoPrices").show().appendTo($liveTab);
       $imagesFetched = $(`<div class="imagesFetched"></div>`);
       $imagesFetched.appendTo($liveTab);
       generateCoin($liveTab);
@@ -463,6 +464,9 @@ jQuery(document).ready(function ($) {
       fetchImageUrls(transmission.url).then(coinsData => {
         updateCoin(coinsData);
       });
+    };
+    if (transmission.type == "widget") {
+      $(`.cryptoPrices${transmission.selector}`).show().appendTo($liveTab);
     };
 
     function generateTokensContent(container, type) {

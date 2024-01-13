@@ -406,6 +406,10 @@
     overflow: hidden;
   }
 
+  .cryptoPrices {
+    display: none;
+  }
+
   .liveSection.pyramidPerson {
     width: calc((100vw - 142vh)/2) !important;
   }
