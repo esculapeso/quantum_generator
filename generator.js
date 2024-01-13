@@ -570,15 +570,14 @@ jQuery(document).ready(function ($) {
   $(document).on('click', '.jesusStartButton', function () {
 
     $(".jusesLang").hide();
-    $(".jusesLang:has(input:checked)").show()
-
+    let $checkedMantras = $(".jusesLang:has(input:checked)").show()
 
     jesusMantraTextsForAudio = [];
     var repeatAmount = $('.jesusAmountTextbox').val();
     var number = parseInt(repeatAmount, 10);
-    $(".jusesLang input:checked").each((i, box) => {
-      var lang = $(box).attr('id');
-      var text = $(`label[for="${lang}"]`).text();
+    $checkedMantras.each((i, mantra) => {
+      var lang = $(mantra).find('input').attr('id');
+      var text = $(mantra).find('label').text();
       jesusMantraTextsForAudio.push({ lang, text });
     });
 
