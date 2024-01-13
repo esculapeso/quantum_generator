@@ -53,14 +53,27 @@ function onPlayerReady(event) {
 var done = false;
 function onPlayerStateChange(event) {
   if (event.data === YT.PlayerState.ENDED) {
-    for (var i = 0; i < players.length; i++) {
-      // players[i].playVideo();
+    try {
       var activePlayers = ($('.piramidToggleCB').is(':checked')) ? players.slice(0, 4) : players.slice(4, 5);
-      $(activePlayers).each((i, p) => p.setVolume($('.videoVolume').val()).playVideo().setPlaybackQuality("small").mute())
+      $(activePlayers).each((i, p) => {
+        try {
+          p.setVolume($('.videoVolume').val())
+           .playVideo()
+           .setPlaybackQuality("small")
+           .mute();
+        } catch (e) {
+          console.error("Error playing video: ", e);
+          // Handle video play error here
+        }
+      });
       activePlayers[0].unMute();
+    } catch (e) {
+      console.error("Error in onPlayerStateChange: ", e);
+      // Handle general error here
     }
   }
 }
+
 function stopVideo() {
   for (var i = 0; i < players.length; i++) {
     players[i].stopVideo();
