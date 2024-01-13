@@ -409,6 +409,10 @@
   .cryptoPrices {
     display: none;
   }
+  
+  .cryptoPrices.market iframe {
+    height: 500px;
+  }
 
   .liveSection.pyramidPerson {
     width: calc((100vw - 142vh)/2) !important;
