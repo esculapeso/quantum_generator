@@ -5,6 +5,7 @@ jQuery(document).ready(function ($) {
   let isfetched = 0;
   let sessionObj = {}
   let isVideoPlaying = false;
+  let qrngSelected = "esculap";
 
   let pageType = $(".quadrupolePanel").attr('page');
 
@@ -42,19 +43,38 @@ jQuery(document).ready(function ($) {
 
   function getOneHex(index) {
 
+    switch (qrngSelected) {
+      case "esculap":
+        jQuery.get(`https://qrng.anu.edu.au/API/jsonI.php?length=60&type=hex16&size=1`, data => {
+          console.log({ data, dd: data.data })
+          var resultHex = data.data;
+          useRandomHexArrayData(resultHex)
+        });
+        break;
+      case "omega":
+        jQuery.get(`https://beacon.nist.gov/beacon/2.0/pulse/last`, data => {
+          var resultHex = data.pulse.outputValue.match(/.{1,2}/g) ?? [];
+          console.log({ resultHex })
+          useRandomHexArrayData(resultHex)
+        });
+        break;
 
-    // jQuery.get(`https://qrng.anu.edu.au/API/jsonI.php?length=${qrngLength}&type=uint8`, data => {
-    jQuery.get(`https://beacon.nist.gov/beacon/2.0/pulse/last`, data => {
-      var resultHex = data.pulse.outputValue.match(/.{1,2}/g) ?? [];
-      var resultDec = resultHex.map(function (x) {
-        return parseInt(x, 16);
-      });
+      default:
+        break;
+    }
 
-      fetcheddata_dec = fetcheddata_dec.concat(resultDec);
-      fetcheddata_hex = fetcheddata_hex.concat(resultHex);
-      isfetched = isfetched + 1;
-    });
   };
+
+  function useRandomHexArrayData(resultHex) {
+    var resultDec = resultHex.map(function (x) {
+      return parseInt(x, 16);
+    });
+
+    fetcheddata_dec = fetcheddata_dec.concat(resultDec);
+    fetcheddata_hex = fetcheddata_hex.concat(resultHex);
+    isfetched = isfetched + 1;
+  }
+
 
   function timedCount() {
     toggleQrngLoadCircle(false);
@@ -445,9 +465,9 @@ jQuery(document).ready(function ($) {
   var transmissions = liveTransmissionsVar.filter((s) => s.page == pageType)
   $.each(transmissions, (i, transmission) => {
     $(`#lives ul li:has(a[href='#lives-${i + 1}'])`).show().find('a').html(transmission.name);
-    
+
     var $liveTab = $(`#lives-${i + 1}`);
-    
+
     if (transmission.type == "embedLink") $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
     if (transmission.type == "imageFetch") {
       $imagesFetched = $(`<div class="imagesFetched"></div>`);
@@ -500,7 +520,7 @@ jQuery(document).ready(function ($) {
         getTokenData(obvItem.id, '.tp', 'child');
       }
       setTimeout(function () { updateCoin(list); }, 60000);
-    } 
+    }
 
     function getRandomArrayIndex(array) {
       var numb = Math.floor(Math.random() * array.length);
@@ -586,7 +606,7 @@ jQuery(document).ready(function ($) {
       var imageUrl = $(mantra).find('img.imagePreview').attr('src');
       jesusMantraTextsForAudio.push({ lang, text, imageUrl });
     });
-    
+
     sayMantra(jesusMantraTextsForAudio, 0, number);
     // var repeatAmount = $('.jesusAmountTextbox').val();
     // var repeatAmount = $('.jesusAmountTextbox').val();
@@ -1472,6 +1492,14 @@ jQuery(document).ready(function ($) {
 
   var $qrngContent = $(`<div class="qrngContent" ></div>`);
   $qrngContent.appendTo($tab5);
+
+  var $qrngSelect = $(`<select class="qrngSelect"></select>`).appendTo($qrngContent);
+  $(`<option value="esculap">Esculap</option>`).appendTo($qrngSelect);
+  $(`<option value="omega">Omega</option>`).appendTo($qrngSelect);
+
+  $(document).on('change', '.qrngSelect', function () {
+    qrngSelected = $(this).val();
+  });
 
   var $qrngIntervalCheckbox = $(`<input class="qrngIntervalCheckbox" type="checkbox" />`);
   $qrngIntervalCheckbox.appendTo($qrngContent);
