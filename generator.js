@@ -1235,9 +1235,12 @@ jQuery(document).ready(function ($) {
   });
 
   var $imageCategorySelect = $('<select class="imageCategorySelect"></select>').appendTo($imageButtons);
+  $(`<option value="all">All</option>`).appendTo($imageCategorySelect);
 
   $(focusImages).each(function (k, fi) {
 
+    console.log("CATEGORY: ", fi.category)
+    console.log("OPTION: ", $imageCategorySelect.find(`option[value='${fi.category}']`))
     if (fi.category && $imageCategorySelect.find(`option[value='${fi.category}']`).length !== 0) {
       $(`<option value="${fi.category}">${fi.category}</option>`).appendTo($imageCategorySelect);
     }
