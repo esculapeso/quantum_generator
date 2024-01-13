@@ -738,6 +738,10 @@
     margin-bottom: 10px;
   }
 
+  .gradientSettings > * {
+    width: 70px;
+  }
+
   .qrngLoadCircle,
   .qrngInterval {
     width: 40px;

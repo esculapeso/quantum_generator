@@ -1192,8 +1192,12 @@ jQuery(document).ready(function ($) {
   var $imageCaptionDiv = $(`<div class="imageCaption tabHeader" >${selectImageMessage}</div>`);
   $imageCaptionDiv.appendTo($tab3);
 
-  $('<input class="bgColorLeftTextbox changeInnerBg" type="text" />').appendTo($tab3);
-  $('<input class="bgColorRightTextbox changeInnerBg" type="text" />').appendTo($tab3);
+  $('<div>Image Background Gradiend:</div>').appendTo($tab3);
+  $gradientSettings = $('<div class="gradientSettings"></div>').appendTo($tab3);
+  $('<span>Left: </span>').appendTo($gradientSettings);
+  $('<input class="bgColorLeftTextbox changeInnerBg" type="text" />').appendTo($gradientSettings);
+  $('<span>Right: </span>').appendTo($gradientSettings);
+  $('<input class="bgColorRightTextbox changeInnerBg" type="text" />').appendTo($gradientSettings);
 
   $(document).on('input', '.changeInnerBg', function () {
     const leftColor = $(".bgColorLeftTextbox").val() || "transparent";
@@ -1227,8 +1231,8 @@ jQuery(document).ready(function ($) {
   var $urlImageTextbox = $('<input class="urlImageTextbox" type="text" />');
   $urlImageTextbox.appendTo($imageButtons);
 
-  $(document).on('click', '.imageButtons', function () {
-    $('.modelviewer3d').attr('src', $('.urlImageTextbox').val())
+  $(document).on('click', '.urlImageButton', function () {
+    $(".imageInnerDiv").css('background-image', `url(${$('.urlImageTextbox').val()})`);
   });
 
 
