@@ -1246,7 +1246,7 @@ jQuery(document).ready(function ($) {
       $image.appendTo($imageDiv);
     }
 
-    var $caption = $(`<div class="uploadImageCaption" >${fi.caption}</div>`);
+    var $caption = $(`<div class="uploadImageCaption" >${truncate(fi.caption, 10)}</div>`);
     $caption.appendTo($imageDiv);
   });
 
