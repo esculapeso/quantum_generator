@@ -1235,8 +1235,13 @@ jQuery(document).ready(function ($) {
     $(".imageInnerDiv").css('background-image', `url(${$('.urlImageTextbox').val()})`);
   });
 
+  var $imageCategorySelect = $('<select class="imageCategorySelect"></select>').appendTo($imageButtons);
 
   $(focusImages).each(function (k, fi) {
+
+    if (fi.category && $imageCategorySelect.find(`option[value='${fi.category}']`).length !== 0) {
+      $(`<option value="${fi.category}">${fi.category}</option>`).appendTo($imageCategorySelect);
+    }
 
     var is3D = fi.filepath.includes('.glb');
 
