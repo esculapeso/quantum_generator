@@ -1189,11 +1189,10 @@ jQuery(document).ready(function ($) {
   var $tab3 = $("#tabs-3");
 
   var selectImageMessage = "~~ Choose Image ~~"
-  var $imageCaptionDiv = $(`<div class="imageCaption tabHeader" >${selectImageMessage}</div>`);
-  $imageCaptionDiv.appendTo($tab3);
+  var $imageCaptionDiv = $(`<div class="imageCaption tabHeader" >${selectImageMessage}</div>`).hide().appendTo($tab3);
 
-  $('<div>Image Background Gradiend:</div>').appendTo($tab3);
-  $gradientSettings = $('<div class="gradientSettings"></div>').appendTo($tab3);
+  $('<div>Image Background Gradiend:</div>').hide().appendTo($tab3);
+  $gradientSettings = $('<div class="gradientSettings"></div>').hide().appendTo($tab3);
   $('<span>Left: </span>').appendTo($gradientSettings);
   $('<input class="bgColorLeftTextbox changeInnerBg" type="text" />').appendTo($gradientSettings);
   $('<span>Right: </span>').appendTo($gradientSettings);
