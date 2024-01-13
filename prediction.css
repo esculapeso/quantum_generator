@@ -1071,6 +1071,29 @@
 
   #tabs {
     background: #ffd8bc;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: calc(100vh - 24px);
+  }
+
+  #tabs > div {
+    overflow: auto;
+  }
+
+  #tabs > div::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  #tabs > div::-webkit-scrollbar-track {
+      border-radius: 8px;
+      background-color: #fbe6e6;
+      border: 1px solid #edc4c4;
+  }
+
+  #tabs > div::-webkit-scrollbar-thumb {
+      border-radius: 8px;
+      background-color: #d55959;
   }
 
   .psalmText .wiki {
