@@ -387,16 +387,16 @@
   }
 
   .videoChooserSection {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
-    width: 300px;
     height: 575px;
     z-index: 100;
+    width: calc((100vw - 100vh)/2) !important;
   }
 
   .liveSection {
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 0;
     height: 100vh;
@@ -407,16 +407,16 @@
     overflow: hidden;
   }
 
+  .liveSection.pyramidPerson {
+    width: calc((100vw - 142vh)/2) !important;
+  }
+
   .cryptoPrices {
     display: none;
   }
 
   .cryptoPrices.market iframe {
     height: 500px !important;
-  }
-
-  .liveSection.pyramidPerson {
-    width: calc((100vw - 142vh)/2) !important;
   }
 
   .jesusLanguages {
