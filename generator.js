@@ -577,10 +577,10 @@ jQuery(document).ready(function ($) {
     var number = parseInt(repeatAmount, 10);
     $checkedMantras.each((i, mantra) => {
       var lang = $(mantra).find('input').attr('id');
-      var text = $(mantra).find('label').text();
+      var text = $(mantra).find('label[for]').text();
       jesusMantraTextsForAudio.push({ lang, text });
     });
-
+    
     sayMantra(jesusMantraTextsForAudio, 0, number);
     // var repeatAmount = $('.jesusAmountTextbox').val();
     // var repeatAmount = $('.jesusAmountTextbox').val();
