@@ -1835,7 +1835,7 @@ jQuery(document).ready(function ($) {
     var $roundViewImage = $(`<img class="roundViewImage" src="${fi.filepath}" />`);
     $roundViewImage.appendTo($roundViewImageWrap);
 
-    var $caption = $(`<div class="uploadImageCaption" >${fi.caption}</div>`);
+    var $caption = $(`<div class="uploadImageCaption" >${truncate(fi.caption, 10)}</div>`);
     $caption.appendTo($roundViewImageWrap);
   });
 
@@ -1844,6 +1844,9 @@ jQuery(document).ready(function ($) {
     $(".roundViewInner").css('background-image', `url("${imagePath})`);
   });
 
+  function truncate(str, n){
+    return (str.length > n) ? str.slice(0, n-1) + '&hellip;' : str;
+  };
 
   /********************
         OM REIKI 
