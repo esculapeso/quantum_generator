@@ -545,14 +545,14 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  var $jusesLitania = $('<div class="jusesLitania" ></div>');
-  $jusesLitania.appendTo($liveSection);
+  var $jesusLitania = $('<div class="jesusLitania" ></div>');
+  $jesusLitania.appendTo($liveSection);
 
   var $affStartButton = $(`<input type="number" class="jesusAmountTextbox" value="4" />`);
-  $affStartButton.appendTo($jusesLitania);
+  $affStartButton.appendTo($jesusLitania);
 
   var $affStartButton = $(`<input type="button" class="jesusStartButton" value="Start" />`);
-  $affStartButton.appendTo($jusesLitania);
+  $affStartButton.appendTo($jesusLitania);
 
   var jesusUtter = new SpeechSynthesisUtterance();
   var jesusSynth = window.speechSynthesis;
@@ -569,8 +569,8 @@ jQuery(document).ready(function ($) {
 
   $(document).on('click', '.jesusStartButton', function () {
 
-    $(".jusesLang").hide();
-    let $checkedMantras = $(".jusesLang:has(input:checked)").show()
+    $(".jesusLang").hide();
+    let $checkedMantras = $(".jesusLang:has(input:checked)").show()
 
     jesusMantraTextsForAudio = [];
     var repeatAmount = $('.jesusAmountTextbox').val();
@@ -612,31 +612,31 @@ jQuery(document).ready(function ($) {
 
 
   var $affStopButton = $(`<input type="button" class="jesusStopButton" value="Stop" />`);
-  $affStopButton.appendTo($jusesLitania);
+  $affStopButton.appendTo($jesusLitania);
 
   $(document).on('click', '.jesusStopButton', function () {
     jesusSynth.cancel();
     jesusIsPlaying = false;
-    $(".jusesLang").show();
+    $(".jesusLang").show();
     // $(`.person2Image`).css('background-image', `url("/wp-content/uploads/2022/12/la.jpg")`);
     // $('.imageInnerDiv').css('background-image', 'url("/wp-content/uploads/2024/01/jesus_bevel.png")');
   });
 
 
-  var $jusesLanguages = $('<div class="jusesLanguages" ></div>');
-  $jusesLanguages.appendTo($jusesLitania);
+  var $jesusLanguages = $('<div class="jesusLanguages" ></div>');
+  $jesusLanguages.appendTo($jesusLitania);
 
   $.each(jesusMantrasVar, function (index, value) {
     var isChecked = (value.default) ? "checked" : "";
     $(`
-      <div class="jusesLang" >
+      <div class="jesusLang" >
         <input type="checkbox" id="${value.lang}" name="${value.lang}" ${isChecked} />
         <img class="flagImg" src="https://purecatamphetamine.github.io/country-flag-icons/3x2/${value.lang.toUpperCase()}.svg" />
         <img class="imagePreview" src="${value.image}" />
         <label>(${value.lang}) </label>
         <label for="${value.lang}">${value.mantra}</label>
       </div>
-    `).appendTo($jusesLanguages);
+    `).appendTo($jesusLanguages);
   });
 
 
