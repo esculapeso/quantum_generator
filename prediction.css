@@ -409,9 +409,9 @@
   .cryptoPrices {
     display: none;
   }
-  
+
   .cryptoPrices.market iframe {
-    height: 500px;
+    height: 500px !important;
   }
 
   .liveSection.pyramidPerson {
