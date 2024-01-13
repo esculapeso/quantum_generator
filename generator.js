@@ -578,7 +578,8 @@ jQuery(document).ready(function ($) {
     $checkedMantras.each((i, mantra) => {
       var lang = $(mantra).find('input').attr('id');
       var text = $(mantra).find('label[for]').text();
-      jesusMantraTextsForAudio.push({ lang, text });
+      var imageUrl = $(mantra).find('img.imagePreview').attr('src');
+      jesusMantraTextsForAudio.push({ lang, text, imageUrl });
     });
     
     sayMantra(jesusMantraTextsForAudio, 0, number);
@@ -592,9 +593,10 @@ jQuery(document).ready(function ($) {
   function sayMantra(array, index, repeat) {
     var text = array[index].text;
     var lang = array[index].lang;
+    var imageUrl = array[index].imageUrl;
     UpdateFocusText(text);
-    $(`.imageInnerDiv`).css('background-image', `url("/wp-content/uploads/2022/12/${lang}.jpg")`);
-    $(`.person2Image`).css('background-image', `url("/wp-content/uploads/2024/01/jesus_bevel.png")`);
+    $(`.imageInnerDiv`).css('background-image', `url("${imageUrl}")`);
+    //$(`.person2Image`).css('background-image', `url("/wp-content/uploads/2024/01/jesus_bevel.png")`);
 
     jesusUtter.text = repeatStringWithComma(text, repeat);
     msg.rate = 0.8;
@@ -616,8 +618,8 @@ jQuery(document).ready(function ($) {
     jesusSynth.cancel();
     jesusIsPlaying = false;
     $(".jusesLang").show();
-    $(`.person2Image`).css('background-image', `url("/wp-content/uploads/2022/12/la.jpg")`);
-    $('.imageInnerDiv').css('background-image', 'url("/wp-content/uploads/2024/01/jesus_bevel.png")');
+    // $(`.person2Image`).css('background-image', `url("/wp-content/uploads/2022/12/la.jpg")`);
+    // $('.imageInnerDiv').css('background-image', 'url("/wp-content/uploads/2024/01/jesus_bevel.png")');
   });
 
 
@@ -630,6 +632,7 @@ jQuery(document).ready(function ($) {
       <div class="jusesLang" >
         <input type="checkbox" id="${value.lang}" name="${value.lang}" ${isChecked} />
         <img class="flagImg" src="https://purecatamphetamine.github.io/country-flag-icons/3x2/${value.lang.toUpperCase()}.svg" />
+        <img class="imagePreview" src="${value.image}" />
         <label>(${value.lang}) </label>
         <label for="${value.lang}">${value.mantra}</label>
       </div>
