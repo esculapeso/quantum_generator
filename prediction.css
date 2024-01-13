@@ -346,6 +346,7 @@
 
   .uploadImageExample .uploadImageCaption {
     white-space: pre-line;
+    font-size: 9px;
   }
 
   #videoHolder {
