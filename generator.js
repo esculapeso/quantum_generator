@@ -624,7 +624,7 @@ jQuery(document).ready(function ($) {
 
 
   var $jesusLanguages = $('<div class="jesusLanguages" ></div>');
-  $jesusLanguages.appendTo($jesusLitania);
+  $jesusLanguages.appendTo($liveSection);
 
   $.each(jesusMantrasVar, function (index, value) {
     var isChecked = (value.default) ? "checked" : "";
@@ -633,7 +633,7 @@ jQuery(document).ready(function ($) {
         <input type="checkbox" id="${value.lang}" name="${value.lang}" ${isChecked} />
         <img class="flagImg" src="https://purecatamphetamine.github.io/country-flag-icons/3x2/${value.lang.toUpperCase()}.svg" />
         <img class="imagePreview" src="${value.image}" />
-        <label>(${value.lang}) </label>
+        <label>(${value.lang})</label>
         <label for="${value.lang}">${value.mantra}</label>
       </div>
     `).appendTo($jesusLanguages);

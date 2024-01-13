@@ -398,14 +398,20 @@
     position: absolute;
     right: 0;
     top: 0;
-    width: 300px;
-    height: 575px;
+    height: 100vh;
     z-index: 100;
     width: calc((100vw - 100vh)/2) !important;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
 
   .liveSection.pyramidPerson {
     width: calc((100vw - 142vh)/2) !important;
+  }
+
+  .jesusLanguages {
+    overflow: auto;
   }
 
   .imagesFetched {
