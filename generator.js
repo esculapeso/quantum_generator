@@ -453,6 +453,7 @@ jQuery(document).ready(function ($) {
       updateFetchedImages($imagesFetched, transmission.url)
     };
     if (transmission.type == "coin") {
+      $(".cryptoPrices").appendTo($liveTab);
       $imagesFetched = $(`<div class="imagesFetched"></div>`);
       $imagesFetched.appendTo($liveTab);
       generateCoin($liveTab);
