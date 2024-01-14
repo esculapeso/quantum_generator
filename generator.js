@@ -1003,7 +1003,8 @@ jQuery(document).ready(function ($) {
   const $tab3 = $("#tabs-3");
 
   // Creating gradient settings
-  $('<div>Image Background Gradient:</div>').hide().appendTo($tab3);
+  $("<div>", { text: "Image Background Gradient:" }).hide().appendTo($tab4);
+
   const $gradientSettings = $('<div class="gradientSettings"></div>').hide().appendTo($tab3);
   $('<span>Left: </span><input class="bgColorLeftTextbox changeInnerBg" type="text" /><span>Right: </span><input class="bgColorRightTextbox changeInnerBg" type="text" />').appendTo($gradientSettings);
 
@@ -1015,8 +1016,8 @@ jQuery(document).ready(function ($) {
   });
 
   // Image buttons
-  const $imageButtons = $('<div class="imageButtons"></div>').appendTo($tab3);
-  $('<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="removeImageButton redButton" /><img src="https://esculap.org/wp-content/uploads/2022/11/uploadButtons.png" class="uploadImageButton redButton" /><input class="uploadImageHiddenButton" type="file" style="display: none;" /><img src="https://esculap.org/wp-content/uploads/2022/11/uploadButtons.png" class="urlImageButton redButton" /><input class="urlImageTextbox" type="text" />').appendTo($imageButtons);
+  $('<div class="imageButtons"><img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="removeImageButton redButton" /><img src="https://esculap.org/wp-content/uploads/2022/11/uploadButtons.png" class="uploadImageButton redButton" /><input class="uploadImageHiddenButton" type="file" style="display: none;" /></div>').appendTo($tab3);
+  $('<div class="imageButtons"><input type="button" class="urlImageButton" value="URL" /><input class="urlImageTextbox" type="text" /></div>').appendTo($tab3);
 
   // Event handlers for image buttons
   $(document).on('click', '.removeImageButton', function () {
@@ -1028,7 +1029,9 @@ jQuery(document).ready(function ($) {
   });
 
   // Image category select
-  const $imageCategorySelect = $('<select class="imageCategorySelect"><option value="all">All</option></select>').appendTo($imageButtons);
+  const $imageCategoriesSelection = $("<div>", { class: "imageCategoriesSelection" }).appendTo($tab3);
+  $("<span>", { text: "Category: "   }).appendTo($imageCategoriesSelection);
+  const $imageCategorySelect = $('<select class="imageCategorySelect"><option value="all">All</option></select>').appendTo($imageCategoriesSelection);
 
   // Populate image categories and create image divs
   let imageCategories = [];
