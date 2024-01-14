@@ -1899,115 +1899,104 @@ jQuery(document).ready(function ($) {
 
     function instantiateStar(list, canvasId, starSelector) {
 
-      /*** Title ***/
-
-      var $energeticSections = $('<div class="Sections" ></div>');
-      $energeticSections.appendTo($(starSelector));
-
-      /*** Headers Row ***/
-
-      var $emotionHeaders = $('<div class="emotionHeaders"></div>');
-      $emotionHeaders.appendTo($energeticSections);
-
-      var $intensityHeader = $('<div class="name header">Name</div>');
-      $intensityHeader.appendTo($emotionHeaders);
-
-      var $intensityHeader = $('<div class="intensity header">Intensity</div>');
-      $intensityHeader.appendTo($emotionHeaders);
-
-      var $intensityHeader = $('<div class="color header">R</div>');
-      $intensityHeader.appendTo($emotionHeaders);
-
-      var $intensityHeader = $('<div class="color header">G</div>');
-      $intensityHeader.appendTo($emotionHeaders);
-
-      var $intensityHeader = $('<div class="color header">B</div>');
-      $intensityHeader.appendTo($emotionHeaders);
+      const $energeticSections = $('<div>', { class: "Sections" }).appendTo($(starSelector));
+      const $emotionHeaders = $('<div>', { class: "emotionHeaders" }).appendTo($energeticSections);
+      const headers = ['Name', 'Intensity', 'R', 'G', 'B'];
 
       if (!(typeof isMobile !== 'undefined' && isMobile)) {
-        var $intensityHeader = $('<div class="color header">Rw</div>');
-        $intensityHeader.appendTo($emotionHeaders);
-
-        var $intensityHeader = $('<div class="color header">Gw</div>');
-        $intensityHeader.appendTo($emotionHeaders);
-
-        var $intensityHeader = $('<div class="color header">Bw</div>');
-        $intensityHeader.appendTo($emotionHeaders);
+        headers.push('Rw', 'Gw', 'Bw');
       }
+
+      headers.forEach(header => {
+        $('<div>', { class: `header ${header === 'Name' ? 'name' : 'color'}`, text: header }).appendTo($emotionHeaders);
+      });
 
       /*** Quantities Rows ***/
 
-      $(list).each((i, e) => {
-        var $emotion = $('<div class="emotion"></div>');
-        $emotion.appendTo($energeticSections);
+      list.forEach(e => {
+        const $emotion = $('<div>', { class: "emotion" }).appendTo($energeticSections);
+        const $emotionName = $('<div>', {
+          class: "emotionName",
+          html: e.link ? `<a href="${e.link}" target="_blank" rel="noopener">${e.name}</a>` : e.name
+        }).appendTo($emotion);
 
-        var $emotionName = $(`<div class="emotionName">${e.name}</div>`);
-        if (e.link) $emotionName = $(`<div class="emotionName"><a href="${e.link}" target="_blank" rel="noopener">${e.name}</a></div>`);
-        $emotionName.appendTo($emotion);
+        const $emotionQuantityBar = $('<div>', { class: "emotionQuantityBar" }).appendTo($emotion);
+        $('<div>', { class: "emotionQuantityBarFill" }).appendTo($emotionQuantityBar);
 
-        var $emotionQuantityBar = $(`<div class="emotionQuantityBar"></div>`);
-        $emotionQuantityBar.appendTo($emotion);
+        $('<input>', {
+          class: "emotionQuantity",
+          type: "number",
+          emotion: e.name,
+          value: e.value,
+          min: "0",
+          max: "10"
+        }).appendTo($emotion);
 
-        var $emotionQuantityBarFill = $(`<div class="emotionQuantityBarFill"></div>`);
-        $emotionQuantityBarFill.appendTo($emotionQuantityBar);
+        const colorKeys = ['r', 'g', 'b'];
 
-        var $emotionQuantity = $(`<input class="emotionQuantity" type="number" emotion="${e.name}" value="${e.value}" min="0" max="10" />`);
-        $emotionQuantity.appendTo($emotion);
-
-        colorKeys = ['r', 'g', 'b'];
-
-        $(colorKeys).each((i, c) => {
+        colorKeys.forEach(c => {
           addColorValueInput(e.name, c, e[c], $emotion);
-        })
+        });
 
         if (!(typeof isMobile !== 'undefined' && isMobile)) {
-          $(colorKeys).each((i, c) => {
+          colorKeys.forEach(c => {
             addBalanceValueInput(e.name, c, e[c], e.value, $emotion);
-          })
+          });
         }
-
-      })
+      });
 
       initializeStarAndTable(list, canvasId, starSelector);
-
     }
 
     function initializeStarAndTable(list, canvasId, quantitiesClass) {
       drawStar(150, 150, 80, 50, list, canvasId);
-      updateBars(list, quantitiesClass + ' .emotionQuantityBarFill')
+      updateBars(list, `${quantitiesClass} .emotionQuantityBarFill`);
     }
     /*** Quantities Helper Function ***/
 
     function addColorValueInput(name, colorKey, colorVal, container) {
-      var $colorQuantity = $(`<input class="${colorKey} colorQuantity" type="number" emotion="${name}" value="${colorVal}" min="${getMinColorValue(colorVal)}" max="${getMaxColorValue(colorVal)}" />`);
-      $colorQuantity.appendTo(container);
+      $('<input>', {
+        class: `${colorKey} colorQuantity`,
+        type: 'number',
+        emotion: name,
+        value: colorVal,
+        min: getMinColorValue(colorVal),
+        max: getMaxColorValue(colorVal)
+      }).appendTo(container);
     }
 
     function addBalanceValueInput(name, colorKey, colorVal, intensity, container) {
-      var $balanceQuantity = $(`<input class="${colorKey} balanceQuantity" type="number" emotion="${name}" value="${intensity * 10}" min="0" max="100" />`);
-      $balanceQuantity.appendTo(container);
+      $('<input>', {
+        class: `${colorKey} balanceQuantity`,
+        type: 'number',
+        emotion: name,
+        value: intensity * 10,
+        min: 0,
+        max: 100
+      }).appendTo(container);
     }
 
     function getMaxColorValue(colorValue) {
-      return (colorValue + 33 > 255) ? 255 : colorValue + 33;
+      return Math.min(colorValue + 33, 255);
     }
 
     function getMinColorValue(colorValue) {
-      return (colorValue - 33 < 0) ? 0 : colorValue - 33;
+      return Math.max(colorValue - 33, 0);
     }
 
-    function onQuantityClick(list, contanerSelector, _this, canvasId) {
-      var selectedindex = list.findIndex((e) => e.name == _this.attr('emotion'))
-      list[selectedindex].value = _this.val();
-      initializeStarAndTable(list, canvasId, contanerSelector);
+    function onQuantityClick(list, containerSelector, _this, canvasId) {
+      const selectedIndex = list.findIndex(e => e.name === _this.attr('emotion'));
+      list[selectedIndex].value = _this.val();
+      initializeStarAndTable(list, canvasId, containerSelector);
     }
 
   }
 
   function updateBars(list, contanerSelector) {
-    $(contanerSelector).each((i, bar) => {
-      $(bar).css('width', `${list[i].value * 10}%`)
-    })
+    $.each(list, (i, item) => {
+      const value = item.value * 10;
+      $(contanerSelector).eq(i).css('width', `${value}%`);
+    });
   }
 
   function drawStar(cx, cy, outerRadius, innerRadius, list, canvasId) {
