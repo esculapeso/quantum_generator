@@ -664,214 +664,237 @@ jQuery(document).ready(function ($) {
 
 
 
-  var $videoContainerDiv = $('<div class="videoBackground hidden-container fullView"></div>').appendTo($imageDiv);
-  $('<div id="videoHolder" ></div>').appendTo($videoContainerDiv);
-  var $pyramid = $('<div class="video-container pyramid pyramidView" ></div>').appendTo($imageDiv);
+  // Create and append video container elements
+  const $videoContainerDiv = $('<div>', { class: 'videoBackground hidden-container fullView' }).appendTo($imageDiv);
+  $('<div>', { id: 'videoHolder' }).appendTo($videoContainerDiv);
+  const $pyramid = $('<div>', { class: 'video-container pyramid pyramidView' }).appendTo($imageDiv);
 
-  var sides = ['north', 'west', 'south', 'east'];
+  // Initialize pyramid sides
+  const sides = ['north', 'west', 'south', 'east'];
+  sides.forEach(side => {
+    const $side = $('<div>', { class: `side ${side}` }).appendTo($pyramid);
+    const $inside = $('<div>', { class: 'inside' }).appendTo($side);
+    $('<div>', { class: 'imageInnerDiv' }).appendTo($inside);
+    $('<div>', { class: 'videoBackground hidden-container' })
+      .append($('<div>', { class: 'videoForeground' })
+        .append($('<div>', { id: `${side}Holder` })))
+      .appendTo($inside);
+    $('<div>', { class: 'view360InnerDiv' }).appendTo($inside);
+  });
 
-  $(sides).each((i, s) => {
-    var $side = $(`<div class="side ${s}"></div>`).appendTo($pyramid);
-    var $inside = $(`<div class="inside"></div>`).appendTo($side);
-    $('<div class="imageInnerDiv" ></div>').appendTo($inside);
-    $(` <div class="videoBackground hidden-container" >
-          <div class="videoForeground" >
-            <div id="${s}Holder"></div>
-          </div>
-        </div>`).appendTo($inside);
-    $('<div class="view360InnerDiv"></div>').appendTo($inside);
-  })
+  // Video chooser content setup
+  const $tab1 = $('#tabs-1'); // Assuming $tab1 is defined elsewhere
+  const $videoChooserContent = $('<div>', { class: 'videoChooserContent chooserContent' }).appendTo($tab1);
+  $('<div>', { class: 'loadOverlay loading' }).appendTo($videoChooserContent);
 
-  var $tab1 = $("#tabs-1");
-
-  var $videoChooserContent = $('<div class="videoChooserContent chooserContent" ></div>').appendTo($tab1);
-  $('<div class="loadOverlay loading" ></div>').appendTo($videoChooserContent);
-
-  var checkPlayerInverval = setInterval(checkPlayer, 400);
-  function checkPlayer() {
+  // Check player interval setup
+  const checkPlayerInterval = setInterval(() => {
     if (playersReady) {
-      $('.loadOverlay').removeClass('loading')
-      clearInterval(checkPlayerInverval);
+      $('.loadOverlay').removeClass('loading');
+      clearInterval(checkPlayerInterval);
     }
-  }
+  }, 400);
 
-  /* PYRAMID TOGGLE */
-
+  // Pyramid Toggle
   togglePyramidView(false, true);
 
-  var $piramidToggle = $('<div class="piramidToggle" ></div>').appendTo($videoChooserContent);
-  $('<input class="piramidVideoToggleCB piramidToggleCB" type="checkbox" />').appendTo($piramidToggle);
+  const $pyramidToggle = $('<div class="piramidToggle"></div>').appendTo($videoChooserContent);
+  $('<input class="piramidVideoToggleCB piramidToggleCB" type="checkbox">').appendTo($pyramidToggle);
+  $('<div class="piramidVideoToggleText piramidToggleText">Pyramid View</div>').appendTo($pyramidToggle);
 
   $(document).on('change', '.piramidVideoToggleCB', function () {
     togglePyramidView($(this).is(':checked'), true);
-  });
-
-  $('<div class="piramidVideoToggleText piramidToggleText" >Pyramid View</div>').appendTo($piramidToggle);
-
-  $(document).on('click', '.piramidVideoToggleText', function () {
+  }).on('click', '.piramidVideoToggleText', function () {
     $('.piramidVideoToggleCB').click();
   });
 
   function togglePyramidView(isPyramid, startVideo, zoom, ratio) {
+    // Common jQuery selectors
+    var $fullView = $('.fullView');
+    var $pyramidView = $('.pyramidView');
+    var $quadGenerator = $('.quadGenerator');
+    var $roundView = $('.roundView');
+    var $quadrupoleImage = $('.quadrupoleImage');
+    var $pyramidElements = $('.personImage, .therapistImage, .generatorText, .sideText, .liveSection');
+
     if (zoom) {
-      $('.fullView').hide();
-      $('.pyramidView').show();
-      $('.quadGenerator, .roundView').css('width', `${zoom}vh`).css('height', `${zoom}vh`);
-      $('.quadGenerator').css('transform', `translateY(-50%) scale(${ratio}, 1)`);
-      $('.roundView').css('transform', `translate(-50%, -50%) scale(${ratio}, 1)`);
-      $('.quadrupoleImage').addClass('pyramidImage');
-      $('.personImage, .therapistImage, .generatorText').addClass('pyramidPerson')
+      $fullView.hide();
+      $pyramidView.show();
+      $quadGenerator.add($roundView).css({ 'width': `${zoom}vh`, 'height': `${zoom}vh` });
+      $quadGenerator.css('transform', `translateY(-50%) scale(${ratio}, 1)`);
+      $roundView.css('transform', `translate(-50%, -50%) scale(${ratio}, 1)`);
+      $quadrupoleImage.addClass('pyramidImage');
+      $pyramidElements.addClass('pyramidPerson');
     } else {
       $('.piramidToggleCB').prop('checked', isPyramid);
+
       if (isPyramid) {
-        $('.fullView').hide();
-        $('.pyramidView').show();
-        $('.quadGenerator').css('width', '100vh').css('height', '100vh');
-        $('.quadrupoleImage').addClass('pyramidImage');
-        $('.personImage, .therapistImage, .generatorText, .sideText, .liveSection').addClass('pyramidPerson')
+        $fullView.hide();
+        $pyramidView.show();
+        $quadGenerator.css({ 'width': '100vh', 'height': '100vh' });
+        $quadrupoleImage.addClass('pyramidImage');
+        $pyramidElements.addClass('pyramidPerson');
       } else {
-        $('.fullView').show();
-        $('.pyramidView').hide();
-        $('.quadGenerator').css('width', '63%').css('height', '63%')
-        $('.quadrupoleImage').removeClass('pyramidImage');
-        $('.personImage, .therapistImage, .generatorText, .sideText, .liveSection').removeClass('pyramidPerson')
+        $fullView.show();
+        $pyramidView.hide();
+        $quadGenerator.css({ 'width': '63%', 'height': '63%' });
+        $quadrupoleImage.removeClass('pyramidImage');
+        $pyramidElements.removeClass('pyramidPerson');
       }
     }
+
     setDataFontSize();
+
     if (isVideoPlaying) startFocusVideo();
   }
 
   /* THUMBS */
 
-  var $videoThumbsDiv = $('<div id="videoThumbs" ></div>').appendTo($videoChooserContent);
-  var $videoSelect = $('<select class="videoSelect" ></select>').appendTo($videoChooserContent);
+  var $videoThumbsDiv = $('<div>', { id: "videoThumbs" }).appendTo($videoChooserContent);
+  var $videoSelect = $('<select>', { class: "videoSelect" }).appendTo($videoChooserContent);
 
-  $(videos).each(function (k, v) {
-
+  videos.forEach(function (v) {
     if (v.only && !v.only.includes(pageType)) return;
 
-    let style = '';
-    if (v.isView) {
-      style = (v.thumbUrl)
-        ? `background-image:url(${v.thumbUrl});`
-        : `background-image:url(https://ww2.e-s-p.com/wp-content/uploads/2018/12/youtube-play.png);`
-    }
-    else {
-      style = `background-image:url(https://img.youtube.com/vi/${v.id}/0.jpg);`
-    }
+    let imageUrl = v.isView
+      ? (v.thumbUrl || 'https://ww2.e-s-p.com/wp-content/uploads/2018/12/youtube-play.png')
+      : `https://img.youtube.com/vi/${v.id}/0.jpg`;
+    let style = `background-image:url(${imageUrl});`;
 
-    var $videoThumbPreviewDiv = $(`<div
-              videoid="${v.id}" 
-              isView="${v.isView}"
-              class="videoThumb"
-              style="${style}"
-              title="${v.name}"
-            ></div>`);
-    $videoThumbPreviewDiv.appendTo($videoThumbsDiv);
-    $(`<option value="${v.id}">${v.name}</option>`).appendTo($videoSelect);
+    $('<div>', {
+      'videoid': v.id,
+      'isView': v.isView,
+      class: 'videoThumb',
+      style: style,
+      title: v.name
+    }).appendTo($videoThumbsDiv);
+
+    $('<option>', {
+      value: v.id,
+      text: v.name
+    }).appendTo($videoSelect);
   });
-
-  var $customVideoText = $('<div id="customVideoText" >YouTube Video Link</div>');
-  $customVideoText.appendTo($videoChooserContent);
-
-  var $customVideoInput = $('<input class="customVideoInput" type="text" />');
-  $customVideoInput.appendTo($videoChooserContent);
+  $('<div>', { id: "customVideoText", text: "YouTube Video Link" }).appendTo($videoChooserContent);
+  $('<input>', { class: "customVideoInput", type: "text" }).appendTo($videoChooserContent);
 
   $(document).on('change', '.customVideoInput', function () {
-    changeVideo(youtube_parser($(this).val()))
+    changeVideo(youtube_parser($(this).val()));
   });
 
   function youtube_parser(url) {
-    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    var regExp = /^.*(youtu.be\/|v\/|\/u\/w\/|embed\/|watch\?v=|watch\?.+&v=)([^#&?]*).*/;
     var match = url.match(regExp);
     return (match && match[7].length == 11) ? match[7] : false;
   }
 
   $(document).on('click', '.videoThumb', function () {
-    changeVideo($(this).attr('videoid'), $(this).attr("isView"))
+    changeVideo($(this).attr('videoid'), $(this).attr("isView"));
   });
 
   $(document).on('change', '.videoSelect', function () {
     changeVideo($(this).val(), $(this).find('option:selected').attr("isView"));
   });
 
-  var $videoControls = $('<div class="videoControls" ></div>').appendTo($videoChooserContent);
-  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`).appendTo($videoControls);
-  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png" class="youtubePauseButtonImage redButton" style="display:none;" />`).appendTo($videoControls);
-  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/playVideo.png" class="youtubePlayButtonImage redButton" />`).appendTo($videoControls);
-  $('<input type="range" value="10" class="videoVolume" />').appendTo($videoControls);
+  // Create and append video controls
+  var $videoControls = $('<div>', { class: "videoControls" }).appendTo($videoChooserContent);
+  $('<img>', { src: "https://esculap.org/wp-content/uploads/2022/11/removeVideo.png", class: "youtubeRemoveButtonImage redButton" }).appendTo($videoControls);
+  $('<img>', { src: "https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png", class: "youtubePauseButtonImage redButton", style: "display:none;" }).appendTo($videoControls);
+  $('<img>', { src: "https://esculap.org/wp-content/uploads/2022/11/playVideo.png", class: "youtubePlayButtonImage redButton" }).appendTo($videoControls);
+  $('<input>', { type: "range", value: "10", class: "videoVolume" }).appendTo($videoControls);
 
-  $(document).on('click', '.youtubeRemoveButtonImage', function () { stopFocusVideo(); });
-  $(document).on('click', '.youtubePauseButtonImage', function () { pauseFocusVideo(); });
-  $(document).on('click', '.youtubePlayButtonImage', function () { startFocusVideo(); });
+  // Consolidate click event handlers for video controls
+  $(document).on('click', '.youtubeRemoveButtonImage', stopFocusVideo)
+    .on('click', '.youtubePauseButtonImage', pauseFocusVideo)
+    .on('click', '.youtubePlayButtonImage', startFocusVideo);
 
+  // Change event handler for video volume
   $(document).on('change', '.videoVolume', function () {
-    var curVal = $(this).val()
+    var curVal = $(this).val();
+    $('.videoVolume').val(curVal);  // Update all volume sliders
     $(players).each((i, p) => p.setVolume(curVal));
-    $('.videoVolume').val(curVal);
   });
+  function toggleVideoControls(showPlayButton) {
+    $('.youtubePauseButtonImage').toggle(!showPlayButton);
+    $('.youtubePlayButtonImage').toggle(showPlayButton);
+  }
 
   function stopFocusVideo() {
-    $('.youtubePauseButtonImage').hide();
-    $('.youtubePlayButtonImage').show();
+    toggleVideoControls(true);
     $(players).each((i, p) => p.stopVideo());
     $('.videoBackground').addClass('hidden-container');
     isVideoPlaying = false;
   }
 
   function pauseFocusVideo() {
-    if (!playersReady) return;
-    $('.youtubePauseButtonImage').hide();
-    $('.youtubePlayButtonImage').show();
+    if (!playersReady)
+      return;
+    toggleVideoControls(true);
     $(players).each((i, p) => p.pauseVideo());
     isVideoPlaying = false;
   }
 
   function startFocusVideo(newVideoId) {
     if (!playersReady) {
-      t = setTimeout(function () { startFocusVideo(newVideoId); }, 1000);
+      setTimeout(() => startFocusVideo(newVideoId), 1000);
       return;
-    };
-    $('.youtubePlayButtonImage').hide();
-    $('.youtubePauseButtonImage').show();
-    $(players).each((i, p) => p.loadVideoById(newVideoId).stopVideo());
-    var activePlayers = getActivePlayers();
-    $(activePlayers).each((i, p) => p.setVolume($('.videoVolume').val()).playVideo().setPlaybackQuality("small").mute())
-    activePlayers[0].unMute();
+    }
+    toggleVideoControls(false);
+    players.forEach(player => player.loadVideoById(newVideoId).stopVideo());
+
+    const activePlayers = getActivePlayers();
+    const volumeLevel = $('.videoVolume').val();
+    activePlayers.forEach((player, index) => {
+      player.setVolume(volumeLevel).playVideo().setPlaybackQuality("small");
+      if (index === 0) {
+        player.unMute();
+      } else {
+        player.mute();
+      }
+    });
     $('.videoBackground').removeClass('hidden-container');
     isVideoPlaying = true;
   }
 
+  function getActivePlayers() {
+    const singleVideoHolderId = "videoHolder";
+    const isPyramidViewActive = $('.piramidToggleCB').is(':checked');
+    return players.filter(player => isPyramidViewActive ? player.g.id !== singleVideoHolderId : player.g.id === singleVideoHolderId);
+  }
+
   function changeVideo(newVideoId, mode) {
+    sessionObj.videoId = newVideoId;
+    sessionObj.videoMode = mode;
 
-    sessionObj['videoId'] = newVideoId;
-    sessionObj['videoMode'] = mode;
+    $(".imageInnerDiv").removeClass('psalmCover');
+    $(".view360InnerDiv").empty();
 
-    $(".imageInnerDiv").removeClass('psalmCover')
-    $(".view360InnerDiv").empty()
+    const $view360InnerDiv = $('.view360InnerDiv');
 
     switch (mode) {
       case 'isView':
-        $(`<iframe width="100%" height="100%" title="Esculap ESA ESOC" scrolling="no" 
-              src="${newVideoId}">
-            </iframe>`).appendTo('.view360InnerDiv');
+        $('<iframe>', {
+          width: "100%",
+          height: "100%",
+          title: "Esculap ESA ESOC",
+          scrolling: "no",
+          src: newVideoId
+        }).appendTo($view360InnerDiv);
         break;
       case 'isVideo':
-        $(`<video width="100%" height="100%" autoplay loop>
-              <source src="${newVideoId}" type="video/mp4">
-            </video>`).appendTo('.view360InnerDiv');
+        $('<video>', {
+          width: "100%",
+          height: "100%",
+          autoplay: true,
+          loop: true,
+          html: `<source src="${newVideoId}" type="video/mp4">`
+        }).appendTo($view360InnerDiv);
         break;
       default:
         startFocusVideo(newVideoId);
         break;
     }
-
   }
 
-  function getActivePlayers() {
-    var singleVideoHolderId = "videoHolder"
-    return ($('.piramidToggleCB').is(':checked')) ? players.filter(p => p.g.id != singleVideoHolderId) : players.filter(p => p.g.id == singleVideoHolderId);
-  }
 
 
   /**********************
@@ -1030,7 +1053,7 @@ jQuery(document).ready(function ($) {
 
   // Image category select
   const $imageCategoriesSelection = $("<div>", { class: "imageCategoriesSelection" }).appendTo($tab3);
-  $("<span>", { text: "Category: "   }).appendTo($imageCategoriesSelection);
+  $("<span>", { text: "Category: " }).appendTo($imageCategoriesSelection);
   const $imageCategorySelect = $('<select class="imageCategorySelect"><option value="all">All</option></select>').appendTo($imageCategoriesSelection);
 
   // Populate image categories and create image divs
@@ -1074,7 +1097,7 @@ jQuery(document).ready(function ($) {
       insert3dModel($('.imageInnerDiv'), source);
     } else {
       const imagePath = $(this).find(".uploadedImage").attr('src');
-      $(".imageInnerDiv").css('background-image', `url(${ imagePath })`);
+      $(".imageInnerDiv").css('background-image', `url(${imagePath})`);
     }
   });
 
