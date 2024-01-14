@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($) {
 
-  $( document ).tooltip();
+  $(document).tooltip();
 
   let fetcheddata_dec = [];
   let fetcheddata_hex = [];
@@ -209,7 +209,7 @@ jQuery(document).ready(function ($) {
   $('<div class="videoSelectsTitle" >Image:</div>').appendTo($imageChooser);
   $(`<div class="removeImageButton button" >X</div>`).appendTo($imageChooser);
   $(`<div class="uploadImageButton button" >🡅</div>`).appendTo($imageChooser);
-  
+
   var $imageSelect = $('<select class="imageSelect" ></select>').appendTo($imageChooser);
   $(`<option value="empty" >~ Select ~</option>`).appendTo($imageSelect);
   $(focusImages).each(function (k, fi) {
@@ -1048,7 +1048,7 @@ jQuery(document).ready(function ($) {
 
   $(document).on('change', '.imageCategorySelect', function () {
     let selectedCategory = $(this).val();
-    if(selectedCategory == "all") {
+    if (selectedCategory == "all") {
       $('.uploadImageExample').show();
     }
     else {
@@ -1061,7 +1061,7 @@ jQuery(document).ready(function ($) {
   $(focusImages).each(function (k, fi) {
 
     if (fi.category && !imageCategories.includes(fi.category)) {
-      imageCategories .push(fi.category);
+      imageCategories.push(fi.category);
       $(`<option value="${fi.category}">${fi.category}</option>`).appendTo($imageCategorySelect);
     }
 
@@ -1222,7 +1222,7 @@ jQuery(document).ready(function ($) {
 
   var $tab4 = $("#tabs-4");
 
-  var $peopleContent = $("<div>", {class: "peopleContent"}).appendTo($tab4);
+  var $peopleContent = $("<div>", { class: "peopleContent" }).appendTo($tab4);
 
   var people = [
     { name: "Therapist", role: "therapist" },
@@ -1235,21 +1235,21 @@ jQuery(document).ready(function ($) {
   ]
 
   // Iterate over people to create their panels
-  $.each(people, function(i, person) {
-    var $personPanel = $("<div>", {class: person.role + " personPanel"}).appendTo($peopleContent);
+  $.each(people, function (i, person) {
+    var $personPanel = $("<div>", { class: person.role + " personPanel" }).appendTo($peopleContent);
 
-    $("<div>", {class: person.role + "Thumb personImageThumb"}).appendTo($personPanel);
-    var $personRightPanel = $("<div>", {class: "personRightPanel"}).appendTo($personPanel);
+    $("<div>", { class: person.role + "Thumb personImageThumb" }).appendTo($personPanel);
+    var $personRightPanel = $("<div>", { class: "personRightPanel" }).appendTo($personPanel);
 
-    $("<div>", {class: "personTag", text: person.name}).appendTo($personRightPanel);
-    $("<input>", {class: "personHiddenUploadButton", target: person.role, type: "file", style: "display: none;"}).appendTo($personRightPanel);
-    $("<input>", {role: person.role, class: "personUploadButton", type: "button", value: "Upload"}).appendTo($personRightPanel);
-    $("<input>", {role: person.role, class: "personDeleteButton", type: "button", value: "Delete"}).appendTo($personRightPanel);
+    $("<div>", { class: "personTag", text: person.name }).appendTo($personRightPanel);
+    $("<input>", { class: "personHiddenUploadButton", target: person.role, type: "file", style: "display: none;" }).appendTo($personRightPanel);
+    $("<input>", { role: person.role, class: "personUploadButton", type: "button", value: "Upload" }).appendTo($personRightPanel);
+    $("<input>", { role: person.role, class: "personDeleteButton", type: "button", value: "Delete" }).appendTo($personRightPanel);
   });
 
   // Function to create person images
   function createPersonImage(person, classes, parent) {
-    $("<div>", {role: person.role, class: "personImage " + classes}).appendTo(parent);
+    $("<div>", { role: person.role, class: "personImage " + classes }).appendTo(parent);
   }
 
   // Append therapist and person images to their respective parents
@@ -1258,7 +1258,7 @@ jQuery(document).ready(function ($) {
   createPersonImage(people[0], "therapistImage top", $tab4);
   createPersonImage(people[0], "therapistImage left", $tab4);
 
-  $.each(people.slice(1), function(i, person) {
+  $.each(people.slice(1), function (i, person) {
     createPersonImage(person, "inner " + person.role + "Image", $quadGenerator);
   });
 
@@ -1427,26 +1427,20 @@ jQuery(document).ready(function ($) {
           SOUND
   ***********************/
 
-  var isSoundModulation = 0;
+  const $tab6 = $("#tabs-6");
+  const $soundContent = $("<div>", { class: "soundContent" }).appendTo($tab6);
 
-  var $tab6 = $("#tabs-6");
+  $("<img>", { src: "https://esculap.org/wp-content/uploads/2022/11/speaker.png", class: "speakerOutput soundButton" }).appendTo($soundContent);
+  const $usbOutput = $("<img>", { src: "https://esculap.org/wp-content/uploads/2022/11/usb.png", class: "usbOutput soundButton" }).appendTo($soundContent);
 
-  var $soundCaption = $(`<div class="soundCaption tabHeader" >~~ Sound Settings ~~</div>`);
-  $soundCaption.appendTo($tab6);
-
-  var $soundContent = $(`<div class="soundContent" ></div>`);
-  $soundContent.appendTo($tab6);
-
-  var $speakerOutput = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/speaker.png" class="speakerOutput soundButton" />`);
-  $speakerOutput.appendTo($soundContent);
-
-  var $usbOutput = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/usb.png" class="usbOutput soundButton" />`);
-  $usbOutput.appendTo($soundContent);
+  let isSoundMod = 0;
 
   $(document).on('click', '.usbOutput', function () {
-    isSoundModulation = (isSoundModulation + 1) % 2;
-    $(this).css('opacity', (isSoundModulation + 1) / 2);
-    if (!isSoundModulation) $(players).each((i, p) => p.unMute());
+    isSoundMod = 1 - isSoundMod;
+    $usbOutput.css('opacity', isSoundMod ? 0.5 : 1);
+
+    // Assuming 'players' is defined and accessible
+    if (!isSoundMod) $(players).each((i, p) => p.unMute());
   });
 
   /********************
@@ -1643,8 +1637,8 @@ jQuery(document).ready(function ($) {
     $(".roundViewInner").css('background-image', `url("${imagePath})`);
   });
 
-  function truncate(str, n){
-    return (str.length > n) ? str.slice(0, n-1) + '&hellip;' : str;
+  function truncate(str, n) {
+    return (str.length > n) ? str.slice(0, n - 1) + '&hellip;' : str;
   };
 
   /********************
