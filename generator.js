@@ -40,27 +40,23 @@ jQuery(document).ready(function ($) {
   setFetchIntervalAndLength(currentDisplayInterval)
 
   function getOneHex() {
-
+    let resultHex;
     switch (qrngSelected) {
       case "esculap":
         jQuery.get(`https://qrng.anu.edu.au/API/jsonI.php?length=60&type=hex16&size=1`, data => {
-          console.log({ data, dd: data.data })
-          var resultHex = data.data;
-          useRandomHexArrayData(resultHex)
+          resultHex = data.data ?? [];
         });
         break;
       case "omega":
         jQuery.get(`https://beacon.nist.gov/beacon/2.0/pulse/last`, data => {
-          var resultHex = data.pulse.outputValue.match(/.{1,2}/g) ?? [];
-          console.log({ resultHex })
-          useRandomHexArrayData(resultHex)
+          resultHex = data.pulse.outputValue.match(/.{1,2}/g) ?? [];
         });
         break;
 
       default:
         break;
     }
-
+    useRandomHexArrayData(resultHex)
   };
 
   function useRandomHexArrayData(resultHex) {
