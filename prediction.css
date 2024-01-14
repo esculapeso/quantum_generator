@@ -457,9 +457,12 @@
     width: 50px;
   }
 
+  .jesusLang {
+    height: 18px;
+  }
 
   .jesusLang img {
-    height: 20px;
+    height: 15px;
     display: inline;
     vertical-align: middle;
   }
