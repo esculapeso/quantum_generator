@@ -1071,7 +1071,7 @@ jQuery(document).ready(function ($) {
       insert3dModel($('.imageInnerDiv'), source);
     } else {
       const imagePath = $(this).find(".uploadedImage").attr('src');
-      $(".imageInnerDiv").css('background-image', url(${ imagePath }));
+      $(".imageInnerDiv").css('background-image', `url(${ imagePath })`);
     }
   });
 
