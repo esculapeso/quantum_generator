@@ -468,6 +468,10 @@
     vertical-align: middle;
   }
 
+  .jesusLang label {
+    font-size: 10px;
+  }
+
   .jesusLitania {
     margin-left: 20px;
   }

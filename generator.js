@@ -561,9 +561,8 @@ jQuery(document).ready(function ($) {
     $(`
       <div class="jesusLang" >
         <input type="checkbox" id="${value.lang}" name="${value.lang}" ${isChecked} />
-        <img class="flagImg" src="https://purecatamphetamine.github.io/country-flag-icons/3x2/${value.lang.toUpperCase()}.svg" />
+        <img class="flagImg" title="${value.lang}" src="https://purecatamphetamine.github.io/country-flag-icons/3x2/${value.lang.toUpperCase()}.svg" />
         <img class="imagePreview" src="${value.image}" />
-        <label>(${value.lang})</label>
         <label for="${value.lang}">${value.mantra}</label>
       </div>
     `).appendTo($jesusLanguages);
