@@ -1231,10 +1231,10 @@ jQuery(document).ready(function ($) {
   }
 
   // Append therapist and person images to their respective parents
-  createPersonImage(people[0], "therapistImage bottom", $tab4);
-  createPersonImage(people[0], "therapistImage right", $tab4);
-  createPersonImage(people[0], "therapistImage top", $tab4);
-  createPersonImage(people[0], "therapistImage left", $tab4);
+  createPersonImage(people[0], "therapistImage bottom", header);
+  createPersonImage(people[0], "therapistImage right", header);
+  createPersonImage(people[0], "therapistImage top", header);
+  createPersonImage(people[0], "therapistImage left", header);
 
   $.each(people.slice(1), function (i, person) {
     createPersonImage(person, "inner " + person.role + "Image", $quadGenerator);
