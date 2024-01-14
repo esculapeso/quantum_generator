@@ -337,7 +337,7 @@
   }
 
   .uploadImageExample {
-    height: 58px;
+    height: 84px;
   }
 
   .uploadImageExample .uploadedImage {
@@ -371,10 +371,10 @@
   }
 
   .videoThumb {
-    width: 70px;
+    width: 76px;
     display: inline-block;
     cursor: pointer;
-    height: 40px;
+    height: 43px;
     background-size: 100%;
     background-repeat: no-repeat;
     margin-right: 5px;
