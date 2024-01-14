@@ -40,6 +40,7 @@ jQuery(document).ready(function ($) {
   setFetchIntervalAndLength(currentDisplayInterval)
 
   function getOneHex() {
+    console.log({qrngSelected})
     let resultHex = [];
     switch (qrngSelected) {
       case "esculap":
@@ -56,6 +57,7 @@ jQuery(document).ready(function ($) {
       default:
         break;
     }
+    console.log({resultHex})
     useRandomHexArrayData(resultHex)
   };
 
