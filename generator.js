@@ -1041,7 +1041,7 @@ jQuery(document).ready(function ($) {
     const is3D = fi.filepath.includes('.glb');
     const $imageDiv = $('<div>', {
       class: 'uploadImageExample',
-      text: fi.text,
+      title: fi.text,
       category: fi.category,
       src: '',
       is3d: is3D ? true : undefined
