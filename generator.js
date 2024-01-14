@@ -40,7 +40,7 @@ jQuery(document).ready(function ($) {
   setFetchIntervalAndLength(currentDisplayInterval)
 
   function getOneHex() {
-    let resultHex;
+    let resultHex = [];
     switch (qrngSelected) {
       case "esculap":
         jQuery.get(`https://qrng.anu.edu.au/API/jsonI.php?length=60&type=hex16&size=1`, data => {
