@@ -1000,108 +1000,87 @@ jQuery(document).ready(function ($) {
           IMAGES 
   ***********************/
 
-  var $tab3 = $("#tabs-3");
+  const $tab3 = $("#tabs-3");
 
-  $('<div>Image Background Gradiend:</div>').hide().appendTo($tab3);
-  $gradientSettings = $('<div class="gradientSettings"></div>').hide().appendTo($tab3);
-  $('<span>Left: </span>').appendTo($gradientSettings);
-  $('<input class="bgColorLeftTextbox changeInnerBg" type="text" />').appendTo($gradientSettings);
-  $('<span>Right: </span>').appendTo($gradientSettings);
-  $('<input class="bgColorRightTextbox changeInnerBg" type="text" />').appendTo($gradientSettings);
+  // Creating gradient settings
+  $('<div>Image Background Gradient:</div>').hide().appendTo($tab3);
+  const $gradientSettings = $('<div class="gradientSettings"></div>').hide().appendTo($tab3);
+  $('<span>Left: </span><input class="bgColorLeftTextbox changeInnerBg" type="text" /><span>Right: </span><input class="bgColorRightTextbox changeInnerBg" type="text" />').appendTo($gradientSettings);
 
+  // Event handler for gradient color change
   $(document).on('input', '.changeInnerBg', function () {
     const leftColor = $(".bgColorLeftTextbox").val() || "transparent";
     const rightColor = $(".bgColorRightTextbox").val() || "transparent";
     $(".imageInnerBgDiv").css('background-image', `linear-gradient(to right, ${leftColor}, ${rightColor})`);
   });
 
-  var $imageButtons = $('<div class="imageButtons" ></div>');
-  $imageButtons.appendTo($tab3);
+  // Image buttons
+  const $imageButtons = $('<div class="imageButtons"></div>').appendTo($tab3);
+  $('<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="removeImageButton redButton" /><img src="https://esculap.org/wp-content/uploads/2022/11/uploadButtons.png" class="uploadImageButton redButton" /><input class="uploadImageHiddenButton" type="file" style="display: none;" /><img src="https://esculap.org/wp-content/uploads/2022/11/uploadButtons.png" class="urlImageButton redButton" /><input class="urlImageTextbox" type="text" />').appendTo($imageButtons);
 
-  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="removeImageButton redButton" />`).appendTo($imageButtons);
-
+  // Event handlers for image buttons
   $(document).on('click', '.removeImageButton', function () {
     $(".imageInnerDiv").css('background-image', '');
-  });
-
-  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/uploadButtons.png" class="uploadImageButton redButton" />`).appendTo($imageButtons);
-
-  var $uploadImageHiddenButton = $('<input class="uploadImageHiddenButton" type="file" style="display: none;" />');
-  $uploadImageHiddenButton.appendTo($imageButtons);
-
-  $(document).on('click', '.uploadImageButton', function () {
+  }).on('click', '.uploadImageButton', function () {
     $(".uploadImageHiddenButton").click();
-  });
-
-  var $urlImageButton = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/uploadButtons.png" class="urlImageButton redButton" />`);
-  $urlImageButton.appendTo($imageButtons);
-
-  var $urlImageTextbox = $('<input class="urlImageTextbox" type="text" />');
-  $urlImageTextbox.appendTo($imageButtons);
-
-  $(document).on('click', '.urlImageButton', function () {
+  }).on('click', '.urlImageButton', function () {
     $(".imageInnerDiv").css('background-image', `url(${$('.urlImageTextbox').val()})`);
   });
 
-  var $imageCategorySelect = $('<select class="imageCategorySelect"></select>').appendTo($imageButtons);
-  $(`<option value="all">All</option>`).appendTo($imageCategorySelect);
+  // Image category select
+  const $imageCategorySelect = $('<select class="imageCategorySelect"><option value="all">All</option></select>').appendTo($imageButtons);
 
-  $(document).on('change', '.imageCategorySelect', function () {
-    let selectedCategory = $(this).val();
-    if (selectedCategory == "all") {
-      $('.uploadImageExample').show();
-    }
-    else {
-      $('.uploadImageExample').hide();
-      $(`.uploadImageExample[category="${selectedCategory}"]`).show();
-    }
-  });
-
-  imageCategories = [];
+  // Populate image categories and create image divs
+  let imageCategories = [];
   $(focusImages).each(function (k, fi) {
-
     if (fi.category && !imageCategories.includes(fi.category)) {
       imageCategories.push(fi.category);
-      $(`<option value="${fi.category}">${fi.category}</option>`).appendTo($imageCategorySelect);
+      $('<option>', { value: fi.category, text: fi.category }).appendTo($imageCategorySelect);
     }
 
-    var is3D = fi.filepath.includes('.glb');
-
-    var $imageDiv = $(`<div class="uploadImageExample" text="${fi.text}" category="${fi.category}" src="" ${is3D ? 'is3d' : ''} ></div>`);
-    $imageDiv.appendTo($tab3);
+    const is3D = fi.filepath.includes('.glb');
+    const $imageDiv = $('<div>', {
+      class: 'uploadImageExample',
+      text: fi.text,
+      category: fi.category,
+      src: '',
+      is3d: is3D ? true : undefined
+    }).appendTo($tab3);
 
     if (is3D) {
-      insert3dModel($imageDiv, fi.preview, fi.filepath)
+      insert3dModel($imageDiv, fi.preview, fi.filepath);
     } else {
-      var $image = $(`<img class="uploadedImage" src="${fi.filepath}" />`);
-      $image.appendTo($imageDiv);
+      $('<img>', { class: 'uploadedImage', src: fi.filepath }).appendTo($imageDiv);
     }
 
-    var $caption = $(`<div class="uploadImageCaption" >${truncate(fi.caption, 10)}</div>`);
-    $caption.appendTo($imageDiv);
+    $('<div>', { class: 'uploadImageCaption', text: truncate(fi.caption, 10) }).appendTo($imageDiv);
   });
 
-  $(document).on('click', '.uploadImageExample', function () {
+  // Event handler for category selection
+  $(document).on('change', '.imageCategorySelect', function () {
+    let selectedCategory = $(this).val();
+    $('.uploadImageExample').toggle(selectedCategory === "all").filter(`[category="${selectedCategory}"]`).toggle(selectedCategory !== "all");
+  });
 
+  // Event handler for image selection
+  $(document).on('click', '.uploadImageExample', function () {
     clearImageFocus();
 
     if ($(this).is("[is3d]")) {
-      var source = $(this).find('model-viewer').attr('target');
-      insert3dModel($('.imageInnerDiv'), source)
+      const source = $(this).find('model-viewer').attr('target');
+      insert3dModel($('.imageInnerDiv'), source);
     } else {
-      var imagePath = $(this).find(".uploadedImage").attr('src');
-      $(".imageInnerDiv").css('background-image', `url(${imagePath})`);
-      // updateCaptionText($(this).attr("text"));
+      const imagePath = $(this).find(".uploadedImage").attr('src');
+      $(".imageInnerDiv").css('background-image', url(${ imagePath }));
     }
   });
 
-  //var myFile = $('.uploadImageButton').prop('files');
+  // Event handler for image upload
   $(document).on('change', '.uploadImageHiddenButton', function () {
-    var fileName = uploadImage(".imageInnerDiv", $(this));
-    // updateCaptionText(fileName);
+    uploadImage(".imageInnerDiv", $(this));
   });
 
-
+  // Additional functions
   function insert3dModel($parent, srcUrl, targetUrl) {
     var modelHolder = `<model-viewer
           class="modelviewer3d"
@@ -1121,97 +1100,96 @@ jQuery(document).ready(function ($) {
   function uploadImage(targetImageSelector, $this) {
     clearImageFocus();
     var files = $this.prop('files');
-    if (files && files[0]) { // got sth
-
+    if (files && files[0]) {
       // Clear image container
       $(targetImageSelector).removeAttr('src');
 
-      $.each(files, function (index, ff) // loop each image 
-      {
-        var fileNameSplit = ff.name.split('.')
-        fileExt = fileNameSplit[fileNameSplit.length - 1]
+      $.each(files, function (index, file) {
+        var fileExt = file.name.split('.').pop().toLowerCase();
 
         switch (fileExt) {
           case 'json':
-            readJSON(ff);
+            readJSON(file);
             break;
           case 'txt':
-            read3D(ff, targetImageSelector);
-            break;
           case 'glb':
-            read3D(ff, targetImageSelector);
+            read3D(file, targetImageSelector);
             break;
           default:
-            readImage(ff, targetImageSelector);
+            readImage(file, targetImageSelector);
             break;
         }
-
-
       });
 
-      var retVal = files[0].name.split('.')[0]
-      $this[0].value = '';
-      return retVal;
+      $this.val(''); // Clear file input
     }
   }
 
   function clearImageFocus() {
-    $(".imageInnerDiv").css('background-image', ``).empty();
+    $(".imageInnerDiv").css('background-image', '').empty();
   }
 
-  function read3D(ff, targetImageSelector) {
+  function read3D(file, targetImageSelector) {
     var reader = new FileReader();
-
     reader.onload = function (e) {
-      var source = e.target.result
-      insert3dModel($(targetImageSelector), source)
-    }
-    reader.readAsDataURL(ff)
+      insert3dModel($(targetImageSelector), e.target.result);
+    };
+    reader.readAsDataURL(file);
   }
 
-  function readImage(ff, targetImageSelector) {
+  function readImage(file, targetImageSelector) {
     var reader = new FileReader();
     reader.onload = function (e) {
       $(targetImageSelector).css('background-image', `url("${e.target.result}")`);
-    }
-    reader.readAsDataURL(ff)
+    };
+    reader.readAsDataURL(file);
   }
 
-  function readJSON(ff) {
+  function readJSON(file) {
     var reader = new FileReader();
     reader.onload = function (e) {
-      clearImageFocus()
-      json = e.target.result;
-      updateElementsFromSession(JSON.parse(json));
-    }
-    reader.readAsText(ff);
+      clearImageFocus();
+      var json = JSON.parse(e.target.result);
+      updateElementsFromSession(json);
+    };
+    reader.readAsText(file);
   }
 
 
 
   function updateElementsFromSession(jsonObject) {
-    $(jsonObject.people).each((i, p) => {
-      $(`.${p.role}Image`).css('background-image', p.data);
-    });
+    if (Array.isArray(jsonObject.people)) {
+      jsonObject.people.forEach(p => {
+        if (p.role && p.data) $(`.${p.role}Image`).css('background-image', p.data);
+      });
+    }
 
-    if (checkParamValue(jsonObject['Focus Text'])) UpdateFocusText(jsonObject['Focus Text']);
-    if (checkParamValue(jsonObject.sideText)) UpdateSideText(jsonObject.sideText);
-    if (checkParamValue(jsonObject.ImageCaption)) updateCaptionText(jsonObject.ImageCaption);
-    if (checkParamValue(jsonObject.imageData)) $('.imageInnerDiv').css('background-image', jsonObject.imageData);
-    if (checkParamValue(jsonObject.image3dData)) insert3dModel($('.imageInnerDiv'), jsonObject.image3dData);
-    if (checkParamValue(jsonObject.qrngInterval)) changeQrngInterval(jsonObject.qrngInterval);
-    if (checkParamValue(jsonObject.isPyramid)) togglePyramidView(jsonObject.isPyramid);
-    let videoMode = (checkParamValue(jsonObject.videoMode)) ? jsonObject.videoMode : null;
-    if (checkParamValue(jsonObject.videoId)) { changeVideo(jsonObject.videoId, videoMode) } else { stopFocusVideo() };
-    if (checkParamValue(jsonObject.callClip)) $('.clipOptionsSelect').val(jsonObject.callClip).change();
-    if (checkParamValue(jsonObject.callClipSize)) $('.callRange').val(jsonObject.callClipSize).change();
-    if (checkParamValue(jsonObject.innerBgColorLeft)) $('.bgColorLeftTextbox').val(jsonObject.innerBgColorLeft).change();
-    if (checkParamValue(jsonObject.innerBgColorRight)) $('.bgColorRightTextbox').val(jsonObject.innerBgColorRight).change();
+    // Conditional updates using a utility function to avoid repetition
+    updateIfDefined(jsonObject['Focus Text'], UpdateFocusText);
+    updateIfDefined(jsonObject.sideText, UpdateSideText);
+    updateIfDefined(jsonObject.ImageCaption, updateCaptionText);
+    updateIfDefined(jsonObject.imageData, data => $('.imageInnerDiv').css('background-image', data));
+    updateIfDefined(jsonObject.image3dData, data => insert3dModel($('.imageInnerDiv'), data));
+    updateIfDefined(jsonObject.qrngInterval, changeQrngInterval);
+    updateIfDefined(jsonObject.isPyramid, togglePyramidView);
+    updateIfDefined(jsonObject.callClip, data => $('.clipOptionsSelect').val(data).change());
+    updateIfDefined(jsonObject.callClipSize, data => $('.callRange').val(data).change());
+    updateIfDefined(jsonObject.innerBgColorLeft, data => $('.bgColorLeftTextbox').val(data).change());
+    updateIfDefined(jsonObject.innerBgColorRight, data => $('.bgColorRightTextbox').val(data).change());
     $('.changeInnerBg').trigger("input");
+
+    // Handle video related updates
+    if (jsonObject.videoId) {
+      changeVideo(jsonObject.videoId, jsonObject.videoMode || null);
+    } else {
+      stopFocusVideo();
+    }
   }
 
-  function checkParamValue(param) {
-    return typeof param !== 'undefined';
+  function updateIfDefined(value, updateFunction) {
+    if (typeof value !== 'undefined') {
+      updateFunction(value);
+    }
   }
 
 
