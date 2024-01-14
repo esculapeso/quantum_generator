@@ -371,10 +371,10 @@
   }
 
   .videoThumb {
-    width: 80px;
+    width: 70px;
     display: inline-block;
     cursor: pointer;
-    height: 44px;
+    height: 40px;
     background-size: 100%;
     background-repeat: no-repeat;
     margin-right: 5px;
