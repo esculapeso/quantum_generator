@@ -7,12 +7,11 @@ jQuery(document).ready(function ($) {
   let isfetched = 0;
   let sessionObj = {}
   let isVideoPlaying = false;
-  let qrngSelected = "esculap";
+  let qrngSelected = "omega";
 
   let pageType = $(".quadrupolePanel").attr('page');
 
   var qrngOrigDisplayInterval = 60000;
-  var qrngLength;
   var qrngFetchInterval;
   var currentDisplayInterval = 938;
   var upcomingDisplayInterval = 938;
@@ -25,7 +24,6 @@ jQuery(document).ready(function ($) {
   var roundViewImagesVar = (typeof roundViewImages !== 'undefined' && roundViewImages) ? roundViewImages : null;
   var randomBackgroundMiddleVar = (typeof randomBackgroundMiddle !== 'undefined' && randomBackgroundMiddle) ? randomBackgroundMiddle : null;
   var focusTextsVar = (typeof focusText !== 'undefined' && focusText) ? focusText : "";
-  var sideTextsVar = (typeof customSideText !== 'undefined' && customSideText) ? customSideText : "";
   var sideTextsOptionsVar = (typeof sideTextsOptions !== 'undefined' && sideTextsOptions) ? sideTextsOptions : [];
   var jesusMantrasVar = (typeof jesusMantras !== 'undefined' && jesusMantras) ? jesusMantras : [];
   var defaultSessionVar = (typeof defaultSession !== 'undefined' && defaultSession) ? defaultSession : [];
@@ -36,14 +34,12 @@ jQuery(document).ready(function ($) {
 
 
   function setFetchIntervalAndLength(dispInterval) {
-    qrngLength = Math.round(10000 / dispInterval);
-    // qrngFetchInterval = qrngLength * dispInterval;
     qrngFetchInterval = qrngOrigDisplayInterval;
   }
 
   setFetchIntervalAndLength(currentDisplayInterval)
 
-  function getOneHex(index) {
+  function getOneHex() {
 
     switch (qrngSelected) {
       case "esculap":
@@ -1326,8 +1322,8 @@ jQuery(document).ready(function ($) {
   $qrngContent.appendTo($tab5);
 
   var $qrngSelect = $(`<select class="qrngSelect"></select>`).appendTo($qrngContent);
-  $(`<option value="esculap">Esculap</option>`).appendTo($qrngSelect);
   $(`<option value="omega">Omega</option>`).appendTo($qrngSelect);
+  $(`<option value="esculap">Esculap</option>`).appendTo($qrngSelect);
 
   $(document).on('change', '.qrngSelect', function () {
     qrngSelected = $(this).val();
