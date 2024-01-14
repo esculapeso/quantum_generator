@@ -1048,8 +1048,14 @@ jQuery(document).ready(function ($) {
   $(`<option value="all">All</option>`).appendTo($imageCategorySelect);
 
   $(document).on('change', '.imageCategorySelect', function () {
-    $('.uploadImageExample').hide();
-    $(`.uploadImageExample[category="${$(this).val()}"]`).show();
+    let selectedCategory = $(this).val();
+    if(selectedCategory == "all") {
+      $('.uploadImageExample').show();
+    }
+    else {
+      $('.uploadImageExample').hide();
+      $(`.uploadImageExample[category="${selectedCategory}"]`).show();
+    }
   });
 
   imageCategories = [];
