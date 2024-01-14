@@ -1003,9 +1003,6 @@ jQuery(document).ready(function ($) {
 
   var $tab3 = $("#tabs-3");
 
-  var selectImageMessage = "~~ Choose Image ~~"
-  var $imageCaptionDiv = $(`<div class="imageCaption tabHeader" >${selectImageMessage}</div>`).hide().appendTo($tab3);
-
   $('<div>Image Background Gradiend:</div>').hide().appendTo($tab3);
   $gradientSettings = $('<div class="gradientSettings"></div>').hide().appendTo($tab3);
   $('<span>Left: </span>').appendTo($gradientSettings);
@@ -1050,13 +1047,13 @@ jQuery(document).ready(function ($) {
   var $imageCategorySelect = $('<select class="imageCategorySelect"></select>').appendTo($imageButtons);
   $(`<option value="all">All</option>`).appendTo($imageCategorySelect);
 
+  imageCategories = [];
   $(focusImages).each(function (k, fi) {
 
-    console.log("CATEGORY: ", fi.category)
-    console.log("OPTION: ", $imageCategorySelect.find(`option[value='${fi.category}']`))
-    // if (fi.category && $imageCategorySelect.find(`option[value='${fi.category}']`).length !== 0) {
+    if (fi.category && !imageCategories.includes(fi.category)) {
+      imageCategories .push(fi.category);
       $(`<option value="${fi.category}">${fi.category}</option>`).appendTo($imageCategorySelect);
-    // }
+    }
 
     var is3D = fi.filepath.includes('.glb');
 
