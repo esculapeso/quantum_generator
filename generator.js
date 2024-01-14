@@ -50,6 +50,7 @@ jQuery(document).ready(function ($) {
         break;
       case "omega":
         jQuery.get(`https://beacon.nist.gov/beacon/2.0/pulse/last`, data => {
+          console.log({data})
           resultHex = data.pulse.outputValue.match(/.{1,2}/g) ?? [];
         });
         break;
