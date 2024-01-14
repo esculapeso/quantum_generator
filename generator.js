@@ -700,13 +700,13 @@ jQuery(document).ready(function ($) {
   togglePyramidView(false, true);
 
   var $piramidToggle = $('<div class="piramidToggle" ></div>').appendTo($videoChooserContent);
-  var $piramidToggleCB = $('<input class="piramidVideoToggleCB piramidToggleCB" type="checkbox" />').appendTo($piramidToggle);
+  $('<input class="piramidVideoToggleCB piramidToggleCB" type="checkbox" />').appendTo($piramidToggle);
 
   $(document).on('change', '.piramidVideoToggleCB', function () {
     togglePyramidView($(this).is(':checked'), true);
   });
 
-  var $piramidToggleText = $('<div class="piramidVideoToggleText piramidToggleText" >Pyramid View</div>').appendTo($piramidToggle);
+  $('<div class="piramidVideoToggleText piramidToggleText" >Pyramid View</div>').appendTo($piramidToggle);
 
   $(document).on('click', '.piramidVideoToggleText', function () {
     $('.piramidVideoToggleCB').click();
@@ -1452,9 +1452,9 @@ jQuery(document).ready(function ($) {
   const $callContent = $("<div>", { class: "callContent" }).appendTo($tab7);
 
   // Pyramid Toggle
-  const $piramidToggle = $('<div>', { class: 'piramidToggle callToggle' }).appendTo($callContent);
-  $('<input>', { type: 'checkbox', class: 'piramidCallToggleCB piramidToggleCB' }).appendTo($piramidToggle);
-  $('<div>', { class: 'piramidCallToggleText piramidToggleText cbText', text: 'Pyramid View' }).appendTo($piramidToggle);
+  const $piramidToggleCall = $('<div>', { class: 'piramidToggle callToggle' }).appendTo($callContent);
+  $('<input>', { type: 'checkbox', class: 'piramidCallToggleCB piramidToggleCB' }).appendTo($piramidToggleCall);
+  $('<div>', { class: 'piramidCallToggleText piramidToggleText cbText', text: 'Pyramid View' }).appendTo($piramidToggleCall);
 
   // Clip Options
   const $clipOptionsDiv = $("<div>", { class: "clipOptionsDiv" }).appendTo($callContent);
