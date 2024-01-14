@@ -1054,9 +1054,9 @@ jQuery(document).ready(function ($) {
 
     console.log("CATEGORY: ", fi.category)
     console.log("OPTION: ", $imageCategorySelect.find(`option[value='${fi.category}']`))
-    if (fi.category && $imageCategorySelect.find(`option[value='${fi.category}']`).length !== 0) {
+    // if (fi.category && $imageCategorySelect.find(`option[value='${fi.category}']`).length !== 0) {
       $(`<option value="${fi.category}">${fi.category}</option>`).appendTo($imageCategorySelect);
-    }
+    // }
 
     var is3D = fi.filepath.includes('.glb');
 
