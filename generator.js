@@ -1447,134 +1447,66 @@ jQuery(document).ready(function ($) {
           CALL 
   ********************/
 
-  var $tab7 = $("#tabs-7");
+  const $tab7 = $("#tabs-7");
 
-  var $callCaption = $(`<div class="callCaption tabHeader" >~~ Sound Settings ~~</div>`);
-  $callCaption.appendTo($tab7);
+  const $callContent = $("<div>", { class: "callContent" }).appendTo($tab7);
 
-  var $callContent = $(`<div class="callContent" ></div>`);
-  $callContent.appendTo($tab7);
+  // Pyramid Toggle
+  const $piramidToggle = $('<div>', { class: 'piramidToggle callToggle' }).appendTo($callContent);
+  $('<input>', { type: 'checkbox', class: 'piramidCallToggleCB piramidToggleCB' }).appendTo($piramidToggle);
+  $('<div>', { class: 'piramidCallToggleText piramidToggleText cbText', text: 'Pyramid View' }).appendTo($piramidToggle);
 
-  var $piramidToggle = $('<div class="piramidToggle callToggle" ></div>');
-  $piramidToggle.appendTo($callContent);
+  // Clip Options
+  const $clipOptionsDiv = $("<div>", { class: "clipOptionsDiv" }).appendTo($callContent);
+  const $clipOptionsSelect = $("<select>", { class: "clipOptionsSelect" }).appendTo($clipOptionsDiv);
 
-  var $piramidToggleCB = $('<input class="piramidCallToggleCB piramidToggleCB" type="checkbox" />');
-  $piramidToggleCB.appendTo($piramidToggle);
+  const clipOptions = ['quad', 'circle', 'octa (hor)', 'octa (ver)', 'hexa (hor)', 'hexa (ver)', 'diamond', 'heth', 'star'];
+  $.each(clipOptions, (k, co) => $("<option>", { value: co, text: co }).appendTo($clipOptionsSelect));
 
+  // Call Range
+  $('<input>', { type: 'range', class: 'callRange', min: '0', max: '100', value: '90' }).appendTo($callContent);
+  $('<input>', { type: 'button', class: 'callResetRange', value: 'reset size' }).appendTo($callContent);
+
+  // Animate Call
+  const $animateCallDiv = $('<div>', { class: 'animateCallDiv' }).appendTo($callContent);
+  $('<input>', { type: 'checkbox', class: 'animateCallWindowCB' }).appendTo($animateCallDiv);
+  $('<div>', { class: 'animateCallWindowText cbText', text: 'Animate Call Window' }).appendTo($animateCallDiv);
+
+  // Call Buttons
+  $('<div>', { class: 'callButton button', text: 'Start Call' }).appendTo($callContent);
+  $('<div>', { class: 'endcallButton button', text: 'End Call' }).appendTo($callContent);
+
+  // Event Handlers
   $(document).on('change', '.piramidCallToggleCB', function () {
     togglePyramidView($(this).is(':checked'));
   });
-
-  var $piramidToggleText = $('<div class="piramidCallToggleText piramidToggleText cbText" >Pyramid View</div>');
-  $piramidToggleText.appendTo($piramidToggle);
 
   $(document).on('click', '.piramidCallToggleText', function () {
     $('.piramidCallToggleCB').click();
   });
 
-
-  /*  Call window clipped 
-  paths generated at: https://bennettfeely.com/clippy/
-  */
-
-  var $clipOptionsDiv = $(`<div class="clipOptionsDiv" ></div>`);
-  $clipOptionsDiv.appendTo($callContent);
-
-  var $clipOptionsSelect = $('<select class="clipOptionsSelect" ></select>');
-  $clipOptionsSelect.appendTo($clipOptionsDiv);
-
-  var clipOptions = ['quad', 'circle', 'octa (hor)', 'octa (ver)', 'hexa (hor)', 'hexa (ver)', 'diamond', 'heth', 'star'];
-
-  $(clipOptions).each(function (k, co) {
-    var $clipOption = $(`<option value="${co}">${co}</option>`);
-    $clipOption.appendTo($clipOptionsSelect);
-  });
-
   $(document).on('change', '.clipOptionsSelect', function () {
-    $('.jitsi-wrapper').removeClass('clippedCircle clippedOctaHor clippedOctaVer clippedHexaHor clippedHexaVer clippedHeth clippedDiamond clippedStar')
-    switch ($(this).val()) {
-      case 'square':
-        break;
-      case 'circle':
-        $('.jitsi-wrapper').addClass('clippedCircle')
-        break;
-      case 'octa (hor)':
-        $('.jitsi-wrapper').addClass('clippedOctaHor')
-        break;
-      case 'octa (ver)':
-        $('.jitsi-wrapper').addClass('clippedOctaVer')
-        break;
-      case 'hexa (hor)':
-        $('.jitsi-wrapper').addClass('clippedHexaHor')
-        break;
-      case 'hexa (ver)':
-        $('.jitsi-wrapper').addClass('clippedHexaVer')
-        break;
-      case 'heth':
-        $('.jitsi-wrapper').addClass('clippedHeth')
-        break;
-      case 'diamond':
-        $('.jitsi-wrapper').addClass('clippedDiamond')
-        break;
-      case 'star':
-        $('.jitsi-wrapper').addClass('clippedStar')
-        break;
-      default:
-        break;
-    }
+    const selectedClass = 'clipped' + $(this).val().charAt(0).toUpperCase() + $(this).val().slice(1).replace(/(.∗?)(.∗?)/, '$ 1');
+    $('.jitsi-wrapper').attr('class', 'jitsi-wrapper').addClass(selectedClass);
   });
-
-  var $callRange = $('<input class="callRange" type="range" min="0" max="100" value="90" />');
-  $callRange.appendTo($callContent);
 
   $(document).on('change mousemove', '.callRange', function () {
-    changeCallWindowSize($(this).val())
+    changeCallWindowSize($(this).val());
   });
 
-
-  var $callResetRange = $('<input class="callResetRange" type="button" value="reset size" />');
-  $callResetRange.appendTo($callContent);
-
   $(document).on('click', '.callResetRange', function () {
-    var origSize = 90;
+    const origSize = 90;
     $('.callRange').val(origSize);
     changeCallWindowSize(origSize);
   });
-
-
-  // Call window animated toggle
-
-  var $animateCallDiv = $('<div class="animateCallDiv" ></div>');
-  $animateCallDiv.appendTo($callContent);
-
-  var $animateCallWindowCB = $('<input class="animateCallWindowCB" type="checkbox" />');
-  $animateCallWindowCB.appendTo($animateCallDiv);
 
   $(document).on('change', '.animateCallWindowCB', function () {
     $('.jitsi-wrapper').toggleClass('animated', $(this).is(':checked'));
   });
 
-  var $animateCallWindowText = $('<div class="animateCallWindowText cbText" >Animate Call Window</div>');
-  $animateCallWindowText.appendTo($animateCallDiv);
-
   $(document).on('click', '.animateCallWindowText', function () {
     $('.animateCallWindowCB').click();
   });
-
-  function changeCallWindowSize(size) {
-    var dim = size;
-    var offset = (100 - dim) / 2
-    var newStyle = `width: ${dim}% !important; height: ${dim}% !important; top: ${offset}% !important; left: ${offset}% !important; `
-    $('.jitsi-wrapper').attr('style', newStyle);;
-  }
-
-
-  var $callButton = $(`<div class="callButton button" >Start Call</div>`);
-  $callButton.appendTo($callContent);
-
-  var $endcallButton = $(`<div class="endcallButton button" >End Call</div>`);
-  $endcallButton.appendTo($callContent);
-
 
   $(document).on('click', '.callButton', function () {
     $('.callWrapper').show().appendTo('.uploadImageHolder');
@@ -1584,6 +1516,11 @@ jQuery(document).ready(function ($) {
     $('.callWrapper').hide().appendTo('.uploadImageHolder');
   });
 
+  function changeCallWindowSize(size) {
+    const offset = (100 - size) / 2;
+    const newStyle = `width: ${size}% !important; height: ${size}% !important; top: ${offset}% !important; left: ${offset}% !important;`;
+    $('.jitsi-wrapper').attr('style', newStyle);
+  }
 
 
 
