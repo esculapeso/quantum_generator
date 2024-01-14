@@ -1222,11 +1222,7 @@ jQuery(document).ready(function ($) {
 
   var $tab4 = $("#tabs-4");
 
-  var $peopleCaption = $(`<div class="focusCaption tabHeader" >~~ Choose People ~~</div>`);
-  $peopleCaption.appendTo($tab4);
-
-  var $peopleContent = $(`<div class="peopleContent" ></div>`);
-  $peopleContent.appendTo($tab4);
+  var $peopleContent = $("<div>", {class: "peopleContent"}).appendTo($tab4);
 
   var people = [
     { name: "Therapist", role: "therapist" },
@@ -1238,61 +1234,33 @@ jQuery(document).ready(function ($) {
     { name: "Person 6", role: "person6" },
   ]
 
-  $(people).each((i, p) => {
+  // Iterate over people to create their panels
+  $.each(people, function(i, person) {
+    var $personPanel = $("<div>", {class: person.role + " personPanel"}).appendTo($peopleContent);
 
-    var $personPanel = $(`<div class="${p.role} personPanel" ></div>`);
-    $personPanel.appendTo($peopleContent);
+    $("<div>", {class: person.role + "Thumb personImageThumb"}).appendTo($personPanel);
+    var $personRightPanel = $("<div>", {class: "personRightPanel"}).appendTo($personPanel);
 
-    var $personImage = $(`<div class="${p.role}Thumb personImageThumb"></div>`);
-    $personImage.appendTo($personPanel);
+    $("<div>", {class: "personTag", text: person.name}).appendTo($personRightPanel);
+    $("<input>", {class: "personHiddenUploadButton", target: person.role, type: "file", style: "display: none;"}).appendTo($personRightPanel);
+    $("<input>", {role: person.role, class: "personUploadButton", type: "button", value: "Upload"}).appendTo($personRightPanel);
+    $("<input>", {role: person.role, class: "personDeleteButton", type: "button", value: "Delete"}).appendTo($personRightPanel);
+  });
 
-    var $personRightPanel = $(`<div class="personRightPanel"></div>`);
-    $personRightPanel.appendTo($personPanel);
+  // Function to create person images
+  function createPersonImage(person, classes, parent) {
+    $("<div>", {role: person.role, class: "personImage " + classes}).appendTo(parent);
+  }
 
-    var $personTag = $(`<div class="personTag" >${p.name}</div>`);
-    $personTag.appendTo($personRightPanel);
+  // Append therapist and person images to their respective parents
+  createPersonImage(people[0], "therapistImage bottom", $tab4);
+  createPersonImage(people[0], "therapistImage right", $tab4);
+  createPersonImage(people[0], "therapistImage top", $tab4);
+  createPersonImage(people[0], "therapistImage left", $tab4);
 
-    var $personHiddenUploadButton = $(`<input class="personHiddenUploadButton" target="${p.role}" type="file" style="display: none;" />`);
-    $personHiddenUploadButton.appendTo($personRightPanel);
-
-    var $personUploadButton = $(`<input role="${p.role}" class="personUploadButton" type="button" value="Upload" />`);
-    $personUploadButton.appendTo($personRightPanel);
-
-    var $personUploadButton = $(`<input role="${p.role}" class="personDeleteButton" type="button" value="Delete" />`);
-    $personUploadButton.appendTo($personRightPanel);
-
-  })
-
-
-  var $thrapistImage = $(`<div role="${people[0].role}" class="personImage therapistImage bottom" ></div>`);
-  $thrapistImage.appendTo(header);
-
-  var $thrapistImage = $(`<div role="${people[0].role}" class="personImage therapistImage right" ></div>`);
-  $thrapistImage.appendTo(header);
-
-  var $thrapistImage = $(`<div role="${people[0].role}" class="personImage therapistImage top" ></div>`);
-  $thrapistImage.appendTo(header);
-
-  var $thrapistImage = $(`<div role="${people[0].role}" class="personImage therapistImage left" ></div>`);
-  $thrapistImage.appendTo(header);
-
-  var $person1Image = $(`<div role="${people[1].role}" class="personImage inner person1Image" ></div>`);
-  $person1Image.appendTo($quadGenerator);
-
-  var $person1Image = $(`<div role="${people[2].role}" class="personImage inner person2Image" ></div>`);
-  $person1Image.appendTo($quadGenerator);
-
-  var $person1Image = $(`<div role="${people[3].role}" class="personImage inner person3Image" ></div>`);
-  $person1Image.appendTo($quadGenerator);
-
-  var $person1Image = $(`<div role="${people[4].role}" class="personImage inner person4Image" ></div>`);
-  $person1Image.appendTo($quadGenerator);
-
-  var $person1Image = $(`<div role="${people[5].role}" class="personImage inner person5Image" ></div>`);
-  $person1Image.appendTo($quadGenerator);
-
-  var $person1Image = $(`<div role="${people[6].role}" class="personImage inner person6Image" ></div>`);
-  $person1Image.appendTo($quadGenerator);
+  $.each(people.slice(1), function(i, person) {
+    createPersonImage(person, "inner " + person.role + "Image", $quadGenerator);
+  });
 
   $(document).on('click', '.personUploadButton, .personImage', function () {
     var role = $(this).attr('role');
