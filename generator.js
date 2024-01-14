@@ -1,5 +1,7 @@
 jQuery(document).ready(function ($) {
 
+  $( document ).tooltip();
+
   let fetcheddata_dec = [];
   let fetcheddata_hex = [];
   let isfetched = 0;
@@ -103,11 +105,10 @@ jQuery(document).ready(function ($) {
 
   function appendDataHolder(container, id, className) {
     if (container.length) {
-      var $dataDiv = $(`<div id="${id}" class="${className}" ></div>`);
-      $dataDiv.appendTo(container);
-
-      var $data = $(`<div class="dec" style="display:none;"></div><div class="hex"></div>`);
-      $data.appendTo($dataDiv);
+      $(` <div id="${id}" class="${className}" >
+            <div class="dec" style="display:none;"></div>
+            <div class="hex"></div>
+          </div>`).appendTo(container);
     }
   };
 
@@ -189,11 +190,8 @@ jQuery(document).ready(function ($) {
   let $quadrupolePanel = $('.quadrupolePanel');
   let header = $('.quadrupoleImage');
 
-  var $roundView = $('<div class="roundView" ></div>');
-  $roundView.appendTo(header);
-
+  var $roundView = $('<div class="roundView" ></div>').appendTo(header);
   $('<div class="roundViewInner" ></div>').appendTo($roundView);
-
   $('<div class="quadGenerator" ></div>').appendTo(header);
   var $quadGenerator = $('.quadGenerator');
 
@@ -211,43 +209,20 @@ jQuery(document).ready(function ($) {
 
 
 
-  var $imageDiv = $('<div class="uploadImageHolder clipped" ></div>');
-  $imageDiv.appendTo($quadGenerator);
-
-  var $focusControls = $('<div class="focusControls" ></div>');
-  $focusControls.appendTo($imageDiv);
-
-
-  var $focusChangers = $('<div class="focusChangers" ></div>');
-  $focusChangers.appendTo($focusControls);
-
-  var $subImageControls = $('<div class="subImageControls" ></div>');
-  $subImageControls.appendTo($focusControls);
-
-  var $previewSelector = $('<div class="previewSelector" ></div>');
-  $previewSelector.appendTo($subImageControls);
-
-  var $imageChooser = $('<div class="imageChooser" ></div>');
-  $imageChooser.hide().appendTo($subImageControls);
-
+  var $imageDiv = $('<div class="uploadImageHolder clipped" ></div>').appendTo($quadGenerator);
+  var $focusControls = $('<div class="focusControls" ></div>').appendTo($imageDiv);
+  var $focusChangers = $('<div class="focusChangers" ></div>').appendTo($focusControls);
+  var $subImageControls = $('<div class="subImageControls" ></div>').appendTo($focusControls);
+  $('<div class="previewSelector" ></div>').appendTo($subImageControls);
+  var $imageChooser = $(`<div class="imageChooser" ></div>`).hide().appendTo($subImageControls);
   $('<div class="videoSelectsTitle" >Image:</div>').appendTo($imageChooser);
-
-  var $removeImage = $(`<div class="removeImageButton button" >X</div>`);
-  $removeImage.appendTo($imageChooser);
-
-  var $uploadImageButton = $(`<div class="uploadImageButton button" >🡅</div>`);
-  $uploadImageButton.appendTo($imageChooser);
-
-  var $imageSelect = $('<select class="imageSelect" ></select>');
-  $imageSelect.appendTo($imageChooser);
-
+  $(`<div class="removeImageButton button" >X</div>`).appendTo($imageChooser);
+  $(`<div class="uploadImageButton button" >🡅</div>`).appendTo($imageChooser);
+  
+  var $imageSelect = $('<select class="imageSelect" ></select>').appendTo($imageChooser);
   $(`<option value="empty" >~ Select ~</option>`).appendTo($imageSelect);
   $(focusImages).each(function (k, fi) {
-
-    var is3D = fi.filepath.includes('.glb');
-
-    $(`<option value="${fi.filepath}" ${is3D ? 'is3d' : ''} >${fi.text}</option>`).appendTo($imageSelect);
-
+    $(`<option value="${fi.filepath}" ${fi.filepath.includes('.glb') ? 'is3d' : ''} >${fi.text}</option>`).appendTo($imageSelect);
   });
 
   $(document).on('change', '.imageSelect', function () {
@@ -267,21 +242,12 @@ jQuery(document).ready(function ($) {
 
 
 
-  var $focusAndSession = $('<div class="focusAndSession" ></div>');
-  $focusAndSession.appendTo($focusChangers);
-
-  var $focusChooser = $('<div class="focusChooser" ></div>');
-  $focusChooser.appendTo($focusAndSession);
-
-  var $focusTextChooser = $('<div class="focusTextChooser" ></div>');
-  $focusTextChooser.appendTo($focusChooser);
-
+  var $focusAndSession = $('<div class="focusAndSession" ></div>').appendTo($focusChangers);
+  var $focusChooser = $('<div class="focusChooser" ></div>').appendTo($focusAndSession);
+  var $focusTextChooser = $('<div class="focusTextChooser" ></div>').appendTo($focusChooser);
   $('<div class="videoSelectsTitle" >Focus:</div>').appendTo($focusTextChooser);
   $('<input type="text" class="focusTextTextBox" />').appendTo($focusTextChooser);
-
-  var $captionTextChooser = $('<div class="captionTextChooser" ></div>');
-  $captionTextChooser.appendTo($focusChooser);
-
+  var $captionTextChooser = $('<div class="captionTextChooser" ></div>').appendTo($focusChooser);
   $('<div class="videoSelectsTitle" >Caption:</div>').appendTo($captionTextChooser);
   $('<input type="text" class="captionTextTextBox" />').appendTo($captionTextChooser);
 
@@ -289,47 +255,23 @@ jQuery(document).ready(function ($) {
     $(".captionText").html($(this).val());
   });
 
-  var $sessionButtons = $('<div class="sessionButtons" ></div>');
-  $sessionButtons.appendTo($focusAndSession);
-
+  var $sessionButtons = $('<div class="sessionButtons" ></div>').appendTo($focusAndSession);
   $('<input class="focusTextSaveButton button" type="button" value="Save"  />').appendTo($sessionButtons);
   $('<input class="focusTextLoadButton button" type="button" value="Load"  />').appendTo($sessionButtons);
-
-
-
-  var $videoControlsAndFocus = $('<div class="videoControlsAndFocus" ></div>');
-  $videoControlsAndFocus.appendTo($focusChangers);
-
+  var $videoControlsAndFocus = $('<div class="videoControlsAndFocus" ></div>').appendTo($focusChangers);
   $('<div class="videoSelectsTitle" >Controls:</div>').appendTo($videoControlsAndFocus);
 
-  var $videoControls = $('<div class="videoControls" ></div>');
-  $videoControls.appendTo($videoControlsAndFocus);
+  var $videoControls = $('<div class="videoControls" ></div>').appendTo($videoControlsAndFocus);
+  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`).appendTo($videoControls);
+  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png" class="youtubePauseButtonImage redButton" />`).hide().appendTo($videoControls);
+  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/playVideo.png" class="youtubePlayButtonImage redButton" />`).appendTo($videoControls);
+  $('<input type="range" value="10" class="videoVolume" />').appendTo($videoControls);
+  var $videoSelects = $('<div class="videoSelects" ></div>').appendTo($subImageControls);
 
-  var $youtubeRemoveButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`);
-  $youtubeRemoveButtonImage.appendTo($videoControls);
-
-  var $youtubePlayButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png" class="youtubePauseButtonImage redButton" style="display:none;" />`);
-  $youtubePlayButtonImage.appendTo($videoControls);
-
-  var $youtubePlayButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/playVideo.png" class="youtubePlayButtonImage redButton" />`);
-  $youtubePlayButtonImage.appendTo($videoControls);
-
-  var $videoVolumeInput = $('<input type="range" value="10" class="videoVolume" />');
-  $videoVolumeInput.appendTo($videoControls);
-
-
-
-  var $videoSelects = $('<div class="videoSelects" ></div>');
-  $videoSelects.appendTo($subImageControls);
-
-  var $videoSubcategorySelect = $('<select class="videoSubcategorySelect" ></select>').hide();
-  $videoSubcategorySelect.appendTo($videoSelects);
-
+  var $videoSubcategorySelect = $('<select class="videoSubcategorySelect" ></select>').hide().appendTo($videoSelects);
   $('<div class="videoSelectsTitle" >Video:</div>').appendTo($videoSelects);
 
-  var $videoCategorySelect = $('<select class="videoCategorySelect" ></select>');
-  $videoCategorySelect.appendTo($videoSelects);
-
+  var $videoCategorySelect = $('<select class="videoCategorySelect" ></select>').appendTo($videoSelects);
   $(`<option value="empty">~ Select ~</option>`).appendTo($videoCategorySelect);
   $(`<option value="meditation">Meditation</option>`).appendTo($videoCategorySelect);
   if (psalmVideoVar) $(`<option value="psalms">Psalms</option>`).appendTo($videoCategorySelect);
@@ -347,16 +289,12 @@ jQuery(document).ready(function ($) {
     $psalmList.empty();
     $(set.psalms).each((i, p) => {
       var number = p.name.replace('Psalm ', '')
-      var $psalm = $(`<div class="psalm" number="${number}" lang="${selectedPsalmsLang}">${number}</div>`);
-      $psalm.appendTo($psalmList);
+      var $psalm = $(`<div class="psalm" number="${number}" lang="${selectedPsalmsLang}">${number}</div>`).appendTo($psalmList);
       addTooltip(p, set, $psalm);
     })
   });
 
-
-
-  var $videoSelectInFocus = $('<select class="videoSelect" ></select>');
-  $videoSelectInFocus.appendTo($videoSelects);
+  var $videoSelectInFocus = $('<select class="videoSelect" ></select>').appendTo($videoSelects);
 
   var languages = [
     { lang: 'en', name: 'British' },
@@ -364,12 +302,10 @@ jQuery(document).ready(function ($) {
     { lang: 'pl', name: 'Polish' },
   ]
 
-
   var gerders = [
     { gender: 'f', name: 'Female' },
     { gender: 'm', name: 'Male' },
   ]
-
 
   $(document).on('change', '.videoCategorySelect', function () {
     $videoSelectInFocus.empty()
@@ -380,8 +316,7 @@ jQuery(document).ready(function ($) {
       case 'meditation':
         $(`<option value="empty">~ Select ~</option>`).appendTo($videoSelectInFocus);
         $(videos).each(function (k, v) {
-          var $videoOption = $(`<option value="${v.id}">${v.name}</option>`);
-          $videoOption.appendTo($videoSelectInFocus);
+          $(`<option value="${v.id}">${v.name}</option>`).appendTo($videoSelectInFocus);
         });
         break;
 
@@ -393,16 +328,14 @@ jQuery(document).ready(function ($) {
           var lang = langSplit[0]
           var langName = languages.find(l => l.lang == lang).name;
           var speaker = (langSplit.length > 1) ? gerders.find(g => g.gender == langSplit[1]).name : '';
-          var $langOption = $(`<option value="${set.lang}">${langName} ${speaker}</option>`);
-          $langOption.appendTo($videoSubcategorySelect);
+          $(`<option value="${set.lang}">${langName} ${speaker}</option>`).appendTo($videoSubcategorySelect);
         });
         break;
 
       case 'view360':
         $(`<option value="empty">~ Select ~</option>`).appendTo($videoSelectInFocus);
         $(view360VideoVar).each(function (k, v) {
-          var $videoOption = $(`<option isView="isView" value="${v.url}">${v.name}</option>`);
-          $videoOption.appendTo($videoSelectInFocus);
+          $(`<option isView="isView" value="${v.url}">${v.name}</option>`).appendTo($videoSelectInFocus);
         });
         break;
 
@@ -413,8 +346,7 @@ jQuery(document).ready(function ($) {
 
 
   $(document).on('change', '.videoSubcategorySelect', function () {
-    $focusVideoSelect = $('.focusControls .videoSelect');
-    $focusVideoSelect.empty()
+    $focusVideoSelect = $('.focusControls .videoSelect').empty();
     let lang = $(this).val();
     let set = psalmVideoVar.find(e => e.lang == lang)
 
@@ -426,14 +358,9 @@ jQuery(document).ready(function ($) {
   });
 
 
-  var $imageInnerBgDiv = $('<div class="imageInnerBgDiv" ></div>');
-  $imageInnerBgDiv.appendTo($imageDiv);
-  var $imageInnerDiv = $('<div class="imageInnerDiv fullView" ></div>');
-  $imageInnerDiv.appendTo($imageInnerBgDiv);
-
-  var $view360InnerDiv = $('<div class="view360InnerDiv" ></div>');
-  $view360InnerDiv.appendTo($imageDiv);
-
+  var $imageInnerBgDiv = $('<div class="imageInnerBgDiv" ></div>').appendTo($imageDiv);
+  $('<div class="imageInnerDiv fullView" ></div>').appendTo($imageInnerBgDiv);
+  $('<div class="view360InnerDiv" ></div>').appendTo($imageDiv);
 
   $(document).on('mouseenter', '.uploadImageHolder', function () {
     if (playersReady || true) {
@@ -445,10 +372,7 @@ jQuery(document).ready(function ($) {
     $('.focusControls').hide();
   });
 
-  var $liveSection = $('<div class="liveSection" ></div>').hide();
-  $liveSection.appendTo($quadrupolePanel);
-
-
+  var $liveSection = $('<div class="liveSection" ></div>').hide().appendTo($quadrupolePanel);
 
   $(`<div class="hideLivePanel">
         <input class="hideLiveButton button" type="button" value="Live"  />
@@ -470,13 +394,11 @@ jQuery(document).ready(function ($) {
 
     if (transmission.type == "embedLink") $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
     if (transmission.type == "imageFetch") {
-      $imagesFetched = $(`<div class="imagesFetched"></div>`);
-      $imagesFetched.appendTo($liveTab);
+      $imagesFetched = $(`<div class="imagesFetched"></div>`).appendTo($liveTab);
       updateFetchedImages($imagesFetched, transmission.url)
     };
     if (transmission.type == "coin") {
-      $imagesFetched = $(`<div class="imagesFetched"></div>`);
-      $imagesFetched.appendTo($liveTab);
+      $imagesFetched = $(`<div class="imagesFetched"></div>`).appendTo($liveTab);
       generateCoin($liveTab);
       generateTokensContent($liveTab, "parent");
       generateTokensContent($liveTab, "child");
@@ -570,14 +492,9 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  var $jesusLitania = $('<div class="jesusLitania" ></div>');
-  $jesusLitania.appendTo($liveSection);
-
-  var $affStartButton = $(`<input type="number" class="jesusAmountTextbox" value="4" />`);
-  $affStartButton.appendTo($jesusLitania);
-
-  var $affStartButton = $(`<input type="button" class="jesusStartButton" value="Start" />`);
-  $affStartButton.appendTo($jesusLitania);
+  var $jesusLitania = $('<div class="jesusLitania" ></div>').appendTo($liveSection);
+  var $affStartButton = $(`<input type="number" class="jesusAmountTextbox" value="4" />`).appendTo($jesusLitania);
+  var $affStartButton = $(`<input type="button" class="jesusStartButton" value="Start" />`).appendTo($jesusLitania);
 
   var jesusUtter = new SpeechSynthesisUtterance();
   var jesusSynth = window.speechSynthesis;
@@ -635,9 +552,7 @@ jQuery(document).ready(function ($) {
     }
   }
 
-
-  var $affStopButton = $(`<input type="button" class="jesusStopButton" value="Stop" />`);
-  $affStopButton.appendTo($jesusLitania);
+  var $affStopButton = $(`<input type="button" class="jesusStopButton" value="Stop" />`).appendTo($jesusLitania);
 
   $(document).on('click', '.jesusStopButton', function () {
     jesusSynth.cancel();
@@ -648,8 +563,7 @@ jQuery(document).ready(function ($) {
   });
 
 
-  var $jesusLanguages = $('<div class="jesusLanguages" ></div>');
-  $jesusLanguages.appendTo($liveSection);
+  var $jesusLanguages = $('<div class="jesusLanguages" ></div>').appendTo($liveSection);
 
   $.each(jesusMantrasVar, function (index, value) {
     var isChecked = (value.default) ? "checked" : "";
@@ -664,24 +578,8 @@ jQuery(document).ready(function ($) {
     `).appendTo($jesusLanguages);
   });
 
-
-
-  // var elem = document.body.getElementById("ls_embed_1676270103");
-  // function openFullscreen() {
-  //   if (elem.requestFullscreen) {
-  //     elem.requestFullscreen();
-  //   } else if (elem.webkitRequestFullscreen) { /* Safari */
-  //     elem.webkitRequestFullscreen();
-  //   } else if (elem.msRequestFullscreen) { /* IE11 */
-  //     elem.msRequestFullscreen();
-  //   }
-  // }
-
-  var $videoChooserSection = $('<div class="videoChooserSection" ></div>');
-  $videoChooserSection.appendTo($quadrupolePanel);
-
-  var $hideOptionsButton = $('<input class="hideOptionsButton button" type="button" altvalue="→" value="←"  />');
-  $hideOptionsButton.appendTo($videoChooserSection);
+  var $videoChooserSection = $('<div class="videoChooserSection" ></div>').appendTo($quadrupolePanel);
+  $('<input class="hideOptionsButton button" type="button" altvalue="→" value="←"  />').appendTo($videoChooserSection);
 
   $(document).on('click', '.hideOptionsButton', function () {
     $('#tabs').toggle();
@@ -692,10 +590,7 @@ jQuery(document).ready(function ($) {
 
   });
 
-
-
-  var $centerGenerator = $('<input class="centerGenerator button" type="button" value="↕"  />');
-  $centerGenerator.appendTo($videoChooserSection);
+  $('<input class="centerGenerator button" type="button" value="↕"  />').appendTo($videoChooserSection);
 
   $(document).on('click', '.centerGenerator', function () {
     $(window).scrollTop($(".quadrupolePanel").offset().top);
@@ -737,11 +632,8 @@ jQuery(document).ready(function ($) {
   var $tab0 = $("#tabs-0");
   $(`<div class="soundCaption tabHeader" >~~ Session Settings ~~</div>`).appendTo($tab0);
 
-  var $sessionContent = $(`<div class="sessionContent" ></div>`);
-  $sessionContent.appendTo($tab0);
-
-  var $selectSession = $(`<select class="selectSession"></select>`);
-  $selectSession.appendTo($sessionContent);
+  var $sessionContent = $(`<div class="sessionContent" ></div>`).appendTo($tab0);
+  var $selectSession = $(`<select class="selectSession"></select>`).appendTo($sessionContent);
 
   function getPageSessions() {
     return defaultSessionVar.filter((s) => s.page == pageType);
@@ -757,17 +649,10 @@ jQuery(document).ready(function ($) {
     updateElementsFromSession(session);
   });
 
-  var $focusTextSave = $(`<div class="focusTextSave" ></div>`);
-  $focusTextSave.appendTo($sessionContent);
-
-  var $focusTextSaveButton = $('<input class="focusTextSaveButton button"  type="button" value="Save Session"  />');
-  $focusTextSaveButton.appendTo($focusTextSave);
-
-  var $focusTextSaveButton = $('<input class="focusTextLoadButton button"  type="button" value="Load Session"  />');
-  $focusTextSaveButton.appendTo($focusTextSave);
-
-  var $loadHiddenUploadButton = $(`<input class="loadHiddenUploadButton" type="file" style="display: none;" />`);
-  $loadHiddenUploadButton.appendTo($focusTextSave);
+  var $focusTextSave = $(`<div class="focusTextSave" ></div>`).appendTo($sessionContent);
+  $('<input class="focusTextSaveButton button"  type="button" value="Save Session" />').appendTo($focusTextSave);
+  $('<input class="focusTextLoadButton button"  type="button" value="Load Session"  />').appendTo($focusTextSave);
+  $(`<input class="loadHiddenUploadButton" type="file" style="display: none;" />`).appendTo($focusTextSave);
 
   $(document).on('click', '.focusTextSaveButton', function () {
     saveSession();
@@ -788,55 +673,30 @@ jQuery(document).ready(function ($) {
 
 
 
-  var $videoContainerDiv = $('<div class="videoBackground hidden-container fullView"></div>');
-  $videoContainerDiv.appendTo($imageDiv);
-
-  var $videoDiv = $('<div id="videoHolder" ></div>');
-  $videoDiv.appendTo($videoContainerDiv);
-
-  var $pyramid = $('<div class="video-container pyramid pyramidView" ></div>');
-  $pyramid.appendTo($imageDiv);
+  var $videoContainerDiv = $('<div class="videoBackground hidden-container fullView"></div>').appendTo($imageDiv);
+  $('<div id="videoHolder" ></div>').appendTo($videoContainerDiv);
+  var $pyramid = $('<div class="video-container pyramid pyramidView" ></div>').appendTo($imageDiv);
 
   var sides = ['north', 'west', 'south', 'east'];
 
   $(sides).each((i, s) => {
-    var $side = $(`<div class="side ${s}" ></div>`);
-    $side.appendTo($pyramid);
-
-    var $inside = $(`<div class="inside" ></div>`);
-    $inside.appendTo($side);
-
-    var $imageInnerDiv = $('<div class="imageInnerDiv" ></div>');
-    $imageInnerDiv.appendTo($inside);
-
-    var $videoBackground = $(`<div class="videoBackground hidden-container" ></div>`);
-    $videoBackground.appendTo($inside);
-
-    var $view360InnerDiv = $('<div class="view360InnerDiv" ></div>');
-    $view360InnerDiv.appendTo($inside);
-
-    var $videoForeground = $(`<div class="videoForeground" ></div>`);
-    $videoForeground.appendTo($videoBackground);
-
-    var $videoHolder = $(`<div id="${s}Holder" ></div>`);
-    $videoHolder.appendTo($videoForeground);
+    var $side = $(`<div class="side ${s}"></div>`).appendTo($pyramid);
+    var $inside = $(`<div class="inside"></div>`).appendTo($side);
+    $('<div class="imageInnerDiv" ></div>').appendTo($inside);
+    $(` <div class="videoBackground hidden-container" >
+          <div class="videoForeground" >
+            <div id="${s}Holder"></div>
+          </div>
+        </div>`).appendTo($inside);
+    $('<div class="view360InnerDiv"></div>').appendTo($inside);
   })
 
   var $tab1 = $("#tabs-1");
 
-  var selectVideoMessage = "~~ Choose white noise video ~~"
-  var $videoCaptionDiv = $(`<div class="videoCaption tabHeader" >${selectVideoMessage}</div>`);
-  $videoCaptionDiv.appendTo($tab1);
-
-  var $videoChooserContent = $('<div class="videoChooserContent chooserContent" ></div>');
-  $videoChooserContent.appendTo($tab1);
-
-
-  var $loadOverlay = $('<div class="loadOverlay loading" ></div>');
-  $loadOverlay.appendTo($videoChooserContent);
+  var $videoChooserContent = $('<div class="videoChooserContent chooserContent" ></div>').appendTo($tab1);
+  $('<div class="loadOverlay loading" ></div>').appendTo($videoChooserContent);
 
   var checkPlayerInverval = setInterval(checkPlayer, 400);
-
   function checkPlayer() {
     if (playersReady) {
       $('.loadOverlay').removeClass('loading')
@@ -848,18 +708,14 @@ jQuery(document).ready(function ($) {
 
   togglePyramidView(false, true);
 
-  var $piramidToggle = $('<div class="piramidToggle" ></div>');
-  $piramidToggle.appendTo($videoChooserContent);
-
-  var $piramidToggleCB = $('<input class="piramidVideoToggleCB piramidToggleCB" type="checkbox" />');
-  $piramidToggleCB.appendTo($piramidToggle);
+  var $piramidToggle = $('<div class="piramidToggle" ></div>').appendTo($videoChooserContent);
+  var $piramidToggleCB = $('<input class="piramidVideoToggleCB piramidToggleCB" type="checkbox" />').appendTo($piramidToggle);
 
   $(document).on('change', '.piramidVideoToggleCB', function () {
     togglePyramidView($(this).is(':checked'), true);
   });
 
-  var $piramidToggleText = $('<div class="piramidVideoToggleText piramidToggleText" >Pyramid View</div>');
-  $piramidToggleText.appendTo($piramidToggle);
+  var $piramidToggleText = $('<div class="piramidVideoToggleText piramidToggleText" >Pyramid View</div>').appendTo($piramidToggle);
 
   $(document).on('click', '.piramidVideoToggleText', function () {
     $('.piramidVideoToggleCB').click();
@@ -896,11 +752,8 @@ jQuery(document).ready(function ($) {
 
   /* THUMBS */
 
-  var $videoThumbsDiv = $('<div id="videoThumbs" ></div>');
-  $videoThumbsDiv.appendTo($videoChooserContent);
-
-  var $videoSelect = $('<select class="videoSelect" ></select>');
-  $videoSelect.appendTo($videoChooserContent);
+  var $videoThumbsDiv = $('<div id="videoThumbs" ></div>').appendTo($videoChooserContent);
+  var $videoSelect = $('<select class="videoSelect" ></select>').appendTo($videoChooserContent);
 
   $(videos).each(function (k, v) {
 
@@ -918,15 +771,13 @@ jQuery(document).ready(function ($) {
 
     var $videoThumbPreviewDiv = $(`<div
               videoid="${v.id}" 
-              videoname="${v.name}"
               isView="${v.isView}"
               class="videoThumb"
               style="${style}"
+              title="${v.name}"
             ></div>`);
     $videoThumbPreviewDiv.appendTo($videoThumbsDiv);
-
-    var $videoOption = $(`<option value="${v.id}">${v.name}</option>`);
-    $videoOption.appendTo($videoSelect);
+    $(`<option value="${v.id}">${v.name}</option>`).appendTo($videoSelect);
   });
 
   var $customVideoText = $('<div id="customVideoText" >YouTube Video Link</div>');
@@ -945,14 +796,6 @@ jQuery(document).ready(function ($) {
     return (match && match[7].length == 11) ? match[7] : false;
   }
 
-  $(document).on('mouseover', '.videoThumb', function () {
-    $(".videoCaption").html($(this).attr('videoname'))
-  });
-
-  $(document).on('mouseleave', '#videoThumbs', function () {
-    $(".videoCaption").html(selectVideoMessage)
-  });
-
   $(document).on('click', '.videoThumb', function () {
     changeVideo($(this).attr('videoid'), $(this).attr("isView"))
   });
@@ -961,41 +804,21 @@ jQuery(document).ready(function ($) {
     changeVideo($(this).val(), $(this).find('option:selected').attr("isView"));
   });
 
+  var $videoControls = $('<div class="videoControls" ></div>').appendTo($videoChooserContent);
+  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`).appendTo($videoControls);
+  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png" class="youtubePauseButtonImage redButton" style="display:none;" />`).appendTo($videoControls);
+  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/playVideo.png" class="youtubePlayButtonImage redButton" />`).appendTo($videoControls);
+  $('<input type="range" value="10" class="videoVolume" />').appendTo($videoControls);
 
-  var $videoControls = $('<div class="videoControls" ></div>');
-  $videoControls.appendTo($videoChooserContent);
-
-  var $youtubeRemoveButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`);
-  $youtubeRemoveButtonImage.appendTo($videoControls);
-
-  var $youtubePlayButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png" class="youtubePauseButtonImage redButton" style="display:none;" />`);
-  $youtubePlayButtonImage.appendTo($videoControls);
-
-  var $youtubePlayButtonImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/playVideo.png" class="youtubePlayButtonImage redButton" />`);
-  $youtubePlayButtonImage.appendTo($videoControls);
-
-  var $videoVolumeInput = $('<input type="range" value="10" class="videoVolume" />');
-  $videoVolumeInput.appendTo($videoControls);
-
-
-  $(document).on('click', '.youtubeRemoveButtonImage', function () {
-    stopFocusVideo();
-  });
-
-  $(document).on('click', '.youtubePauseButtonImage', function () {
-    pauseFocusVideo();
-  });
-
-  $(document).on('click', '.youtubePlayButtonImage', function () {
-    startFocusVideo();
-  });
+  $(document).on('click', '.youtubeRemoveButtonImage', function () { stopFocusVideo(); });
+  $(document).on('click', '.youtubePauseButtonImage', function () { pauseFocusVideo(); });
+  $(document).on('click', '.youtubePlayButtonImage', function () { startFocusVideo(); });
 
   $(document).on('change', '.videoVolume', function () {
     var curVal = $(this).val()
     $(players).each((i, p) => p.setVolume(curVal));
     $('.videoVolume').val(curVal);
   });
-
 
   function stopFocusVideo() {
     $('.youtubePauseButtonImage').hide();
@@ -1207,15 +1030,13 @@ jQuery(document).ready(function ($) {
   var $imageButtons = $('<div class="imageButtons" ></div>');
   $imageButtons.appendTo($tab3);
 
-  var $removeImage = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="removeImageButton redButton" />`);
-  $removeImage.appendTo($imageButtons);
+  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="removeImageButton redButton" />`).appendTo($imageButtons);
 
   $(document).on('click', '.removeImageButton', function () {
     $(".imageInnerDiv").css('background-image', '');
   });
 
-  var $uploadImageButton = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/uploadButtons.png" class="uploadImageButton redButton" />`);
-  $uploadImageButton.appendTo($imageButtons);
+  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/uploadButtons.png" class="uploadImageButton redButton" />`).appendTo($imageButtons);
 
   var $uploadImageHiddenButton = $('<input class="uploadImageHiddenButton" type="file" style="display: none;" />');
   $uploadImageHiddenButton.appendTo($imageButtons);
