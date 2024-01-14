@@ -1047,6 +1047,11 @@ jQuery(document).ready(function ($) {
   var $imageCategorySelect = $('<select class="imageCategorySelect"></select>').appendTo($imageButtons);
   $(`<option value="all">All</option>`).appendTo($imageCategorySelect);
 
+  $(document).on('change', '.imageCategorySelect', function () {
+    $('.uploadImageExample').hide();
+    $(`.uploadImageExample[category="${$(this).val()}"]`).show();
+  });
+
   imageCategories = [];
   $(focusImages).each(function (k, fi) {
 
@@ -1057,7 +1062,7 @@ jQuery(document).ready(function ($) {
 
     var is3D = fi.filepath.includes('.glb');
 
-    var $imageDiv = $(`<div class="uploadImageExample" text="${fi.text}" src="" ${is3D ? 'is3d' : ''} ></div>`);
+    var $imageDiv = $(`<div class="uploadImageExample" text="${fi.text}" category="${fi.category}" src="" ${is3D ? 'is3d' : ''} ></div>`);
     $imageDiv.appendTo($tab3);
 
     if (is3D) {
