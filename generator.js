@@ -473,13 +473,21 @@ jQuery(document).ready(function ($) {
 
   async function fetchImageUrls(apiUrl) {
     try {
-      const response = await fetch(apiUrl);
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        credentials: 'include', // Include cookies in the request
+        mode: 'cors', // Set CORS mode explicitly
+      });
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
+
       const imageUrls = await response.json();
       return imageUrls;
     } catch (error) {
+      console.error('Error:', error);
+      // Handle the error as needed
     }
   }
 
