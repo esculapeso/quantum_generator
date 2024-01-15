@@ -17,11 +17,11 @@ jQuery(document).ready(function ($) {
   var upcomingDisplayInterval = 938;
 
   var isMobile = window.innerHeight > window.innerWidth; // checks if portrait mode 
-  var videos = (typeof videosForFocus !== 'undefined' && videosForFocus) ? videosForFocus : null;;
-  var psalmVideoVar = (typeof psalmVideo !== 'undefined' && psalmVideo) ? psalmVideo : null;
-  var view360VideoVar = (typeof view360Video !== 'undefined' && view360Video) ? view360Video : null;
-  var focusImages = (typeof imagesForFocus !== 'undefined' && imagesForFocus) ? imagesForFocus : null;
-  var roundViewImagesVar = (typeof roundViewImages !== 'undefined' && roundViewImages) ? roundViewImages : null;
+  var videos = (typeof videosForFocus !== 'undefined' && videosForFocus) ? videosForFocus : [];
+  var psalmVideoVar = (typeof psalmVideo !== 'undefined' && psalmVideo) ? psalmVideo : [];
+  var view360VideoVar = (typeof view360Video !== 'undefined' && view360Video) ? view360Video : [];
+  var focusImages = (typeof imagesForFocus !== 'undefined' && imagesForFocus) ? imagesForFocus : [];
+  var roundViewImagesVar = (typeof roundViewImages !== 'undefined' && roundViewImages) ? roundViewImages : [];
   var randomBackgroundMiddleVar = (typeof randomBackgroundMiddle !== 'undefined' && randomBackgroundMiddle) ? randomBackgroundMiddle : null;
   var focusTextsVar = (typeof focusText !== 'undefined' && focusText) ? focusText : "";
   var sideTextsOptionsVar = (typeof sideTextsOptions !== 'undefined' && sideTextsOptions) ? sideTextsOptions : [];
