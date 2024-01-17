@@ -513,8 +513,8 @@ jQuery(document).ready(function ($) {
   async function fetchImageUrls(apiUrl) {
     try {
 
-      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-      const response = await fetch(proxyUrl + apiUrl, {
+      // const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+      const response = await fetch(apiUrl, {
         method: 'GET',
         credentials: 'include', // Include cookies in the request
         mode: 'cors', // Set CORS mode explicitly
