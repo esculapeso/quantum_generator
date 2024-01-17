@@ -455,8 +455,7 @@ jQuery(document).ready(function ($) {
 
   function updateFetchedImages(container, urlToFetch) {
     fetchImageUrls(urlToFetch).then(imageUrls => {
-      console.log({imageUrls})
-      let urls = Array.isArray(imageUrls) ? imageUrls.slice(0, 15) : [];
+      let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
       if (container.find('img').length == 0)
         $.each(urls, (i, thumb) => $(`
           <a index="${i}" href="${thumb.href}" target="_blank">
