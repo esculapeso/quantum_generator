@@ -455,8 +455,8 @@ jQuery(document).ready(function ($) {
 
   function updateFetchedImages(urlToFetch) {
     fetchImageUrls(urlToFetch).then(([url, imageUrls]) => {
-      console.log({url, imageUrls})
       const container = $('.imagesFetched.' + url.split('/').pop());
+      console.log({url, imageUrls, selector: '.imagesFetched.' + url.split('/').pop(), container})
       let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
       if (container.find('img').length == 0)
         $.each(urls, (i, thumb) => $(`
