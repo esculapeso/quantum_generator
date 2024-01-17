@@ -454,9 +454,9 @@ jQuery(document).ready(function ($) {
   });
 
   function updateFetchedImages(urlToFetch) {
-    const container = $('.imagesFetched.' + urlToFetch.split('/').pop());
-    console.log({container, urlToFetch})
-    fetchImageUrls(urlToFetch).then(imageUrls => {
+    fetchImageUrls(urlToFetch).then((url, imageUrls) => {
+      console.log({url, imageUrls})
+      const container = $('.imagesFetched.' + url.split('/').pop());
       let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
       if (container.find('img').length == 0)
         $.each(urls, (i, thumb) => $(`
@@ -485,8 +485,8 @@ jQuery(document).ready(function ($) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const imageUrls = await response.json();
-      return imageUrls;
+      return [apiUrl, await response.json()];
+      
     } catch (error) {
       console.error('Error:', error);
       // Handle the error as needed
