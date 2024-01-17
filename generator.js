@@ -385,8 +385,8 @@ jQuery(document).ready(function ($) {
 
     if (transmission.type == "embedLink") $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
     if (transmission.type == "imageFetch") {
-      $(`<div class="imagesFetched"></div>`).appendTo($liveTab)
-      updateFetchedImages($(`#lives-${i + 1} .imagesFetched`), transmission.url)
+      $(`<div class="imagesFetched ${transmission.name}"></div>`).appendTo($liveTab)
+      updateFetchedImages($(`#lives-${i + 1} .imagesFetched.${transmission.name}`), transmission.url)
     };
     if (transmission.type == "coin") {
       $(`<div class="imagesFetched"></div>`).appendTo($liveTab);
