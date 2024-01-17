@@ -454,22 +454,48 @@ jQuery(document).ready(function ($) {
   });
 
   function updateFetchedImages(container, urlToFetch) {
-    fetchImageUrls(urlToFetch).then(imageUrls => {
-      let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
-      if (container.find('img').length == 0)
-        $.each(urls, (i, thumb) => $(`
-          <a index="${i}" href="${thumb.href}" target="_blank">
-            <img index="${i}" src="${thumb.url}" />
-          </a>
-        `).appendTo(container));
-      else
-        $.each(urls, (i, thumb) => {
-          $(`a[index="${i}"]`).attr('href', thumb.href);
-          $(`img[index="${i}"]`).attr('src', thumb.url);
+    fetchImageUrls(urlToFetch)
+      .then((imageUrls) => {
+        const urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
+
+        // Create an object to keep track of existing images
+        const existingImages = {};
+
+        // Iterate over the existing images and store them in the object
+        container.find('a[index], img[index]').each(function () {
+          const index = $(this).attr('index');
+          if (index !== undefined) {
+            existingImages[index] = $(this);
+          }
         });
-    });
-    setTimeout(function () { updateFetchedImages(container, urlToFetch); }, 10000);
+
+        // Update or append images based on existingImages
+        urls.forEach((thumb, i) => {
+          const index = i.toString();
+          if (existingImages[index]) {
+            existingImages[index]
+              .attr('href', thumb.href)
+              .find('img')
+              .attr('src', thumb.url);
+          } else {
+            const newAnchor = $(`<a index="${index}" href="${thumb.href}" target="_blank"></a>`);
+            const newImg = $(`<img index="${index}" src="${thumb.url}" />`);
+            newAnchor.append(newImg);
+            container.append(newAnchor);
+          }
+        });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        // Handle the error as needed
+      });
+
+    // Use setTimeout to periodically call the function
+    setTimeout(() => {
+      updateFetchedImages(container, urlToFetch);
+    }, 10000);
   }
+
 
   async function fetchImageUrls(apiUrl) {
     try {
