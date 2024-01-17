@@ -476,7 +476,14 @@ jQuery(document).ready(function ($) {
 
   async function fetchImageUrls(apiUrl) {
     try {
-      const response = await fetch(apiUrl, {
+
+      // Encode the API URL
+      const encodedUrl = encodeURIComponent(apiUrl);
+
+      // Construct the URL of the proxy service
+      const proxyUrl = `https://whateverorigin.org/get?url=${encodedUrl}`;
+
+      const response = await fetch(proxyUrl, {
         method: 'GET',
         credentials: 'include', // Include cookies in the request
         mode: 'cors', // Set CORS mode explicitly
