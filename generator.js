@@ -454,8 +454,8 @@ jQuery(document).ready(function ($) {
   });
 
   function updateFetchedImages(urlToFetch) {
+    console.log({container, urlToFetch})
     fetchImageUrls(urlToFetch).then(([url, imageUrls]) => {
-      console.log({container, urlToFetch})
       const container = $('.imagesFetched.' + url.split('/').pop());
       let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
       if (container.find('img').length == 0)
@@ -485,8 +485,8 @@ jQuery(document).ready(function ($) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      return [apiUrl, await response.json()];
-      
+      const imageUrls = await response.json();
+      return [apiUrl, imageUrls];
     } catch (error) {
       console.error('Error:', error);
       // Handle the error as needed
