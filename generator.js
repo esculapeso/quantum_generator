@@ -484,6 +484,7 @@ jQuery(document).ready(function ($) {
         mode: 'cors', // Set CORS mode explicitly
         headers: {
           'Origin': '//' + window.location.hostname,
+          'X-Requested-With': 'XMLHttpRequest',
         },
       });
 
