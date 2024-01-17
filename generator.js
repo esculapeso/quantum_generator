@@ -384,9 +384,9 @@ jQuery(document).ready(function ($) {
     var $liveTab = $(`#lives-${i + 1}`);
 
     if (transmission.type == "embedLink") $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
-    if (transmission.type == "imageFetch") {
-      $(`<div class="imagesFetched ${transmission.name}"></div>`).appendTo($liveTab)
-      updateFetchedImages($(`#lives-${i + 1} .imagesFetched.${transmission.name}`), transmission.url)
+    if (transmission.type == "imageFetch") {  
+      $(`<div class="imagesFetched ${transmission.url.split('/').pop()}"></div>`).appendTo($liveTab)
+      updateFetchedImages(transmission.url)
     };
     if (transmission.type == "coin") {
       $(`<div class="imagesFetched"></div>`).appendTo($liveTab);
@@ -453,7 +453,8 @@ jQuery(document).ready(function ($) {
 
   });
 
-  function updateFetchedImages(container, urlToFetch) {
+  function updateFetchedImages(urlToFetch) {
+    const container = $('.imagesFetched.' + urlToFetch.split('/').pop());
     console.log({container, urlToFetch})
     fetchImageUrls(urlToFetch).then(imageUrls => {
       let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
@@ -469,7 +470,7 @@ jQuery(document).ready(function ($) {
           $(`img[index="${i}"]`).attr('src', thumb.url);
         });
     });
-    setTimeout(function () { updateFetchedImages(container, urlToFetch); }, 10000);
+    setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);
   }
 
   async function fetchImageUrls(apiUrl) {
