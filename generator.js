@@ -463,7 +463,7 @@ jQuery(document).ready(function ($) {
           </a>
         `).appendTo(container));
       else
-        $.each(imageUrls.slice(0, 15), (i, thumb) => {
+        $.each(urls, (i, thumb) => {
           $(`a[index="${i}"]`).attr('href', thumb.href);
           $(`img[index="${i}"]`).attr('src', thumb.url);
         });
