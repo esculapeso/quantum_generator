@@ -457,27 +457,9 @@ jQuery(document).ready(function ($) {
 
   function updateFetchedImages(urlToFetch) {
 
-    fetchWithCorsAnywhere(urlToFetch, function(result) {
-      const container = $('.imagesFetched.' + urlToFetch.split('/').pop());
-      let urls = Array.isArray(result.images) ? result.images.slice(0, 15) : [];
-      if (container.find('.image-container').length == 0)
-        $.each(urls, (i, thumb) => {
-          const $div = $(`<div class="image-container"></div>`);
-          $div.css({ 'background-image': `url(${thumb.url})` });
-          const $link = $(`<a index="${i}" href="${thumb.href}" target="_blank"></a>`);
-          $link.append($div);
-          container.append($link);
-        });
-      else
-        $.each(urls, (i, thumb) => {
-          $(`a[index="${i}"]`, container).attr('href', thumb.href);
-          $(`.image-container[index="${i}"]`, container).css({ 'background-image': `url(${thumb.url})` });
-        });
-    });
-
-    // fetchImageUrls(urlToFetch).then(([url, imageUrls]) => {
-    //   const container = $('.imagesFetched.' + url.split('/').pop());
-    //   let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
+    // fetchWithCorsAnywhere(urlToFetch, function(result) {
+    //   const container = $('.imagesFetched.' + urlToFetch.split('/').pop());
+    //   let urls = Array.isArray(result.images) ? result.images.slice(0, 15) : [];
     //   if (container.find('.image-container').length == 0)
     //     $.each(urls, (i, thumb) => {
     //       const $div = $(`<div class="image-container"></div>`);
@@ -492,22 +474,41 @@ jQuery(document).ready(function ($) {
     //       $(`.image-container[index="${i}"]`, container).css({ 'background-image': `url(${thumb.url})` });
     //     });
     // });
+
+    fetchImageUrls(urlToFetch).then(([url, imageUrls]) => {
+      const container = $('.imagesFetched.' + url.split('/').pop());
+      let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
+      if (container.find('.image-container').length == 0)
+        $.each(urls, (i, thumb) => {
+          const $div = $(`<div class="image-container"></div>`);
+          $div.css({ 'background-image': `url(${thumb.url})` });
+          const $link = $(`<a index="${i}" href="${thumb.href}" target="_blank"></a>`);
+          $link.append($div);
+          container.append($link);
+        });
+      else
+        $.each(urls, (i, thumb) => {
+          $(`a[index="${i}"]`, container).attr('href', thumb.href);
+          $(`.image-container[index="${i}"]`, container).css({ 'background-image': `url(${thumb.url})` });
+        });
+    });
+    
     setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);
   }
 
-  function fetchWithCorsAnywhere(url, printResult) {
-    var corsAnywhereUrl = 'https://cors-anywhere.herokuapp.com/';
-    var x = new XMLHttpRequest();
-    x.open('GET', corsAnywhereUrl + url);
-    x.onload = x.onerror = function() {
-      printResult(
-        'GET ' + url + '\n' +
-        x.status + ' ' + x.statusText + '\n\n' +
-        (x.responseText || '')
-      );
-    };
-    x.send();
-  }
+  // function fetchWithCorsAnywhere(url, printResult) {
+  //   var corsAnywhereUrl = 'https://cors-anywhere.herokuapp.com/';
+  //   var x = new XMLHttpRequest();
+  //   x.open('GET', corsAnywhereUrl + url);
+  //   x.onload = x.onerror = function() {
+  //     printResult(
+  //       'GET ' + url + '\n' +
+  //       x.status + ' ' + x.statusText + '\n\n' +
+  //       (x.responseText || '')
+  //     );
+  //   };
+  //   x.send();
+  // }
 
   async function fetchImageUrls(apiUrl) {
     try {
