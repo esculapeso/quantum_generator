@@ -518,10 +518,9 @@ jQuery(document).ready(function ($) {
         method: 'GET',
         credentials: 'include', // Include cookies in the request
         mode: 'cors', // Set CORS mode explicitly
-        // headers: {
-        //   'Origin': '//' + window.location.hostname,
-        //   'X-Reques ted-With': 'XMLHttpRequest',
-        // },
+        headers: {
+          'Origin': '//' + window.location.hostname,
+        },
       });
 
       if (!response.ok) {
