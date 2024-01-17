@@ -384,7 +384,7 @@ jQuery(document).ready(function ($) {
     var $liveTab = $(`#lives-${i + 1}`);
 
     if (transmission.type == "embedLink") $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
-    if (transmission.type == "imageFetch") {  
+    if (transmission.type == "imageFetch") {
       $(`<div class="imagesFetched ${transmission.url.split('/').pop()}"></div>`).appendTo($liveTab)
       updateFetchedImages(transmission.url)
     };
@@ -457,18 +457,18 @@ jQuery(document).ready(function ($) {
     fetchImageUrls(urlToFetch).then(([url, imageUrls]) => {
       const container = $('.imagesFetched.' + url.split('/').pop());
       let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
-      if (container.find('img').length == 0)
-      $.each(urls, (i, thumb) => {
-        const $div = $(`<div class="image-container"></div>`);
-        $div.css({'background-image': `url(${thumb.url})`});
-        const $link = $(`<a index="${i}" href="${thumb.href}" target="_blank"></a>`);
-        $link.append($div);
-        container.append($link);
-      });
+      if (container.find('.image-container').length == 0)
+        $.each(urls, (i, thumb) => {
+          const $div = $(`<div class="image-container"></div>`);
+          $div.css({ 'background-image': `url(${thumb.url})` });
+          const $link = $(`<a index="${i}" href="${thumb.href}" target="_blank"></a>`);
+          $link.append($div);
+          container.append($link);
+        });
       else
         $.each(urls, (i, thumb) => {
           $(`a[index="${i}"]`, container).attr('href', thumb.href);
-          $(`.image-container[index="${i}"]`, container).css({'background-image': `url(${thumb.url})`});
+          $(`.image-container[index="${i}"]`, container).css({ 'background-image': `url(${thumb.url})` });
         });
     });
     setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);
