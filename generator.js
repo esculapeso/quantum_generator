@@ -397,6 +397,8 @@ jQuery(document).ready(function ($) {
       fetchImageUrls(transmission.url).then(coinsData => {
         updateCoin(coinsData);
       });
+
+
     };
     if (transmission.type == "widget") {
       $(`.cryptoPrices${transmission.selector}`).show().appendTo($liveTab);
@@ -454,9 +456,10 @@ jQuery(document).ready(function ($) {
   });
 
   function updateFetchedImages(urlToFetch) {
-    fetchImageUrls(urlToFetch).then(([url, imageUrls]) => {
-      const container = $('.imagesFetched.' + url.split('/').pop());
-      let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
+
+    fetchWithCorsAnywhere(urlToFetch, function(result) {
+      const container = $('.imagesFetched.' + urlToFetch.split('/').pop());
+      let urls = Array.isArray(result.images) ? result.images.slice(0, 15) : [];
       if (container.find('.image-container').length == 0)
         $.each(urls, (i, thumb) => {
           const $div = $(`<div class="image-container"></div>`);
@@ -471,7 +474,39 @@ jQuery(document).ready(function ($) {
           $(`.image-container[index="${i}"]`, container).css({ 'background-image': `url(${thumb.url})` });
         });
     });
+
+    // fetchImageUrls(urlToFetch).then(([url, imageUrls]) => {
+    //   const container = $('.imagesFetched.' + url.split('/').pop());
+    //   let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
+    //   if (container.find('.image-container').length == 0)
+    //     $.each(urls, (i, thumb) => {
+    //       const $div = $(`<div class="image-container"></div>`);
+    //       $div.css({ 'background-image': `url(${thumb.url})` });
+    //       const $link = $(`<a index="${i}" href="${thumb.href}" target="_blank"></a>`);
+    //       $link.append($div);
+    //       container.append($link);
+    //     });
+    //   else
+    //     $.each(urls, (i, thumb) => {
+    //       $(`a[index="${i}"]`, container).attr('href', thumb.href);
+    //       $(`.image-container[index="${i}"]`, container).css({ 'background-image': `url(${thumb.url})` });
+    //     });
+    // });
     setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);
+  }
+
+  function fetchWithCorsAnywhere(url, printResult) {
+    var corsAnywhereUrl = 'https://cors-anywhere.herokuapp.com/';
+    var x = new XMLHttpRequest();
+    x.open('GET', corsAnywhereUrl + url);
+    x.onload = x.onerror = function() {
+      printResult(
+        'GET ' + url + '\n' +
+        x.status + ' ' + x.statusText + '\n\n' +
+        (x.responseText || '')
+      );
+    };
+    x.send();
   }
 
   async function fetchImageUrls(apiUrl) {
@@ -482,10 +517,10 @@ jQuery(document).ready(function ($) {
         method: 'GET',
         credentials: 'include', // Include cookies in the request
         mode: 'cors', // Set CORS mode explicitly
-        headers: {
-          'Origin': '//' + window.location.hostname,
-          'X-Requested-With': 'XMLHttpRequest',
-        },
+        // headers: {
+        //   'Origin': '//' + window.location.hostname,
+        //   'X-Reques ted-With': 'XMLHttpRequest',
+        // },
       });
 
       if (!response.ok) {
