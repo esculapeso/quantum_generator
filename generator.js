@@ -385,11 +385,11 @@ jQuery(document).ready(function ($) {
 
     if (transmission.type == "embedLink") $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
     if (transmission.type == "imageFetch") {
-      $imagesFetched = $(`<div class="imagesFetched"></div>`).appendTo($liveTab);
-      updateFetchedImages($imagesFetched, transmission.url)
+      $(`<div class="imagesFetched"></div>`).appendTo($liveTab)
+      updateFetchedImages($(`#lives-${i + 1} .imagesFetched`), transmission.url)
     };
     if (transmission.type == "coin") {
-      $imagesFetched = $(`<div class="imagesFetched"></div>`).appendTo($liveTab);
+      $(`<div class="imagesFetched"></div>`).appendTo($liveTab);
       generateCoin($liveTab);
       generateTokensContent($liveTab, "parent");
       generateTokensContent($liveTab, "child");
