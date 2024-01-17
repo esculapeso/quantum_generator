@@ -458,15 +458,17 @@ jQuery(document).ready(function ($) {
       const container = $('.imagesFetched.' + url.split('/').pop());
       let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
       if (container.find('img').length == 0)
-        $.each(urls, (i, thumb) => $(`
-          <a index="${i}" href="${thumb.href}" target="_blank">
-            <img index="${i}" src="${thumb.url}" />
-          </a>
-        `).appendTo(container));
+      $.each(urls, (i, thumb) => {
+        const $div = $(`<div class="image-container"></div>`);
+        $div.css({'background-image': `url(${thumb.url})`});
+        const $link = $(`<a index="${i}" href="${thumb.href}" target="_blank"></a>`);
+        $link.append($div);
+        container.append($link);
+      });
       else
         $.each(urls, (i, thumb) => {
           $(`a[index="${i}"]`, container).attr('href', thumb.href);
-          $(`img[index="${i}"]`, container).attr('src', thumb.url);
+          $(`.image-container[index="${i}"]`, container).css({'background-image': `url(${thumb.url})`});
         });
     });
     setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);

@@ -427,6 +427,11 @@
     grid-template-columns: auto auto auto;
   }
 
+  .imagesFetched .image-container {
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
   .aspect-ratio {
     position: relative;
     width: 100%;
