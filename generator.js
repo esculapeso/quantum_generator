@@ -574,7 +574,6 @@ jQuery(document).ready(function ($) {
 
     $(".jesusLang").hide();
     let $checkedMantras = $(".jesusLang:has(input:checked)").show()
-    console.log({ checkedMantras })
     jesusMantraTextsForAudio = [];
     var repeatAmount = $('.jesusAmountTextbox').val();
     var number = parseInt(repeatAmount, 10);
