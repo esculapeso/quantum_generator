@@ -377,83 +377,101 @@ jQuery(document).ready(function ($) {
   $("#lives").tabs().appendTo($liveSection);
   $(`#lives ul li`).hide();
 
+  // const firstLivesTabSelector = `#lives ul li:has(a[href='${firstLivesTabSelector}'])`;
+  // $(firstLivesTabSelector).show().find('a').html(`⏵︎`);
+
+  // $(document).on('click', firstLivesTabSelector, function () {
+  //   $(this).html(`⏸︎`)
+  //   //$("#tabs-2 a").trigger('click');
+  // });
+
   var transmissions = liveTransmissionsVar.filter((s) => s.page == pageType)
   $.each(transmissions, (i, transmission) => {
-    $(`#lives ul li:has(a[href='#lives-${i + 1}'])`).show().find('a').html(transmission.name);
 
-    var $liveTab = $(`#lives-${i + 1}`);
+    const currentLivesTabSelector = `#lives-${i + 1}`;
+    $(`#lives ul li:has(a[href='${currentLivesTabSelector}'])`).show().find('a').html(transmission.name);
+    var $liveTab = $(currentLivesTabSelector);
 
-    if (transmission.type == "embedLink") $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
-    if (transmission.type == "imageFetch") {
-      $(`<div class="imagesFetched ${transmission.url.split('/').pop()}"></div>`).appendTo($liveTab)
-      updateFetchedImages(transmission.url)
-    };
-    if (transmission.type == "coin") {
-      $(`<div class="imagesFetched"></div>`).appendTo($liveTab);
-      generateCoin($liveTab);
-      generateTokensContent($liveTab, "parent");
-      generateTokensContent($liveTab, "child");
+    switch (transmission.type) {
+      case "embedLink":
+        $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
+        break;
 
-      fetchImageUrls(transmission.url).then(coinsData => {
-        updateCoin(coinsData);
-      });
+      case "imageFetch":
+        $(`<div class="imagesFetched ${transmission.url.split('/').pop()}"></div>`).appendTo($liveTab);
+        updateFetchedImages(transmission.url);
+        break;
 
+      case "coin":
+        $(`<div class="imagesFetched"></div>`).appendTo($liveTab);
+        generateCoin($liveTab);
+        generateTokensContent($liveTab, "parent");
+        generateTokensContent($liveTab, "child");
 
-    };
-    if (transmission.type == "widget") {
-      $(`.cryptoPrices${transmission.selector}`).show().appendTo($liveTab);
-    };
+        fetchImageUrls(transmission.url).then(coinsData => {
+          updateCoin(coinsData);
+        });
+        break;
 
-    function generateTokensContent(container, type) {
-      $coinInfoContainer = $(`<div class="coinInfoContainer ${type}"></div>`).appendTo(container);
-      $coinHeader = $(`<div class="coinHeader">${type.toUpperCase()}</div>`).appendTo($coinInfoContainer);
-      $coinBody = $(`<div class="coinBody"></div>`).appendTo($coinInfoContainer);
-      $coinImage = $(`<div class="coinImage"><img /></div>`).appendTo($coinBody);
-      $coinInfo = $(`<div class="coinInfo"></div>`).appendTo($coinBody);
-      $coinName = $(`<div class="coinName"></div>`).appendTo($coinInfo);
-      $coinSymbol = $(`<div class="coinSymbol"></div>`).appendTo($coinInfo);
+      case "widget":
+        $(`.cryptoPrices${transmission.selector}`).show().appendTo($liveTab);
+        break;
+
+      default:
+        // Handle unknown transmission type
+        break;
     }
-
-    function generateCoin(container) {
-      $mainCoin = $(`<div class="coincontainer coin2" style="height: 230px;"></div>`).appendTo(container);
-      $tridiv = $(`<div id="tridiv"></div>`).appendTo($mainCoin);
-      $scene = $(`<div class="scene"></div>`).appendTo($tridiv);
-      $shape = $(`<div class="shape cylinder-2 cyl-2"></div>`).appendTo($scene);
-
-      $(`<div class="face bm" style="background-image: url('');"><div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.1);"></div></div>`).appendTo($shape);
-      $(`<div class="face tp" style="background-image: url('');"><div class="photon-shader obverse"></div></div>`).appendTo($shape);
-      $.each([0.1, 0.125, 0.16, 0.21, 0.267, 0.325, 0.38, 0.43, 0.475, 0.498, 0.498, 0.475, 0.44, 0.39, 0.333, 0.275, 0.22, 0.17, 0.125, 0.1], (i, alpha) => {
-        $(`<div class="face sidecoin s${i}"><div class="photon-shader" style="background-color: rgba(0, 0, 0, ${alpha});"></div></div>`).appendTo($shape);
-      });
-    }
-
-    function updateCoin(list) {
-      let revItem = list[getRandomArrayIndex(list)];
-      let obvItem = list[getRandomArrayIndex(list)];
-      if (revItem && obvItem) {
-        getTokenData(revItem.id, '.bm', 'parent');
-        getTokenData(obvItem.id, '.tp', 'child');
-      }
-      setTimeout(function () { updateCoin(list); }, 60000);
-    }
-
-    function getRandomArrayIndex(array) {
-      var numb = Math.floor(Math.random() * array.length);
-      return numb;
-    }
-
-    function getTokenData(coinId, faceSelector, type) {
-      fetchImageUrls(`https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false`).then(coinData => {
-        let imageUrl = coinData.image.large;
-        $(`.face${faceSelector}`).css('background-image', `url('${imageUrl}')`)
-        $(`.${type} .coinImage img`).attr('src', `${imageUrl}`)
-        $(`.${type} .coinName`).html(coinData.name);
-        $(`.${type} .coinSymbol`).html(coinData.symbol);
-      });
-    }
-
 
   });
+
+
+  function generateTokensContent(container, type) {
+    $coinInfoContainer = $(`<div class="coinInfoContainer ${type}"></div>`).appendTo(container);
+    $coinHeader = $(`<div class="coinHeader">${type.toUpperCase()}</div>`).appendTo($coinInfoContainer);
+    $coinBody = $(`<div class="coinBody"></div>`).appendTo($coinInfoContainer);
+    $coinImage = $(`<div class="coinImage"><img /></div>`).appendTo($coinBody);
+    $coinInfo = $(`<div class="coinInfo"></div>`).appendTo($coinBody);
+    $coinName = $(`<div class="coinName"></div>`).appendTo($coinInfo);
+    $coinSymbol = $(`<div class="coinSymbol"></div>`).appendTo($coinInfo);
+  }
+
+  function generateCoin(container) {
+    $mainCoin = $(`<div class="coincontainer coin2" style="height: 230px;"></div>`).appendTo(container);
+    $tridiv = $(`<div id="tridiv"></div>`).appendTo($mainCoin);
+    $scene = $(`<div class="scene"></div>`).appendTo($tridiv);
+    $shape = $(`<div class="shape cylinder-2 cyl-2"></div>`).appendTo($scene);
+
+    $(`<div class="face bm" style="background-image: url('');"><div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.1);"></div></div>`).appendTo($shape);
+    $(`<div class="face tp" style="background-image: url('');"><div class="photon-shader obverse"></div></div>`).appendTo($shape);
+    $.each([0.1, 0.125, 0.16, 0.21, 0.267, 0.325, 0.38, 0.43, 0.475, 0.498, 0.498, 0.475, 0.44, 0.39, 0.333, 0.275, 0.22, 0.17, 0.125, 0.1], (i, alpha) => {
+      $(`<div class="face sidecoin s${i}"><div class="photon-shader" style="background-color: rgba(0, 0, 0, ${alpha});"></div></div>`).appendTo($shape);
+    });
+  }
+
+  function updateCoin(list) {
+    let revItem = list[getRandomArrayIndex(list)];
+    let obvItem = list[getRandomArrayIndex(list)];
+    if (revItem && obvItem) {
+      getTokenData(revItem.id, '.bm', 'parent');
+      getTokenData(obvItem.id, '.tp', 'child');
+    }
+    setTimeout(function () { updateCoin(list); }, 60000);
+  }
+
+  function getRandomArrayIndex(array) {
+    var numb = Math.floor(Math.random() * array.length);
+    return numb;
+  }
+
+  function getTokenData(coinId, faceSelector, type) {
+    fetchImageUrls(`https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false`).then(coinData => {
+      let imageUrl = coinData.image.large;
+      $(`.face${faceSelector}`).css('background-image', `url('${imageUrl}')`)
+      $(`.${type} .coinImage img`).attr('src', `${imageUrl}`)
+      $(`.${type} .coinName`).html(coinData.name);
+      $(`.${type} .coinSymbol`).html(coinData.symbol);
+    });
+  }
 
   function updateFetchedImages(urlToFetch) {
 
@@ -492,7 +510,7 @@ jQuery(document).ready(function ($) {
           $(`.image-container[index="${i}"]`, container).css({ 'background-image': `url(${thumb.url})` });
         });
     });
-    
+
     setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);
   }
 
@@ -556,11 +574,13 @@ jQuery(document).ready(function ($) {
 
     $(".jesusLang").hide();
     let $checkedMantras = $(".jesusLang:has(input:checked)").show()
-
+    console.log({ checkedMantras })
     jesusMantraTextsForAudio = [];
     var repeatAmount = $('.jesusAmountTextbox').val();
     var number = parseInt(repeatAmount, 10);
+    console.log({ repeatAmount, number })
     $checkedMantras.each((i, mantra) => {
+      console.log({ mantra })
       var lang = $(mantra).find('input').attr('id');
       var text = $(mantra).find('label[for]').text();
       var imageUrl = $(mantra).find('img.imagePreview').attr('src');
