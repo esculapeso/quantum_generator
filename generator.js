@@ -537,7 +537,7 @@ jQuery(document).ready(function ($) {
         credentials: 'include', // Include cookies in the request
         mode: 'cors', // Set CORS mode explicitly
         headers: {
-          'Origin': '//' + window.location.hostname,
+          'Origin': window.location.protocol + '//' + window.location.hostname,
         },
       });
 
