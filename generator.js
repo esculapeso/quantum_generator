@@ -498,7 +498,7 @@ jQuery(document).ready(function ($) {
       let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
       if (container.find('.image-container').length == 0)
         $.each(urls, (i, thumb) => {
-          const $div = $(`<div class="image-container"></div>`);
+          const $div = $(`<div index="${i}" class="image-container"></div>`);
           $div.css({ 'background-image': `url(${thumb.url})` });
           const $link = $(`<a index="${i}" href="${thumb.href}" target="_blank"></a>`);
           $link.append($div);
