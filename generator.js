@@ -573,6 +573,7 @@ jQuery(document).ready(function ($) {
   var jesusMantraTextsForAudio = [];
 
   $(document).on('click', '.jesusStartButton', function () {
+    console.log("CLICKED")
 
     $(".jesusLang").hide();
     let $checkedMantras = $(".jesusLang:has(input:checked)").show()
