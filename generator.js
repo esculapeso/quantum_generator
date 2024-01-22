@@ -498,7 +498,7 @@ jQuery(document).ready(function ($) {
       let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
       if (container.find('.image-container').length == 0)
         $.each(urls, (i, thumb) => {
-          const $div = $(`<div index="${i}" class="image-container"></div>`);
+          const $div = $(`<img index="${i}" src="${thumb.url}" class="image-container" />`);
           $div.css({ 'background-image': `url(${thumb.url})` });
           const $link = $(`<a index="${i}" href="${thumb.href}" target="_blank"></a>`);
           $link.append($div);
@@ -507,9 +507,11 @@ jQuery(document).ready(function ($) {
       else
         $.each(urls, (i, thumb) => {
           $(`a[index="${i}"]`, container).attr('href', thumb.href);
-          $(`.image-container[index="${i}"]`, container).css({ 'background-image': `url(${thumb.url})` });
+          const image = $(`.image-container[index="${i}"]`, container);
+          const old_image_url = image.attr('src');
+          $(`.image-container[index="${i}"]`, container).attr('src', thumb.url).css({ 'background-image': `url(${old_image_url})` });
         });
-    });
+    }); 
 
     setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);
   }
