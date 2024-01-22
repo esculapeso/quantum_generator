@@ -534,11 +534,11 @@ jQuery(document).ready(function ($) {
       // const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
       const response = await fetch(apiUrl, {
         method: 'GET',
-        credentials: 'include', // Include cookies in the request
-        mode: 'cors', // Set CORS mode explicitly
-        headers: {
-          'Origin': window.location.protocol + '//' + window.location.hostname,
-        },
+        // credentials: 'include', // Include cookies in the request
+        // mode: 'cors', // Set CORS mode explicitly
+        // headers: {
+        //   'Origin': window.location.protocol + '//' + window.location.hostname,
+        // },
       });
 
       if (!response.ok) {
