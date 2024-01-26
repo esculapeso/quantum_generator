@@ -367,10 +367,15 @@ jQuery(document).ready(function ($) {
 
   $(`<div class="hideLivePanel">
         <input class="hideLiveButton button" type="button" value="Live"  />
+        <input class="hideMantraButton button" type="button" value="Live"  />
       </div>`).appendTo($liveSection);
 
   $(document).on('click', '.hideLiveButton', function () {
     $('#lives').toggle();
+  });
+
+  $(document).on('click', '.hideMantraButton', function () {
+    $('.hideMantraButton').toggle();
   });
 
 
@@ -426,7 +431,7 @@ jQuery(document).ready(function ($) {
 
   isRotating = true;
   rotationCounter = 0;
-  
+
   function rotateLiveTransmissions() {
     if (isRotating) {
       liveTabs = $('#lives ul li.is_transmission');
@@ -435,7 +440,7 @@ jQuery(document).ready(function ($) {
       setTimeout(rotateLiveTransmissions, 1000);
     }
   }
-  
+
   rotateLiveTransmissions();
 
 
@@ -507,7 +512,7 @@ jQuery(document).ready(function ($) {
           const old_image_url = image.attr('src');
           $(`.image-container[index="${i}"]`, container).attr('src', thumb.url).css({ 'background-image': `url(${old_image_url})` });
         });
-    }); 
+    });
 
     setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);
   }
@@ -537,7 +542,7 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  var $jesusLitania = $('<div class="jesusLitania" ></div>').appendTo($liveSection);
+  var $jesusLitania = $('<div class="jesusLitania" ></div>').hide().appendTo($liveSection);
   var $affStartButton = $(`<input type="number" class="jesusAmountTextbox" value="4" />`).appendTo($jesusLitania);
   var $affStartButton = $(`<input type="button" class="jesusStartButton" value="Start" />`).appendTo($jesusLitania);
 
@@ -624,7 +629,7 @@ jQuery(document).ready(function ($) {
     `).appendTo($jesusLanguages);
   });
 
-  var $videoChooserSection = $('<div class="videoChooserSection" ></div>').appendTo($quadrupolePanel);
+  var $videoChooserSection = $('<div class="videoChooserSection" ></div>').hide().appendTo($quadrupolePanel);
   $('<input class="hideOptionsButton button" type="button" altvalue="→" value="←"  />').appendTo($videoChooserSection);
 
   $(document).on('click', '.hideOptionsButton', function () {
