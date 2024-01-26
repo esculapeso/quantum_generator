@@ -389,7 +389,7 @@ jQuery(document).ready(function ($) {
   $.each(transmissions, (i, transmission) => {
 
     const currentLivesTabSelector = `#lives-${i + 1}`;
-    $(`#lives ul li:has(a[href='${currentLivesTabSelector}'])`).show().find('a').html(transmission.name);
+    $(`#lives ul li:has(a[href='${currentLivesTabSelector}'])`).show().find('a').html(transmission.name).addClass("is_transmission");
     var $liveTab = $(currentLivesTabSelector);
 
     switch (transmission.type) {
@@ -423,6 +423,20 @@ jQuery(document).ready(function ($) {
     }
 
   });
+
+  isRotating = true;
+  rotationCounter = 0;
+  
+  function rotateLiveTransmissions() {
+    if (isRotating) {
+      liveTabs = $('#lives ul li.is_transmission');
+      rotationCounter = (rotationCounter + 1) % liveTabs.length;
+      liveTabs.eq(rotationCounter).trigger('click');
+      setTimeout(rotateLiveTransmissions, 1000);
+    }
+  }
+  
+  rotateLiveTransmissions();
 
 
   function generateTokensContent(container, type) {
@@ -475,24 +489,6 @@ jQuery(document).ready(function ($) {
 
   function updateFetchedImages(urlToFetch) {
 
-    // fetchWithCorsAnywhere(urlToFetch, function(result) {
-    //   const container = $('.imagesFetched.' + urlToFetch.split('/').pop());
-    //   let urls = Array.isArray(result.images) ? result.images.slice(0, 15) : [];
-    //   if (container.find('.image-container').length == 0)
-    //     $.each(urls, (i, thumb) => {
-    //       const $div = $(`<div class="image-container"></div>`);
-    //       $div.css({ 'background-image': `url(${thumb.url})` });
-    //       const $link = $(`<a index="${i}" href="${thumb.href}" target="_blank"></a>`);
-    //       $link.append($div);
-    //       container.append($link);
-    //     });
-    //   else
-    //     $.each(urls, (i, thumb) => {
-    //       $(`a[index="${i}"]`, container).attr('href', thumb.href);
-    //       $(`.image-container[index="${i}"]`, container).css({ 'background-image': `url(${thumb.url})` });
-    //     });
-    // });
-
     fetchImageUrls(urlToFetch).then(([url, imageUrls]) => {
       const container = $('.imagesFetched.' + url.split('/').pop());
       let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
@@ -515,20 +511,6 @@ jQuery(document).ready(function ($) {
 
     setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);
   }
-
-  // function fetchWithCorsAnywhere(url, printResult) {
-  //   var corsAnywhereUrl = 'https://cors-anywhere.herokuapp.com/';
-  //   var x = new XMLHttpRequest();
-  //   x.open('GET', corsAnywhereUrl + url);
-  //   x.onload = x.onerror = function() {
-  //     printResult(
-  //       'GET ' + url + '\n' +
-  //       x.status + ' ' + x.statusText + '\n\n' +
-  //       (x.responseText || '')
-  //     );
-  //   };
-  //   x.send();
-  // }
 
   async function fetchImageUrls(apiUrl) {
     try {
