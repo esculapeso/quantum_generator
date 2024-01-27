@@ -629,7 +629,7 @@ jQuery(document).ready(function ($) {
     `).appendTo($jesusLanguages);
   });
 
-  var $videoChooserSection = $('<div class="videoChooserSection" ></div>').hide().appendTo($quadrupolePanel);
+  var $videoChooserSection = $('<div class="videoChooserSection" ></div>').appendTo($quadrupolePanel);
   $('<input class="hideOptionsButton button" type="button" altvalue="→" value="←"  />').appendTo($videoChooserSection);
 
   $(document).on('click', '.hideOptionsButton', function () {
@@ -661,7 +661,7 @@ jQuery(document).ready(function ($) {
   /**********************
           TABS 
   ***********************/
-  $("#tabs").tabs().appendTo($videoChooserSection);
+  $("#tabs").tabs().hide().appendTo($videoChooserSection);
 
   var initFocusText = focusTextsVar;
   var initCaptionText = "Quantum";
