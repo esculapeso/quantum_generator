@@ -1,27 +1,32 @@
 let focusText = "Orgies";
 
 let videosForFocus = [
-          { id: "5Lzi4T6mu0U", name: "Autogenic training EN" },
-          { id: "rCcFkKFB0Ak", name: "Autogenic training EN" },
-          { id: "t2wvQCPxOXM", name: "Autogenic training EN" },
-          { id: "E_sdaDwa2Ek", name: "Autogenic training EN Male" },
-          { id: "MFxlK1ZvOmA", name: "Autogenic training EN Male" },
-          { id: "SirqUpc0iKw", name: "Autogenic training EN" },
-          { id: "ImqheIyp3dA", name: "Autogenic training DE" },
-          { id: "-tlo6lPYTFw", name: "Autogenic training DE" },
-          { id: "zJYTL4Wi_to", name: "Autogenic training DE" },
-          { id: "Bt6FF2Z5XU4", name: "Autogenic training PL" },
-          { id: "gxxI_sxkKs0", name: "Autogenic training PL" },
-          { id: "Vr_qIxpA6A4", name: "Autogenic training PL" },
-          { id: "fdniUMRmpEM", name: "Autogenic training PL Male" },
-          { id: "u4pHFI73tlo", name: "Autogenic training PL Male" },
-          { id: "Qdluuj-hRNM", name: "Rush Destiny" },
-        ];
+	{ id: "5Lzi4T6mu0U", name: "Autogenic training EN" },
+	{ id: "rCcFkKFB0Ak", name: "Autogenic training EN" },
+	{ id: "t2wvQCPxOXM", name: "Autogenic training EN" },
+	{ id: "E_sdaDwa2Ek", name: "Autogenic training EN Male" },
+	{ id: "MFxlK1ZvOmA", name: "Autogenic training EN Male" },
+	{ id: "SirqUpc0iKw", name: "Autogenic training EN" },
+	{ id: "ImqheIyp3dA", name: "Autogenic training DE" },
+	{ id: "-tlo6lPYTFw", name: "Autogenic training DE" },
+	{ id: "zJYTL4Wi_to", name: "Autogenic training DE" },
+	{ id: "Bt6FF2Z5XU4", name: "Autogenic training PL" },
+	{ id: "gxxI_sxkKs0", name: "Autogenic training PL" },
+	{ id: "Vr_qIxpA6A4", name: "Autogenic training PL" },
+	{ id: "fdniUMRmpEM", name: "Autogenic training PL Male" },
+	{ id: "u4pHFI73tlo", name: "Autogenic training PL Male" },
+	{ id: "Qdluuj-hRNM", name: "Jennifer Rush Destiny" },
+	{ id: "Ha4Md2ov6eM", name: "Laura Branigan Forever Young London 1986" },
+	{ id: "ypWWYHPd43Y", name: "Laura Branigan Power of Love" },
+];
 
 let imagesForFocus =  [
-		{ caption: "Cleopatra", filepath: "https://orgie.omreiki.uk/wp-content/uploads/2024/01/cleo_warm.png" },
-		{ caption: "Red Cleopatra", filepath: "https://orgie.omreiki.uk/wp-content/uploads/2024/01/cleo_warm_red.png" },
-        ];
+	{ caption: "Cleopatra", filepath: "https://orgie.omreiki.uk/wp-content/uploads/2024/01/cleo_warm.png" },
+	{ caption: "Red Cleopatra", filepath: "https://orgie.omreiki.uk/wp-content/uploads/2024/01/cleo_warm_red.png" },
+	{ category:"Reiki Symbols", caption: "Cho Ku Rei", filepath: "https://omreiki.uk/wp-content/uploads/2022/07/chokurei.gif" },
+	{ category:"Reiki Symbols", caption: "Sei He Ki", filepath: "https://omreiki.uk/wp-content/uploads/2022/07/seiheki.gif" },
+	{ category:"Reiki Symbols", caption: "Li Nga", filepath: "https://omreiki.uk/wp-content/uploads/2022/12/linga.gif" },
+];
 
 
 let defaultSession = [
