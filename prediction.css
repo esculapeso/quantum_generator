@@ -1,13 +1,27 @@
-  /* Add your CSS code here.
+  /* BARD THEME */
 
-  For example:
-  .example {
-      color: red;
+  .elementor-section.elementor-section-boxed > .elementor-container {
+    max-width: unset !important;
+  }
+  
+  .sidebar-alt, .main-content, .featured-slider-area, #featured-links, .page-content select, .page-content input, .page-content textarea {
+    background-color: unset !important;
+  }
+  
+  .header-logo a, .site-description, .header-socials-icon {
+      color: #5e2900;
+  }
+  
+  #main-nav {
+      background-color: #f7ceb4;
+  
+  }
+  
+  #wpadminbar {
+    position: static;
   }
 
-  For brushing up on your CSS knowledge, check out http://www.w3schools.com/css/css_syntax.asp
-
-  End of comment */
+   /* END BARD THEME */
 
   body * {
     font-family: georgia;
@@ -18,14 +32,14 @@
   }
 
   .main-container {
-    width: 100%!important;
+    width: 100% !important;
   }
 
   .quadrupoleImage * {
     color: #2e0701;
     font-size: 1.9vh;
     font-weight: bold;
-}
+  }
 
   .videoChooserSection input,
   .videoChooserSection select {
@@ -113,7 +127,7 @@
     margin: auto;
     margin-bottom: 30px;
   }
-  
+
   .quadrupoleImage.pyramidImage {
     width: 166vh;
     background-image: url(https://esculap.org/wp-content/uploads/2022/12/TherapistImage.png);
@@ -250,23 +264,23 @@
   }
 
   .generatorText.pyramidPerson {
-    width: 12vh!important;
-    font-size: 3.6vh!important;
+    width: 12vh !important;
+    font-size: 3.6vh !important;
     line-height: 1 !important;
   }
 
   .generatorText.pyramidPerson.focusText {
-      transform: translate(-50%, -50%);
-      top: 25vh !important;
-      bottom: unset !important;
-      left: 20vh;
+    transform: translate(-50%, -50%);
+    top: 25vh !important;
+    bottom: unset !important;
+    left: 20vh;
   }
 
   .generatorText.pyramidPerson.captionText {
-      transform: translate(50%, 50%);
-      top: unset !important;
-      bottom: 25vh !important;
-      right: 20vh;
+    transform: translate(50%, 50%);
+    top: unset !important;
+    bottom: 25vh !important;
+    right: 20vh;
   }
 
   .captionText {
@@ -281,19 +295,19 @@
     font-size: 15vh !important;
     color: #ff9f58;
     -webkit-text-stroke: 2px #361700;
-	  line-height: 1.2;
+    line-height: 1.2;
   }
 
   .sideText.left {
     bottom: 0;
     left: 7vh;
-	  transform: translateX(-50%);
+    transform: translateX(-50%);
   }
 
   .sideText.right {
     right: 7vh;
     top: 0;
-	  transform: translateX(50%);
+    transform: translateX(50%);
   }
 
   .sideText.left.pyramidPerson {
@@ -318,7 +332,8 @@
     margin: 10px 5px 10px 0px;
   }
 
-  .imageInnerDiv, .imageInnerBgDiv {
+  .imageInnerDiv,
+  .imageInnerBgDiv {
     position: absolute;
     z-index: 10;
     width: 100%;
@@ -406,7 +421,7 @@
     overflow: hidden;
   }
 
-  .liveSection.pyramidPerson{
+  .liveSection.pyramidPerson {
     width: calc((100% - 143vh)/2) !important;
   }
 
@@ -433,7 +448,7 @@
     padding-bottom: 56.25%;
     overflow: hidden;
   }
-  
+
   .imagesFetched .image-container {
     position: absolute;
     top: 0;
@@ -454,7 +469,7 @@
 
 
   .aspect-ratio iframe {
-    position:absolute;
+    position: absolute;
     left: 0;
     top: 0;
     height: 100%;
@@ -762,7 +777,7 @@
     margin-bottom: 10px;
   }
 
-  .gradientSettings > * {
+  .gradientSettings>* {
     width: 70px;
   }
 
@@ -884,7 +899,7 @@
     transform: translate(-50%, -50%);
     max-width: unset;
     max-height: unset;
-}
+  }
 
   .videoForeground {
     position: absolute;
@@ -1105,23 +1120,23 @@
     height: calc(100vh - 24px);
   }
 
-  #tabs > div {
+  #tabs>div {
     overflow: auto;
   }
 
-  #tabs > div::-webkit-scrollbar {
+  #tabs>div::-webkit-scrollbar {
     width: 8px;
   }
 
-  #tabs > div::-webkit-scrollbar-track {
-      border-radius: 8px;
-      background-color: #fbe6e6;
-      border: 1px solid #edc4c4;
+  #tabs>div::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: #fbe6e6;
+    border: 1px solid #edc4c4;
   }
 
-  #tabs > div::-webkit-scrollbar-thumb {
-      border-radius: 8px;
-      background-color: #d55959;
+  #tabs>div::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: #d55959;
   }
 
   .psalmText .wiki {
@@ -1297,7 +1312,7 @@
   }
 
   .quadGenerator.right {
-    right:0;
+    right: 0;
   }
 
   @keyframes rotation {
