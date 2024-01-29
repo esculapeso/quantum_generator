@@ -1125,16 +1125,21 @@ jQuery(document).ready(function ($) {
     }
 
     const is3D = fi.filepath.includes('.glb');
+    const isVideo = fi.filepath.includes('.webm');
+
     const $imageDiv = $('<div>', {
       class: 'uploadImageExample',
       title: fi.text,
       category: fi.category,
       src: '',
-      is3d: is3D ? true : undefined
+      is3d: is3D ? true : undefined,
+      isVideo: isVideo ? true : undefined
     }).appendTo($tab3);
 
     if (is3D) {
       insert3dModel($imageDiv, fi.preview, fi.filepath);
+    } else if (isVideo) {
+      $('<img>', { class: 'uploadedImage', src: fi.preview, videopath: fi.filepath }).appendTo($imageDiv);
     } else {
       $('<img>', { class: 'uploadedImage', src: fi.filepath }).appendTo($imageDiv);
     }
@@ -1155,7 +1160,18 @@ jQuery(document).ready(function ($) {
     if ($(this).is("[is3d]")) {
       const source = $(this).find('model-viewer').attr('target');
       insert3dModel($('.imageInnerDiv'), source);
-    } else {
+    } else if ($(this).is("[isVideo]")) {
+      const videoPath = $(this).find(".uploadedImage").attr('videopath');
+      $('<video>', {
+        controls: true,
+        autoplay: true,
+        loop: true
+      }).append($('<source>', {
+        src: videoPath,
+        type: 'video/webm'
+      })).appendTo(".imageInnerDiv");
+    }
+    else {
       const imagePath = $(this).find(".uploadedImage").attr('src');
       $(".imageInnerDiv").css('background-image', `url(${imagePath})`);
     }
