@@ -928,22 +928,38 @@ jQuery(document).ready(function ($) {
     toggleVideoControls(false);
     currentVideoId = newVideoId || currentVideoId;
     console.log(currentVideoId, newVideoId)
-    players.forEach(player => player.loadVideoById(currentVideoId).stopVideo());
-
     const activePlayers = getActivePlayers();
     const volumeLevel = $('.videoVolume').val();
+  
+    let playersStarted = 0; // Counter for players that have started playing
+  
     activePlayers.forEach((player, index) => {
-      player.setVolume(volumeLevel).playVideo().setPlaybackQuality("small");
+      player.loadVideoById({
+        videoId: currentVideoId,
+        events: {
+          'onStateChange': (event) => {
+            if (event.data === YT.PlayerState.PLAYING) {
+              playersStarted++;
+              if (playersStarted === activePlayers.length) {
+                isVideoPlaying = true; // Set true only when all active players have started
+              }
+            }
+          }
+        }
+      });
+  
+      player.setVolume(volumeLevel);
       if (index === 0) {
         player.unMute();
       } else {
         player.mute();
       }
+      player.playVideo().setPlaybackQuality("small");
     });
+  
     $('.videoBackground').removeClass('hidden-container');
-    isVideoPlaying = true;
   }
-
+  
   function getActivePlayers() {
     const singleVideoHolderId = "videoHolder";
     const isPyramidViewActive = $('.piramidToggleCB').is(':checked');
