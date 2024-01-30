@@ -653,16 +653,18 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('click', '.playGeneratorVideo', function () {
-    ispl = isAnyVideoPlaying();
-    console.log("isVideoPlaying ", ispl)
-    if (ispl) {
-      pauseFocusVideo()
-    }
-    else {
-      startFocusVideo()
-    }
+    startFocusVideo()
+    
+    // ispl = isAnyVideoPlaying();
+    // console.log("isVideoPlaying ", ispl)
+    // if (ispl) {
+    //   pauseFocusVideo()
+    // }
+    // else {
+    //   startFocusVideo()
+    // }
 
-    toggleButtonAltValue($(this));
+    // toggleButtonAltValue($(this));
   });
 
   $(document).on('click', '.togglePyramidButton', function () {
@@ -793,11 +795,7 @@ jQuery(document).ready(function ($) {
   });
 
   function togglePyramidView(isPyramid, startVideo, zoom, ratio) {
-    console.log("BEFORE: ", isPyramid)
-    console.log("BEFORE check: ", !$('.piramidToggleCB').prop('checked'))
-    console.log("BEFORE typeof: ", typeof isPyramid === "undefined")
     isPyramid = (typeof isPyramid === "undefined") ? !$('.piramidToggleCB').prop('checked') : isPyramid;
-    console.log("AFTER: ", isPyramid)
 
     // Common jQuery selectors
     var $fullView = $('.fullView');
