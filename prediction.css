@@ -609,8 +609,8 @@
     position: absolute;
     top: 50% !important;
     left: 50% !important;
-    width: 180% !important;
-    height: 180% !important;
+    width: 100% !important;
+    height: 120% !important;
     transform: translate(-50%, -50%);
     max-width: unset !important;
     max-height: unset !important;

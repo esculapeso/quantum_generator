@@ -1163,7 +1163,7 @@ jQuery(document).ready(function ($) {
     } else if ($(this).is("[isVideo]")) {
       const videoPath = $(this).find(".uploadedImage").attr('videopath');
       $('<video>', {
-        controls: true,
+        controls: false,
         autoplay: true,
         loop: true
       }).append($('<source>', {
