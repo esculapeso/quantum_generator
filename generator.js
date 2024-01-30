@@ -653,8 +653,9 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('click', '.playGeneratorVideo', function () {
-    console.log("isVideoPlaying ", isVideoPlaying)
-    if (isVideoPlaying) {
+    ispl = isAnyVideoPlaying();
+    console.log("isVideoPlaying ", ispl)
+    if (ispl) {
       pauseFocusVideo()
     }
     else {
@@ -967,6 +968,15 @@ jQuery(document).ready(function ($) {
     const singleVideoHolderId = "videoHolder";
     const isPyramidViewActive = $('.piramidToggleCB').is(':checked');
     return players.filter(player => isPyramidViewActive ? player.g.id !== singleVideoHolderId : player.g.id === singleVideoHolderId);
+  }
+
+  function isAnyVideoPlaying() {
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].getPlayerState() === YT.PlayerState.PLAYING) {
+        return true; // Returns true if any video is playing
+      }
+    }
+    return false; // Returns false if no videos are playing
   }
 
   function changeVideo(newVideoId, mode) {
