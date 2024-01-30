@@ -645,17 +645,19 @@ jQuery(document).ready(function ($) {
   }
 
   $('<input class="centerGenerator button" type="button" value="↕"  />').appendTo($videoChooserSection);
-  $('<input class="playGeneratorVideo button" type="button" altvalue="⏸︎" value="►"  />').appendTo($videoChooserSection);
+  $('<input class="playGeneratorVideo button" type="button" altvalue="II" value="►"  />').appendTo($videoChooserSection);
   $('<input class="togglePyramidButton button" type="button" altvalue="▣" value="◭"  />').appendTo($videoChooserSection);
-  
+
   $(document).on('click', '.centerGenerator', function () {
     $(window).scrollTop($(".quadrupolePanel").offset().top);
   });
 
   $(document).on('click', '.playGeneratorVideo', function () {
-    if (isVideoPlaying) startFocusVideo();
-    else pauseFocusVideo();
-    
+    console.log("isVideoPlaying ", isVideoPlaying)
+    isVideoPlaying
+      ? startFocusVideo()
+      : pauseFocusVideo()
+
     toggleButtonAltValue($(this));
   });
 
@@ -908,6 +910,7 @@ jQuery(document).ready(function ($) {
   }
 
   function pauseFocusVideo() {
+    console.log("pause")
     if (!playersReady)
       return;
     toggleVideoControls(true);
