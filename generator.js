@@ -790,6 +790,8 @@ jQuery(document).ready(function ($) {
 
   function togglePyramidView(isPyramid, startVideo, zoom, ratio) {
     console.log("BEFORE: ", isPyramid)
+    console.log("BEFORE check: ", !$('.piramidToggleCB').prop('checked'))
+    console.log("BEFORE typeof: ", typeof isPyramid === "undefined")
     isPyramid = (typeof isPyramid === "undefined") ? !$('.piramidToggleCB').prop('checked') : isPyramid;
     console.log("AFTER: ", isPyramid)
 
