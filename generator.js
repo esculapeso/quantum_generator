@@ -645,8 +645,8 @@ jQuery(document).ready(function ($) {
   }
 
   $('<input class="centerGenerator button" type="button" value="↕"  />').appendTo($videoChooserSection);
-  $('<input class="playGeneratorVideo button" type="button" altvalue="⏸︎" value="⏵︎"  />').appendTo($videoChooserSection);
-  $('<input class="togglePyramid button" type="button" altvalue="▣" value="◭"  />').appendTo($videoChooserSection);
+  $('<input class="playGeneratorVideo button" type="button" altvalue="⏸︎" value="►"  />').appendTo($videoChooserSection);
+  $('<input class="togglePyramidButton button" type="button" altvalue="▣" value="◭"  />').appendTo($videoChooserSection);
   
   $(document).on('click', '.centerGenerator', function () {
     $(window).scrollTop($(".quadrupolePanel").offset().top);
@@ -659,8 +659,9 @@ jQuery(document).ready(function ($) {
     toggleButtonAltValue($(this));
   });
 
-  $(document).on('click', '.togglePyramid', function () {
+  $(document).on('click', '.togglePyramidButton', function () {
     togglePyramidView();
+
     toggleButtonAltValue($(this));
   });
 
@@ -921,6 +922,7 @@ jQuery(document).ready(function ($) {
     }
     toggleVideoControls(false);
     currentVideoId = newVideoId || currentVideoId;
+    console.log(currentVideoId, newVideoId)
     players.forEach(player => player.loadVideoById(currentVideoId).stopVideo());
 
     const activePlayers = getActivePlayers();
