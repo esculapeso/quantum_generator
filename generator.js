@@ -971,6 +971,9 @@ jQuery(document).ready(function ($) {
   }
 
   function isAnyVideoPlaying() {
+    console.log({players})
+    const activePlayers = getActivePlayers();
+    console.log({activePlayers})
     for (let i = 0; i < players.length; i++) {
       if (players[i].getPlayerState() === YT.PlayerState.PLAYING) {
         return true; // Returns true if any video is playing
