@@ -8,6 +8,7 @@ jQuery(document).ready(function ($) {
   let sessionObj = {}
   let isVideoPlaying = false;
   let qrngSelected = "omega";
+  let currentVideoId = "";
 
   let pageType = $(".quadrupolePanel").attr('page');
 
@@ -634,17 +635,31 @@ jQuery(document).ready(function ($) {
 
   $(document).on('click', '.hideOptionsButton', function () {
     $('#tabs').toggle();
-
-    var newValue = $(this).attr('altvalue');
-    var curValue = $(this).attr('value');
-    $(this).attr('altvalue', curValue).attr('value', newValue)
-
+    toggleButtonAltValue($(this));
   });
 
-  $('<input class="centerGenerator button" type="button" value="↕"  />').appendTo($videoChooserSection);
+  function toggleButtonAltValue(button) {
+    var newValue = button.attr('altvalue');
+    var curValue = button.attr('value');
+    button.attr('altvalue', curValue).attr('value', newValue)
+  }
 
+  $('<input class="centerGenerator button" type="button" value="↕"  />').appendTo($videoChooserSection);
+  $('<input class="playGeneratorVideo button" type="button" altvalue="⏸︎" value="⏵︎"  />').appendTo($videoChooserSection);
+  $('<input class="togglePyramid button" type="button" altvalue="▣" value="◭"  />').appendTo($videoChooserSection);
+  
   $(document).on('click', '.centerGenerator', function () {
     $(window).scrollTop($(".quadrupolePanel").offset().top);
+  });
+
+  $(document).on('click', '.playGeneratorVideo', function () {
+    startFocusVideo();
+    toggleButtonAltValue($(this));
+  });
+
+  $(document).on('click', '.togglePyramid', function () {
+    togglePyramidView();
+    toggleButtonAltValue($(this));
   });
 
   $(document).on('click', '.animateGenerator', function () {
@@ -769,6 +784,8 @@ jQuery(document).ready(function ($) {
   });
 
   function togglePyramidView(isPyramid, startVideo, zoom, ratio) {
+    isPyramid = (isPyramid === "undefined") ? !$('.piramidToggleCB').prop('checked') : isPyramid;
+
     // Common jQuery selectors
     var $fullView = $('.fullView');
     var $pyramidView = $('.pyramidView');
@@ -899,7 +916,8 @@ jQuery(document).ready(function ($) {
       return;
     }
     toggleVideoControls(false);
-    players.forEach(player => player.loadVideoById(newVideoId).stopVideo());
+    currentVideoId = newVideoId || currentVideoId;
+    players.forEach(player => player.loadVideoById(currentVideoId).stopVideo());
 
     const activePlayers = getActivePlayers();
     const volumeLevel = $('.videoVolume').val();
