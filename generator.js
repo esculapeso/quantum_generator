@@ -653,7 +653,9 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('click', '.playGeneratorVideo', function () {
-    startFocusVideo();
+    if (isVideoPlaying) startFocusVideo();
+    else pauseFocusVideo();
+    
     toggleButtonAltValue($(this));
   });
 
@@ -784,7 +786,9 @@ jQuery(document).ready(function ($) {
   });
 
   function togglePyramidView(isPyramid, startVideo, zoom, ratio) {
+    console.log("BEFORE: ", isPyramid)
     isPyramid = (isPyramid === "undefined") ? !$('.piramidToggleCB').prop('checked') : isPyramid;
+    console.log("AFTER: ", isPyramid)
 
     // Common jQuery selectors
     var $fullView = $('.fullView');
