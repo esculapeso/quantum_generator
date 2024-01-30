@@ -654,9 +654,12 @@ jQuery(document).ready(function ($) {
 
   $(document).on('click', '.playGeneratorVideo', function () {
     console.log("isVideoPlaying ", isVideoPlaying)
-    isVideoPlaying
-      ? pauseFocusVideo()
-      : startFocusVideo()
+    if (isVideoPlaying) {
+      pauseFocusVideo()
+    }
+    else {
+      startFocusVideo()
+    }
 
     toggleButtonAltValue($(this));
   });
