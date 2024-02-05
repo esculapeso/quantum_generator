@@ -32,6 +32,7 @@ jQuery(document).ready(function ($) {
   var emotionsListVar = (typeof emotionsList !== 'undefined' && emotionsList) ? emotionsList : [];
   var energiesListVar = (typeof energiesList !== 'undefined' && energiesList) ? energiesList : [];
   var healthListVar = (typeof healthList !== 'undefined' && healthList) ? healthList : [];
+  var pyramidUpperImagesVar = (typeof pyramidUpperImages !== 'undefined' && pyramidUpperImages) ? pyramidUpperImages : [];
 
 
   function setFetchIntervalAndLength(dispInterval) {
@@ -654,7 +655,7 @@ jQuery(document).ready(function ($) {
 
   $(document).on('click', '.playGeneratorVideo', function () {
     startFocusVideo()
-    
+
     // ispl = isAnyVideoPlaying();
     // console.log("isVideoPlaying ", ispl)
     // if (ispl) {
@@ -760,7 +761,8 @@ jQuery(document).ready(function ($) {
   sides.forEach(side => {
     const $side = $('<div>', { class: `side ${side}` }).appendTo($pyramid);
     const $inside = $('<div>', { class: 'inside' }).appendTo($side);
-    $('<div>', { class: 'imageInnerDiv wings' }).appendTo($inside);
+    if (pyramidUpperImagesVar.length > 0)
+      $('<div>', { class: 'imageInnerDiv wings' }).css('backgound-image', `url('${pyramidUpperImagesVar[0].url}')`).appendTo($inside);
     $('<div>', { class: 'imageInnerDiv' }).appendTo($inside);
     $('<div>', { class: 'videoBackground hidden-container' })
       .append($('<div>', { class: 'videoForeground' })
@@ -933,9 +935,9 @@ jQuery(document).ready(function ($) {
     console.log(currentVideoId, newVideoId)
     const activePlayers = getActivePlayers();
     const volumeLevel = $('.videoVolume').val();
-  
+
     let playersStarted = 0; // Counter for players that have started playing
-  
+
     activePlayers.forEach((player, index) => {
       player.loadVideoById({
         videoId: currentVideoId,
@@ -950,7 +952,7 @@ jQuery(document).ready(function ($) {
           }
         }
       });
-  
+
       player.setVolume(volumeLevel);
       if (index === 0) {
         player.unMute();
@@ -959,10 +961,10 @@ jQuery(document).ready(function ($) {
       }
       player.playVideo().setPlaybackQuality("small");
     });
-  
+
     $('.videoBackground').removeClass('hidden-container');
   }
-  
+
   function getActivePlayers() {
     const singleVideoHolderId = "videoHolder";
     const isPyramidViewActive = $('.piramidToggleCB').is(':checked');
@@ -970,9 +972,9 @@ jQuery(document).ready(function ($) {
   }
 
   function isAnyVideoPlaying() {
-    console.log({players})
+    console.log({ players })
     const activePlayers = getActivePlayers();
-    console.log({activePlayers})
+    console.log({ activePlayers })
     for (let i = 0; i < players.length; i++) {
       if (players[i].getPlayerState() === YT.PlayerState.PLAYING) {
         return true; // Returns true if any video is playing
