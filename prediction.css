@@ -333,7 +333,8 @@
   }
 
   .imageInnerDiv,
-  .imageInnerBgDiv {
+  .imageInnerBgDiv,
+  .imageInnerWingsDiv {
     position: absolute;
     z-index: 10;
     width: 100%;
@@ -344,8 +345,7 @@
     cursor: pointer;
   }
 
-  .imageInnerDiv.wings {
-    background-image: url("/wp-content/uploads/2024/02/wings.png") !important;
+  .imageInnerWingsDiv {
     top: -65%;
     background-size: 100% 30%;
   }
