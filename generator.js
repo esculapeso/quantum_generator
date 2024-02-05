@@ -762,7 +762,7 @@ jQuery(document).ready(function ($) {
     const $side = $('<div>', { class: `side ${side}` }).appendTo($pyramid);
     const $inside = $('<div>', { class: 'inside' }).appendTo($side);
     if (pyramidUpperImagesVar.length > 0)
-      $('<div>', { class: 'imageInnerDiv wings' }).css('backgound-image', `url('${pyramidUpperImagesVar[0].url}')`).appendTo($inside);
+      $('<div>', { class: 'imageInnerDiv wings' }).css('background-image', `url('${pyramidUpperImagesVar[0].url}')`).appendTo($inside);
     $('<div>', { class: 'imageInnerDiv' }).appendTo($inside);
     $('<div>', { class: 'videoBackground hidden-container' })
       .append($('<div>', { class: 'videoForeground' })
