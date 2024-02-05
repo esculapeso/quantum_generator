@@ -760,6 +760,7 @@ jQuery(document).ready(function ($) {
   sides.forEach(side => {
     const $side = $('<div>', { class: `side ${side}` }).appendTo($pyramid);
     const $inside = $('<div>', { class: 'inside' }).appendTo($side);
+    $('<div>', { class: 'imageInnerDiv wings' }).appendTo($inside);
     $('<div>', { class: 'imageInnerDiv' }).appendTo($inside);
     $('<div>', { class: 'videoBackground hidden-container' })
       .append($('<div>', { class: 'videoForeground' })
@@ -1789,17 +1790,6 @@ jQuery(document).ready(function ($) {
         if (repeatCount > 0) {
           synthOm.speak(event.utterance);
         } else {
-          //show symbols
-          // $(".imageInnerDiv").html('');
-          // $(".imageInnerDiv").css('background-image', 'url("https://omreiki.uk/wp-content/uploads/2022/07/chokurei.gif)"');
-
-          // var ckrUtt = new SpeechSynthesisUtterance();
-          // ckrUtt.text = 'Cho, Ku, Rey. Cho, Ku, Rey. Cho, Ku, Rey.';
-          // ckrUtt.rate = 0.75;
-          // synthOm.speak(ckrUtt);
-
-          // ckrUtt.onend = (event) => {
-          // $(".imageInnerDiv").css('background-image', 'url("https://omreiki.uk/wp-content/uploads/2022/07/seiheki.gif)"');
           $(".imageInnerDiv").html('');
           $(".imageInnerDiv").css('background-image', 'url("https://omreiki.uk/wp-content/uploads/2022/12/linga.gif)"');
 

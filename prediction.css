@@ -344,6 +344,12 @@
     cursor: pointer;
   }
 
+  .imageInnerDiv.wings {
+    background-image: url("/wp-content/uploads/2024/02/wings.png");
+    top: -65%;
+    background-size: 100% 30%;
+  }
+
   .uploadImageExample {
     cursor: pointer;
     display: inline-block;
