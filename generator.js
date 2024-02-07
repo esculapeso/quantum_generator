@@ -193,6 +193,13 @@ jQuery(document).ready(function ($) {
     appendDataHolder($quadGenerator, "generator" + n, "quadrupole")
   }
 
+  if (header.hasClass('double')) {
+    var $quadGeneratorDouble = $('.quadGenerator');
+    for (var n = genCount; n < genCount * 2; ++n) {
+      appendDataHolder($quadGeneratorDouble, "generator" + n, "quadrupole")
+    }
+  }
+
   let dual = $('.dualTeleportationImage');
   appendDataHolder(dual, "dataDualTop", "dipole")
   appendDataHolder(dual, "dataDualBottom", "dipole")
