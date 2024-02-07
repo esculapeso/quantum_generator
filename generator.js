@@ -185,16 +185,15 @@ jQuery(document).ready(function ($) {
 
   var $roundView = $('<div class="roundView" ></div>').appendTo(header);
   $('<div class="roundViewInner" ></div>').appendTo($roundView);
-  $('<div class="quadGenerator" ></div>').appendTo(header);
-  var $quadGenerator = $('.quadGenerator');
 
+  var $quadGenerator = $('<div class="quadGenerator" ></div>').appendTo(header);
   var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4;
   for (var n = 0; n < genCount; ++n) {
     appendDataHolder($quadGenerator, "generator" + n, "quadrupole")
   }
 
   if (header.hasClass('double')) {
-    var $quadGeneratorDouble = $('.quadGenerator');
+    var $quadGeneratorDouble = $('<div class="quadGenerator double" ></div>').appendTo(header);
     for (var n = genCount; n < genCount * 2; ++n) {
       appendDataHolder($quadGeneratorDouble, "generator" + n, "quadrupole")
     }
