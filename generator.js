@@ -183,8 +183,9 @@ jQuery(document).ready(function ($) {
   let $quadrupolePanel = $('.quadrupolePanel');
   let header = $('.quadrupoleImage');
 
-  var $roundView = $('<div class="roundView" ></div>').appendTo(header);
-  $('<div class="roundViewInner" ></div>').appendTo($roundView);
+  // FIND OUT WHAT IS THIS FOR
+  // var $roundView = $('<div class="roundView" ></div>').appendTo(header);
+  // $('<div class="roundViewInner" ></div>').appendTo($roundView);
 
   var $quadGenerator = $('<div class="quadGenerator" ></div>').appendTo(header);
   var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4;
