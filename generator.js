@@ -552,7 +552,7 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  var $jesusLitania = $('<div class="jesusLitania" ></div>').hide().appendTo($liveSection);
+  var $jesusLitania = $('<div class="jesusLitania" ></div>').appendTo($liveSection);
   var $affStartButton = $(`<input type="number" class="jesusAmountTextbox" value="4" />`).appendTo($jesusLitania);
   var $affStartButton = $(`<input type="button" class="jesusStartButton" value="Start" />`).appendTo($jesusLitania);
 
@@ -848,10 +848,7 @@ jQuery(document).ready(function ($) {
   }
 
   /* THUMBS */
-
-
-
-
+  
   var $videoThumbsDiv = $('<div>', { id: "videoThumbs" }).appendTo($videoChooserContent);
   var $videoSelect = $('<select>', { class: "videoSelect" }).appendTo($videoChooserContent);
 

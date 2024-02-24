@@ -3,10 +3,9 @@ let sideTextsOptions = ["JESUS", "HOLY"];
 let randomBackgroundMiddle = "calc(50vh + 50px)";
 
 let liveTransmissions = [
-	{"page": "Jesus", "type": "embedLink", "name": "Faustyna", "url": "https://www.youtube.com/embed/jxmXF5qJHmI"},
+	{"page": "Jesus", "type": "embedLink", "name": "Faustyna", "url": "https://www.youtube.com/embed/Q_wF0dNeUHc"},
 	{"page": "Jesus", "type": "embedLink", "name": "Niepokalanów", "url": "https://www.youtube.com/embed/J8NzgrmGH_Q"},
 	{"page": "Jesus", "type": "embedLink", "name": "Lourdes", "url": "https://www.youtube.com/embed/Zz2lqOMiBeo"},
-	{"page": "Rect", "type": "imageFetch", "name": "Zbiornik", "url": "http://65.21.111.48:5000/fetch-images"},
 ]
 
 let defaultSession = [
@@ -18,6 +17,8 @@ let defaultSession = [
 	{"page": "Angeloi", "name":"285 Hz", "Session time":"Sun, 07 Jan 2024 12:17:34 GMT","Focus Text":"Jesus I trust in You","videoId":"2pB1yzdU8JU","videoMode":"undefined","imageData":"none","ImageCaption":"Quantum","sideText":"ANGELOI","people":[{"role":"therapist","data":"none"},{"role":"person1","data":"none"},{"role":"person2","data":"none"},{"role":"person3","data":"none"},{"role":"person4","data":"none"},{"role":"person5","data":"none"},{"role":"person6","data":"none"}],"qrngInterval":938,"isPyramid":false,"callClip":"quad","callClipSize":"90","innerBgColorLeft":"","innerBgColorRight":""},
 	
 	{"page": "Jesus", "name":"Holy Grail", "Session time":"Thu, 11 Jan 2024 22:14:21 GMT","Focus Text":"Jezu ufam Tobie","imageData":"none","image3dData":"https://raw.githubusercontent.com/esculapeso/3dmodels/main/grail.glb","ImageCaption":"Holy Grail","sideText":"JESUS","people":[{"role":"therapist","data":"url(\"https://jesus.omreiki.uk/wp-content/uploads/2024/01/shroudgif.gif\")"},{"role":"person1","data":"url(\"https://jesus.omreiki.uk/wp-content/uploads/2024/01/JesusLungs.png\")"},{"role":"person2","data":"url(\"https://jesus.omreiki.uk/wp-content/uploads/2022/12/la.jpg\")"},{"role":"person3","data":"url(\"https://jesus.omreiki.uk/wp-content/uploads/2024/01/ImageToStl.com_orto_xl_jesus_gold_up.gif\")"},{"role":"person4","data":"url(\"https://jesus.omreiki.uk/wp-content/uploads/2023/01/Jesus-Healthy-Mikkel.webp\")"},{"role":"person5","data":"none"},{"role":"person6","data":"none"}],"qrngInterval":938,"isPyramid":true,"callClip":"quad","callClipSize":"90","innerBgColorLeft":"","innerBgColorRight":""},
+	
+	{"page": "rede", "name":"Ich rede Deutsch", "Session time":"Tue, 30 Jan 2024 13:00:38 GMT","Focus Text":"Ich rede Deutsch","imageData":"none","ImageCaption":"Täglich","sideText":"REDE","people":[{"role":"therapist","data":"none"},{"role":"person1","data":"none"},{"role":"person2","data":"none"},{"role":"person3","data":"none"},{"role":"person4","data":"none"},{"role":"person5","data":"none"},{"role":"person6","data":"none"}],"qrngInterval":938,"isPyramid":false,"callClip":"quad","callClipSize":"90","innerBgColorLeft":"","innerBgColorRight":""}
 	
 ]
 
