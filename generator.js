@@ -848,7 +848,7 @@ jQuery(document).ready(function ($) {
   }
 
   /* THUMBS */
-  
+
   var $videoThumbsDiv = $('<div>', { id: "videoThumbs" }).appendTo($videoChooserContent);
   var $videoSelect = $('<select>', { class: "videoSelect" }).appendTo($videoChooserContent);
 
@@ -1448,28 +1448,33 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('change', '.personLinkTextbox, .personImage', function () {
-    var role = $(this).attr('role');
-    var url = $(this).val();
-    var targetSelector = `.${role}Image, .${role}Thumb`;
-    $(targetSelector).css('background-image', `url("${url}")`)
+    const role = $(this).attr('role');
+    updateBackgroundImage(role, $(this).val());
   });
 
   $(document).on('click', '.personUploadButton, .personImage', function () {
-    var role = $(this).attr('role');
+    const role = $(this).attr('role');
     $(`.${role} .personHiddenUploadButton`).click();
   });
 
   $(document).on('click', '.personDeleteButton, .personImage', function () {
-    var role = $(this).attr('role');
-    var targetSelector = `.${role}Image, .${role}Thumb`;
-    $(targetSelector).css('background-image', ``);
+    const role = $(this).attr('role');
+    updateBackgroundImage(role, '');
   });
 
   $(document).on('change', '.personHiddenUploadButton', function () {
-    var target = $(this).attr('target');
-    var targetSelector = `.${target}Image, .${target}Thumb`;
-    uploadImage(targetSelector, $(this));
+    const role = $(this).attr('role');
+    uploadImage(getRoleSelector(role), $(this));
   });
+
+  function getRoleSelector(role) {
+    return `.${role}Image, .${role}Thumb`;
+  } 
+
+  function updateBackgroundImage(role, value) {
+    $(getRoleSelector(role)).css('background-image', `url("${value}")`);
+  }
+
 
 
   /**********************
