@@ -33,6 +33,7 @@ jQuery(document).ready(function ($) {
   var energiesListVar = (typeof energiesList !== 'undefined' && energiesList) ? energiesList : [];
   var healthListVar = (typeof healthList !== 'undefined' && healthList) ? healthList : [];
   var pyramidUpperImagesVar = (typeof pyramidUpperImages !== 'undefined' && pyramidUpperImages) ? pyramidUpperImages : [];
+  var videosXRVar = (typeof videosXR !== 'undefined' && videosXR) ? videosXR : [];
 
 
   function setFetchIntervalAndLength(dispInterval) {
@@ -209,7 +210,7 @@ jQuery(document).ready(function ($) {
 
 
 
-  var $imageDiv = $('<div class="uploadImageHolder clipped" ></div>').appendTo($quadGenerator);
+  var $imageDiv = $('<div class="uploadImageHolder clipped" ></div>').appendTo('.quadGenerator');
   var $focusControls = $('<div class="focusControls" ></div>').appendTo($imageDiv);
   var $focusChangers = $('<div class="focusChangers" ></div>').appendTo($focusControls);
   var $subImageControls = $('<div class="subImageControls" ></div>').appendTo($focusControls);
@@ -848,6 +849,9 @@ jQuery(document).ready(function ($) {
 
   /* THUMBS */
 
+
+
+
   var $videoThumbsDiv = $('<div>', { id: "videoThumbs" }).appendTo($videoChooserContent);
   var $videoSelect = $('<select>', { class: "videoSelect" }).appendTo($videoChooserContent);
 
@@ -859,13 +863,23 @@ jQuery(document).ready(function ($) {
       : `https://img.youtube.com/vi/${v.id}/0.jpg`;
     let style = `background-image:url(${imageUrl});`;
 
-    $('<div>', {
-      'videoid': v.id,
-      'isView': v.isView,
-      class: 'videoThumb',
-      style: style,
-      title: v.name
-    }).appendTo($videoThumbsDiv);
+    if (v.mode == 'isvideo') {
+      $('<video>', {
+        'videoid': v.id,
+        mode: v.mode,
+        class: 'videoThumb',
+        html: `<source src="${v.id}" type="video/mp4">`,
+        title: v.name
+      }).appendTo($videoThumbsDiv);
+    } else {
+      $('<div>', {
+        'videoid': v.id,
+        'mode': v.mode,
+        class: 'videoThumb',
+        style: style,
+        title: v.name
+      }).appendTo($videoThumbsDiv);
+    }
 
     $('<option>', {
       value: v.id,
@@ -886,7 +900,7 @@ jQuery(document).ready(function ($) {
   }
 
   $(document).on('click', '.videoThumb', function () {
-    changeVideo($(this).attr('videoid'), $(this).attr("isView"));
+    changeVideo($(this).attr('videoid'), $(this).attr("mode"));
   });
 
   $(document).on('change', '.videoSelect', function () {
@@ -997,7 +1011,7 @@ jQuery(document).ready(function ($) {
     $(".imageInnerDiv").removeClass('psalmCover');
     $(".view360InnerDiv").empty();
 
-    const $view360InnerDiv = $('.view360InnerDiv');
+    const $view360InnerDiv = $('.view360InnerDiv').empty();
 
     switch (mode) {
       case 'isView':
@@ -1009,14 +1023,38 @@ jQuery(document).ready(function ($) {
           src: newVideoId
         }).appendTo($view360InnerDiv);
         break;
-      case 'isVideo':
-        $('<video>', {
-          width: "100%",
+      case 'isvideo':
+        var $video = $('<video>', {
           height: "100%",
           autoplay: true,
           loop: true,
           html: `<source src="${newVideoId}" type="video/mp4">`
-        }).appendTo($view360InnerDiv);
+        }).appendTo('.quadGenerator:not(.double) .uploadImageHolder > .view360InnerDiv');
+        var $canvas = $(`<canvas id="outputCanvas" ></canvas>`).appendTo('.quadGenerator.double .uploadImageHolder > .view360InnerDiv');
+        var context = $canvas[0].getContext('2d');
+
+        $video.on('loadedmetadata', function () {
+          // Calculate the height to maintain the aspect ratio
+          // The canvas width is being set to 200px statically in your original code
+          // var height = $video[0].videoHeight * (200 / $video[0].videoWidth);
+          // Adjusting the canvas size dynamically based on the video might not be necessary here
+          // as your original code sets a static width of 200px for drawing the video frame
+          $canvas.attr('width', $video[0].videoWidth);
+          $canvas.attr('height', $video[0].videoWidth);
+        });
+
+        $video.on('play', function () {
+          drawVideoFrame();
+        });
+
+        function drawVideoFrame() {
+          if ($video[0].paused || $video[0].ended) return;
+          // Draw the current video frame onto the canvas
+          context.drawImage($video[0], 0, 0, $video[0].width, $video[0].height);
+          requestAnimationFrame(drawVideoFrame); // Call drawVideoFrame again to keep updating the canvas
+        }
+
+
         break;
       default:
         startFocusVideo(newVideoId);
