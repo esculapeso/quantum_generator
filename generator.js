@@ -1426,7 +1426,8 @@ jQuery(document).ready(function ($) {
     var $personRightPanel = $("<div>", { class: "personRightPanel" }).appendTo($personPanel);
 
     $("<div>", { class: "personTag", text: person.name }).appendTo($personRightPanel);
-    $("<input>", { class: "personHiddenUploadButton", target: person.role, type: "file", style: "display: none;" }).appendTo($personRightPanel);
+    $("<input>", { role: person.role, class: "personHiddenUploadButton", type: "file", style: "display: none;" }).appendTo($personRightPanel);
+    $("<input>", { role: person.role, class: "personLinkTextbox", type: "text" }).appendTo($personRightPanel);
     $("<input>", { role: person.role, class: "personUploadButton", type: "button", value: "Upload" }).appendTo($personRightPanel);
     $("<input>", { role: person.role, class: "personDeleteButton", type: "button", value: "Delete" }).appendTo($personRightPanel);
   });
@@ -1444,6 +1445,13 @@ jQuery(document).ready(function ($) {
 
   $.each(people.slice(1), function (i, person) {
     createPersonImage(person, "inner " + person.role + "Image", $quadGenerator);
+  });
+
+  $(document).on('change', '.personLinkTextbox, .personImage', function () {
+    var role = $(this).attr('role');
+    var url = $(this).val();
+    var targetSelector = `.${role}Image, .${role}Thumb`;
+    $(targetSelector).css('background-image', `url("${url}")`)
   });
 
   $(document).on('click', '.personUploadButton, .personImage', function () {
