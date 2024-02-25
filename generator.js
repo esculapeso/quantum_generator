@@ -644,6 +644,8 @@ jQuery(document).ready(function ($) {
 
   $(document).on('click', '.hideOptionsButton', function () {
     $('#tabs').toggle();
+    // var index = $('#tabs a[href="#simple-tab-2"]').parent().index()
+    $('#tabs').tabs('select', 4);
     toggleButtonAltValue($(this));
   });
 
