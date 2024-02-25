@@ -1469,7 +1469,7 @@ jQuery(document).ready(function ($) {
 
   function getRoleSelector(role) {
     return `.${role}Image, .${role}Thumb`;
-  } 
+  }
 
   function updateBackgroundImage(role, value) {
     $(getRoleSelector(role)).css('background-image', `url("${value}")`);
