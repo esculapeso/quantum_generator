@@ -1447,7 +1447,7 @@ jQuery(document).ready(function ($) {
     createPersonImage(person, "inner " + person.role + "Image", $quadGenerator);
   });
 
-  $(document).on('change', '.personLinkTextbox, .personImage', function () {
+  $(document).on('input', '.personLinkTextbox, .personImage', function () {
     const role = $(this).attr('role');
     updateBackgroundImage(role, $(this).val());
   });
