@@ -1459,6 +1459,7 @@ jQuery(document).ready(function ($) {
 
   $(document).on('click', '.personDeleteButton, .personImage', function () {
     const role = $(this).attr('role');
+    console.log("clicked on: ", role);
     updateBackgroundImage(role, '');
   });
 
