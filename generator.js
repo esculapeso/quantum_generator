@@ -640,7 +640,7 @@ jQuery(document).ready(function ($) {
   });
 
   var $videoChooserSection = $('<div class="videoChooserSection" ></div>').appendTo($quadrupolePanel);
-  $('<input class="hideOptionsButton button" type="button" altvalue="→" value="←"  />').appendTo($videoChooserSection);
+  $('<input class="hideOptionsButton button" type="button" altvalue="←" value="→"  />').appendTo($videoChooserSection);
 
   $(document).on('click', '.hideOptionsButton', function () {
     $('#tabs').toggle();
@@ -1465,7 +1465,8 @@ jQuery(document).ready(function ($) {
 
   $(document).on('change', '.personHiddenUploadButton', function () {
     const role = $(this).attr('role');
-    uploadImage(getRoleSelector(role), $(this));
+    $('.hideOptionsButton').click();
+    //uploadImage(getRoleSelector(role), $(this));
   });
 
   function getRoleSelector(role) {
