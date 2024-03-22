@@ -600,7 +600,6 @@ jQuery(document).ready(function ($) {
     var imageUrl = array[index].imageUrl;
     UpdateFocusText(text);
     $(`.imageInnerDiv`).css('background-image', `url("${imageUrl}")`);
-    //$(`.person2Image`).css('background-image', `url("/wp-content/uploads/2024/01/jesus_bevel.png")`);
 
     jesusUtter.text = repeatStringWithComma(text, repeat);
     msg.rate = 0.8;
@@ -620,8 +619,6 @@ jQuery(document).ready(function ($) {
     jesusSynth.cancel();
     jesusIsPlaying = false;
     $(".jesusLang").show();
-    // $(`.person2Image`).css('background-image', `url("/wp-content/uploads/2022/12/la.jpg")`);
-    // $('.imageInnerDiv').css('background-image', 'url("/wp-content/uploads/2024/01/jesus_bevel.png")');
   });
 
 
@@ -682,16 +679,6 @@ jQuery(document).ready(function ($) {
     toggleButtonAltValue($(this));
   });
 
-  $(document).on('click', '.animateGenerator', function () {
-    var val = parseInt($(this).attr('on'));
-    var imageUrl = (val)
-      ? "https://esculap.org/wp-content/uploads/2022/12/ezgif.com-gif-maker.webp"
-      : "https://esculap.org/wp-content/uploads/2022/12/ezgif.com-gif-maker.webp";
-
-    $(".quadGenerator").css('background-image', `url(${imageUrl})`)
-
-    $(this).attr('on', (val + 1) % 2);
-  });
 
   /**********************
           TABS 
@@ -856,7 +843,7 @@ jQuery(document).ready(function ($) {
     if (v.only && !v.only.includes(pageType)) return;
 
     let imageUrl = v.isView
-      ? (v.thumbUrl || 'https://ww2.e-s-p.com/wp-content/uploads/2018/12/youtube-play.png')
+      ? (v.thumbUrl || 'https://github.com/esculapeso/quantum_generator/raw/main/images/playVideo.png')
       : `https://img.youtube.com/vi/${v.id}/0.jpg`;
     let style = `background-image:url(${imageUrl});`;
 
@@ -1292,7 +1279,7 @@ jQuery(document).ready(function ($) {
           class="modelviewer3d"
           src="${srcUrl}"
           style="width: 100%; height: 100%;"
-          poster="https://esculap.org/wp-content/uploads/2022/12/animateddna.webp"
+          poster="https://github.com/esculapeso/quantum_generator/raw/main/images/animateddna.webp"
           target="${targetUrl}"
           background-color="transparent"
           preload

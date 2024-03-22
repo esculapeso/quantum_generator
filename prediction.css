@@ -82,7 +82,7 @@
   .wrapperHex {
     width: 1120px;
     height: 1287px;
-    background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow.png);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/QH_4pillars_bow.png);
     background-size: 100%;
     overflow: hidden;
     position: relative;
@@ -92,7 +92,7 @@
   .coverImage {
     width: 1120px;
     height: 1287px;
-    background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow_tr.png);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/QH_4pillars_bow_tr.png);
     background-size: 100%;
     position: absolute;
     z-index: 10;
@@ -121,7 +121,7 @@
   .quadrupoleImage {
     width: 100vh;
     height: 100vh;
-    background-image: url(https://esculap.us/wp-content/uploads/2024/01/Quadruple_Generator_blank.png);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/Quadruple_Generator_blank.png);
     background-size: 100%;
     overflow: hidden;
     position: relative;
