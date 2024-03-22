@@ -263,9 +263,9 @@ jQuery(document).ready(function ($) {
   $('<div class="videoSelectsTitle" >Controls:</div>').appendTo($videoControlsAndFocus);
 
   var $videoControls = $('<div class="videoControls" ></div>').appendTo($videoControlsAndFocus);
-  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`).appendTo($videoControls);
-  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png" class="youtubePauseButtonImage redButton" />`).hide().appendTo($videoControls);
-  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/playVideo.png" class="youtubePlayButtonImage redButton" />`).appendTo($videoControls);
+  $(`<img src="https://github.com/esculapeso/quantum_generator/raw/main/images/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`).appendTo($videoControls);
+  $(`<img src="https://github.com/esculapeso/quantum_generator/raw/main/images/pauseVideo.png" class="youtubePauseButtonImage redButton" />`).hide().appendTo($videoControls);
+  $(`<img src="https://github.com/esculapeso/quantum_generator/raw/main/images/playVideo.png" class="youtubePlayButtonImage redButton" />`).appendTo($videoControls);
   $('<input type="range" value="10" class="videoVolume" />').appendTo($videoControls);
   var $videoSelects = $('<div class="videoSelects" ></div>').appendTo($subImageControls);
 
@@ -906,9 +906,9 @@ jQuery(document).ready(function ($) {
 
   // Create and append video controls
   var $videoControls = $('<div>', { class: "videoControls" }).appendTo($videoChooserContent);
-  $('<img>', { src: "https://esculap.org/wp-content/uploads/2022/11/removeVideo.png", class: "youtubeRemoveButtonImage redButton" }).appendTo($videoControls);
-  $('<img>', { src: "https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png", class: "youtubePauseButtonImage redButton", style: "display:none;" }).appendTo($videoControls);
-  $('<img>', { src: "https://esculap.org/wp-content/uploads/2022/11/playVideo.png", class: "youtubePlayButtonImage redButton" }).appendTo($videoControls);
+  $('<img>', { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/removeVideo.png", class: "youtubeRemoveButtonImage redButton" }).appendTo($videoControls);
+  $('<img>', { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/pauseVideo.png", class: "youtubePauseButtonImage redButton", style: "display:none;" }).appendTo($videoControls);
+  $('<img>', { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/playVideo.png", class: "youtubePlayButtonImage redButton" }).appendTo($videoControls);
   $('<input>', { type: "range", value: "10", class: "videoVolume" }).appendTo($videoControls);
 
   // Consolidate click event handlers for video controls
@@ -1203,7 +1203,7 @@ jQuery(document).ready(function ($) {
   });
 
   // Image buttons
-  $('<div class="imageButtons"><img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="removeImageButton redButton" /><img src="https://esculap.org/wp-content/uploads/2022/11/uploadButtons.png" class="uploadImageButton redButton" /><input class="uploadImageHiddenButton" type="file" style="display: none;" /></div>').appendTo($tab3);
+  $('<div class="imageButtons"><img src="https://github.com/esculapeso/quantum_generator/raw/main/images/removeVideo.png" class="removeImageButton redButton" /><img src="https://github.com/esculapeso/quantum_generator/raw/main/images/uploadButtons.png" class="uploadImageButton redButton" /><input class="uploadImageHiddenButton" type="file" style="display: none;" /></div>').appendTo($tab3);
   $('<div class="imageButtons"><input type="button" class="urlImageButton" value="URL" /><input class="urlImageTextbox" type="text" /></div>').appendTo($tab3);
 
   // Event handlers for image buttons
@@ -1506,7 +1506,7 @@ jQuery(document).ready(function ($) {
   var $qrngIntervalText = $(`<label class="qrngIntervalText">${qrngOrigDisplayInterval} ms</label>`);
   $qrngIntervalText.appendTo($qrngContent);
 
-  var $qrngLoadCircle = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/load_circle.gif" class="qrngLoadCircle" />`);
+  var $qrngLoadCircle = $(`<img src="https://github.com/esculapeso/quantum_generator/raw/main/images/load_circle.gif" class="qrngLoadCircle" />`);
   $qrngLoadCircle.appendTo($qrngContent);
 
   $(document).on('change', '.qrngIntervalCheckbox', function () {
@@ -1627,8 +1627,8 @@ jQuery(document).ready(function ($) {
   const $tab6 = $("#tabs-6");
   const $soundContent = $("<div>", { class: "soundContent" }).appendTo($tab6);
 
-  $("<img>", { src: "https://esculap.org/wp-content/uploads/2022/11/speaker.png", class: "speakerOutput soundButton" }).appendTo($soundContent);
-  const $usbOutput = $("<img>", { src: "https://esculap.org/wp-content/uploads/2022/11/usb.png", class: "usbOutput soundButton" }).appendTo($soundContent);
+  $("<img>", { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/speaker.png", class: "speakerOutput soundButton" }).appendTo($soundContent);
+  const $usbOutput = $("<img>", { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/usb.png", class: "usbOutput soundButton" }).appendTo($soundContent);
 
   let isSoundMod = 0;
 
