@@ -60,6 +60,7 @@ function onPlayerStateChange(event) {
       $(activePlayers).each((i, p) => {
         console.log("FOREACHVIDEO");
         try {
+          console.log("PLAYER:", {p});
           p.setVolume($('.videoVolume').val())
            .playVideo()
            .setPlaybackQuality("small")
