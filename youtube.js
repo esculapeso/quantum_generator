@@ -52,10 +52,13 @@ function onPlayerReady(event) {
 //    the player should play for six seconds and then stop.
 var done = false;
 function onPlayerStateChange(event) {
+  console.log("EVENT: onPlayerStateChange");
   if (event.data === YT.PlayerState.ENDED) {
+    console.log("EVENT: ENDED");
     try {
       var activePlayers = ($('.piramidToggleCB').is(':checked')) ? players.slice(0, 4) : players.slice(4, 5);
       $(activePlayers).each((i, p) => {
+        console.log("FOREACHVIDEO");
         try {
           p.setVolume($('.videoVolume').val())
            .playVideo()
