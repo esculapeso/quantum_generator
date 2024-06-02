@@ -1,13 +1,27 @@
-  /* Add your CSS code here.
+  /* BARD THEME */
 
-  For example:
-  .example {
-      color: red;
+  .elementor-section.elementor-section-boxed > .elementor-container {
+    max-width: unset !important;
+  }
+  
+  .sidebar-alt, .main-content, .featured-slider-area, #featured-links, .page-content select, .page-content input, .page-content textarea {
+    background-color: unset !important;
+  }
+  
+  .header-logo a, .site-description, .header-socials-icon {
+      color: #5e2900;
+  }
+  
+  #main-nav {
+      background-color: #f7ceb4;
+  
+  }
+  
+  #wpadminbar {
+    position: static;
   }
 
-  For brushing up on your CSS knowledge, check out http://www.w3schools.com/css/css_syntax.asp
-
-  End of comment */
+   /* END BARD THEME */
 
   body * {
     font-family: georgia;
@@ -18,14 +32,14 @@
   }
 
   .main-container {
-    width: 100%!important;
+    width: 100% !important;
   }
 
   .quadrupoleImage * {
     color: #2e0701;
     font-size: 1.9vh;
     font-weight: bold;
-}
+  }
 
   .videoChooserSection input,
   .videoChooserSection select {
@@ -68,7 +82,7 @@
   .wrapperHex {
     width: 1120px;
     height: 1287px;
-    background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow.png);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/QH_4pillars_bow.png);
     background-size: 100%;
     overflow: hidden;
     position: relative;
@@ -78,7 +92,7 @@
   .coverImage {
     width: 1120px;
     height: 1287px;
-    background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow_tr.png);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/QH_4pillars_bow_tr.png);
     background-size: 100%;
     position: absolute;
     z-index: 10;
@@ -87,25 +101,27 @@
   .monoTunnelImage {
     width: 1120px;
     height: 464px;
-    background-image: url(https://esculap.org/wp-content/uploads/2022/11/singleDNA.png);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/singleDNA.png);
     background-size: 100%;
     overflow: hidden;
     position: relative;
+    margin: auto;
   }
 
   .dualTeleportationImage {
     width: 1120px;
     height: 844px;
-    background-image: url(https://esculap.org/wp-content/uploads/2022/11/doubleDNA.png);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/doubleDNA.png);
     background-size: 100%;
     overflow: hidden;
     position: relative;
+    margin: auto;
   }
 
   .quadrupoleImage {
     width: 100vh;
     height: 100vh;
-    background-image: url(https://esculap.us/wp-content/uploads/2024/01/Quadruple_Generator_blank.png);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/Quadruple_Generator_blank.png);
     background-size: 100%;
     overflow: hidden;
     position: relative;
@@ -113,16 +129,16 @@
     margin: auto;
     margin-bottom: 30px;
   }
-  
+
   .quadrupoleImage.pyramidImage {
     width: 166vh;
-    background-image: url(https://esculap.org/wp-content/uploads/2022/12/TherapistImage.png);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/TherapistImage.png);
   }
 
   .quadGenerator {
     width: 63%;
     height: 63%;
-    background-image: url(https://esculap.org/wp-content/uploads/2022/12/animateddna.webp);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/animateddna.webp);
     background-size: 100%;
     overflow: hidden;
     position: relative;
@@ -236,7 +252,7 @@
     position: absolute;
     width: 100%;
     text-align: center;
-    font-size: 2.6vh;
+    font-size: 3.6vh;
     line-height: 0.8;
     height: 8vh;
     display: flex;
@@ -250,23 +266,23 @@
   }
 
   .generatorText.pyramidPerson {
-    width: 12vh!important;
-    font-size: 3.6vh!important;
+    width: 12vh !important;
+    font-size: 3.6vh !important;
     line-height: 1 !important;
   }
 
   .generatorText.pyramidPerson.focusText {
-      transform: translate(-50%, -50%);
-      top: 25vh !important;
-      bottom: unset !important;
-      left: 20vh;
+    transform: translate(-50%, -50%);
+    top: 25vh !important;
+    bottom: unset !important;
+    left: 20vh;
   }
 
   .generatorText.pyramidPerson.captionText {
-      transform: translate(50%, 50%);
-      top: unset !important;
-      bottom: 25vh !important;
-      right: 20vh;
+    transform: translate(50%, 50%);
+    top: unset !important;
+    bottom: 25vh !important;
+    right: 20vh;
   }
 
   .captionText {
@@ -281,19 +297,19 @@
     font-size: 15vh !important;
     color: #ff9f58;
     -webkit-text-stroke: 2px #361700;
-	  line-height: 1.2;
+    line-height: 1.2;
   }
 
   .sideText.left {
     bottom: 0;
     left: 7vh;
-	  transform: translateX(-50%);
+    transform: translateX(-50%);
   }
 
   .sideText.right {
     right: 7vh;
     top: 0;
-	  transform: translateX(50%);
+    transform: translateX(50%);
   }
 
   .sideText.left.pyramidPerson {
@@ -318,7 +334,9 @@
     margin: 10px 5px 10px 0px;
   }
 
-  .imageInnerDiv, .imageInnerBgDiv {
+  .imageInnerDiv,
+  .imageInnerBgDiv,
+  .imageInnerWingsDiv {
     position: absolute;
     z-index: 10;
     width: 100%;
@@ -327,6 +345,11 @@
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
+  }
+
+  .imageInnerWingsDiv {
+    top: -65%;
+    background-size: 100% 30%;
   }
 
   .uploadImageExample {
@@ -406,7 +429,7 @@
     overflow: hidden;
   }
 
-  .liveSection.pyramidPerson{
+  .liveSection.pyramidPerson {
     width: calc((100% - 143vh)/2) !important;
   }
 
@@ -433,7 +456,7 @@
     padding-bottom: 56.25%;
     overflow: hidden;
   }
-  
+
   .imagesFetched .image-container {
     position: absolute;
     top: 0;
@@ -454,7 +477,7 @@
 
 
   .aspect-ratio iframe {
-    position:absolute;
+    position: absolute;
     left: 0;
     top: 0;
     height: 100%;
@@ -561,7 +584,7 @@
   }
 
   .emotionQuantityBarFill {
-    background-image: url('https://esculap.org/wp-content/uploads/2022/11/emotionbar.png');
+    background-image: url('https://github.com/esculapeso/quantum_generator/raw/devel/images/emotionbar.png');
     background-size: contain;
     width: 10%;
     height: 22px;
@@ -594,8 +617,8 @@
     position: absolute;
     top: 50% !important;
     left: 50% !important;
-    width: 180% !important;
-    height: 180% !important;
+    width: 100% !important;
+    height: 120% !important;
     transform: translate(-50%, -50%);
     max-width: unset !important;
     max-height: unset !important;
@@ -762,7 +785,7 @@
     margin-bottom: 10px;
   }
 
-  .gradientSettings > * {
+  .gradientSettings>* {
     width: 70px;
   }
 
@@ -884,7 +907,7 @@
     transform: translate(-50%, -50%);
     max-width: unset;
     max-height: unset;
-}
+  }
 
   .videoForeground {
     position: absolute;
@@ -917,7 +940,7 @@
     }
 
     .pyramid .side {
-      perspective: 6vw;
+      perspective: 7vw;
     }
 
     .videoChooserSection {
@@ -1036,7 +1059,7 @@
       height: 100%;
       background-color: #1f2600de;
       top: 0;
-      background-image: url(https://esculap.org/wp-content/uploads/2022/12/animateddna.webp);
+      background-image: url(https://github.com/esculapeso/quantum_generator/raw/devel/images/animateddna.webp);
       background-repeat: no-repeat;
     }
 
@@ -1105,23 +1128,23 @@
     height: calc(100vh - 24px);
   }
 
-  #tabs > div {
+  #tabs>div {
     overflow: auto;
   }
 
-  #tabs > div::-webkit-scrollbar {
+  #tabs>div::-webkit-scrollbar {
     width: 8px;
   }
 
-  #tabs > div::-webkit-scrollbar-track {
-      border-radius: 8px;
-      background-color: #fbe6e6;
-      border: 1px solid #edc4c4;
+  #tabs>div::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: #fbe6e6;
+    border: 1px solid #edc4c4;
   }
 
-  #tabs > div::-webkit-scrollbar-thumb {
-      border-radius: 8px;
-      background-color: #d55959;
+  #tabs>div::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: #d55959;
   }
 
   .psalmText .wiki {
@@ -1297,7 +1320,7 @@
   }
 
   .quadGenerator.right {
-    right:0;
+    right: 0;
   }
 
   @keyframes rotation {

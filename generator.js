@@ -8,6 +8,7 @@ jQuery(document).ready(function ($) {
   let sessionObj = {}
   let isVideoPlaying = false;
   let qrngSelected = "omega";
+  let currentVideoId = "";
 
   let pageType = $(".quadrupolePanel").attr('page');
 
@@ -31,6 +32,8 @@ jQuery(document).ready(function ($) {
   var emotionsListVar = (typeof emotionsList !== 'undefined' && emotionsList) ? emotionsList : [];
   var energiesListVar = (typeof energiesList !== 'undefined' && energiesList) ? energiesList : [];
   var healthListVar = (typeof healthList !== 'undefined' && healthList) ? healthList : [];
+  var pyramidUpperImagesVar = (typeof pyramidUpperImages !== 'undefined' && pyramidUpperImages) ? pyramidUpperImages : [];
+  var videosXRVar = (typeof videosXR !== 'undefined' && videosXR) ? videosXR : [];
 
 
   function setFetchIntervalAndLength(dispInterval) {
@@ -181,14 +184,21 @@ jQuery(document).ready(function ($) {
   let $quadrupolePanel = $('.quadrupolePanel');
   let header = $('.quadrupoleImage');
 
-  var $roundView = $('<div class="roundView" ></div>').appendTo(header);
-  $('<div class="roundViewInner" ></div>').appendTo($roundView);
-  $('<div class="quadGenerator" ></div>').appendTo(header);
-  var $quadGenerator = $('.quadGenerator');
+  // FIND OUT WHAT IS THIS FOR
+  // var $roundView = $('<div class="roundView" ></div>').appendTo(header);
+  // $('<div class="roundViewInner" ></div>').appendTo($roundView);
 
+  var $quadGenerator = $('<div class="quadGenerator" ></div>').appendTo(header);
   var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4;
   for (var n = 0; n < genCount; ++n) {
     appendDataHolder($quadGenerator, "generator" + n, "quadrupole")
+  }
+
+  if (header.hasClass('double')) {
+    var $quadGeneratorDouble = $('<div class="quadGenerator double" ></div>').appendTo(header);
+    for (var n = genCount; n < genCount * 2; ++n) {
+      appendDataHolder($quadGeneratorDouble, "generator" + n, "quadrupole")
+    }
   }
 
   let dual = $('.dualTeleportationImage');
@@ -200,7 +210,7 @@ jQuery(document).ready(function ($) {
 
 
 
-  var $imageDiv = $('<div class="uploadImageHolder clipped" ></div>').appendTo($quadGenerator);
+  var $imageDiv = $('<div class="uploadImageHolder clipped" ></div>').appendTo('.quadGenerator');
   var $focusControls = $('<div class="focusControls" ></div>').appendTo($imageDiv);
   var $focusChangers = $('<div class="focusChangers" ></div>').appendTo($focusControls);
   var $subImageControls = $('<div class="subImageControls" ></div>').appendTo($focusControls);
@@ -253,9 +263,9 @@ jQuery(document).ready(function ($) {
   $('<div class="videoSelectsTitle" >Controls:</div>').appendTo($videoControlsAndFocus);
 
   var $videoControls = $('<div class="videoControls" ></div>').appendTo($videoControlsAndFocus);
-  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`).appendTo($videoControls);
-  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png" class="youtubePauseButtonImage redButton" />`).hide().appendTo($videoControls);
-  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/playVideo.png" class="youtubePlayButtonImage redButton" />`).appendTo($videoControls);
+  $(`<img src="https://github.com/esculapeso/quantum_generator/raw/main/images/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`).appendTo($videoControls);
+  $(`<img src="https://github.com/esculapeso/quantum_generator/raw/main/images/pauseVideo.png" class="youtubePauseButtonImage redButton" />`).hide().appendTo($videoControls);
+  $(`<img src="https://github.com/esculapeso/quantum_generator/raw/main/images/playVideo.png" class="youtubePlayButtonImage redButton" />`).appendTo($videoControls);
   $('<input type="range" value="10" class="videoVolume" />').appendTo($videoControls);
   var $videoSelects = $('<div class="videoSelects" ></div>').appendTo($subImageControls);
 
@@ -367,10 +377,15 @@ jQuery(document).ready(function ($) {
 
   $(`<div class="hideLivePanel">
         <input class="hideLiveButton button" type="button" value="Live"  />
+        <input class="hideMantraButton button" type="button" value="Live"  />
       </div>`).appendTo($liveSection);
 
   $(document).on('click', '.hideLiveButton', function () {
     $('#lives').toggle();
+  });
+
+  $(document).on('click', '.hideMantraButton', function () {
+    $('.hideMantraButton').toggle();
   });
 
 
@@ -389,7 +404,7 @@ jQuery(document).ready(function ($) {
   $.each(transmissions, (i, transmission) => {
 
     const currentLivesTabSelector = `#lives-${i + 1}`;
-    $(`#lives ul li:has(a[href='${currentLivesTabSelector}'])`).show().find('a').html(transmission.name);
+    $(`#lives ul li:has(a[href='${currentLivesTabSelector}'])`).show().find('a').html(transmission.name).addClass("is_transmission");
     var $liveTab = $(currentLivesTabSelector);
 
     switch (transmission.type) {
@@ -423,6 +438,20 @@ jQuery(document).ready(function ($) {
     }
 
   });
+
+  isRotating = true;
+  rotationCounter = 0;
+
+  function rotateLiveTransmissions() {
+    if (isRotating) {
+      liveTabs = $('#lives ul li.is_transmission');
+      rotationCounter = (rotationCounter + 1) % liveTabs.length;
+      liveTabs.eq(rotationCounter).trigger('click');
+      setTimeout(rotateLiveTransmissions, 1000);
+    }
+  }
+
+  rotateLiveTransmissions();
 
 
   function generateTokensContent(container, type) {
@@ -475,24 +504,6 @@ jQuery(document).ready(function ($) {
 
   function updateFetchedImages(urlToFetch) {
 
-    // fetchWithCorsAnywhere(urlToFetch, function(result) {
-    //   const container = $('.imagesFetched.' + urlToFetch.split('/').pop());
-    //   let urls = Array.isArray(result.images) ? result.images.slice(0, 15) : [];
-    //   if (container.find('.image-container').length == 0)
-    //     $.each(urls, (i, thumb) => {
-    //       const $div = $(`<div class="image-container"></div>`);
-    //       $div.css({ 'background-image': `url(${thumb.url})` });
-    //       const $link = $(`<a index="${i}" href="${thumb.href}" target="_blank"></a>`);
-    //       $link.append($div);
-    //       container.append($link);
-    //     });
-    //   else
-    //     $.each(urls, (i, thumb) => {
-    //       $(`a[index="${i}"]`, container).attr('href', thumb.href);
-    //       $(`.image-container[index="${i}"]`, container).css({ 'background-image': `url(${thumb.url})` });
-    //     });
-    // });
-
     fetchImageUrls(urlToFetch).then(([url, imageUrls]) => {
       const container = $('.imagesFetched.' + url.split('/').pop());
       let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
@@ -511,24 +522,10 @@ jQuery(document).ready(function ($) {
           const old_image_url = image.attr('src');
           $(`.image-container[index="${i}"]`, container).attr('src', thumb.url).css({ 'background-image': `url(${old_image_url})` });
         });
-    }); 
+    });
 
     setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);
   }
-
-  // function fetchWithCorsAnywhere(url, printResult) {
-  //   var corsAnywhereUrl = 'https://cors-anywhere.herokuapp.com/';
-  //   var x = new XMLHttpRequest();
-  //   x.open('GET', corsAnywhereUrl + url);
-  //   x.onload = x.onerror = function() {
-  //     printResult(
-  //       'GET ' + url + '\n' +
-  //       x.status + ' ' + x.statusText + '\n\n' +
-  //       (x.responseText || '')
-  //     );
-  //   };
-  //   x.send();
-  // }
 
   async function fetchImageUrls(apiUrl) {
     try {
@@ -603,7 +600,6 @@ jQuery(document).ready(function ($) {
     var imageUrl = array[index].imageUrl;
     UpdateFocusText(text);
     $(`.imageInnerDiv`).css('background-image', `url("${imageUrl}")`);
-    //$(`.person2Image`).css('background-image', `url("/wp-content/uploads/2024/01/jesus_bevel.png")`);
 
     jesusUtter.text = repeatStringWithComma(text, repeat);
     msg.rate = 0.8;
@@ -623,8 +619,6 @@ jQuery(document).ready(function ($) {
     jesusSynth.cancel();
     jesusIsPlaying = false;
     $(".jesusLang").show();
-    // $(`.person2Image`).css('background-image', `url("/wp-content/uploads/2022/12/la.jpg")`);
-    // $('.imageInnerDiv').css('background-image', 'url("/wp-content/uploads/2024/01/jesus_bevel.png")');
   });
 
 
@@ -647,34 +641,49 @@ jQuery(document).ready(function ($) {
 
   $(document).on('click', '.hideOptionsButton', function () {
     $('#tabs').toggle();
-
-    var newValue = $(this).attr('altvalue');
-    var curValue = $(this).attr('value');
-    $(this).attr('altvalue', curValue).attr('value', newValue)
-
+    toggleButtonAltValue($(this));
   });
 
+  function toggleButtonAltValue(button) {
+    var newValue = button.attr('altvalue');
+    var curValue = button.attr('value');
+    button.attr('altvalue', curValue).attr('value', newValue)
+  }
+
   $('<input class="centerGenerator button" type="button" value="↕"  />').appendTo($videoChooserSection);
+  $('<input class="playGeneratorVideo button" type="button" altvalue="II" value="►"  />').appendTo($videoChooserSection);
+  $('<input class="togglePyramidButton button" type="button" altvalue="▣" value="◭"  />').appendTo($videoChooserSection);
 
   $(document).on('click', '.centerGenerator', function () {
     $(window).scrollTop($(".quadrupolePanel").offset().top);
   });
 
-  $(document).on('click', '.animateGenerator', function () {
-    var val = parseInt($(this).attr('on'));
-    var imageUrl = (val)
-      ? "https://esculap.org/wp-content/uploads/2022/12/ezgif.com-gif-maker.webp"
-      : "https://esculap.org/wp-content/uploads/2022/12/ezgif.com-gif-maker.webp";
+  $(document).on('click', '.playGeneratorVideo', function () {
+    startFocusVideo()
 
-    $(".quadGenerator").css('background-image', `url(${imageUrl})`)
+    // ispl = isAnyVideoPlaying();
+    // console.log("isVideoPlaying ", ispl)
+    // if (ispl) {
+    //   pauseFocusVideo()
+    // }
+    // else {
+    //   startFocusVideo()
+    // }
 
-    $(this).attr('on', (val + 1) % 2);
+    // toggleButtonAltValue($(this));
   });
+
+  $(document).on('click', '.togglePyramidButton', function () {
+    togglePyramidView();
+
+    toggleButtonAltValue($(this));
+  });
+
 
   /**********************
           TABS 
   ***********************/
-  $("#tabs").tabs().appendTo($videoChooserSection);
+  $("#tabs").tabs().hide().appendTo($videoChooserSection);
 
   var initFocusText = focusTextsVar;
   var initCaptionText = "Quantum";
@@ -747,6 +756,8 @@ jQuery(document).ready(function ($) {
   sides.forEach(side => {
     const $side = $('<div>', { class: `side ${side}` }).appendTo($pyramid);
     const $inside = $('<div>', { class: 'inside' }).appendTo($side);
+    if (pyramidUpperImagesVar.length > 0)
+      $('<div>', { class: 'imageInnerWingsDiv' }).css('background-image', `url('${pyramidUpperImagesVar[0].url}')`).appendTo($inside);
     $('<div>', { class: 'imageInnerDiv' }).appendTo($inside);
     $('<div>', { class: 'videoBackground hidden-container' })
       .append($('<div>', { class: 'videoForeground' })
@@ -782,6 +793,8 @@ jQuery(document).ready(function ($) {
   });
 
   function togglePyramidView(isPyramid, startVideo, zoom, ratio) {
+    isPyramid = (typeof isPyramid === "undefined") ? !$('.piramidToggleCB').prop('checked') : isPyramid;
+
     // Common jQuery selectors
     var $fullView = $('.fullView');
     var $pyramidView = $('.pyramidView');
@@ -830,17 +843,27 @@ jQuery(document).ready(function ($) {
     if (v.only && !v.only.includes(pageType)) return;
 
     let imageUrl = v.isView
-      ? (v.thumbUrl || 'https://ww2.e-s-p.com/wp-content/uploads/2018/12/youtube-play.png')
+      ? (v.thumbUrl || 'https://github.com/esculapeso/quantum_generator/raw/main/images/playVideo.png')
       : `https://img.youtube.com/vi/${v.id}/0.jpg`;
     let style = `background-image:url(${imageUrl});`;
 
-    $('<div>', {
-      'videoid': v.id,
-      'isView': v.isView,
-      class: 'videoThumb',
-      style: style,
-      title: v.name
-    }).appendTo($videoThumbsDiv);
+    if (v.mode == 'isvideo') {
+      $('<video>', {
+        'videoid': v.id,
+        mode: v.mode,
+        class: 'videoThumb',
+        html: `<source src="${v.id}" type="video/mp4">`,
+        title: v.name
+      }).appendTo($videoThumbsDiv);
+    } else {
+      $('<div>', {
+        'videoid': v.id,
+        'mode': v.mode,
+        class: 'videoThumb',
+        style: style,
+        title: v.name
+      }).appendTo($videoThumbsDiv);
+    }
 
     $('<option>', {
       value: v.id,
@@ -861,7 +884,7 @@ jQuery(document).ready(function ($) {
   }
 
   $(document).on('click', '.videoThumb', function () {
-    changeVideo($(this).attr('videoid'), $(this).attr("isView"));
+    changeVideo($(this).attr('videoid'), $(this).attr("mode"));
   });
 
   $(document).on('change', '.videoSelect', function () {
@@ -870,9 +893,9 @@ jQuery(document).ready(function ($) {
 
   // Create and append video controls
   var $videoControls = $('<div>', { class: "videoControls" }).appendTo($videoChooserContent);
-  $('<img>', { src: "https://esculap.org/wp-content/uploads/2022/11/removeVideo.png", class: "youtubeRemoveButtonImage redButton" }).appendTo($videoControls);
-  $('<img>', { src: "https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png", class: "youtubePauseButtonImage redButton", style: "display:none;" }).appendTo($videoControls);
-  $('<img>', { src: "https://esculap.org/wp-content/uploads/2022/11/playVideo.png", class: "youtubePlayButtonImage redButton" }).appendTo($videoControls);
+  $('<img>', { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/removeVideo.png", class: "youtubeRemoveButtonImage redButton" }).appendTo($videoControls);
+  $('<img>', { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/pauseVideo.png", class: "youtubePauseButtonImage redButton", style: "display:none;" }).appendTo($videoControls);
+  $('<img>', { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/playVideo.png", class: "youtubePlayButtonImage redButton" }).appendTo($videoControls);
   $('<input>', { type: "range", value: "10", class: "videoVolume" }).appendTo($videoControls);
 
   // Consolidate click event handlers for video controls
@@ -899,6 +922,7 @@ jQuery(document).ready(function ($) {
   }
 
   function pauseFocusVideo() {
+    console.log("pause")
     if (!playersReady)
       return;
     toggleVideoControls(true);
@@ -912,26 +936,56 @@ jQuery(document).ready(function ($) {
       return;
     }
     toggleVideoControls(false);
-    players.forEach(player => player.loadVideoById(newVideoId).stopVideo());
-
+    currentVideoId = newVideoId || currentVideoId;
+    console.log(currentVideoId, newVideoId)
     const activePlayers = getActivePlayers();
     const volumeLevel = $('.videoVolume').val();
+
+    let playersStarted = 0; // Counter for players that have started playing
+
     activePlayers.forEach((player, index) => {
-      player.setVolume(volumeLevel).playVideo().setPlaybackQuality("small");
+      player.loadVideoById({
+        videoId: currentVideoId,
+        events: {
+          'onStateChange': (event) => {
+            if (event.data === YT.PlayerState.PLAYING) {
+              playersStarted++;
+              if (playersStarted === activePlayers.length) {
+                isVideoPlaying = true; // Set true only when all active players have started
+              }
+            }
+          }
+        }
+      });
+
+      player.setVolume(volumeLevel);
       if (index === 0) {
         player.unMute();
       } else {
         player.mute();
       }
+      player.playVideo().setPlaybackQuality("small");
     });
+
     $('.videoBackground').removeClass('hidden-container');
-    isVideoPlaying = true;
   }
 
   function getActivePlayers() {
     const singleVideoHolderId = "videoHolder";
     const isPyramidViewActive = $('.piramidToggleCB').is(':checked');
     return players.filter(player => isPyramidViewActive ? player.g.id !== singleVideoHolderId : player.g.id === singleVideoHolderId);
+  }
+
+  function isAnyVideoPlaying() {
+    console.log({ players })
+    const activePlayers = getActivePlayers();
+    console.log({ activePlayers })
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].getPlayerState() === YT.PlayerState.PLAYING) {
+        return true; // Returns true if any video is playing
+      }
+    }
+    return false; // Returns false if no videos are playing
   }
 
   function changeVideo(newVideoId, mode) {
@@ -941,7 +995,7 @@ jQuery(document).ready(function ($) {
     $(".imageInnerDiv").removeClass('psalmCover');
     $(".view360InnerDiv").empty();
 
-    const $view360InnerDiv = $('.view360InnerDiv');
+    const $view360InnerDiv = $('.view360InnerDiv').empty();
 
     switch (mode) {
       case 'isView':
@@ -953,14 +1007,38 @@ jQuery(document).ready(function ($) {
           src: newVideoId
         }).appendTo($view360InnerDiv);
         break;
-      case 'isVideo':
-        $('<video>', {
-          width: "100%",
+      case 'isvideo':
+        var $video = $('<video>', {
           height: "100%",
           autoplay: true,
           loop: true,
           html: `<source src="${newVideoId}" type="video/mp4">`
-        }).appendTo($view360InnerDiv);
+        }).appendTo('.quadGenerator:not(.double) .uploadImageHolder > .view360InnerDiv');
+        var $canvas = $(`<canvas id="outputCanvas" ></canvas>`).appendTo('.quadGenerator.double .uploadImageHolder > .view360InnerDiv');
+        var context = $canvas[0].getContext('2d');
+
+        $video.on('loadedmetadata', function () {
+          // Calculate the height to maintain the aspect ratio
+          // The canvas width is being set to 200px statically in your original code
+          // var height = $video[0].videoHeight * (200 / $video[0].videoWidth);
+          // Adjusting the canvas size dynamically based on the video might not be necessary here
+          // as your original code sets a static width of 200px for drawing the video frame
+          $canvas.attr('width', $video[0].videoWidth);
+          $canvas.attr('height', $video[0].videoWidth);
+        });
+
+        $video.on('play', function () {
+          drawVideoFrame();
+        });
+
+        function drawVideoFrame() {
+          if ($video[0].paused || $video[0].ended) return;
+          // Draw the current video frame onto the canvas
+          context.drawImage($video[0], 0, 0, $video[0].width, $video[0].height);
+          requestAnimationFrame(drawVideoFrame); // Call drawVideoFrame again to keep updating the canvas
+        }
+
+
         break;
       default:
         startFocusVideo(newVideoId);
@@ -1112,7 +1190,7 @@ jQuery(document).ready(function ($) {
   });
 
   // Image buttons
-  $('<div class="imageButtons"><img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="removeImageButton redButton" /><img src="https://esculap.org/wp-content/uploads/2022/11/uploadButtons.png" class="uploadImageButton redButton" /><input class="uploadImageHiddenButton" type="file" style="display: none;" /></div>').appendTo($tab3);
+  $('<div class="imageButtons"><img src="https://github.com/esculapeso/quantum_generator/raw/main/images/removeVideo.png" class="removeImageButton redButton" /><img src="https://github.com/esculapeso/quantum_generator/raw/main/images/uploadButtons.png" class="uploadImageButton redButton" /><input class="uploadImageHiddenButton" type="file" style="display: none;" /></div>').appendTo($tab3);
   $('<div class="imageButtons"><input type="button" class="urlImageButton" value="URL" /><input class="urlImageTextbox" type="text" /></div>').appendTo($tab3);
 
   // Event handlers for image buttons
@@ -1138,16 +1216,21 @@ jQuery(document).ready(function ($) {
     }
 
     const is3D = fi.filepath.includes('.glb');
+    const isVideo = fi.filepath.includes('.webm');
+
     const $imageDiv = $('<div>', {
       class: 'uploadImageExample',
       title: fi.text,
       category: fi.category,
       src: '',
-      is3d: is3D ? true : undefined
+      is3d: is3D ? true : undefined,
+      isVideo: isVideo ? true : undefined
     }).appendTo($tab3);
 
     if (is3D) {
       insert3dModel($imageDiv, fi.preview, fi.filepath);
+    } else if (isVideo) {
+      $('<img>', { class: 'uploadedImage', src: fi.preview, videopath: fi.filepath }).appendTo($imageDiv);
     } else {
       $('<img>', { class: 'uploadedImage', src: fi.filepath }).appendTo($imageDiv);
     }
@@ -1168,7 +1251,18 @@ jQuery(document).ready(function ($) {
     if ($(this).is("[is3d]")) {
       const source = $(this).find('model-viewer').attr('target');
       insert3dModel($('.imageInnerDiv'), source);
-    } else {
+    } else if ($(this).is("[isVideo]")) {
+      const videoPath = $(this).find(".uploadedImage").attr('videopath');
+      $('<video>', {
+        controls: false,
+        autoplay: true,
+        loop: true
+      }).append($('<source>', {
+        src: videoPath,
+        type: 'video/webm'
+      })).appendTo(".imageInnerDiv");
+    }
+    else {
       const imagePath = $(this).find(".uploadedImage").attr('src');
       $(".imageInnerDiv").css('background-image', `url(${imagePath})`);
     }
@@ -1185,7 +1279,7 @@ jQuery(document).ready(function ($) {
           class="modelviewer3d"
           src="${srcUrl}"
           style="width: 100%; height: 100%;"
-          poster="https://esculap.org/wp-content/uploads/2022/12/animateddna.webp"
+          poster="https://github.com/esculapeso/quantum_generator/raw/main/images/animateddna.webp"
           target="${targetUrl}"
           background-color="transparent"
           preload
@@ -1319,7 +1413,8 @@ jQuery(document).ready(function ($) {
     var $personRightPanel = $("<div>", { class: "personRightPanel" }).appendTo($personPanel);
 
     $("<div>", { class: "personTag", text: person.name }).appendTo($personRightPanel);
-    $("<input>", { class: "personHiddenUploadButton", target: person.role, type: "file", style: "display: none;" }).appendTo($personRightPanel);
+    $("<input>", { role: person.role, class: "personHiddenUploadButton", type: "file", style: "display: none;" }).appendTo($personRightPanel);
+    $("<input>", { role: person.role, class: "personLinkTextbox", type: "text" }).appendTo($personRightPanel);
     $("<input>", { role: person.role, class: "personUploadButton", type: "button", value: "Upload" }).appendTo($personRightPanel);
     $("<input>", { role: person.role, class: "personDeleteButton", type: "button", value: "Delete" }).appendTo($personRightPanel);
   });
@@ -1339,22 +1434,34 @@ jQuery(document).ready(function ($) {
     createPersonImage(person, "inner " + person.role + "Image", $quadGenerator);
   });
 
+  $(document).on('input', '.personLinkTextbox, .personImage', function () {
+    const role = $(this).attr('role');
+    updateBackgroundImage(role, $(this).val());
+  });
+
   $(document).on('click', '.personUploadButton, .personImage', function () {
-    var role = $(this).attr('role');
+    const role = $(this).attr('role');
     $(`.${role} .personHiddenUploadButton`).click();
   });
 
   $(document).on('click', '.personDeleteButton, .personImage', function () {
-    var role = $(this).attr('role');
-    var targetSelector = `.${role}Image, .${role}Thumb`;
-    $(targetSelector).css('background-image', ``);
+    const role = $(this).attr('role');
+    updateBackgroundImage(role, '');
   });
 
   $(document).on('change', '.personHiddenUploadButton', function () {
-    var target = $(this).attr('target');
-    var targetSelector = `.${target}Image, .${target}Thumb`;
-    uploadImage(targetSelector, $(this));
+    const role = $(this).attr('role');
+    uploadImage(getRoleSelector(role), $(this));
   });
+
+  function getRoleSelector(role) {
+    return `.${role}Image, .${role}Thumb`;
+  }
+
+  function updateBackgroundImage(role, value) {
+    $(getRoleSelector(role)).css('background-image', `url("${value}")`);
+  }
+
 
 
   /**********************
@@ -1386,7 +1493,7 @@ jQuery(document).ready(function ($) {
   var $qrngIntervalText = $(`<label class="qrngIntervalText">${qrngOrigDisplayInterval} ms</label>`);
   $qrngIntervalText.appendTo($qrngContent);
 
-  var $qrngLoadCircle = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/load_circle.gif" class="qrngLoadCircle" />`);
+  var $qrngLoadCircle = $(`<img src="https://github.com/esculapeso/quantum_generator/raw/main/images/load_circle.gif" class="qrngLoadCircle" />`);
   $qrngLoadCircle.appendTo($qrngContent);
 
   $(document).on('change', '.qrngIntervalCheckbox', function () {
@@ -1507,8 +1614,8 @@ jQuery(document).ready(function ($) {
   const $tab6 = $("#tabs-6");
   const $soundContent = $("<div>", { class: "soundContent" }).appendTo($tab6);
 
-  $("<img>", { src: "https://esculap.org/wp-content/uploads/2022/11/speaker.png", class: "speakerOutput soundButton" }).appendTo($soundContent);
-  const $usbOutput = $("<img>", { src: "https://esculap.org/wp-content/uploads/2022/11/usb.png", class: "usbOutput soundButton" }).appendTo($soundContent);
+  $("<img>", { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/speaker.png", class: "speakerOutput soundButton" }).appendTo($soundContent);
+  const $usbOutput = $("<img>", { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/usb.png", class: "usbOutput soundButton" }).appendTo($soundContent);
 
   let isSoundMod = 0;
 
@@ -1727,17 +1834,6 @@ jQuery(document).ready(function ($) {
         if (repeatCount > 0) {
           synthOm.speak(event.utterance);
         } else {
-          //show symbols
-          // $(".imageInnerDiv").html('');
-          // $(".imageInnerDiv").css('background-image', 'url("https://omreiki.uk/wp-content/uploads/2022/07/chokurei.gif)"');
-
-          // var ckrUtt = new SpeechSynthesisUtterance();
-          // ckrUtt.text = 'Cho, Ku, Rey. Cho, Ku, Rey. Cho, Ku, Rey.';
-          // ckrUtt.rate = 0.75;
-          // synthOm.speak(ckrUtt);
-
-          // ckrUtt.onend = (event) => {
-          // $(".imageInnerDiv").css('background-image', 'url("https://omreiki.uk/wp-content/uploads/2022/07/seiheki.gif)"');
           $(".imageInnerDiv").html('');
           $(".imageInnerDiv").css('background-image', 'url("https://omreiki.uk/wp-content/uploads/2022/12/linga.gif)"');
 

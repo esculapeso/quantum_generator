@@ -1,0 +1,202 @@
+.quadGenerator {
+    background-image: url(https://omreiki.uk/wp-content/uploads/2022/12/OmegaGeneratorNodes.png) !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.quadrupoleImage {
+    width: 82.5vh !important;
+    background-size: 0 !important;
+}
+
+.quadrupoleImage * {
+    color: red !important;
+    font-weight: bold !important;
+}
+
+#generator0 {
+    bottom: 1.5% !important;
+    left: 13.9% !important;
+    width: 17.4% !important;
+    transform: rotate(-180deg) !important;
+}
+
+#generator1 {
+    top: 81.7% !important;
+    left: 35% !important;
+    transform: rotate(-270deg) !important;
+    width: 5% !important;
+}
+
+#generator2 {
+    bottom: 1.5% !important;
+    right: 14% !important;
+    width: 17.4% !important;
+    transform: rotate(-180deg) !important;
+    left: unset !important;
+    top: unset !important;
+}
+
+#generator3 {
+    top: 82% !important;
+    left: 59% !important;
+    transform: rotate(-90deg) !important;
+    width: 5% !important;
+}
+
+#generator4 {
+    top: 12% !important;
+    left: 3% !important;
+    transform: rotate(-225deg) !important;
+    width: 33% !important;
+}
+
+#generator5 {
+    top: 37% !important;
+    left: -10% !important;
+    transform: rotate(-270deg) !important;
+    width: 33% !important;
+}
+
+#generator6 {
+    top: 63% !important;
+    left: 2% !important;
+    transform: rotate(-315deg) !important;
+    width: 33% !important;
+}
+
+#generator7 {
+    top: 12% !important;
+    left: 64% !important;
+    transform: rotate(-135deg) !important;
+    width: 33% !important;
+}
+
+#generator8 {
+    top: 37% !important;
+    left: 77.5% !important;
+    transform: rotate(-90deg) !important;
+    width: 33% !important;
+}
+
+#generator9 {
+    top: 63% !important;
+    left: 65.5% !important;
+    transform: rotate(-45deg) !important;
+    width: 33% !important;
+}
+
+.quadrupole {
+    padding-bottom: 11% !important;
+    word-break: break-all;
+}
+
+.uploadImageHolder {
+    top: 42% !important;
+}
+
+.main-content {
+    background: unset !important;
+}
+
+.generatorText {
+    position: absolute;
+    width: 32% !important;
+    word-break: break-all;
+    text-align: center;
+}
+
+.captionText {
+    right: 0;
+}
+
+.generatorText {
+    position: absolute;
+    text-align: center;
+    bottom: 13%;
+    top: unset !important;
+    font-size: 3vh !important;
+}
+
+.uploadImageHolder {
+    height: 63% !important;
+    width: 77% !important;
+    top: 42.4% !important;
+    clip-path: circle(50%);
+}
+
+.imageInnerDiv {
+    width: 90% !important;
+    height: 90% !important;
+    top: 5% !important;
+    left: 5% !important;
+}
+
+.therapistImage {
+    display: none;
+}
+
+.therapistImage.top {
+    top: 0.8% !important;
+    left: 44% !important;
+    display: block;
+}
+
+.person1Image {
+    top: 74% !important;
+    left: 32% !important;
+}
+
+.person2Image {
+    top: 89% !important;
+    left: 1% !important;
+}
+
+.person3Image {
+    top: 89% !important;
+    left: 32% !important;
+}
+
+.person4Image {
+    top: 74% !important;
+    left: 56% !important;
+}
+
+.person5Image {
+    top: 89% !important;
+    left: 56% !important;
+}
+
+.person6Image {
+    top: 89% !important;
+    left: 87% !important;
+}
+
+.personImage,
+.personImage.inner {
+    width: 10vh !important;
+    height: 10vh !important;
+    border-radius: 50%;
+    background-size: cover;
+}
+
+.uploadImageHolder {
+    clip-path: unset !important;
+}
+
+.uploadImageHolder.clipped {
+    clip-path: circle(50%) !important;
+}
+
+.elementor-section.elementor-section-boxed>.elementor-container {
+    max-width: unset !important;
+}
+
+.ui-tabs .ui-tabs-panel {
+    background: #fff2e8 !important;
+}
+
+.piramidToggle.callToggle {
+    display: none !important;
+}
+
