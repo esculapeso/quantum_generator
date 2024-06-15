@@ -645,14 +645,20 @@ jQuery(document).ready(function ($) {
   });
 
   function toggleButtonAltValue(button) {
+    // alternate value
     var newValue = button.attr('altvalue');
     var curValue = button.attr('value');
     button.attr('altvalue', curValue).attr('value', newValue)
+
+    // alternate title
+    var newTitle = button.attr('alttitle');
+    var curTitle = button.attr('title');
+    button.attr('alttitle', curTitle).attr('title', newTitle)
   }
 
   $('<input class="centerGenerator button" type="button" value="↕"  />').appendTo($videoChooserSection);
   $('<input class="playGeneratorVideo button" type="button" altvalue="II" value="►"  />').appendTo($videoChooserSection);
-  $('<input class="togglePyramidButton button" type="button" altvalue="▣" value="◭"  />').appendTo($videoChooserSection);
+  $('<input class="togglePyramidButton button" type="button" alttitle="Classic View" title="Pyramid View" altvalue="▣" value="◭"  />').appendTo($videoChooserSection);
 
   $(document).on('click', '.centerGenerator', function () {
     $(window).scrollTop($(".quadrupolePanel").offset().top);
