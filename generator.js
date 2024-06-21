@@ -1223,19 +1223,19 @@ jQuery(document).ready(function ($) {
   function iterateChildren() {
       var $children = $('.imagesGallerySelected').children(); // Re-select children each time
       console.log("children len", $children.length);
-      if ($children.length === 0) return; // Exit if no children are present
+      if ($children.length !== 0) {
 
-      var $child = $($children[index]);
-      console.log("child: ", $child); // Or perform any action with $child
+        var $child = $($children[index]);
+        console.log("child: ", $child); // Or perform any action with $child
 
-      changeInnerImage($child)
+        changeInnerImage($child)
 
-      index++;
+        index++;
 
+        if (index >= $children.length) {
+            index = 0; // Reset index to loop continuously
+        }
 
-
-      if (index >= $children.length) {
-          index = 0; // Reset index to loop continuously
       }
 
       setTimeout(iterateChildren, intervalTime);
