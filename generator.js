@@ -1223,8 +1223,13 @@ jQuery(document).ready(function ($) {
       if ($children.length === 0) return; // Exit if no children are present
 
       var $child = $($children[index]);
-      console.log($child.text()); // Or perform any action with $child
+      console.log("child: ", $child); // Or perform any action with $child
+
+      changeInnerImage($child)
+
       index++;
+
+
 
       if (index >= $children.length) {
           index = 0; // Reset index to loop continuously
