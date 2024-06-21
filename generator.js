@@ -645,16 +645,21 @@ jQuery(document).ready(function ($) {
   });
 
   function toggleButtonAltValue(button) {
-    // alternate value
-    var newValue = button.attr('altvalue');
-    var curValue = button.attr('value');
-    button.attr('altvalue', curValue).attr('value', newValue)
+    // Toggle value and altvalue attributes
+    toggleAttribute(button, 'value', 'altvalue');
 
-    // alternate title
-    var newTitle = button.attr('alttitle');
-    var curTitle = button.attr('title');
-    button.attr('alttitle', curTitle).attr('title', newTitle)
+    // Toggle title and alttitle attributes
+    toggleAttribute(button, 'title', 'alttitle');
   }
+
+  function toggleAttribute(button, attrName, altAttrName) {
+    var newAttrVal = button.attr(altAttrName);
+    var curAttrVal = button.attr(attrName);
+    if (newAttrVal && curAttrVal) {
+        button.attr(altAttrName, curAttrVal).attr(attrName, newAttrVal);
+    }
+  }
+
 
   $('<input class="centerGenerator button" type="button" value="↕"  />').appendTo($videoChooserSection);
   $('<input class="playGeneratorVideo button" type="button" altvalue="II" value="►"  />').appendTo($videoChooserSection);
@@ -1208,10 +1213,17 @@ jQuery(document).ready(function ($) {
     $(".imageInnerDiv").css('background-image', `url(${$('.urlImageTextbox').val()})`);
   });
 
+  
+  // Gallery Image select
+  const $imageCategoriesSelection = $("<div>", { class: "imageCategoriesSelection" }).appendTo($tab3);
+
   // Image category select
   const $imageCategoriesSelection = $("<div>", { class: "imageCategoriesSelection" }).appendTo($tab3);
   $("<span>", { text: "Category: " }).appendTo($imageCategoriesSelection);
   const $imageCategorySelect = $('<select class="imageCategorySelect"><option value="all">All</option></select>').appendTo($imageCategoriesSelection);
+
+
+  const $imagesGallerySelected = $("<div>", { class: "imagesGallerySelected" }).appendTo($tab3);
 
   // Populate image categories and create image divs
   let imageCategories = [];
@@ -1224,6 +1236,9 @@ jQuery(document).ready(function ($) {
     const is3D = fi.filepath.includes('.glb');
     const isVideo = fi.filepath.includes('.webm');
 
+
+    const $imagesGallery = $("<div>", { class: "imagesGallery" }).appendTo($tab3);
+
     const $imageDiv = $('<div>', {
       class: 'uploadImageExample',
       title: fi.text,
@@ -1231,7 +1246,7 @@ jQuery(document).ready(function ($) {
       src: '',
       is3d: is3D ? true : undefined,
       isVideo: isVideo ? true : undefined
-    }).appendTo($tab3);
+    }).appendTo($imagesGallery);
 
     if (is3D) {
       insert3dModel($imageDiv, fi.preview, fi.filepath);
@@ -1250,8 +1265,15 @@ jQuery(document).ready(function ($) {
     $('.uploadImageExample').toggle(selectedCategory === "all").filter(`[category="${selectedCategory}"]`).toggle(selectedCategory !== "all");
   });
 
+  $(document).on('click', '.imagesGallerySelected .uploadImageExample', function () {
+    $imagesGallerySelected.removeChild($(this));
+  });
+
   // Event handler for image selection
   $(document).on('click', '.uploadImageExample', function () {
+    
+    $(this).appendTo($imagesGallerySelected)
+
     clearImageFocus();
 
     if ($(this).is("[is3d]")) {
