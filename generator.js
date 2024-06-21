@@ -1218,8 +1218,11 @@ jQuery(document).ready(function ($) {
   var index = 0;
   var intervalTime = 792; // miliseconds
 
+  console.log("start gallery");
+
   function iterateChildren() {
       var $children = $('.imagesGallerySelected').children(); // Re-select children each time
+      console.log("children len", $children.length);
       if ($children.length === 0) return; // Exit if no children are present
 
       var $child = $($children[index]);
