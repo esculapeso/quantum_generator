@@ -1297,7 +1297,7 @@ jQuery(document).ready(function ($) {
 
   // Event handler for image selection
   $(document).on('click', '.uploadImageExample', function () {
-    $(this).appendTo($imagesGallerySelected)
+    $(this).clone().appendTo($imagesGallerySelected)
   });
 
   function changeInnerImage(image) {
