@@ -1214,11 +1214,6 @@ jQuery(document).ready(function ($) {
   });
 
   const $imagesGallerySelected = $("<div>", { class: "imagesGallerySelected" }).appendTo($tab3);
-  const $imagesGallerySelectedPlayButton = $("<div>", { class: "imagesGallerySelectedPlayButton", value: "Play" }).appendTo($imagesGallerySelected);
-  
-  $(document).on('click', '.imagesGallerySelectedPlayButton', function () {
-    changeInnerImage($(this))
-  });
 
   var index = 0;
   var intervalTime = 792; // miliseconds
@@ -1241,9 +1236,6 @@ jQuery(document).ready(function ($) {
   // Start the loop
   iterateChildren();
 
-
-  // Gallery Image select
-  const $imagesGallerySelected = $("<div>", { class: "imagesGallerySelected" }).appendTo($tab3);
 
   // Image category select
   const $imageCategoriesSelection = $("<div>", { class: "imageCategoriesSelection" }).appendTo($tab3);
