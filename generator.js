@@ -1214,7 +1214,34 @@ jQuery(document).ready(function ($) {
   });
 
   const $imagesGallerySelected = $("<div>", { class: "imagesGallerySelected" }).appendTo($tab3);
+  const $imagesGallerySelectedPlayButton = $("<div>", { class: "imagesGallerySelectedPlayButton", value: "Play" }).appendTo($imagesGallerySelected);
   
+  $(document).on('click', '.imagesGallerySelectedPlayButton', function () {
+    changeInnerImage($(this))
+  });
+
+  var index = 0;
+  var intervalTime = 792; // miliseconds
+
+  function iterateChildren() {
+      var $children = $('#parent').children(); // Re-select children each time
+      if ($children.length === 0) return; // Exit if no children are present
+
+      var $child = $($children[index]);
+      console.log($child.text()); // Or perform any action with $child
+      index++;
+
+      if (index >= $children.length) {
+          index = 0; // Reset index to loop continuously
+      }
+
+      setTimeout(iterateChildren, intervalTime);
+  }
+
+  // Start the loop
+  iterateChildren();
+
+
   // Gallery Image select
   const $imageCategoriesSelection = $("<div>", { class: "imageCategoriesSelection" }).appendTo($tab3);
 
@@ -1270,16 +1297,16 @@ jQuery(document).ready(function ($) {
 
   // Event handler for image selection
   $(document).on('click', '.uploadImageExample', function () {
-    
     $(this).appendTo($imagesGallerySelected)
+  });
 
+  function changeInnerImage(image) {
     clearImageFocus();
-
-    if ($(this).is("[is3d]")) {
-      const source = $(this).find('model-viewer').attr('target');
+    if (image.is("[is3d]")) {
+      const source = image.find('model-viewer').attr('target');
       insert3dModel($('.imageInnerDiv'), source);
-    } else if ($(this).is("[isVideo]")) {
-      const videoPath = $(this).find(".uploadedImage").attr('videopath');
+    } else if (image.is("[isVideo]")) {
+      const videoPath = image.find(".uploadedImage").attr('videopath');
       $('<video>', {
         controls: false,
         autoplay: true,
@@ -1290,10 +1317,10 @@ jQuery(document).ready(function ($) {
       })).appendTo(".imageInnerDiv");
     }
     else {
-      const imagePath = $(this).find(".uploadedImage").attr('src');
+      const imagePath = image.find(".uploadedImage").attr('src');
       $(".imageInnerDiv").css('background-image', `url(${imagePath})`);
     }
-  });
+  }
 
   // Event handler for image upload
   $(document).on('change', '.uploadImageHiddenButton', function () {
