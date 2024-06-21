@@ -1363,7 +1363,13 @@ jQuery(document).ready(function ($) {
             read3D(file, targetImageSelector);
             break;
           default:
-            readImage(file, targetImageSelector);
+            const $uploadedImageDiv = $('<div>', {
+              class: 'uploadImageExample',
+              src: '',
+            }).appendTo($imagesGallerySelected);
+            let currentUploadedImage = $('<img>', { class: 'uploadedImage' }).appendTo($uploadedImageDiv);
+            //readImage(file, targetImageSelector);
+            readImageToGallery(file, currentUploadedImage);
             break;
         }
       });
@@ -1388,6 +1394,14 @@ jQuery(document).ready(function ($) {
     var reader = new FileReader();
     reader.onload = function (e) {
       $(targetImageSelector).css('background-image', `url("${e.target.result}")`);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function readImageToGallery(file, targetImage) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      targetImage.attr('src', e.target.result);
     };
     reader.readAsDataURL(file);
   }
