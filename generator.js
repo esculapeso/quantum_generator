@@ -1243,7 +1243,7 @@ jQuery(document).ready(function ($) {
 
 
   // Gallery Image select
-  const $imageCategoriesSelection = $("<div>", { class: "imageCategoriesSelection" }).appendTo($tab3);
+  const $imagesGallerySelected = $("<div>", { class: "imagesGallerySelected" }).appendTo($tab3);
 
   // Image category select
   const $imageCategoriesSelection = $("<div>", { class: "imageCategoriesSelection" }).appendTo($tab3);
