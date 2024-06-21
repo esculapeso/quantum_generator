@@ -1224,7 +1224,7 @@ jQuery(document).ready(function ($) {
   var intervalTime = 792; // miliseconds
 
   function iterateChildren() {
-      var $children = $('#parent').children(); // Re-select children each time
+      var $children = $('.imagesGallerySelected').children(); // Re-select children each time
       if ($children.length === 0) return; // Exit if no children are present
 
       var $child = $($children[index]);
