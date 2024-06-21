@@ -1213,6 +1213,7 @@ jQuery(document).ready(function ($) {
     $(".imageInnerDiv").css('background-image', `url(${$('.urlImageTextbox').val()})`);
   });
 
+  const $imagesGallerySelected = $("<div>", { class: "imagesGallerySelected" }).appendTo($tab3);
   
   // Gallery Image select
   const $imageCategoriesSelection = $("<div>", { class: "imageCategoriesSelection" }).appendTo($tab3);
@@ -1222,8 +1223,7 @@ jQuery(document).ready(function ($) {
   $("<span>", { text: "Category: " }).appendTo($imageCategoriesSelection);
   const $imageCategorySelect = $('<select class="imageCategorySelect"><option value="all">All</option></select>').appendTo($imageCategoriesSelection);
 
-
-  const $imagesGallerySelected = $("<div>", { class: "imagesGallerySelected" }).appendTo($tab3);
+  const $imagesGallery = $("<div>", { class: "imagesGallery" }).appendTo($tab3);
 
   // Populate image categories and create image divs
   let imageCategories = [];
@@ -1237,7 +1237,6 @@ jQuery(document).ready(function ($) {
     const isVideo = fi.filepath.includes('.webm');
 
 
-    const $imagesGallery = $("<div>", { class: "imagesGallery" }).appendTo($tab3);
 
     const $imageDiv = $('<div>', {
       class: 'uploadImageExample',
