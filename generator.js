@@ -1218,15 +1218,11 @@ jQuery(document).ready(function ($) {
   var index = 0;
   var intervalTime = 792; // miliseconds
 
-  console.log("start gallery");
-
   function iterateChildren() {
       var $children = $('.imagesGallerySelected').children(); // Re-select children each time
-      console.log("children len", $children.length);
       if ($children.length !== 0) {
 
         var $child = $($children[index]);
-        console.log("child: ", $child); // Or perform any action with $child
 
         changeInnerImage($child)
 
@@ -1430,7 +1426,7 @@ jQuery(document).ready(function ($) {
   function readImageToGallery(file, targetImage) {
     var reader = new FileReader();
     reader.onload = function (e) {
-      console.log("e file: ", e, e.target)
+      console.log("file name: ", file.name)
       targetImage.attr('src', e.target.result);
     };
     reader.readAsDataURL(file);
