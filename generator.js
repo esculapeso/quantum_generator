@@ -1287,9 +1287,20 @@ jQuery(document).ready(function ($) {
     $('.uploadImageExample').toggle(selectedCategory === "all").filter(`[category="${selectedCategory}"]`).toggle(selectedCategory !== "all");
   });
 
-  // Make images draggable
-  $(".imagesGallerySelected .uploadImageExample").draggable({
-    containment: ".imagesGallerySelected"
+  // // Make images draggable
+  // $(".imagesGallerySelected .uploadImageExample").draggable({
+  //   containment: ".imagesGallerySelected"
+  // });
+
+  $(document).ready(function() {
+    if ($(".imagesGallerySelected .uploadImageExample").draggable) {
+        console.log("Draggable function is available.");
+        $(".imagesGallerySelected .uploadImageExample").draggable({
+            containment: ".imagesGallerySelected"
+        });
+    } else {
+        console.log("Draggable function is not available.");
+    }
   });
 
   // Setup right-click (context menu) event to remove image
