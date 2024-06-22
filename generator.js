@@ -1287,32 +1287,36 @@ jQuery(document).ready(function ($) {
     $('.uploadImageExample').toggle(selectedCategory === "all").filter(`[category="${selectedCategory}"]`).toggle(selectedCategory !== "all");
   });
 
-  // // Make images draggable
-  // $(".imagesGallerySelected .uploadImageExample").draggable({
-  //   containment: ".imagesGallerySelected"
+  // $(".imagesGallerySelected").sortable({
+  //   items: ".uploadImageExample",
+  //   placeholder: "ui-state-highlight",
+  //   cursor: "move",
+  //   tolerance: "pointer",
+  //   stop: function(event, ui) {
+  //       console.log("New order:", $(this).sortable("toArray"));
+  //       // Additional code to handle the new order can go here
+  //   }
   // });
 
-  $(document).ready(function() {
-    if ($(".imagesGallerySelected .uploadImageExample").draggable) {
-        console.log("Draggable function is available.");
-        $(".imagesGallerySelected .uploadImageExample").draggable({
-            containment: ".imagesGallerySelected"
-        });
-    } else {
-        console.log("Draggable function is not available.");
-    }
+  $('.imagesGallerySelected').sortable({
+    placeholder: "ui-state-highlight",
+    items: ".uploadImageExample"
   });
+
+  // $(".imagesGallerySelected").disableSelection();
 
   // Setup right-click (context menu) event to remove image
   $(document).on('contextmenu', '.imagesGallerySelected .uploadImageExample', function(e) {
     e.preventDefault();  // Prevent the default context menu from appearing
     $(this).remove();  // Remove the clicked image
+    $('.imagesGallerySelected').sortable('refresh');
     return false;  // Stop further handling of the event
   });
 
   // Event handler for image selection
   $(document).on('click', '.uploadImageExample', function () {
-    $(this).clone().appendTo($imagesGallerySelected)
+    $(this).clone().appendTo($imagesGallerySelected);
+    $('.imagesGallerySelected').sortable('refresh');
   });
 
   function changeInnerImage(image) {
@@ -1412,6 +1416,7 @@ jQuery(document).ready(function ($) {
       });
 
       $this.val(''); // Clear file input
+      $('.imagesGallerySelected').sortable('refresh');
     }
   }
 
