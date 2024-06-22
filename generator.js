@@ -1287,8 +1287,16 @@ jQuery(document).ready(function ($) {
     $('.uploadImageExample').toggle(selectedCategory === "all").filter(`[category="${selectedCategory}"]`).toggle(selectedCategory !== "all");
   });
 
-  $(document).on('click', '.imagesGallerySelected .uploadImageExample', function () {
-    $(this).remove();
+  // Make images draggable
+  $(".imagesGallerySelected .uploadImageExample").draggable({
+    containment: ".imagesGallerySelected"
+  });
+
+  // Setup right-click (context menu) event to remove image
+  $(document).on('contextmenu', '.imagesGallerySelected .uploadImageExample', function(e) {
+    e.preventDefault();  // Prevent the default context menu from appearing
+    $(this).remove();  // Remove the clicked image
+    return false;  // Stop further handling of the event
   });
 
   // Event handler for image selection
