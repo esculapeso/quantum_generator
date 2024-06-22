@@ -1324,7 +1324,7 @@ jQuery(document).ready(function ($) {
 
   // Event handler for image upload
   $(document).on('change', '.uploadImageHiddenButton', function () {
-    uploadImage(".imageInnerDiv", $(this));
+    uploadImageToGallery(".imageInnerDiv", $(this));
   });
 
   // Additional functions
@@ -1363,12 +1363,41 @@ jQuery(document).ready(function ($) {
             read3D(file, targetImageSelector);
             break;
           default:
+            //readImage(file, targetImageSelector);
             const $uploadedImageDiv = $('<div>', {
               class: 'uploadImageExample',
               src: '',
             }).appendTo($imagesGallerySelected);
             let currentUploadedImage = $('<img>', { class: 'uploadedImage' }).appendTo($uploadedImageDiv);
-            //readImage(file, targetImageSelector);
+            readImageToGallery(file, currentUploadedImage);
+            break;
+        }
+      });
+
+      $this.val(''); // Clear file input
+    }
+  }
+
+  function uploadImageToGallery(targetImageSelector, $this) {
+    var files = $this.prop('files');
+    if (files && files[0]) {
+      $(targetImageSelector).removeAttr('src');
+      $.each(files, function (index, file) {
+        var fileExt = file.name.split('.').pop().toLowerCase();
+        switch (fileExt) {
+          case 'json':
+            readJSON(file);
+            break;
+          case 'txt':
+          case 'glb':
+            read3D(file, targetImageSelector);
+            break;
+          default:
+            const $uploadedImageDiv = $('<div>', {
+              class: 'uploadImageExample',
+              src: '',
+            }).appendTo($imagesGallerySelected);
+            let currentUploadedImage = $('<img>', { class: 'uploadedImage' }).appendTo($uploadedImageDiv);
             readImageToGallery(file, currentUploadedImage);
             break;
         }
@@ -1401,6 +1430,7 @@ jQuery(document).ready(function ($) {
   function readImageToGallery(file, targetImage) {
     var reader = new FileReader();
     reader.onload = function (e) {
+      console.log("e file: ", e, e.target)
       targetImage.attr('src', e.target.result);
     };
     reader.readAsDataURL(file);
