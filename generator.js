@@ -1288,7 +1288,7 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('click', '.imagesGallerySelected .uploadImageExample', function () {
-    $imagesGallerySelected.removeChild($(this));
+    $(this).remove();
   });
 
   // Event handler for image selection
