@@ -1359,13 +1359,7 @@ jQuery(document).ready(function ($) {
             read3D(file, targetImageSelector);
             break;
           default:
-            //readImage(file, targetImageSelector);
-            const $uploadedImageDiv = $('<div>', {
-              class: 'uploadImageExample',
-              src: '',
-            }).appendTo($imagesGallerySelected);
-            let currentUploadedImage = $('<img>', { class: 'uploadedImage' }).appendTo($uploadedImageDiv);
-            readImageToGallery(file, currentUploadedImage);
+            readImage(file, targetImageSelector);
             break;
         }
       });
@@ -1393,8 +1387,7 @@ jQuery(document).ready(function ($) {
               class: 'uploadImageExample',
               src: '',
             }).appendTo($imagesGallerySelected);
-            let currentUploadedImage = $('<img>', { class: 'uploadedImage' }).appendTo($uploadedImageDiv);
-            readImageToGallery(file, currentUploadedImage);
+            readImageToGallery(file, $uploadedImageDiv);
             break;
         }
       });
@@ -1423,11 +1416,11 @@ jQuery(document).ready(function ($) {
     reader.readAsDataURL(file);
   }
 
-  function readImageToGallery(file, targetImage) {
+  function readImageToGallery(file, uploadedImageDiv) {
     var reader = new FileReader();
     reader.onload = function (e) {
-      console.log("file name: ", file.name)
-      targetImage.attr('src', e.target.result);
+      $('<img>', { class: 'uploadedImage', src: e.target.result}).appendTo(uploadedImageDiv);
+      $('<div>', { class: 'uploadImageCaption', text: truncate(file.name, 10) }).appendTo(uploadedImageDiv);
     };
     reader.readAsDataURL(file);
   }
