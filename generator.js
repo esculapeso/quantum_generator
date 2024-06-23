@@ -1219,7 +1219,7 @@ jQuery(document).ready(function ($) {
   var index = 0;
 
   function iterateChildren() {
-      var $children = $('.imagesGallerySelected').children(); // Re-select children each time
+      var $children = $imagesGallerySelected.children(); // Re-select children each time
       if ($children.length !== 0) {
 
         var $child = $($children[index]);
@@ -1234,7 +1234,9 @@ jQuery(document).ready(function ($) {
 
       }
 
-      setTimeout(iterateChildren, parseInt($(".imagesGallerySpeedInput").val(), 10));
+      imageGallerySpeed = parseInt($(".imagesGallerySpeedInput").val(), 10)
+
+      setTimeout(iterateChildren, imageGallerySpeed);
   }
 
   const $imagesGalleryControls = $("<div>", { class: "imagesGalleryControls" }).appendTo($tab3);
@@ -1296,7 +1298,7 @@ jQuery(document).ready(function ($) {
     $('.uploadImageExample').toggle(selectedCategory === "all").filter(`[category="${selectedCategory}"]`).toggle(selectedCategory !== "all");
   });
 
-  $(".imagesGallerySelected").sortable({
+  $imagesGallerySelected.sortable({
     items: ".uploadImageExample",
     placeholder: "ui-state-highlight",
     cursor: "move",
@@ -1308,14 +1310,14 @@ jQuery(document).ready(function ($) {
   $(document).on('contextmenu', '.imagesGallerySelected .uploadImageExample', function(e) {
     e.preventDefault();  // Prevent the default context menu from appearing
     $(this).remove();  // Remove the clicked image
-    $('.imagesGallerySelected').sortable('refresh');
+    $imagesGallerySelected.sortable('refresh');
     return false;  // Stop further handling of the event
   });
 
   // Event handler for image selection
   $(document).on('click', '.imagesGallery .uploadImageExample', function () {
     $(this).clone().appendTo($imagesGallerySelected);
-    $('.imagesGallerySelected').sortable('refresh');
+    $imagesGallerySelected.sortable('refresh');
   });
 
   function changeInnerImage(image) {
@@ -1405,17 +1407,13 @@ jQuery(document).ready(function ($) {
             read3D(file, targetImageSelector);
             break;
           default:
-            const $uploadedImageDiv = $('<div>', {
-              class: 'uploadImageExample',
-              src: '',
-            }).appendTo($imagesGallerySelected);
-            readImageToGallery(file, $uploadedImageDiv);
+            readImageToGallery(file);
             break;
         }
       });
 
       $this.val(''); // Clear file input
-      $('.imagesGallerySelected').sortable('refresh');
+      $imagesGallerySelected.sortable('refresh');
     }
   }
 
@@ -1439,13 +1437,18 @@ jQuery(document).ready(function ($) {
     reader.readAsDataURL(file);
   }
 
-  function readImageToGallery(file, uploadedImageDiv) {
+  function readImageToGallery(file) {
     var reader = new FileReader();
     reader.onload = function (e) {
-      $('<img>', { class: 'uploadedImage', src: e.target.result}).appendTo(uploadedImageDiv);
-      $('<div>', { class: 'uploadImageCaption', text: truncate(file.name, 10) }).appendTo(uploadedImageDiv);
+      insertImageToGallery(e.target.result, file.name)
     };
     reader.readAsDataURL(file);
+  }
+
+  function insertImageToGallery(imageSource, imageCaption) {
+    const $ImageDiv = $('<div>', { class: 'uploadImageExample' }).appendTo($imagesGallerySelected);
+    $('<img>', { class: 'uploadedImage', src: imageSource}).appendTo($ImageDiv);
+    $('<div>', { class: 'uploadImageCaption', text: truncate(imageCaption, 10) }).appendTo($ImageDiv);
   }
 
   function readJSON(file) {
@@ -1479,6 +1482,7 @@ jQuery(document).ready(function ($) {
     updateIfDefined(jsonObject.callClipSize, data => $('.callRange').val(data).change());
     updateIfDefined(jsonObject.innerBgColorLeft, data => $('.bgColorLeftTextbox').val(data).change());
     updateIfDefined(jsonObject.innerBgColorRight, data => $('.bgColorRightTextbox').val(data).change());
+    updateIfDefined(jsonObject.gallery, updateGallery);
     $('.changeInnerBg').trigger("input");
 
     // Handle video related updates
@@ -1487,6 +1491,15 @@ jQuery(document).ready(function ($) {
     } else {
       stopFocusVideo();
     }
+  }
+
+  function updateGallery (gallery) {
+    imageGallerySpeed = gallery.speed;
+    $(".imagesGallerySpeedInput").val(gallery.speed);
+
+    $.each(gallery.images, function (i, image) {
+      insertImageToGallery(image.source, image.caption);
+    });
   }
 
   function updateIfDefined(value, updateFunction) {
@@ -2113,6 +2126,18 @@ jQuery(document).ready(function ($) {
       { role: 'person6', data: $('.person6Image').css('background-image') }
     ]
 
+    var images = [];
+    $(".imagesGallerySelected .uploadImageExample").each(function(i, elem) {
+        var imageSource = $(elem).find(".uploadedImage").attr('src');
+        var imageCaption = $(elem).find(".uploadImageCaption").text();
+        images.push({source: imageSource, caption: imageCaption});
+    });
+
+    var gallery = {
+      speed: imageGallerySpeed,
+      images
+    }
+
     var emotionsText = "\n\nEmotions Quantity\n\n";
     $(emotionsListVar).each((i, e) => {
       emotionsText += `${e.name}: ${e.value}\n`;
@@ -2128,6 +2153,7 @@ jQuery(document).ready(function ($) {
       ImageCaption,
       sideText,
       people,
+      gallery,
       qrngInterval: currentDisplayInterval,
       isPyramid: $('.piramidToggleCB').is(':checked'),
       callClip: $('.clipOptionsSelect').val(),
