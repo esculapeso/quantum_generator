@@ -886,6 +886,8 @@ jQuery(document).ready(function ($) {
   function youtube_parser(url) {
     var regExp = /^.*(youtu.be\/|v\/|\/u\/w\/|embed\/|watch\?v=|watch\?.+&v=)([^#&?]*).*/;
     var match = url.match(regExp);
+    console.log({match})
+    console.log({VIDEOID: match[7]})
     return (match && match[7].length == 11) ? match[7] : false;
   }
 
