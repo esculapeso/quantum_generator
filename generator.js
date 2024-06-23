@@ -16,6 +16,7 @@ jQuery(document).ready(function ($) {
   var qrngFetchInterval;
   var currentDisplayInterval = 938;
   var upcomingDisplayInterval = 938;
+  var imageGallerySpeed = 792;
 
   var isMobile = window.innerHeight > window.innerWidth; // checks if portrait mode 
   var videos = (typeof videosForFocus !== 'undefined' && videosForFocus) ? videosForFocus : [];
@@ -1216,7 +1217,6 @@ jQuery(document).ready(function ($) {
   const $imagesGallerySelected = $("<div>", { class: "imagesGallerySelected" }).appendTo($tab3);
 
   var index = 0;
-  var intervalTime = 792; // miliseconds
 
   function iterateChildren() {
       var $children = $('.imagesGallerySelected').children(); // Re-select children each time
@@ -1234,8 +1234,17 @@ jQuery(document).ready(function ($) {
 
       }
 
-      setTimeout(iterateChildren, intervalTime);
+      setTimeout(iterateChildren, parseInt($(".imagesGallerySpeedInput").val(), 10));
   }
+
+  const $imagesGalleryControls = $("<div>", { class: "imagesGalleryControls" }).appendTo($tab3);
+  $("<span>", { class: "imagesGallerySpeedText", value: "Speed: " }).appendTo($imagesGalleryControls);
+  $("<input>", {
+    class: "imagesGallerySpeedInput",
+    type: "number",
+    step: "1",
+    value: imageGallerySpeed
+  }).appendTo($imagesGalleryControls);
 
   // Start the loop
   iterateChildren();
