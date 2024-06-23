@@ -1445,6 +1445,10 @@ jQuery(document).ready(function ($) {
     reader.readAsDataURL(file);
   }
 
+  function clearGallery() {
+    $imagesGallerySelected.empty();
+  }
+
   function insertImageToGallery(imageSource, imageCaption) {
     const $ImageDiv = $('<div>', { class: 'uploadImageExample' }).appendTo($imagesGallerySelected);
     $('<img>', { class: 'uploadedImage', src: imageSource}).appendTo($ImageDiv);
@@ -1497,6 +1501,7 @@ jQuery(document).ready(function ($) {
     imageGallerySpeed = gallery.speed;
     $(".imagesGallerySpeedInput").val(gallery.speed);
 
+    clearGallery();
     $.each(gallery.images, function (i, image) {
       insertImageToGallery(image.source, image.caption);
     });
