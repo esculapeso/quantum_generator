@@ -1287,23 +1287,13 @@ jQuery(document).ready(function ($) {
     $('.uploadImageExample').toggle(selectedCategory === "all").filter(`[category="${selectedCategory}"]`).toggle(selectedCategory !== "all");
   });
 
-  // $(".imagesGallerySelected").sortable({
-  //   items: ".uploadImageExample",
-  //   placeholder: "ui-state-highlight",
-  //   cursor: "move",
-  //   tolerance: "pointer",
-  //   stop: function(event, ui) {
-  //       console.log("New order:", $(this).sortable("toArray"));
-  //       // Additional code to handle the new order can go here
-  //   }
-  // });
-
-  $('.imagesGallerySelected').sortable({
+  $(".imagesGallerySelected").sortable({
+    items: ".uploadImageExample",
     placeholder: "ui-state-highlight",
-    items: ".uploadImageExample"
+    cursor: "move",
+    tolerance: "pointer",
   });
 
-  // $(".imagesGallerySelected").disableSelection();
 
   // Setup right-click (context menu) event to remove image
   $(document).on('contextmenu', '.imagesGallerySelected .uploadImageExample', function(e) {
@@ -1314,7 +1304,7 @@ jQuery(document).ready(function ($) {
   });
 
   // Event handler for image selection
-  $(document).on('click', '.uploadImageExample', function () {
+  $(document).on('click', '.imagesGallery .uploadImageExample', function () {
     $(this).clone().appendTo($imagesGallerySelected);
     $('.imagesGallerySelected').sortable('refresh');
   });
