@@ -1468,7 +1468,7 @@ jQuery(document).ready(function ($) {
     }
 
     // Conditional updates using a utility function to avoid repetition
-    updateIfDefined(jsonObject['Focus Text'], UpdateFocusText);
+    updateIfDefined(jsonObject.focusText, UpdateFocusText);
     updateIfDefined(jsonObject.sideText, UpdateSideText);
     updateIfDefined(jsonObject.ImageCaption, updateCaptionText);
     updateIfDefined(jsonObject.imageData, data => $('.imageInnerDiv').css('background-image', data));
@@ -2096,12 +2096,22 @@ jQuery(document).ready(function ($) {
     var dateNow = new Date(Date.now());
     var sessionTime = dateNow.toUTCString();
     var focusText = $(".focusText").html();
-    var videoID = sessionObj['videoId']
+    var videoId = sessionObj['videoId']
     var videoMode = sessionObj['videoMode']
     var ImageCaption = $(".captionText").html().replace('\n', ' ');
     var imageData = $('.imageInnerDiv').css('background-image');
     var image3dData = $('.imageInnerDiv .modelviewer3d').attr('src');
     var sideText = $(".sideTextTextBox").val();
+
+    var people = [
+      { role: 'therapist', data: $('.therapistImage').css('background-image') },
+      { role: 'person1', data: $('.person1Image').css('background-image') },
+      { role: 'person2', data: $('.person2Image').css('background-image') },
+      { role: 'person3', data: $('.person3Image').css('background-image') },
+      { role: 'person4', data: $('.person4Image').css('background-image') },
+      { role: 'person5', data: $('.person5Image').css('background-image') },
+      { role: 'person6', data: $('.person6Image').css('background-image') }
+    ]
 
     var emotionsText = "\n\nEmotions Quantity\n\n";
     $(emotionsListVar).each((i, e) => {
@@ -2110,22 +2120,14 @@ jQuery(document).ready(function ($) {
 
     var sessionObject = {
       'Session time': sessionTime,
-      'Focus Text': focusText,
-      'videoId': videoID,
+      focusText,
+      videoId,
       videoMode,
       imageData,
       image3dData,
       ImageCaption,
       sideText,
-      'people': [
-        { role: 'therapist', data: $('.therapistImage').css('background-image') },
-        { role: 'person1', data: $('.person1Image').css('background-image') },
-        { role: 'person2', data: $('.person2Image').css('background-image') },
-        { role: 'person3', data: $('.person3Image').css('background-image') },
-        { role: 'person4', data: $('.person4Image').css('background-image') },
-        { role: 'person5', data: $('.person5Image').css('background-image') },
-        { role: 'person6', data: $('.person6Image').css('background-image') }
-      ],
+      people,
       qrngInterval: currentDisplayInterval,
       isPyramid: $('.piramidToggleCB').is(':checked'),
       callClip: $('.clipOptionsSelect').val(),
