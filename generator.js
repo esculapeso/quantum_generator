@@ -1240,7 +1240,7 @@ jQuery(document).ready(function ($) {
   }
 
   const $imagesGalleryControls = $("<div>", { class: "imagesGalleryControls" }).appendTo($tab3);
-  $("<span>", { class: "imagesGallerySpeedText", value: "Speed: " }).appendTo($imagesGalleryControls);
+  $("<span>", { class: "imagesGallerySpeedText", html: "Speed: " }).appendTo($imagesGalleryControls);
   $("<input>", {
     class: "imagesGallerySpeedInput",
     type: "number",
