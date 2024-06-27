@@ -16,6 +16,7 @@ jQuery(document).ready(function ($) {
   var qrngFetchInterval;
   var currentDisplayInterval = 938;
   var upcomingDisplayInterval = 938;
+  var imageGallerySpeed = 792;
 
   var isMobile = window.innerHeight > window.innerWidth; // checks if portrait mode 
   var videos = (typeof videosForFocus !== 'undefined' && videosForFocus) ? videosForFocus : [];
@@ -645,16 +646,21 @@ jQuery(document).ready(function ($) {
   });
 
   function toggleButtonAltValue(button) {
-    // alternate value
-    var newValue = button.attr('altvalue');
-    var curValue = button.attr('value');
-    button.attr('altvalue', curValue).attr('value', newValue)
+    // Toggle value and altvalue attributes
+    toggleAttribute(button, 'value', 'altvalue');
 
-    // alternate title
-    var newTitle = button.attr('alttitle');
-    var curTitle = button.attr('title');
-    button.attr('alttitle', curTitle).attr('title', newTitle)
+    // Toggle title and alttitle attributes
+    toggleAttribute(button, 'title', 'alttitle');
   }
+
+  function toggleAttribute(button, attrName, altAttrName) {
+    var newAttrVal = button.attr(altAttrName);
+    var curAttrVal = button.attr(attrName);
+    if (newAttrVal && curAttrVal) {
+        button.attr(altAttrName, curAttrVal).attr(attrName, newAttrVal);
+    }
+  }
+
 
   $('<input class="centerGenerator button" type="button" value="↕"  />').appendTo($videoChooserSection);
   $('<input class="playGeneratorVideo button" type="button" altvalue="II" value="►"  />').appendTo($videoChooserSection);
@@ -1210,10 +1216,50 @@ jQuery(document).ready(function ($) {
     $(".imageInnerDiv").css('background-image', `url(${$('.urlImageTextbox').val()})`);
   });
 
+  const $imagesGallerySelected = $("<div>", { class: "imagesGallerySelected" }).appendTo($tab3);
+
+  var index = 0;
+
+  function iterateChildren() {
+      var $children = $imagesGallerySelected.children(); // Re-select children each time
+      if ($children.length !== 0) {
+
+        var $child = $($children[index]);
+
+        changeInnerImage($child)
+
+        index++;
+
+        if (index >= $children.length) {
+            index = 0; // Reset index to loop continuously
+        }
+
+      }
+
+      imageGallerySpeed = parseInt($(".imagesGallerySpeedInput").val(), 10)
+
+      setTimeout(iterateChildren, imageGallerySpeed);
+  }
+
+  const $imagesGalleryControls = $("<div>", { class: "imagesGalleryControls" }).appendTo($tab3);
+  $("<span>", { class: "imagesGallerySpeedText", html: "Speed: " }).appendTo($imagesGalleryControls);
+  $("<input>", {
+    class: "imagesGallerySpeedInput",
+    type: "number",
+    step: "1",
+    value: imageGallerySpeed
+  }).appendTo($imagesGalleryControls);
+
+  // Start the loop
+  iterateChildren();
+
+
   // Image category select
   const $imageCategoriesSelection = $("<div>", { class: "imageCategoriesSelection" }).appendTo($tab3);
   $("<span>", { text: "Category: " }).appendTo($imageCategoriesSelection);
   const $imageCategorySelect = $('<select class="imageCategorySelect"><option value="all">All</option></select>').appendTo($imageCategoriesSelection);
+
+  const $imagesGallery = $("<div>", { class: "imagesGallery" }).appendTo($tab3);
 
   // Populate image categories and create image divs
   let imageCategories = [];
@@ -1226,6 +1272,8 @@ jQuery(document).ready(function ($) {
     const is3D = fi.filepath.includes('.glb');
     const isVideo = fi.filepath.includes('.webm');
 
+
+
     const $imageDiv = $('<div>', {
       class: 'uploadImageExample',
       title: fi.text,
@@ -1233,7 +1281,7 @@ jQuery(document).ready(function ($) {
       src: '',
       is3d: is3D ? true : undefined,
       isVideo: isVideo ? true : undefined
-    }).appendTo($tab3);
+    }).appendTo($imagesGallery);
 
     if (is3D) {
       insert3dModel($imageDiv, fi.preview, fi.filepath);
@@ -1252,15 +1300,35 @@ jQuery(document).ready(function ($) {
     $('.uploadImageExample').toggle(selectedCategory === "all").filter(`[category="${selectedCategory}"]`).toggle(selectedCategory !== "all");
   });
 
-  // Event handler for image selection
-  $(document).on('click', '.uploadImageExample', function () {
-    clearImageFocus();
+  $imagesGallerySelected.sortable({
+    items: ".uploadImageExample",
+    placeholder: "ui-state-highlight",
+    cursor: "move",
+    tolerance: "pointer",
+  });
 
-    if ($(this).is("[is3d]")) {
-      const source = $(this).find('model-viewer').attr('target');
+
+  // Setup right-click (context menu) event to remove image
+  $(document).on('contextmenu', '.imagesGallerySelected .uploadImageExample', function(e) {
+    e.preventDefault();  // Prevent the default context menu from appearing
+    $(this).remove();  // Remove the clicked image
+    $imagesGallerySelected.sortable('refresh');
+    return false;  // Stop further handling of the event
+  });
+
+  // Event handler for image selection
+  $(document).on('click', '.imagesGallery .uploadImageExample', function () {
+    $(this).clone().appendTo($imagesGallerySelected);
+    $imagesGallerySelected.sortable('refresh');
+  });
+
+  function changeInnerImage(image) {
+    clearImageFocus();
+    if (image.is("[is3d]")) {
+      const source = image.find('model-viewer').attr('target');
       insert3dModel($('.imageInnerDiv'), source);
-    } else if ($(this).is("[isVideo]")) {
-      const videoPath = $(this).find(".uploadedImage").attr('videopath');
+    } else if (image.is("[isVideo]")) {
+      const videoPath = image.find(".uploadedImage").attr('videopath');
       $('<video>', {
         controls: false,
         autoplay: true,
@@ -1271,14 +1339,14 @@ jQuery(document).ready(function ($) {
       })).appendTo(".imageInnerDiv");
     }
     else {
-      const imagePath = $(this).find(".uploadedImage").attr('src');
+      const imagePath = image.find(".uploadedImage").attr('src');
       $(".imageInnerDiv").css('background-image', `url(${imagePath})`);
     }
-  });
+  }
 
   // Event handler for image upload
   $(document).on('change', '.uploadImageHiddenButton', function () {
-    uploadImage(".imageInnerDiv", $(this));
+    uploadImageToGallery(".imageInnerDiv", $(this));
   });
 
   // Additional functions
@@ -1326,6 +1394,31 @@ jQuery(document).ready(function ($) {
     }
   }
 
+  function uploadImageToGallery(targetImageSelector, $this) {
+    var files = $this.prop('files');
+    if (files && files[0]) {
+      $(targetImageSelector).removeAttr('src');
+      $.each(files, function (index, file) {
+        var fileExt = file.name.split('.').pop().toLowerCase();
+        switch (fileExt) {
+          case 'json':
+            readJSON(file);
+            break;
+          case 'txt':
+          case 'glb':
+            read3D(file, targetImageSelector);
+            break;
+          default:
+            readImageToGallery(file);
+            break;
+        }
+      });
+
+      $this.val(''); // Clear file input
+      $imagesGallerySelected.sortable('refresh');
+    }
+  }
+
   function clearImageFocus() {
     $(".imageInnerDiv").css('background-image', '').empty();
   }
@@ -1344,6 +1437,24 @@ jQuery(document).ready(function ($) {
       $(targetImageSelector).css('background-image', `url("${e.target.result}")`);
     };
     reader.readAsDataURL(file);
+  }
+
+  function readImageToGallery(file) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      insertImageToGallery(e.target.result, file.name)
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function clearGallery() {
+    $imagesGallerySelected.empty();
+  }
+
+  function insertImageToGallery(imageSource, imageCaption) {
+    const $ImageDiv = $('<div>', { class: 'uploadImageExample' }).appendTo($imagesGallerySelected);
+    $('<img>', { class: 'uploadedImage', src: imageSource}).appendTo($ImageDiv);
+    $('<div>', { class: 'uploadImageCaption', text: truncate(imageCaption, 10) }).appendTo($ImageDiv);
   }
 
   function readJSON(file) {
@@ -1366,7 +1477,7 @@ jQuery(document).ready(function ($) {
     }
 
     // Conditional updates using a utility function to avoid repetition
-    updateIfDefined(jsonObject['Focus Text'], UpdateFocusText);
+    updateIfDefined(jsonObject.focusText, UpdateFocusText, jsonObject['Focus Text']);
     updateIfDefined(jsonObject.sideText, UpdateSideText);
     updateIfDefined(jsonObject.ImageCaption, updateCaptionText);
     updateIfDefined(jsonObject.imageData, data => $('.imageInnerDiv').css('background-image', data));
@@ -1377,6 +1488,7 @@ jQuery(document).ready(function ($) {
     updateIfDefined(jsonObject.callClipSize, data => $('.callRange').val(data).change());
     updateIfDefined(jsonObject.innerBgColorLeft, data => $('.bgColorLeftTextbox').val(data).change());
     updateIfDefined(jsonObject.innerBgColorRight, data => $('.bgColorRightTextbox').val(data).change());
+    updateIfDefined(jsonObject.gallery, updateGallery);
     $('.changeInnerBg').trigger("input");
 
     // Handle video related updates
@@ -1387,9 +1499,21 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  function updateIfDefined(value, updateFunction) {
+  function updateGallery (gallery) {
+    imageGallerySpeed = gallery.speed;
+    $(".imagesGallerySpeedInput").val(gallery.speed);
+
+    clearGallery();
+    $.each(gallery.images, function (i, image) {
+      insertImageToGallery(image.source, image.caption);
+    });
+  }
+
+  function updateIfDefined(value, updateFunction, legacyValue) {
     if (typeof value !== 'undefined') {
       updateFunction(value);
+    } else if (typeof legacyValue !== 'undefined') {
+      updateFunction(legacyValue);
     }
   }
 
@@ -1994,12 +2118,34 @@ jQuery(document).ready(function ($) {
     var dateNow = new Date(Date.now());
     var sessionTime = dateNow.toUTCString();
     var focusText = $(".focusText").html();
-    var videoID = sessionObj['videoId']
+    var videoId = sessionObj['videoId']
     var videoMode = sessionObj['videoMode']
     var ImageCaption = $(".captionText").html().replace('\n', ' ');
     var imageData = $('.imageInnerDiv').css('background-image');
     var image3dData = $('.imageInnerDiv .modelviewer3d').attr('src');
     var sideText = $(".sideTextTextBox").val();
+
+    var people = [
+      { role: 'therapist', data: $('.therapistImage').css('background-image') },
+      { role: 'person1', data: $('.person1Image').css('background-image') },
+      { role: 'person2', data: $('.person2Image').css('background-image') },
+      { role: 'person3', data: $('.person3Image').css('background-image') },
+      { role: 'person4', data: $('.person4Image').css('background-image') },
+      { role: 'person5', data: $('.person5Image').css('background-image') },
+      { role: 'person6', data: $('.person6Image').css('background-image') }
+    ]
+
+    var images = [];
+    $(".imagesGallerySelected .uploadImageExample").each(function(i, elem) {
+        var imageSource = $(elem).find(".uploadedImage").attr('src');
+        var imageCaption = $(elem).find(".uploadImageCaption").text();
+        images.push({source: imageSource, caption: imageCaption});
+    });
+
+    var gallery = {
+      speed: imageGallerySpeed,
+      images
+    }
 
     var emotionsText = "\n\nEmotions Quantity\n\n";
     $(emotionsListVar).each((i, e) => {
@@ -2008,22 +2154,15 @@ jQuery(document).ready(function ($) {
 
     var sessionObject = {
       'Session time': sessionTime,
-      'Focus Text': focusText,
-      'videoId': videoID,
+      focusText,
+      videoId,
       videoMode,
       imageData,
       image3dData,
       ImageCaption,
       sideText,
-      'people': [
-        { role: 'therapist', data: $('.therapistImage').css('background-image') },
-        { role: 'person1', data: $('.person1Image').css('background-image') },
-        { role: 'person2', data: $('.person2Image').css('background-image') },
-        { role: 'person3', data: $('.person3Image').css('background-image') },
-        { role: 'person4', data: $('.person4Image').css('background-image') },
-        { role: 'person5', data: $('.person5Image').css('background-image') },
-        { role: 'person6', data: $('.person6Image').css('background-image') }
-      ],
+      people,
+      gallery,
       qrngInterval: currentDisplayInterval,
       isPyramid: $('.piramidToggleCB').is(':checked'),
       callClip: $('.clipOptionsSelect').val(),
