@@ -1475,7 +1475,7 @@ jQuery(document).ready(function ($) {
     }
 
     // Conditional updates using a utility function to avoid repetition
-    updateIfDefined(jsonObject.focusText, UpdateFocusText);
+    updateIfDefined(jsonObject.focusText, UpdateFocusText, jsonObject['Focus Text']);
     updateIfDefined(jsonObject.sideText, UpdateSideText);
     updateIfDefined(jsonObject.ImageCaption, updateCaptionText);
     updateIfDefined(jsonObject.imageData, data => $('.imageInnerDiv').css('background-image', data));
@@ -1507,9 +1507,11 @@ jQuery(document).ready(function ($) {
     });
   }
 
-  function updateIfDefined(value, updateFunction) {
+  function updateIfDefined(value, updateFunction, legacyValue) {
     if (typeof value !== 'undefined') {
       updateFunction(value);
+    } else if (typeof legacyValue !== 'undefined') {
+      updateFunction(legacyValue);
     }
   }
 
