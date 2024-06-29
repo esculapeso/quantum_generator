@@ -82,7 +82,7 @@
   .wrapperHex {
     width: 1120px;
     height: 1287px;
-    background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow.png);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/QH_4pillars_bow.png);
     background-size: 100%;
     overflow: hidden;
     position: relative;
@@ -92,7 +92,7 @@
   .coverImage {
     width: 1120px;
     height: 1287px;
-    background-image: url(http://quantumholopedia.eu/wp-content/uploads/2021/06/QH_4pillars_bow_tr.png);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/QH_4pillars_bow_tr.png);
     background-size: 100%;
     position: absolute;
     z-index: 10;
@@ -101,7 +101,7 @@
   .monoTunnelImage {
     width: 1120px;
     height: 464px;
-    background-image: url(https://esculap.org/wp-content/uploads/2022/11/singleDNA.png);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/singleDNA.png);
     background-size: 100%;
     overflow: hidden;
     position: relative;
@@ -111,7 +111,7 @@
   .dualTeleportationImage {
     width: 1120px;
     height: 844px;
-    background-image: url(https://esculap.org/wp-content/uploads/2022/11/doubleDNA.png);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/doubleDNA.png);
     background-size: 100%;
     overflow: hidden;
     position: relative;
@@ -121,7 +121,7 @@
   .quadrupoleImage {
     width: 100vh;
     height: 100vh;
-    background-image: url(https://esculap.us/wp-content/uploads/2024/01/Quadruple_Generator_blank.png);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/Quadruple_Generator_blank.png);
     background-size: 100%;
     overflow: hidden;
     position: relative;
@@ -132,13 +132,13 @@
 
   .quadrupoleImage.pyramidImage {
     width: 166vh;
-    background-image: url(https://esculap.org/wp-content/uploads/2022/12/TherapistImage.png);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/TherapistImage.png);
   }
 
   .quadGenerator {
     width: 63%;
     height: 63%;
-    background-image: url(https://esculap.org/wp-content/uploads/2022/12/animateddna.webp);
+    background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/animateddna.webp);
     background-size: 100%;
     overflow: hidden;
     position: relative;
@@ -360,7 +360,7 @@
   }
 
   .uploadImageExample {
-    height: 84px;
+    height: 69px;
   }
 
   .uploadImageExample .uploadedImage {
@@ -584,7 +584,7 @@
   }
 
   .emotionQuantityBarFill {
-    background-image: url('https://esculap.org/wp-content/uploads/2022/11/emotionbar.png');
+    background-image: url('https://github.com/esculapeso/quantum_generator/raw/devel/images/emotionbar.png');
     background-size: contain;
     width: 10%;
     height: 22px;
@@ -1059,7 +1059,7 @@
       height: 100%;
       background-color: #1f2600de;
       top: 0;
-      background-image: url(https://esculap.org/wp-content/uploads/2022/12/animateddna.webp);
+      background-image: url(https://github.com/esculapeso/quantum_generator/raw/devel/images/animateddna.webp);
       background-repeat: no-repeat;
     }
 

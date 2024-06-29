@@ -16,6 +16,7 @@ jQuery(document).ready(function ($) {
   var qrngFetchInterval;
   var currentDisplayInterval = 938;
   var upcomingDisplayInterval = 938;
+  var imageGallerySpeed = 792;
 
   var isMobile = window.innerHeight > window.innerWidth; // checks if portrait mode 
   var videos = (typeof videosForFocus !== 'undefined' && videosForFocus) ? videosForFocus : [];
@@ -263,9 +264,9 @@ jQuery(document).ready(function ($) {
   $('<div class="videoSelectsTitle" >Controls:</div>').appendTo($videoControlsAndFocus);
 
   var $videoControls = $('<div class="videoControls" ></div>').appendTo($videoControlsAndFocus);
-  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`).appendTo($videoControls);
-  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png" class="youtubePauseButtonImage redButton" />`).hide().appendTo($videoControls);
-  $(`<img src="https://esculap.org/wp-content/uploads/2022/11/playVideo.png" class="youtubePlayButtonImage redButton" />`).appendTo($videoControls);
+  $(`<img src="https://github.com/esculapeso/quantum_generator/raw/main/images/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`).appendTo($videoControls);
+  $(`<img src="https://github.com/esculapeso/quantum_generator/raw/main/images/pauseVideo.png" class="youtubePauseButtonImage redButton" />`).hide().appendTo($videoControls);
+  $(`<img src="https://github.com/esculapeso/quantum_generator/raw/main/images/playVideo.png" class="youtubePlayButtonImage redButton" />`).appendTo($videoControls);
   $('<input type="range" value="10" class="videoVolume" />').appendTo($videoControls);
   var $videoSelects = $('<div class="videoSelects" ></div>').appendTo($subImageControls);
 
@@ -600,7 +601,6 @@ jQuery(document).ready(function ($) {
     var imageUrl = array[index].imageUrl;
     UpdateFocusText(text);
     $(`.imageInnerDiv`).css('background-image', `url("${imageUrl}")`);
-    //$(`.person2Image`).css('background-image', `url("/wp-content/uploads/2024/01/jesus_bevel.png")`);
 
     jesusUtter.text = repeatStringWithComma(text, repeat);
     msg.rate = 0.8;
@@ -620,8 +620,6 @@ jQuery(document).ready(function ($) {
     jesusSynth.cancel();
     jesusIsPlaying = false;
     $(".jesusLang").show();
-    // $(`.person2Image`).css('background-image', `url("/wp-content/uploads/2022/12/la.jpg")`);
-    // $('.imageInnerDiv').css('background-image', 'url("/wp-content/uploads/2024/01/jesus_bevel.png")');
   });
 
 
@@ -650,14 +648,25 @@ jQuery(document).ready(function ($) {
   });
 
   function toggleButtonAltValue(button) {
-    var newValue = button.attr('altvalue');
-    var curValue = button.attr('value');
-    button.attr('altvalue', curValue).attr('value', newValue)
+    // Toggle value and altvalue attributes
+    toggleAttribute(button, 'value', 'altvalue');
+
+    // Toggle title and alttitle attributes
+    toggleAttribute(button, 'title', 'alttitle');
   }
+
+  function toggleAttribute(button, attrName, altAttrName) {
+    var newAttrVal = button.attr(altAttrName);
+    var curAttrVal = button.attr(attrName);
+    if (newAttrVal && curAttrVal) {
+        button.attr(altAttrName, curAttrVal).attr(attrName, newAttrVal);
+    }
+  }
+
 
   $('<input class="centerGenerator button" type="button" value="↕"  />').appendTo($videoChooserSection);
   $('<input class="playGeneratorVideo button" type="button" altvalue="II" value="►"  />').appendTo($videoChooserSection);
-  $('<input class="togglePyramidButton button" type="button" altvalue="▣" value="◭"  />').appendTo($videoChooserSection);
+  $('<input class="togglePyramidButton button" type="button" alttitle="Classic View" title="Pyramid View" altvalue="▣" value="◭"  />').appendTo($videoChooserSection);
 
   $(document).on('click', '.centerGenerator', function () {
     $(window).scrollTop($(".quadrupolePanel").offset().top);
@@ -684,16 +693,6 @@ jQuery(document).ready(function ($) {
     toggleButtonAltValue($(this));
   });
 
-  $(document).on('click', '.animateGenerator', function () {
-    var val = parseInt($(this).attr('on'));
-    var imageUrl = (val)
-      ? "https://esculap.org/wp-content/uploads/2022/12/ezgif.com-gif-maker.webp"
-      : "https://esculap.org/wp-content/uploads/2022/12/ezgif.com-gif-maker.webp";
-
-    $(".quadGenerator").css('background-image', `url(${imageUrl})`)
-
-    $(this).attr('on', (val + 1) % 2);
-  });
 
   /**********************
           TABS 
@@ -858,7 +857,7 @@ jQuery(document).ready(function ($) {
     if (v.only && !v.only.includes(pageType)) return;
 
     let imageUrl = v.isView
-      ? (v.thumbUrl || 'https://ww2.e-s-p.com/wp-content/uploads/2018/12/youtube-play.png')
+      ? (v.thumbUrl || 'https://github.com/esculapeso/quantum_generator/raw/main/images/playVideo.png')
       : `https://img.youtube.com/vi/${v.id}/0.jpg`;
     let style = `background-image:url(${imageUrl});`;
 
@@ -895,6 +894,8 @@ jQuery(document).ready(function ($) {
   function youtube_parser(url) {
     var regExp = /^.*(youtu.be\/|v\/|\/u\/w\/|embed\/|watch\?v=|watch\?.+&v=)([^#&?]*).*/;
     var match = url.match(regExp);
+    console.log({match})
+    console.log({VIDEOID: match[7]})
     return (match && match[7].length == 11) ? match[7] : false;
   }
 
@@ -908,9 +909,9 @@ jQuery(document).ready(function ($) {
 
   // Create and append video controls
   var $videoControls = $('<div>', { class: "videoControls" }).appendTo($videoChooserContent);
-  $('<img>', { src: "https://esculap.org/wp-content/uploads/2022/11/removeVideo.png", class: "youtubeRemoveButtonImage redButton" }).appendTo($videoControls);
-  $('<img>', { src: "https://esculap.org/wp-content/uploads/2022/11/pauseVideo.png", class: "youtubePauseButtonImage redButton", style: "display:none;" }).appendTo($videoControls);
-  $('<img>', { src: "https://esculap.org/wp-content/uploads/2022/11/playVideo.png", class: "youtubePlayButtonImage redButton" }).appendTo($videoControls);
+  $('<img>', { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/removeVideo.png", class: "youtubeRemoveButtonImage redButton" }).appendTo($videoControls);
+  $('<img>', { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/pauseVideo.png", class: "youtubePauseButtonImage redButton", style: "display:none;" }).appendTo($videoControls);
+  $('<img>', { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/playVideo.png", class: "youtubePlayButtonImage redButton" }).appendTo($videoControls);
   $('<input>', { type: "range", value: "10", class: "videoVolume" }).appendTo($videoControls);
 
   // Consolidate click event handlers for video controls
@@ -1205,7 +1206,7 @@ jQuery(document).ready(function ($) {
   });
 
   // Image buttons
-  $('<div class="imageButtons"><img src="https://esculap.org/wp-content/uploads/2022/11/removeVideo.png" class="removeImageButton redButton" /><img src="https://esculap.org/wp-content/uploads/2022/11/uploadButtons.png" class="uploadImageButton redButton" /><input class="uploadImageHiddenButton" type="file" style="display: none;" /></div>').appendTo($tab3);
+  $('<div class="imageButtons"><img src="https://github.com/esculapeso/quantum_generator/raw/main/images/removeVideo.png" class="removeImageButton redButton" /><img src="https://github.com/esculapeso/quantum_generator/raw/main/images/uploadButtons.png" class="uploadImageButton redButton" /><input class="uploadImageHiddenButton" type="file" style="display: none;" /></div>').appendTo($tab3);
   $('<div class="imageButtons"><input type="button" class="urlImageButton" value="URL" /><input class="urlImageTextbox" type="text" /></div>').appendTo($tab3);
 
   // Event handlers for image buttons
@@ -1217,10 +1218,50 @@ jQuery(document).ready(function ($) {
     $(".imageInnerDiv").css('background-image', `url(${$('.urlImageTextbox').val()})`);
   });
 
+  const $imagesGallerySelected = $("<div>", { class: "imagesGallerySelected" }).appendTo($tab3);
+
+  var index = 0;
+
+  function iterateChildren() {
+      var $children = $imagesGallerySelected.children(); // Re-select children each time
+      if ($children.length !== 0) {
+
+        var $child = $($children[index]);
+
+        changeInnerImage($child)
+
+        index++;
+
+        if (index >= $children.length) {
+            index = 0; // Reset index to loop continuously
+        }
+
+      }
+
+      imageGallerySpeed = parseInt($(".imagesGallerySpeedInput").val(), 10)
+
+      setTimeout(iterateChildren, imageGallerySpeed);
+  }
+
+  const $imagesGalleryControls = $("<div>", { class: "imagesGalleryControls" }).appendTo($tab3);
+  $("<span>", { class: "imagesGallerySpeedText", html: "Speed: " }).appendTo($imagesGalleryControls);
+  $("<input>", {
+    class: "imagesGallerySpeedInput",
+    type: "number",
+    step: "1",
+    value: imageGallerySpeed
+  }).appendTo($imagesGalleryControls);
+
+  // Start the loop
+  iterateChildren();
+
+
   // Image category select
   const $imageCategoriesSelection = $("<div>", { class: "imageCategoriesSelection" }).appendTo($tab3);
   $("<span>", { text: "Category: " }).appendTo($imageCategoriesSelection);
   const $imageCategorySelect = $('<select class="imageCategorySelect"><option value="all">All</option></select>').appendTo($imageCategoriesSelection);
+
+  const $imagesGallery = $("<div>", { class: "imagesGallery" }).appendTo($tab3);
 
   // Populate image categories and create image divs
   let imageCategories = [];
@@ -1233,6 +1274,8 @@ jQuery(document).ready(function ($) {
     const is3D = fi.filepath.includes('.glb');
     const isVideo = fi.filepath.includes('.webm');
 
+
+
     const $imageDiv = $('<div>', {
       class: 'uploadImageExample',
       title: fi.text,
@@ -1240,7 +1283,7 @@ jQuery(document).ready(function ($) {
       src: '',
       is3d: is3D ? true : undefined,
       isVideo: isVideo ? true : undefined
-    }).appendTo($tab3);
+    }).appendTo($imagesGallery);
 
     if (is3D) {
       insert3dModel($imageDiv, fi.preview, fi.filepath);
@@ -1259,15 +1302,35 @@ jQuery(document).ready(function ($) {
     $('.uploadImageExample').toggle(selectedCategory === "all").filter(`[category="${selectedCategory}"]`).toggle(selectedCategory !== "all");
   });
 
-  // Event handler for image selection
-  $(document).on('click', '.uploadImageExample', function () {
-    clearImageFocus();
+  $imagesGallerySelected.sortable({
+    items: ".uploadImageExample",
+    placeholder: "ui-state-highlight",
+    cursor: "move",
+    tolerance: "pointer",
+  });
 
-    if ($(this).is("[is3d]")) {
-      const source = $(this).find('model-viewer').attr('target');
+
+  // Setup right-click (context menu) event to remove image
+  $(document).on('contextmenu', '.imagesGallerySelected .uploadImageExample', function(e) {
+    e.preventDefault();  // Prevent the default context menu from appearing
+    $(this).remove();  // Remove the clicked image
+    $imagesGallerySelected.sortable('refresh');
+    return false;  // Stop further handling of the event
+  });
+
+  // Event handler for image selection
+  $(document).on('click', '.imagesGallery .uploadImageExample', function () {
+    $(this).clone().appendTo($imagesGallerySelected);
+    $imagesGallerySelected.sortable('refresh');
+  });
+
+  function changeInnerImage(image) {
+    clearImageFocus();
+    if (image.is("[is3d]")) {
+      const source = image.find('model-viewer').attr('target');
       insert3dModel($('.imageInnerDiv'), source);
-    } else if ($(this).is("[isVideo]")) {
-      const videoPath = $(this).find(".uploadedImage").attr('videopath');
+    } else if (image.is("[isVideo]")) {
+      const videoPath = image.find(".uploadedImage").attr('videopath');
       $('<video>', {
         controls: false,
         autoplay: true,
@@ -1278,14 +1341,14 @@ jQuery(document).ready(function ($) {
       })).appendTo(".imageInnerDiv");
     }
     else {
-      const imagePath = $(this).find(".uploadedImage").attr('src');
+      const imagePath = image.find(".uploadedImage").attr('src');
       $(".imageInnerDiv").css('background-image', `url(${imagePath})`);
     }
-  });
+  }
 
   // Event handler for image upload
   $(document).on('change', '.uploadImageHiddenButton', function () {
-    uploadImage(".imageInnerDiv", $(this));
+    uploadImageToGallery(".imageInnerDiv", $(this));
   });
 
   // Additional functions
@@ -1294,7 +1357,7 @@ jQuery(document).ready(function ($) {
           class="modelviewer3d"
           src="${srcUrl}"
           style="width: 100%; height: 100%;"
-          poster="https://esculap.org/wp-content/uploads/2022/12/animateddna.webp"
+          poster="https://github.com/esculapeso/quantum_generator/raw/main/images/animateddna.webp"
           target="${targetUrl}"
           background-color="transparent"
           preload
@@ -1333,6 +1396,31 @@ jQuery(document).ready(function ($) {
     }
   }
 
+  function uploadImageToGallery(targetImageSelector, $this) {
+    var files = $this.prop('files');
+    if (files && files[0]) {
+      $(targetImageSelector).removeAttr('src');
+      $.each(files, function (index, file) {
+        var fileExt = file.name.split('.').pop().toLowerCase();
+        switch (fileExt) {
+          case 'json':
+            readJSON(file);
+            break;
+          case 'txt':
+          case 'glb':
+            read3D(file, targetImageSelector);
+            break;
+          default:
+            readImageToGallery(file);
+            break;
+        }
+      });
+
+      $this.val(''); // Clear file input
+      $imagesGallerySelected.sortable('refresh');
+    }
+  }
+
   function clearImageFocus() {
     $(".imageInnerDiv").css('background-image', '').empty();
   }
@@ -1351,6 +1439,24 @@ jQuery(document).ready(function ($) {
       $(targetImageSelector).css('background-image', `url("${e.target.result}")`);
     };
     reader.readAsDataURL(file);
+  }
+
+  function readImageToGallery(file) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      insertImageToGallery(e.target.result, file.name)
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function clearGallery() {
+    $imagesGallerySelected.empty();
+  }
+
+  function insertImageToGallery(imageSource, imageCaption) {
+    const $ImageDiv = $('<div>', { class: 'uploadImageExample' }).appendTo($imagesGallerySelected);
+    $('<img>', { class: 'uploadedImage', src: imageSource}).appendTo($ImageDiv);
+    $('<div>', { class: 'uploadImageCaption', text: truncate(imageCaption, 10) }).appendTo($ImageDiv);
   }
 
   function readJSON(file) {
@@ -1373,7 +1479,7 @@ jQuery(document).ready(function ($) {
     }
 
     // Conditional updates using a utility function to avoid repetition
-    updateIfDefined(jsonObject['Focus Text'], UpdateFocusText);
+    updateIfDefined(jsonObject.focusText, UpdateFocusText, jsonObject['Focus Text']);
     updateIfDefined(jsonObject.sideText, UpdateSideText);
     updateIfDefined(jsonObject.ImageCaption, updateCaptionText);
     updateIfDefined(jsonObject.imageData, data => $('.imageInnerDiv').css('background-image', data));
@@ -1384,6 +1490,7 @@ jQuery(document).ready(function ($) {
     updateIfDefined(jsonObject.callClipSize, data => $('.callRange').val(data).change());
     updateIfDefined(jsonObject.innerBgColorLeft, data => $('.bgColorLeftTextbox').val(data).change());
     updateIfDefined(jsonObject.innerBgColorRight, data => $('.bgColorRightTextbox').val(data).change());
+    updateIfDefined(jsonObject.gallery, updateGallery);
     $('.changeInnerBg').trigger("input");
 
     // Handle video related updates
@@ -1394,9 +1501,21 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  function updateIfDefined(value, updateFunction) {
+  function updateGallery (gallery) {
+    imageGallerySpeed = gallery.speed;
+    $(".imagesGallerySpeedInput").val(gallery.speed);
+
+    clearGallery();
+    $.each(gallery.images, function (i, image) {
+      insertImageToGallery(image.source, image.caption);
+    });
+  }
+
+  function updateIfDefined(value, updateFunction, legacyValue) {
     if (typeof value !== 'undefined') {
       updateFunction(value);
+    } else if (typeof legacyValue !== 'undefined') {
+      updateFunction(legacyValue);
     }
   }
 
@@ -1510,7 +1629,7 @@ jQuery(document).ready(function ($) {
   var $qrngIntervalText = $(`<label class="qrngIntervalText">${qrngOrigDisplayInterval} ms</label>`);
   $qrngIntervalText.appendTo($qrngContent);
 
-  var $qrngLoadCircle = $(`<img src="https://esculap.org/wp-content/uploads/2022/11/load_circle.gif" class="qrngLoadCircle" />`);
+  var $qrngLoadCircle = $(`<img src="https://github.com/esculapeso/quantum_generator/raw/main/images/load_circle.gif" class="qrngLoadCircle" />`);
   $qrngLoadCircle.appendTo($qrngContent);
 
   $(document).on('change', '.qrngIntervalCheckbox', function () {
@@ -1631,8 +1750,8 @@ jQuery(document).ready(function ($) {
   const $tab6 = $("#tabs-6");
   const $soundContent = $("<div>", { class: "soundContent" }).appendTo($tab6);
 
-  $("<img>", { src: "https://esculap.org/wp-content/uploads/2022/11/speaker.png", class: "speakerOutput soundButton" }).appendTo($soundContent);
-  const $usbOutput = $("<img>", { src: "https://esculap.org/wp-content/uploads/2022/11/usb.png", class: "usbOutput soundButton" }).appendTo($soundContent);
+  $("<img>", { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/speaker.png", class: "speakerOutput soundButton" }).appendTo($soundContent);
+  const $usbOutput = $("<img>", { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/usb.png", class: "usbOutput soundButton" }).appendTo($soundContent);
 
   let isSoundMod = 0;
 
@@ -2003,12 +2122,34 @@ jQuery(document).ready(function ($) {
     var dateNow = new Date(Date.now());
     var sessionTime = dateNow.toUTCString();
     var focusText = $(".focusText").html();
-    var videoID = sessionObj['videoId']
+    var videoId = sessionObj['videoId']
     var videoMode = sessionObj['videoMode']
     var ImageCaption = $(".captionText").html().replace('\n', ' ');
     var imageData = $('.imageInnerDiv').css('background-image');
     var image3dData = $('.imageInnerDiv .modelviewer3d').attr('src');
     var sideText = $(".sideTextTextBox").val();
+
+    var people = [
+      { role: 'therapist', data: $('.therapistImage').css('background-image') },
+      { role: 'person1', data: $('.person1Image').css('background-image') },
+      { role: 'person2', data: $('.person2Image').css('background-image') },
+      { role: 'person3', data: $('.person3Image').css('background-image') },
+      { role: 'person4', data: $('.person4Image').css('background-image') },
+      { role: 'person5', data: $('.person5Image').css('background-image') },
+      { role: 'person6', data: $('.person6Image').css('background-image') }
+    ]
+
+    var images = [];
+    $(".imagesGallerySelected .uploadImageExample").each(function(i, elem) {
+        var imageSource = $(elem).find(".uploadedImage").attr('src');
+        var imageCaption = $(elem).find(".uploadImageCaption").text();
+        images.push({source: imageSource, caption: imageCaption});
+    });
+
+    var gallery = {
+      speed: imageGallerySpeed,
+      images
+    }
 
     var emotionsText = "\n\nEmotions Quantity\n\n";
     $(emotionsListVar).each((i, e) => {
@@ -2017,22 +2158,15 @@ jQuery(document).ready(function ($) {
 
     var sessionObject = {
       'Session time': sessionTime,
-      'Focus Text': focusText,
-      'videoId': videoID,
+      focusText,
+      videoId,
       videoMode,
       imageData,
       image3dData,
       ImageCaption,
       sideText,
-      'people': [
-        { role: 'therapist', data: $('.therapistImage').css('background-image') },
-        { role: 'person1', data: $('.person1Image').css('background-image') },
-        { role: 'person2', data: $('.person2Image').css('background-image') },
-        { role: 'person3', data: $('.person3Image').css('background-image') },
-        { role: 'person4', data: $('.person4Image').css('background-image') },
-        { role: 'person5', data: $('.person5Image').css('background-image') },
-        { role: 'person6', data: $('.person6Image').css('background-image') }
-      ],
+      people,
+      gallery,
       qrngInterval: currentDisplayInterval,
       isPyramid: $('.piramidToggleCB').is(':checked'),
       callClip: $('.clipOptionsSelect').val(),
