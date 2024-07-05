@@ -1028,29 +1028,29 @@ jQuery(document).ready(function ($) {
           loop: true,
           html: `<source src="${newVideoId}" type="video/mp4">`
         }).appendTo('.quadGenerator:not(.double) .uploadImageHolder > .view360InnerDiv');
-        var $canvas = $(`<canvas id="outputCanvas" ></canvas>`).appendTo('.quadGenerator.double .uploadImageHolder > .view360InnerDiv');
-        var context = $canvas[0].getContext('2d');
+        // var $canvas = $(`<canvas id="outputCanvas" ></canvas>`).appendTo('.quadGenerator.double .uploadImageHolder > .view360InnerDiv');
+        // var context = $canvas[0].getContext('2d');
 
-        $video.on('loadedmetadata', function () {
-          // Calculate the height to maintain the aspect ratio
-          // The canvas width is being set to 200px statically in your original code
-          // var height = $video[0].videoHeight * (200 / $video[0].videoWidth);
-          // Adjusting the canvas size dynamically based on the video might not be necessary here
-          // as your original code sets a static width of 200px for drawing the video frame
-          $canvas.attr('width', $video[0].videoWidth);
-          $canvas.attr('height', $video[0].videoWidth);
-        });
+        // $video.on('loadedmetadata', function () {
+        //   // Calculate the height to maintain the aspect ratio
+        //   // The canvas width is being set to 200px statically in your original code
+        //   // var height = $video[0].videoHeight * (200 / $video[0].videoWidth);
+        //   // Adjusting the canvas size dynamically based on the video might not be necessary here
+        //   // as your original code sets a static width of 200px for drawing the video frame
+        //   $canvas.attr('width', $video[0].videoWidth);
+        //   $canvas.attr('height', $video[0].videoWidth);
+        // });
 
-        $video.on('play', function () {
-          drawVideoFrame();
-        });
+        // $video.on('play', function () {
+        //   drawVideoFrame();
+        // });
 
-        function drawVideoFrame() {
-          if ($video[0].paused || $video[0].ended) return;
-          // Draw the current video frame onto the canvas
-          context.drawImage($video[0], 0, 0, $video[0].width, $video[0].height);
-          requestAnimationFrame(drawVideoFrame); // Call drawVideoFrame again to keep updating the canvas
-        }
+        // function drawVideoFrame() {
+        //   if ($video[0].paused || $video[0].ended) return;
+        //   // Draw the current video frame onto the canvas
+        //   context.drawImage($video[0], 0, 0, $video[0].width, $video[0].height);
+        //   requestAnimationFrame(drawVideoFrame); // Call drawVideoFrame again to keep updating the canvas
+        // }
 
 
         break;
