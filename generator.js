@@ -1032,7 +1032,10 @@ jQuery(document).ready(function ($) {
         }).appendTo('.quadGenerator:not(.double) .uploadImageHolder > .view360InnerDiv');
 
         $('.playOverlay').on('click', function() {
-          $video[0].play().catch(function(error) {
+          var overlay = $(this);
+          $video[0].play().then(function() {
+            overlay.hide();
+          }).catch(function(error) {
             console.error('Error attempting to play video:', error);
           });
         });

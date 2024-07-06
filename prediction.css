@@ -372,6 +372,18 @@
     font-size: 9px;
   }
 
+  .playOverlay {
+    position: absolute;
+    z-index: 100;
+    height: 100%;
+    width: 100%;
+    background-image: url("https://github.com/esculapeso/quantum_generator/raw/main/images/playVideo.png");
+    background-size: 120px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+  }
+
   #videoHolder {
     position: absolute;
     top: 0;
