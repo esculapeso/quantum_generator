@@ -212,6 +212,7 @@ jQuery(document).ready(function ($) {
 
 
   var $imageDiv = $('<div class="uploadImageHolder clipped" ></div>').appendTo('.quadGenerator');
+  $('<div class="playOverlay" >Play</div>').appendTo($imageDiv);
   var $focusControls = $('<div class="focusControls" ></div>').appendTo($imageDiv);
   var $focusChangers = $('<div class="focusChangers" ></div>').appendTo($focusControls);
   var $subImageControls = $('<div class="subImageControls" ></div>').appendTo($focusControls);
@@ -1030,17 +1031,11 @@ jQuery(document).ready(function ($) {
           html: `<source src="${newVideoId}" type="video/mp4">`
         }).appendTo('.quadGenerator:not(.double) .uploadImageHolder > .view360InnerDiv');
 
-        // Ensure the video element is appended to the DOM
-      $video.on('canplay', function() {
-        this.play().catch(function(error) {
-          console.error('Error attempting to play video:', error);
+        $('.playOverlay').on('click', function() {
+          $video[0].play().catch(function(error) {
+            console.error('Error attempting to play video:', error);
+          });
         });
-      });
-
-      $video[0].play().catch(function(error) {
-        // Handle any errors that might occur when trying to play the video
-        console.error('Error attempting to play video:', error);
-      });
 
         // var $canvas = $(`<canvas id="outputCanvas" ></canvas>`).appendTo('.quadGenerator.double .uploadImageHolder > .view360InnerDiv');
         // var context = $canvas[0].getContext('2d');
