@@ -1041,9 +1041,10 @@ jQuery(document).ready(function ($) {
         //   $canvas.attr('height', $video[0].videoWidth);
         // });
 
-        // $video.on('play', function () {
-        //   drawVideoFrame();
-        // });
+        $video.on('play', function () {
+          console.log("im playing!!")
+          //drawVideoFrame();
+        });
 
         // function drawVideoFrame() {
         //   if ($video[0].paused || $video[0].ended) return;
