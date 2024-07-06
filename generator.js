@@ -1029,6 +1029,14 @@ jQuery(document).ready(function ($) {
           muted: true,
           html: `<source src="${newVideoId}" type="video/mp4">`
         }).appendTo('.quadGenerator:not(.double) .uploadImageHolder > .view360InnerDiv');
+
+        // Ensure the video element is appended to the DOM
+        $video.on('canplay', function() {
+          this.play().catch(function(error) {
+            console.error('Error attempting to play video:', error);
+          });
+        });
+
         // var $canvas = $(`<canvas id="outputCanvas" ></canvas>`).appendTo('.quadGenerator.double .uploadImageHolder > .view360InnerDiv');
         // var context = $canvas[0].getContext('2d');
 
