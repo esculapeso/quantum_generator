@@ -1026,7 +1026,7 @@ jQuery(document).ready(function ($) {
           height: "100%",
           autoplay: true,
           loop: true,
-          muted: true,
+          // muted: true,
           html: `<source src="${newVideoId}" type="video/mp4">`
         }).appendTo('.quadGenerator:not(.double) .uploadImageHolder > .view360InnerDiv');
 
