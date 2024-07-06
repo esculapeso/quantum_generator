@@ -209,24 +209,72 @@ jQuery(document).ready(function ($) {
   let monopole = $('.monoTunnelImage');
   appendDataHolder(monopole, "dataMonopole", "monopole")
 
+  // Create the main image div
+  var $imageDiv = $('<div>', { class: 'uploadImageHolder clipped' }).appendTo('.quadGenerator');
 
+  // Add play overlay
+  $('<div>', { class: 'playOverlay' }).appendTo($imageDiv);
 
-  var $imageDiv = $('<div class="uploadImageHolder clipped" ></div>').appendTo('.quadGenerator');
-  $('<div class="playOverlay" >Play</div>').appendTo($imageDiv);
-  var $focusControls = $('<div class="focusControls" ></div>').appendTo($imageDiv);
-  var $focusChangers = $('<div class="focusChangers" ></div>').appendTo($focusControls);
-  var $subImageControls = $('<div class="subImageControls" ></div>').appendTo($focusControls);
-  $('<div class="previewSelector" ></div>').appendTo($subImageControls);
-  var $imageChooser = $(`<div class="imageChooser" ></div>`).hide().appendTo($subImageControls);
-  $('<div class="videoSelectsTitle" >Image:</div>').appendTo($imageChooser);
-  $(`<div class="removeImageButton button" >X</div>`).appendTo($imageChooser);
-  $(`<div class="uploadImageButton button" >🡅</div>`).appendTo($imageChooser);
+  // Create and append focus controls
+  var $focusControls = $('<div>', { class: 'focusControls' }).appendTo($imageDiv);
+  var $focusChangers = $('<div>', { class: 'focusChangers' }).appendTo($focusControls);
+  var $focusAndSession = $('<div>', { class: 'focusAndSession' }).appendTo($focusChangers);
+  var $focusChooser = $('<div>', { class: 'focusChooser' }).appendTo($focusAndSession);
 
-  var $imageSelect = $('<select class="imageSelect" ></select>').appendTo($imageChooser);
-  $(`<option value="empty" >~ Select ~</option>`).appendTo($imageSelect);
+  // Create and append focus text chooser
+  var $focusTextChooser = $('<div>', { class: 'focusTextChooser' }).appendTo($focusChooser);
+  $('<div>', { class: 'videoSelectsTitle', text: 'Focus:' }).appendTo($focusTextChooser);
+  $('<input>', { type: 'text', class: 'focusTextTextBox' }).appendTo($focusTextChooser);
+
+  // Create and append caption text chooser
+  var $captionTextChooser = $('<div>', { class: 'captionTextChooser' }).appendTo($focusChooser);
+  $('<div>', { class: 'videoSelectsTitle', text: 'Caption:' }).appendTo($captionTextChooser);
+  $('<input>', { type: 'text', class: 'captionTextTextBox' }).appendTo($captionTextChooser);
+
+  // Create and append session buttons
+  var $sessionButtons = $('<div>', { class: 'sessionButtons' }).appendTo($focusAndSession);
+  $('<input>', { type: 'button', class: 'focusTextSaveButton button', value: 'Save' }).appendTo($sessionButtons);
+  $('<input>', { type: 'button', class: 'focusTextLoadButton button', value: 'Load' }).appendTo($sessionButtons);
+
+  // Create and append video controls and focus
+  var $videoControlsAndFocus = $('<div>', { class: 'videoControlsAndFocus' }).appendTo($focusChangers);
+  $('<div>', { class: 'videoSelectsTitle', text: 'Controls:' }).appendTo($videoControlsAndFocus);
+
+  var $videoControls = $('<div>', { class: 'videoControls' }).appendTo($videoControlsAndFocus);
+  $('<img>', { src: 'https://github.com/esculapeso/quantum_generator/raw/main/images/removeVideo.png', class: 'youtubeRemoveButtonImage redButton' }).appendTo($videoControls);
+  $('<img>', { src: 'https://github.com/esculapeso/quantum_generator/raw/main/images/pauseVideo.png', class: 'youtubePauseButtonImage redButton' }).hide().appendTo($videoControls);
+  $('<img>', { src: 'https://github.com/esculapeso/quantum_generator/raw/main/images/playVideo.png', class: 'youtubePlayButtonImage redButton' }).appendTo($videoControls);
+  $('<input>', { type: 'range', value: '10', class: 'videoVolume' }).appendTo($videoControls);
+
+  // Create and append sub image controls
+  var $subImageControls = $('<div>', { class: 'subImageControls' }).appendTo($focusControls);
+  $('<div>', { class: 'previewSelector' }).appendTo($subImageControls);
+
+  // Create and append video selects
+  var $videoSelects = $('<div>', { class: 'videoSelects' }).appendTo($subImageControls);
+  var $videoSubcategorySelect = $('<select>', { class: 'videoSubcategorySelect' }).hide().appendTo($videoSelects);
+  $('<div>', { class: 'videoSelectsTitle', text: 'Video:' }).appendTo($videoSelects);
+
+  var $videoCategorySelect = $('<select>', { class: 'videoCategorySelect' }).appendTo($videoSelects);
+  $('<option>', { value: 'empty', text: '~ Select ~' }).appendTo($videoCategorySelect);
+  $('<option>', { value: 'meditation', text: 'Meditation' }).appendTo($videoCategorySelect);
+  if (psalmVideoVar) $('<option>', { value: 'psalms', text: 'Psalms' }).appendTo($videoCategorySelect);
+  if (view360VideoVar) $('<option>', { value: 'view360', text: '360 view' }).appendTo($videoCategorySelect);
+
+  // Create and append image chooser
+  var $imageChooser = $('<div>', { class: 'imageChooser' }).hide().appendTo($subImageControls);
+  $('<div>', { class: 'videoSelectsTitle', text: 'Image:' }).appendTo($imageChooser);
+  $('<div>', { class: 'removeImageButton button', text: 'X' }).appendTo($imageChooser);
+  $('<div>', { class: 'uploadImageButton button', text: '🡅' }).appendTo($imageChooser);
+
+  var $imageSelect = $('<select>', { class: 'imageSelect' }).appendTo($imageChooser);
+  $('<option>', { value: 'empty', text: '~ Select ~' }).appendTo($imageSelect);
+  
   $(focusImages).each(function (k, fi) {
-    $(`<option value="${fi.filepath}" ${fi.filepath.includes('.glb') ? 'is3d' : ''} >${fi.text}</option>`).appendTo($imageSelect);
+    var is3d = fi.filepath.includes('.glb') ? 'is3d' : '';
+    $('<option>', { value: fi.filepath, text: fi.text, 'data-is3d': is3d }).appendTo($imageSelect);
   });
+  
 
   $(document).on('change', '.imageSelect', function () {
     var imagePath = $(this).val();
@@ -243,43 +291,9 @@ jQuery(document).ready(function ($) {
     updateCaptionText(caption);
   });
 
-
-
-  var $focusAndSession = $('<div class="focusAndSession" ></div>').appendTo($focusChangers);
-  var $focusChooser = $('<div class="focusChooser" ></div>').appendTo($focusAndSession);
-  var $focusTextChooser = $('<div class="focusTextChooser" ></div>').appendTo($focusChooser);
-  $('<div class="videoSelectsTitle" >Focus:</div>').appendTo($focusTextChooser);
-  $('<input type="text" class="focusTextTextBox" />').appendTo($focusTextChooser);
-  var $captionTextChooser = $('<div class="captionTextChooser" ></div>').appendTo($focusChooser);
-  $('<div class="videoSelectsTitle" >Caption:</div>').appendTo($captionTextChooser);
-  $('<input type="text" class="captionTextTextBox" />').appendTo($captionTextChooser);
-
   $(document).on('input', '.captionTextTextBox', function () {
     $(".captionText").html($(this).val());
   });
-
-  var $sessionButtons = $('<div class="sessionButtons" ></div>').appendTo($focusAndSession);
-  $('<input class="focusTextSaveButton button" type="button" value="Save"  />').appendTo($sessionButtons);
-  $('<input class="focusTextLoadButton button" type="button" value="Load"  />').appendTo($sessionButtons);
-  var $videoControlsAndFocus = $('<div class="videoControlsAndFocus" ></div>').appendTo($focusChangers);
-  $('<div class="videoSelectsTitle" >Controls:</div>').appendTo($videoControlsAndFocus);
-
-  var $videoControls = $('<div class="videoControls" ></div>').appendTo($videoControlsAndFocus);
-  $(`<img src="https://github.com/esculapeso/quantum_generator/raw/main/images/removeVideo.png" class="youtubeRemoveButtonImage redButton" />`).appendTo($videoControls);
-  $(`<img src="https://github.com/esculapeso/quantum_generator/raw/main/images/pauseVideo.png" class="youtubePauseButtonImage redButton" />`).hide().appendTo($videoControls);
-  $(`<img src="https://github.com/esculapeso/quantum_generator/raw/main/images/playVideo.png" class="youtubePlayButtonImage redButton" />`).appendTo($videoControls);
-  $('<input type="range" value="10" class="videoVolume" />').appendTo($videoControls);
-  var $videoSelects = $('<div class="videoSelects" ></div>').appendTo($subImageControls);
-
-  var $videoSubcategorySelect = $('<select class="videoSubcategorySelect" ></select>').hide().appendTo($videoSelects);
-  $('<div class="videoSelectsTitle" >Video:</div>').appendTo($videoSelects);
-
-  var $videoCategorySelect = $('<select class="videoCategorySelect" ></select>').appendTo($videoSelects);
-  $(`<option value="empty">~ Select ~</option>`).appendTo($videoCategorySelect);
-  $(`<option value="meditation">Meditation</option>`).appendTo($videoCategorySelect);
-  if (psalmVideoVar) $(`<option value="psalms">Psalms</option>`).appendTo($videoCategorySelect);
-  if (view360VideoVar) $(`<option value="view360">360 view</option>`).appendTo($videoCategorySelect);
-
 
   $(document).on('click', '.psalmLang', function () {
     selectedPsalmsLang = $(this).attr('lang');
