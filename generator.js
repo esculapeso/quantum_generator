@@ -1026,6 +1026,7 @@ jQuery(document).ready(function ($) {
           height: "100%",
           autoplay: true,
           loop: true,
+          muted: true,
           html: `<source src="${newVideoId}" type="video/mp4">`
         }).appendTo('.quadGenerator:not(.double) .uploadImageHolder > .view360InnerDiv');
         // var $canvas = $(`<canvas id="outputCanvas" ></canvas>`).appendTo('.quadGenerator.double .uploadImageHolder > .view360InnerDiv');
