@@ -1142,7 +1142,7 @@ jQuery(document).ready(function ($) {
 
 
   function CalculateSideTextSize(textLength) {
-    var newFontSize = 15;
+    var newFontSize = 14;
     if (textLength > 3) newFontSize = 60 / textLength;
     if (textLength > 15) newFontSize = 4;
     return newFontSize;

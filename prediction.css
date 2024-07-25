@@ -302,12 +302,12 @@
 
   .sideText.left {
     bottom: 0;
-    left: 7vh;
+    left: 8vh;
     transform: translateX(-50%);
   }
 
   .sideText.right {
-    right: 7vh;
+    right: 8vh;
     top: 0;
     transform: translateX(50%);
   }
