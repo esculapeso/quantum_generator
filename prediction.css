@@ -981,6 +981,32 @@
       bottom: -15vh;
     }
 
+    .therapistImage.pyramidPerson {
+      width: 10vw;
+      height: 10vw;
+      display: block;
+    }
+
+    .therapistImage.left.pyramidPerson {
+      top: -10vw;
+      left: 0;
+    }
+
+    .therapistImage.top.pyramidPerson {
+      top: -10vw;
+      right: 0;
+    }
+
+    .therapistImage.right.pyramidPerson {
+      bottom: -10vw;
+      right: 0;
+    }
+
+    .therapistImage.bottom.pyramidPerson {
+      bottom: -10vw;
+      left: 0;
+    }
+
   }
 
   @media screen and (orientation:landscape) {
