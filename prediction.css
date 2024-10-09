@@ -987,12 +987,12 @@
 
     .sideText.right.pyramidPerson {
       right: 50%;
-      top: -8vw;
+      top: -6vw;
     }
 
     .sideText.left.pyramidPerson {
       left: 50%;
-      bottom: -8vw;
+      bottom: -6vw;
     }
 
     .therapistImage.pyramidPerson {
