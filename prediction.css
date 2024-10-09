@@ -123,7 +123,6 @@
     height: 100vh;
     background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/Quadruple_Generator_blank.png);
     background-size: 100%;
-    overflow: hidden;
     position: relative;
     background-repeat: no-repeat;
     margin: auto;
@@ -945,6 +944,11 @@
   }
 
   @media screen and (orientation:portrait) {
+
+    .quadrupolePanel {
+      top: 15vh;
+    }
+
     .quadrupoleImage {
       width: 100vw;
       height: 100vw;
@@ -957,6 +961,20 @@
     .videoChooserSection {
       margin: auto;
       position: static;
+    }
+
+    .sideText {
+      writing-mode: horizontal-tb;
+    }
+
+    .sideText.right {
+      right: 50%;
+      top: -15vh;
+    }
+
+    .sideText.left {
+      left: 50%;
+      bottom: -15vh;
     }
 
   }
