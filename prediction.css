@@ -998,17 +998,19 @@
 
     .therapistImage.top.pyramidPerson {
       top: -10vw;
-      right: 0;
+      left: 90vw;
+      display: block;
     }
 
     .therapistImage.right.pyramidPerson {
-      bottom: -10vw;
-      right: 0;
+      top: 100vw;
+      left: 90vw;
     }
 
     .therapistImage.bottom.pyramidPerson {
-      bottom: -10vw;
+      top: 100vw;
       left: 0;
+      display: block;
     }
 
   }
