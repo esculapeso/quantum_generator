@@ -213,7 +213,7 @@ jQuery(document).ready(function ($) {
   var $imageDiv = $('<div>', { class: 'uploadImageHolder clipped' }).appendTo('.quadGenerator');
 
   // Add play overlay
-  $('<div>', { class: 'playOverlay' }).appendTo($imageDiv);
+  //$('<div>', { class: 'playOverlay' }).appendTo($imageDiv);
 
   // Create and append focus controls
   var $focusControls = $('<div>', { class: 'focusControls' }).appendTo($imageDiv);
