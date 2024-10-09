@@ -844,7 +844,7 @@ jQuery(document).ready(function ($) {
       if (isPyramid) {
         $fullView.hide();
         $pyramidView.show();
-        $quadGenerator.css({ 'width': '100vh', 'height': '100vh' });
+        $quadGenerator.css({ 'width': '100%', 'height': '100%' });
         $quadrupoleImage.addClass('pyramidImage');
         $pyramidElements.addClass('pyramidPerson');
       } else {
