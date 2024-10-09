@@ -682,7 +682,7 @@ jQuery(document).ready(function ($) {
   $('<input class="togglePyramidButton button" type="button" alttitle="Classic View" title="Pyramid View" altvalue="▣" value="◭"  />').appendTo($videoChooserSection);
 
   $(document).on('click', '.centerGenerator', function () {
-    $(window).scrollTop($(".quadrupolePanel").offset().top - ($(window).height() / 2) + ($(".quadrupolePanel").outerHeight() / 2));
+    $(window).scrollTop($(".quadGenerator").offset().top - ($(window).height() / 2) + ($(".quadGenerator").outerHeight() / 2));
   });
 
   $(document).on('click', '.playGeneratorVideo', function () {
