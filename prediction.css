@@ -963,16 +963,16 @@
       position: static;
     }
 
-    .sideText {
+    .sideText.pyramidPerson {
       writing-mode: horizontal-tb;
     }
 
-    .sideText.right {
+    .sideText.right.pyramidPerson {
       right: 50%;
       top: -15vh;
     }
 
-    .sideText.left {
+    .sideText.left.pyramidPerson {
       left: 50%;
       bottom: -15vh;
     }
