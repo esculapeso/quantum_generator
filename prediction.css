@@ -971,14 +971,18 @@
       writing-mode: horizontal-tb;
     }
 
+    .sideText.pyramidPerson {
+      font-size: 10vw !important;
+    }
+
     .sideText.right.pyramidPerson {
       right: 50%;
-      top: -15vh;
+      top: -8vw;
     }
 
     .sideText.left.pyramidPerson {
       left: 50%;
-      bottom: -15vh;
+      bottom: -8vw;
     }
 
     .therapistImage.pyramidPerson {
