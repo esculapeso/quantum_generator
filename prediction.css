@@ -937,8 +937,8 @@
     pointer-events: none;
     -webkit-clip-path: polygon(0 100%, 21.8% 0, 78.2% 0, 100% 100%);
     clip-path: polygon(0 100%, 21.4% 0, 79.6% 0, 100% 100%);
-    width: 214.8%;
-    left: -57.5%;
+    width: 221%;
+    left: -60.6%;
     transform: scale(-1, 1);
   }
 
