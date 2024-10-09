@@ -1,5 +1,9 @@
   /* BARD THEME */
 
+  body::-webkit-scrollbar {
+    display: none;
+  }
+
   .elementor-section.elementor-section-boxed > .elementor-container {
     max-width: unset !important;
   }
