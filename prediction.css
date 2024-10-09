@@ -986,13 +986,23 @@
     }
 
     .sideText.right.pyramidPerson {
-      right: 50%;
       top: -6vw;
     }
 
     .sideText.left.pyramidPerson {
-      left: 50%;
       bottom: -6vw;
+    }
+
+    .generatorText.pyramidPerson.focusText {
+      left: 50%;
+      width: unset !important;
+      top: 0 !important;
+    }
+
+    .generatorText.pyramidPerson.captionText {
+      right: 50%;
+      width: unset !important;
+      bottom: 0 !important;
     }
 
     .therapistImage.pyramidPerson {
