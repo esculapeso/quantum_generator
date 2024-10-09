@@ -1140,7 +1140,7 @@ jQuery(document).ready(function ($) {
 
 
   function CalculateSideTextSize(textLength) {
-    if (isMobile && isPyramid) {
+    if (isMobile) {
       return 6;
     }
     else {
