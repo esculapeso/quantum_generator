@@ -131,7 +131,6 @@
   }
 
   .quadrupoleImage.pyramidImage {
-    width: 166vh;
     background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/TherapistImage.png);
   }
 
@@ -963,6 +962,11 @@
   }
 
   @media screen and (orientation:landscape) {
+    
+    .quadrupoleImage.pyramidImage {
+      width: 166vh;
+    }
+
     .quadrupoleImage {
       width: 100vh;
       height: 100vh;
