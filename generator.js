@@ -100,7 +100,7 @@ jQuery(document).ready(function ($) {
 
   function appendDataHolder(container, id, className) {
     if (container.length) {
-      $(` <div id="${id}" class="${className}" >
+      $(` <div class="${className} ${id}" >
             <div class="dec" style="display:none;"></div>
             <div class="hex"></div>
           </div>`).appendTo(container);
@@ -164,7 +164,7 @@ jQuery(document).ready(function ($) {
 
       var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4;
       for (var n = 0; n < genCount; ++n) {
-        printHex($('#generator' + n), 'afterbegin', index);
+        printHex($('.generator' + n), 'afterbegin', index);
       }
 
       printHex(dataDualTop, 'afterbegin', index);
