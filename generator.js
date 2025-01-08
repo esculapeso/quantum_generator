@@ -162,7 +162,7 @@ jQuery(document).ready(function ($) {
       //conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       console.log("background gradient: ", gradient);
 
-      $('.page-content').css('background', gradient);
+      $('.content.original').css('background', gradient);
 
       var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4;
       for (var n = 0; n < genCount; ++n) {
