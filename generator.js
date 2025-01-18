@@ -653,7 +653,7 @@ jQuery(document).ready(function ($) {
     `).appendTo($jesusLanguages);
   });
 
-  var $videoChooserSection = $('<div class="videoChooserSection" ></div>').appendTo($quadrupolePanel);
+  var $videoChooserSection = $('<div class="videoChooserSection" ></div>').appendTo($(".maincontainer"));
   $('<input class="hideOptionsButton button" type="button" altvalue="→" value="←"  />').appendTo($videoChooserSection);
 
   $(document).on('click', '.hideOptionsButton', function () {
