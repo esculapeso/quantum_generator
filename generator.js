@@ -160,7 +160,6 @@ jQuery(document).ready(function ($) {
       // parametry: color, jasność, przezroczystość, obwiednia, promień, kąt
       gradient = `conic-gradient(from 0deg at 50% ${gradVerCenter}, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       //conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
-      console.log("background gradient: ", gradient);
 
       $('.content.original, .mirrorFrame').css('background', gradient);
 
