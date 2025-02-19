@@ -1777,6 +1777,23 @@ jQuery(document).ready(function ($) {
   const $tab6 = $("#tabs-6");
   const $soundContent = $("<div>", { class: "soundContent" }).appendTo($tab6);
 
+  // Sound Options
+  const $soundOptionsSelect = $("<select>", { class: "soundOptionsSelect" }).appendTo($soundContent);
+  const soundOptions = ['morning', 'creativity', 'concentration', 'relax', 'sleep'];
+  $.each(soundOptions, (k, co) => $("<option>", { value: co, text: co }).appendTo($soundOptionsSelect));
+
+  $(document).on('change', '.soundOptionsSelect', function () {
+    // Get the selected value from the dropdown
+    const selectedValue = $(this).val();
+    // Construct the URL for the corresponding music file
+    const audioUrl = "http://twistor.li/wp-content/uploads/2025/02/ommusic_" + selectedValue + ".mp3";
+    
+    // Create a new Audio object with the URL and play it
+    const audio = new Audio(audioUrl);
+    audio.play();
+  });
+
+
   $("<img>", { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/speaker.png", class: "speakerOutput soundButton" }).appendTo($soundContent);
   const $usbOutput = $("<img>", { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/usb.png", class: "usbOutput soundButton" }).appendTo($soundContent);
 
