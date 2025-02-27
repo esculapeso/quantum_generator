@@ -1074,6 +1074,10 @@
       width: 166vh;
     }
 
+    .mirror .quadrupoleImage.pyramidImage {
+      width: 100vh;
+    }
+
     .quadrupoleImage {
       width: 100vh;
       height: 100vh;
