@@ -1,93 +1,192 @@
-// 2. This code loads the IFrame Player API code asynchronously.
-var tag = document.createElement('script');
-
-tag.src = "//www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-// 3. This function creates an <iframe> (and YouTube player)
-//    after the API code downloads.
-var players = [];
-var playersCount = 5;
-var startInverval;
-var playersReady = false;
-
-var holders = ['northHolder', 'westHolder', 'southHolder', 'eastHolder', 'videoHolder'];
-
-function onYouTubeIframeAPIReady() {
-  startInverval = setInterval(startPlayer, 4000);
+// Load the YouTube IFrame API
+function loadYouTubeAPI() {
+  var tag = document.createElement('script');
+  tag.src = "//www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 }
 
-function startPlayer() {
-  for (var i = 0; i < playersCount; i++) {
-    new YT.Player(holders[i], {
-      height: '390',
-      width: '90',
-      videoId: '6f0y1Iaorug',
-      playerVars: {
-        'playsinline': 1, 'autoplay': 0, 'controls': 0, 'showinfo': 0, 'autohide': 1
-      },
-      events: {
-        'onReady': onPlayerReady,
-        'onStateChange': onPlayerStateChange
+// Player Manager Class
+class YouTubePlayerManager {
+  constructor() {
+    this.players = [];
+    this.containerSets = [];
+    this.readyCounts = {};
+    this.readyCallbacks = {};
+  }
+
+  // Register a new set of containers
+  registerContainerSet(setId, containerIds, videoId, options = {}) {
+    this.containerSets.push({
+      setId: setId,
+      containerIds: containerIds,
+      videoId: videoId,
+      options: options
+    });
+    
+    this.players[setId] = [];
+    this.readyCounts[setId] = 0;
+    
+    // If YouTube API is already loaded, initialize players immediately
+    if (typeof YT !== 'undefined' && YT.Player) {
+      this.initializeSet(setId);
+    }
+  }
+  
+  // Initialize players for a specific set
+  initializeSet(setId) {
+    const set = this.containerSets.find(s => s.setId === setId);
+    if (!set) return;
+    
+    set.containerIds.forEach(containerId => {
+      const playerOptions = {
+        height: set.options.height || '390',
+        width: set.options.width || '90',
+        videoId: set.videoId,
+        playerVars: set.options.playerVars || {
+          'playsinline': 1, 
+          'autoplay': 0, 
+          'controls': 0, 
+          'showinfo': 0, 
+          'autohide': 1
+        },
+        events: {
+          'onReady': (event) => this.onPlayerReady(event, setId),
+          'onStateChange': (event) => this.onPlayerStateChange(event, setId)
+        }
+      };
+      
+      const player = new YT.Player(containerId, playerOptions);
+      this.players[setId].push({
+        containerId: containerId,
+        player: player
+      });
+    });
+  }
+  
+  // Handler for when a player is ready
+  onPlayerReady(event, setId) {
+    this.readyCounts[setId]++;
+    const set = this.containerSets.find(s => s.setId === setId);
+    
+    // Check if all players in this set are ready
+    if (this.readyCounts[setId] === set.containerIds.length) {
+      if (this.readyCallbacks[setId]) {
+        this.readyCallbacks[setId](this.getPlayerInstances(setId));
+      }
+    }
+  }
+  
+  // Get actual player instances for a set
+  getPlayerInstances(setId) {
+    return this.players[setId].map(p => p.player);
+  }
+  
+  // Set callback for when all players in a set are ready
+  onSetReady(setId, callback) {
+    this.readyCallbacks[setId] = callback;
+    
+    // If players are already ready, call the callback immediately
+    const set = this.containerSets.find(s => s.setId === setId);
+    if (set && this.readyCounts[setId] === set.containerIds.length) {
+      callback(this.getPlayerInstances(setId));
+    }
+  }
+  
+  // Handler for player state changes
+  onPlayerStateChange(event, setId) {
+    console.log(`EVENT: onPlayerStateChange for set ${setId}`);
+    
+    if (event.data === YT.PlayerState.ENDED) {
+      console.log(`EVENT: ENDED for set ${setId}`);
+      
+      // Custom logic for state change - can be overridden
+      if (this.stateChangeCallbacks[setId]) {
+        this.stateChangeCallbacks[setId](event, this.getPlayerInstances(setId));
+      }
+    }
+  }
+  
+  // Set callback for state changes
+  onStateChange(setId, callback) {
+    if (!this.stateChangeCallbacks) {
+      this.stateChangeCallbacks = {};
+    }
+    this.stateChangeCallbacks[setId] = callback;
+  }
+  
+  // Control all players in a set
+  playAll(setId) {
+    const players = this.getPlayerInstances(setId);
+    players.forEach(player => {
+      try {
+        player.playVideo();
+      } catch (e) {
+        console.error(`Error playing video in set ${setId}:`, e);
       }
     });
   }
-
-}
-
-// 4. The API will call this function when the video player is ready.
-function onPlayerReady(event) {
-  players.push(event.target)
-	
-  if (players.length == playersCount) {
-    playersReady = true; 
-    clearInterval(startInverval);
+  
+  stopAll(setId) {
+    const players = this.getPlayerInstances(setId);
+    players.forEach(player => {
+      try {
+        player.stopVideo();
+      } catch (e) {
+        console.error(`Error stopping video in set ${setId}:`, e);
+      }
+    });
   }
-	
 }
 
-// 5. The API calls this function when the player's state changes.
-//    The function indicates that when playing a video (state=1),
-//    the player should play for six seconds and then stop.
-var done = false;
-function onPlayerStateChange(event) {
-  console.log("EVENT: onPlayerStateChange");
-  if (event.data === YT.PlayerState.ENDED) {
-    console.log("EVENT: ENDED");
-    try {
-      var activePlayers = ($('.piramidToggleCB').is(':checked')) ? players.slice(0, 4) : players.slice(4, 5);
-      $(activePlayers).each((i, p) => {
-        console.log("FOREACHVIDEO");
-        try {
-          console.log("PLAYER:", {p});
-          p.setVolume($('.videoVolume').val())
-           .playVideo()
-           .setPlaybackQuality("small")
-           .mute();
-        } catch (e) {
-          console.error("Error playing video: ", e);
-          // Handle video play error here
-        }
-      });
-      activePlayers[0].unMute();
-    } catch (e) {
-      console.error("Error in onPlayerStateChange: ", e);
-      // Handle general error here
+// Create element IDs dynamically to avoid duplicates
+function createUniqueContainerId(prefix, index) {
+  return `${prefix}_${new Date().getTime()}_${index}`;
+}
+
+// Toggle pyramid view - preserved from your original code
+function togglePyramidView(isPyramid, startVideo, zoom, ratio) {
+  isPyramid = (typeof isPyramid === "undefined") ? !$('.piramidToggleCB').prop('checked') : isPyramid;
+
+  // Common jQuery selectors
+  var $fullView = $('.fullView');
+  var $pyramidView = $('.pyramidView');
+  var $quadGenerator = $('.quadGenerator');
+  var $roundView = $('.roundView');
+  var $quadrupoleImage = $('.quadrupoleImage');
+  var $pyramidElements = $('.personImage, .therapistImage, .generatorText, .sideText, .liveSection');
+
+  if (zoom) {
+    $fullView.hide();
+    $pyramidView.show();
+    $quadGenerator.add($roundView).css({ 'width': `${zoom}vh`, 'height': `${zoom}vh` });
+    $quadGenerator.css('transform', `translateY(-50%) scale(${ratio}, 1)`);
+    $roundView.css('transform', `translate(-50%, -50%) scale(${ratio}, 1)`);
+    $quadrupoleImage.addClass('pyramidImage');
+    $pyramidElements.addClass('pyramidPerson');
+  } else {
+    $('.piramidToggleCB').prop('checked', isPyramid);
+
+    if (isPyramid) {
+      $fullView.hide();
+      $pyramidView.show();
+      $quadrupoleImage.addClass('pyramidImage');
+      $pyramidElements.addClass('pyramidPerson');
+    } else {
+      $fullView.show();
+      $pyramidView.hide();
+      $quadrupoleImage.removeClass('pyramidImage');
+      $pyramidElements.removeClass('pyramidPerson');
     }
   }
-}
 
-function stopVideo() {
-  for (var i = 0; i < players.length; i++) {
-    players[i].stopVideo();
+  // Call setDataFontSize if it exists
+  if (typeof setDataFontSize === 'function') {
+    setDataFontSize();
+  }
+
+  // Start focus video if videos are already playing
+  if (window.isVideoPlaying && typeof startFocusVideo === 'function') {
+    startFocusVideo();
   }
 }
-
-window.onerror = function(message, source, lineno, colno, error) {
-  if (error && error.message.includes('503')) {
-    // Handle 503 error specifically
-    console.error("Network error: ", error);
-  }
-  return false; // Propagates the error to the console
-};
