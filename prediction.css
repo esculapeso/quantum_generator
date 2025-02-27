@@ -1423,3 +1423,20 @@
       transform: rotate(359deg);
     }
   }
+
+  .maincontainer {
+    position: relative;
+  }
+  .maincontainer.mirror {
+      display: flex;
+  }
+  .original {
+      flex: 1;
+  }
+  .mirrorFrame {
+    flex: 1;
+    border: none; /* Removes border for seamless effect */
+  }
+  .mirrorFrame .quadGeneratorContainer {
+    transform: scaleX(-1);
+  }
