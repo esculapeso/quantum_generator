@@ -336,6 +336,10 @@
     right: 20vh;
   }
 
+  .mirror .sideText.left.pyramidPerson {
+    display: none;
+  }
+
   .mirror .sideText.right.pyramidPerson {
     display: none;
   }
