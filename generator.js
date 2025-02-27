@@ -775,7 +775,6 @@ jQuery(document).ready(function ($) {
           VIDEO 
   ***********************/
 
-
 // Load the YouTube IFrame API
 function loadYouTubeAPI() {
   var tag = document.createElement('script');
