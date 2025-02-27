@@ -193,7 +193,7 @@ jQuery(document).ready(function ($) {
   // $('<div class="roundViewInner" ></div>').appendTo($roundView);
 
   var $quadGenerator = $('<div class="quadGenerator" ></div>').appendTo(header);
-  var $quadGeneratorContainer = $('<div class="quadGeneratorContainer" ></div>').appendTo(header);
+  var $quadGeneratorContainer = $('<div class="quadGeneratorContainer" ></div>').appendTo($quadGenerator);
   var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4;
   for (var n = 0; n < genCount; ++n) {
     appendDataHolder($quadGeneratorContainer, "generator" + n, "quadrupole")
