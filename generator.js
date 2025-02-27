@@ -790,14 +790,22 @@ class YouTubePlayerManager {
     this.containerSets = [];
     this.readyCounts = {};
     this.readyCallbacks = {};
+    this.stateChangeCallbacks = {};
+    
+    // For backward compatibility
+    window.players = [];
+    window.playersReady = false;
+    window.isVideoPlaying = false;
   }
-
+  
   // Register a new set of containers
   registerContainerSet(setId, containerIds, videoId, options = {}) {
+    console.log(`Registering container set ${setId} with ${containerIds.length} containers`);
+    
     this.containerSets.push({
       setId: setId,
       containerIds: containerIds,
-      videoId: videoId,
+      videoId: videoId || '',
       options: options
     });
     
@@ -805,17 +813,34 @@ class YouTubePlayerManager {
     this.readyCounts[setId] = 0;
     
     // If YouTube API is already loaded, initialize players immediately
-    if (typeof YT !== 'undefined' && YT.Player) {
+    if (typeof YT !== 'undefined' && YT && YT.Player) {
+      console.log("YouTube API already loaded, initializing players immediately");
       this.initializeSet(setId);
+    } else {
+      console.log("YouTube API not loaded yet, waiting for onYouTubeIframeAPIReady");
     }
+    
+    return this;
   }
   
   // Initialize players for a specific set
   initializeSet(setId) {
+    console.log(`Initializing player set ${setId}`);
     const set = this.containerSets.find(s => s.setId === setId);
-    if (!set) return;
+    if (!set) {
+      console.error(`Set ${setId} not found`);
+      return;
+    }
     
-    set.containerIds.forEach(containerId => {
+    set.containerIds.forEach((containerId, index) => {
+      console.log(`Creating player for container ${containerId}`);
+      const containerElement = document.getElementById(containerId);
+      
+      if (!containerElement) {
+        console.error(`Container element with ID ${containerId} not found`);
+        return;
+      }
+      
       const playerOptions = {
         height: set.options.height || '390',
         width: set.options.width || '90',
@@ -828,38 +853,70 @@ class YouTubePlayerManager {
           'autohide': 1
         },
         events: {
-          'onReady': (event) => this.onPlayerReady(event, setId),
-          'onStateChange': (event) => this.onPlayerStateChange(event, setId)
+          'onReady': (event) => this.onPlayerReady(event, setId, index),
+          'onStateChange': (event) => this.onPlayerStateChange(event, setId, index)
         }
       };
       
-      const player = new YT.Player(containerId, playerOptions);
-      this.players[setId].push({
-        containerId: containerId,
-        player: player
-      });
+      try {
+        const player = new YT.Player(containerId, playerOptions);
+        
+        this.players[setId].push({
+          player: player,
+          containerId: containerId,
+          position: index < 4 ? 'side' : 'main',
+          index: index
+        });
+      } catch (e) {
+        console.error(`Error creating player for container ${containerId}:`, e);
+      }
     });
   }
   
   // Handler for when a player is ready
-  onPlayerReady(event, setId) {
+  onPlayerReady(event, setId, playerIndex) {
+    console.log(`Player ready in set ${setId}, index ${playerIndex}`);
+    
+    // Add to global players array for backward compatibility
+    window.players.push(event.target);
+    
     this.readyCounts[setId]++;
     const set = this.containerSets.find(s => s.setId === setId);
     
+    console.log(`Ready count for set ${setId}: ${this.readyCounts[setId]}/${set.containerIds.length}`);
+    
     // Check if all players in this set are ready
-    if (this.readyCounts[setId] === set.containerIds.length) {
+    if (set && this.readyCounts[setId] === set.containerIds.length) {
+      console.log(`All players in set ${setId} are ready`);
       if (this.readyCallbacks[setId]) {
         this.readyCallbacks[setId](this.getPlayerInstances(setId));
+      }
+      
+      // Check if all sets are ready
+      let allSetsReady = true;
+      for (const s of this.containerSets) {
+        if (this.readyCounts[s.setId] !== s.containerIds.length) {
+          allSetsReady = false;
+          break;
+        }
+      }
+      
+      if (allSetsReady) {
+        console.log("All player sets are ready");
+        window.playersReady = true;
+        // Remove loading indicators
+        $('.loadOverlay').removeClass('loading');
       }
     }
   }
   
-  // Get actual player instances for a set
+  // Get player instances for a set
   getPlayerInstances(setId) {
+    if (!this.players[setId]) return [];
     return this.players[setId].map(p => p.player);
   }
   
-  // Set callback for when all players in a set are ready
+  // Register callback for when all players in a set are ready
   onSetReady(setId, callback) {
     this.readyCallbacks[setId] = callback;
     
@@ -871,24 +928,16 @@ class YouTubePlayerManager {
   }
   
   // Handler for player state changes
-  onPlayerStateChange(event, setId) {
-    console.log(`EVENT: onPlayerStateChange for set ${setId}`);
+  onPlayerStateChange(event, setId, playerIndex) {
+    console.log(`Player state changed in set ${setId}, index ${playerIndex}: ${event.data}`);
     
-    if (event.data === YT.PlayerState.ENDED) {
-      console.log(`EVENT: ENDED for set ${setId}`);
-      
-      // Custom logic for state change - can be overridden
-      if (this.stateChangeCallbacks[setId]) {
-        this.stateChangeCallbacks[setId](event, this.getPlayerInstances(setId));
-      }
+    if (this.stateChangeCallbacks[setId]) {
+      this.stateChangeCallbacks[setId](event, this.getPlayerInstances(setId), playerIndex);
     }
   }
   
-  // Set callback for state changes
+  // Register callback for state changes
   onStateChange(setId, callback) {
-    if (!this.stateChangeCallbacks) {
-      this.stateChangeCallbacks = {};
-    }
     this.stateChangeCallbacks[setId] = callback;
   }
   
@@ -904,6 +953,7 @@ class YouTubePlayerManager {
     });
   }
   
+  // Stop all players in a set
   stopAll(setId) {
     const players = this.getPlayerInstances(setId);
     players.forEach(player => {
@@ -914,509 +964,216 @@ class YouTubePlayerManager {
       }
     });
   }
-}
-
-// Create element IDs dynamically to avoid duplicates
-function createUniqueContainerId(prefix, index) {
-  return `${prefix}_${new Date().getTime()}_${index}`;
-}
-
-// Toggle pyramid view - preserved from your original code
-function togglePyramidView(isPyramid, startVideo, zoom, ratio) {
-  isPyramid = (typeof isPyramid === "undefined") ? !$('.piramidToggleCB').prop('checked') : isPyramid;
-
-  // Common jQuery selectors
-  var $fullView = $('.fullView');
-  var $pyramidView = $('.pyramidView');
-  var $quadGenerator = $('.quadGenerator');
-  var $roundView = $('.roundView');
-  var $quadrupoleImage = $('.quadrupoleImage');
-  var $pyramidElements = $('.personImage, .therapistImage, .generatorText, .sideText, .liveSection');
-
-  if (zoom) {
-    $fullView.hide();
-    $pyramidView.show();
-    $quadGenerator.add($roundView).css({ 'width': `${zoom}vh`, 'height': `${zoom}vh` });
-    $quadGenerator.css('transform', `translateY(-50%) scale(${ratio}, 1)`);
-    $roundView.css('transform', `translate(-50%, -50%) scale(${ratio}, 1)`);
-    $quadrupoleImage.addClass('pyramidImage');
-    $pyramidElements.addClass('pyramidPerson');
-  } else {
-    $('.piramidToggleCB').prop('checked', isPyramid);
-
-    if (isPyramid) {
-      $fullView.hide();
-      $pyramidView.show();
-      $quadrupoleImage.addClass('pyramidImage');
-      $pyramidElements.addClass('pyramidPerson');
-    } else {
-      $fullView.show();
-      $pyramidView.hide();
-      $quadrupoleImage.removeClass('pyramidImage');
-      $pyramidElements.removeClass('pyramidPerson');
+  
+  // Get active players based on pyramid view setting
+  getActivePlayers(isPyramidView) {
+    const activePlayerInstances = [];
+    
+    // Loop through all sets and players
+    for (const setId in this.players) {
+      const setPlayers = this.players[setId];
+      
+      for (const playerInfo of setPlayers) {
+        if (isPyramidView) {
+          if (playerInfo.position === 'side') {
+            activePlayerInstances.push(playerInfo.player);
+          }
+        } else {
+          if (playerInfo.position === 'main') {
+            activePlayerInstances.push(playerInfo.player);
+          }
+        }
+      }
     }
-  }
-
-  // Call setDataFontSize if it exists
-  if (typeof setDataFontSize === 'function') {
-    setDataFontSize();
-  }
-
-  // Start focus video if videos are already playing
-  if (window.isVideoPlaying && typeof startFocusVideo === 'function') {
-    startFocusVideo();
+    
+    return activePlayerInstances;
   }
 }
 
-
-// Create element IDs dynamically to avoid duplicates
-function createUniqueContainerId(prefix, index) {
-  return `${prefix}_${new Date().getTime()}_${index}`;
+// Create unique container IDs
+function createUniqueContainerId(prefix, setId) {
+  return `${prefix}_${setId}_${new Date().getTime()}`;
 }
 
-// Toggle pyramid view - preserved from your original code
-function togglePyramidView(isPyramid, startVideo, zoom, ratio) {
-  isPyramid = (typeof isPyramid === "undefined") ? !$('.piramidToggleCB').prop('checked') : isPyramid;
-
-  // Common jQuery selectors
-  var $fullView = $('.fullView');
-  var $pyramidView = $('.pyramidView');
-  var $quadGenerator = $('.quadGenerator');
-  var $roundView = $('.roundView');
-  var $quadrupoleImage = $('.quadrupoleImage');
-  var $pyramidElements = $('.personImage, .therapistImage, .generatorText, .sideText, .liveSection');
-
-  if (zoom) {
-    $fullView.hide();
-    $pyramidView.show();
-    $quadGenerator.add($roundView).css({ 'width': `${zoom}vh`, 'height': `${zoom}vh` });
-    $quadGenerator.css('transform', `translateY(-50%) scale(${ratio}, 1)`);
-    $roundView.css('transform', `translate(-50%, -50%) scale(${ratio}, 1)`);
-    $quadrupoleImage.addClass('pyramidImage');
-    $pyramidElements.addClass('pyramidPerson');
-  } else {
-    $('.piramidToggleCB').prop('checked', isPyramid);
-
-    if (isPyramid) {
-      $fullView.hide();
-      $pyramidView.show();
-      $quadrupoleImage.addClass('pyramidImage');
-      $pyramidElements.addClass('pyramidPerson');
-    } else {
-      $fullView.show();
-      $pyramidView.hide();
-      $quadrupoleImage.removeClass('pyramidImage');
-      $pyramidElements.removeClass('pyramidPerson');
-    }
-  }
-
-  // Call setDataFontSize if it exists
-  if (typeof setDataFontSize === 'function') {
-    setDataFontSize();
-  }
-
-  // Start focus video if videos are already playing
-  if (window.isVideoPlaying && typeof startFocusVideo === 'function') {
-    startFocusVideo();
-  }
-}
-
-// Create container elements with unique IDs
-function createVideoContainers(parentElement, setId, sides = ['north', 'west', 'south', 'east'], includeMain = true) {
+// Create video containers with unique IDs
+function createVideoContainerSet($imageDiv, setId) {
+  console.log(`Creating video containers for set ${setId}`);
   const containerIds = [];
   
-  // Create pyramid sides
-  if (sides.length > 0) {
-    const $pyramid = $('<div>', { class: 'video-container pyramid pyramidView' }).appendTo(parentElement);
-    
-    sides.forEach((side, index) => {
-      const containerId = createUniqueContainerId(`${side}Holder`, setId);
-      containerIds.push(containerId);
-      
-      const $side = $('<div>', { class: `side ${side}` }).appendTo($pyramid);
-      const $inside = $('<div>', { class: 'inside' }).appendTo($side);
-      
-      if (window.pyramidUpperImagesVar && window.pyramidUpperImagesVar.length > 0) {
-        $('<div>', { class: 'imageInnerWingsDiv' })
-          .css('background-image', `url('${window.pyramidUpperImagesVar[0].url}')`)
-          .appendTo($inside);
-      }
-      
-      $('<div>', { class: 'imageInnerDiv' }).appendTo($inside);
-      
-      $('<div>', { class: 'videoBackground hidden-container' })
-        .append($('<div>', { class: 'videoForeground' })
-          .append($('<div>', { id: containerId })))
-        .appendTo($inside);
-      
-      $('<div>', { class: 'view360InnerDiv' }).appendTo($inside);
-    });
-  }
+  // Create the full view (main video) container
+  const mainContainerId = createUniqueContainerId('videoHolder', setId);
+  containerIds.push(mainContainerId);
   
-  // Create main video container
-  if (includeMain) {
-    const mainContainerId = createUniqueContainerId('videoHolder', setId);
-    containerIds.push(mainContainerId);
-    
-    const $videoContainerDiv = $('<div>', { class: 'videoBackground hidden-container fullView' }).appendTo(parentElement);
-    $('<div>', { id: mainContainerId }).appendTo($videoContainerDiv);
-  }
+  const $videoContainerDiv = $('<div>', { 
+    class: 'videoBackground hidden-container fullView'
+  }).appendTo($imageDiv);
   
+  $('<div>', { id: mainContainerId }).appendTo($videoContainerDiv);
+  
+  // Create the pyramid container
+  const $pyramid = $('<div>', {
+    class: 'video-container pyramid pyramidView'
+  }).appendTo($imageDiv);
+  
+  // Create sides
+  const sides = ['north', 'west', 'south', 'east'];
+  sides.forEach((side) => {
+    const sideContainerId = createUniqueContainerId(`${side}Holder`, setId);
+    containerIds.push(sideContainerId);
+    
+    const $side = $('<div>', { class: `side ${side}` }).appendTo($pyramid);
+    const $inside = $('<div>', { class: 'inside' }).appendTo($side);
+    
+    // Add wing images if available
+    if (window.pyramidUpperImagesVar && window.pyramidUpperImagesVar.length > 0) {
+      $('<div>', { 
+        class: 'imageInnerWingsDiv'
+      }).css(
+        'background-image', 
+        `url('${window.pyramidUpperImagesVar[0].url}')`
+      ).appendTo($inside);
+    }
+    
+    // Add inner div
+    $('<div>', { class: 'imageInnerDiv' }).appendTo($inside);
+    
+    // Add video background
+    $('<div>', { 
+      class: 'videoBackground hidden-container'
+    }).append(
+      $('<div>', { class: 'videoForeground' }).append(
+        $('<div>', { id: sideContainerId })
+      )
+    ).appendTo($inside);
+    
+    // Add 360 view div
+    $('<div>', { class: 'view360InnerDiv' }).appendTo($inside);
+  });
+  
+  console.log(`Created ${containerIds.length} containers for set ${setId}:`, containerIds);
   return containerIds;
 }
 
-// Integration with existing pyramid view toggling and video controls
-function setupVideoSystem() {
-  // Initialize global state variables
-  window.currentVideoId = '';
-  window.isVideoPlaying = false;
+// Initialize the YouTube system
+function initializeYouTube() {
+  console.log("Initializing YouTube system");
   
-  // 1. Load the YouTube API
+  // Load the YouTube API
   loadYouTubeAPI();
   
-  // 2. Initialize the player manager
-  var playerManager = new YouTubePlayerManager();
-  window.playerManager = playerManager; // Make it globally accessible
+  // Create the player manager
+  const playerManager = new YouTubePlayerManager();
+  window.playerManager = playerManager;
   
-  // Keep track of readiness
-  var allPlayersReady = false;
-  var readySets = new Set();
+  // Find or create the image div
+  const $imageDiv = $('.uploadImageHolder');
+  if ($imageDiv.length === 0) {
+    console.error("Could not find .uploadImageHolder");
+    return playerManager;
+  }
   
-  // Replace the global onYouTubeIframeAPIReady function
+  // Create containers
+  const containerIds = createVideoContainerSet($imageDiv, 'main');
+  
+  // Override the onYouTubeIframeAPIReady function
   window.onYouTubeIframeAPIReady = function() {
-    console.log("YouTube API Ready");
+    console.log("YouTube IFrame API ready");
     
-    // Create containers for each set where they need to be
-    const sets = document.querySelectorAll('.image-set'); // Adjust selector as needed
+    // Register the container set
+    playerManager.registerContainerSet('main', containerIds, '', {
+      height: '390',
+      width: '90',
+      playerVars: {
+        'playsinline': 1,
+        'autoplay': 0,
+        'controls': 0,
+        'showinfo': 0,
+        'autohide': 1
+      }
+    });
     
-    sets.forEach((container, index) => {
-      const setId = `videoSet_${index}`;
-      const $container = $(container);
+    // Set ready callback
+    playerManager.onSetReady('main', function(players) {
+      console.log("Main player set is ready");
+      $('.loadOverlay').removeClass('loading');
+    });
+    
+    // Set state change handler
+    playerManager.onStateChange('main', function(event, players) {
+      console.log("Player state changed:", event.data);
       
-      // Create containers with unique IDs
-      const containerIds = createVideoContainers($container, setId);
-      
-      // Store the mapping between container IDs and their positions (for activePlayers selection)
-      window.containerMapping = window.containerMapping || {};
-      containerIds.forEach((id, idx) => {
-        // Store if this is a side container or main container
-        window.containerMapping[id] = {
-          setId: setId,
-          position: idx < 4 ? 'side' : 'main',
-          index: idx
-        };
-      });
-      
-      // Register the container set
-      playerManager.registerContainerSet(setId, containerIds, '', {
-        height: '390',
-        width: '90',
-        playerVars: {
-          'playsinline': 1, 
-          'autoplay': 0, 
-          'controls': 0, 
-          'showinfo': 0, 
-          'autohide': 1
-        }
-      });
-      
-      // Set ready callback
-      playerManager.onSetReady(setId, function(players) {
-        console.log(`Players for set ${setId} are ready!`);
-        readySets.add(setId);
-        
-        // Create a flat array of all players for backward compatibility
-        if (!window.players) {
-          window.players = [];
-        }
-        
-        // Add these players to the global players array
-        window.players = window.players.concat(players);
-        
-        // Check if all sets are ready
-        if (readySets.size === sets.length) {
-          window.allPlayersReady = true;
-          window.playersReady = true; // For compatibility with existing code
-          $('.loadOverlay').removeClass('loading');
-          console.log("All player sets are ready");
-        }
-      });
-      
-      // Set player state change handler
-      playerManager.onStateChange(setId, function(event, players) {
-        handlePlayerStateChange(event, players, setId);
-      });
+      if (event.data === YT.PlayerState.ENDED) {
+        console.log("Video ended, restarting...");
+        handleVideoEnded(players);
+      }
     });
   };
-  
-  // Setup video chooser content
-  setupVideoChooserContent();
   
   return playerManager;
 }
 
-// Handle player state changes (preserving your original logic)
-function handlePlayerStateChange(event, players, setId) {
-  console.log(`EVENT: onPlayerStateChange for set ${setId}`);
-  
-  if (event.data === YT.PlayerState.ENDED) {
-    console.log(`EVENT: ENDED for set ${setId}`);
+// Handle video ended event
+function handleVideoEnded(players) {
+  try {
+    const isPyramidView = $('.piramidToggleCB').is(':checked');
+    const volumeLevel = $('.videoVolume').val();
     
-    try {
-      const activePlayers = getActivePlayers(setId);
-      
-      $(activePlayers).each((i, p) => {
-        console.log("PLAYER:", p);
-        try {
-          p.setVolume($('.videoVolume').val())
-           .playVideo()
-           .setPlaybackQuality("small")
-           .mute();
-        } catch (e) {
-          console.error(`Error playing video in set ${setId}: `, e);
-        }
-      });
-      
-      // Unmute the first player
-      if (activePlayers.length > 0) {
-        activePlayers[0].unMute();
+    // Determine which players to activate
+    const activePlayers = isPyramidView ? 
+      players.slice(0, 4) : players.slice(4, 5);
+    
+    // Restart all active players
+    activePlayers.forEach((player, index) => {
+      try {
+        player.setVolume(volumeLevel);
+        player.playVideo();
+        player.setPlaybackQuality("small");
+        player.mute();
+      } catch (e) {
+        console.error("Error restarting player:", e);
       }
-    } catch (e) {
-      console.error(`Error in handlePlayerStateChange for set ${setId}: `, e);
+    });
+    
+    // Unmute the first player
+    if (activePlayers.length > 0) {
+      activePlayers[0].unMute();
     }
+  } catch (e) {
+    console.error("Error handling video ended:", e);
   }
 }
 
-// Setup video chooser UI with all the features from the original code
-function setupVideoChooserContent() {
-  const $tab1 = $('#tabs-1'); // Assuming this selector exists
+// Get active players based on pyramid view setting
+function getActivePlayers() {
+  const isPyramidView = $('.piramidToggleCB').is(':checked');
   
-  if ($tab1.length === 0) {
-    console.warn("Tab element #tabs-1 not found");
-    return;
-  }
-  
-  const $videoChooserContent = $('<div>', { class: 'videoChooserContent chooserContent' }).appendTo($tab1);
-  $('<div>', { class: 'loadOverlay loading' }).appendTo($videoChooserContent);
-  
-  // Check if players are ready
-  const checkPlayerInterval = setInterval(() => {
-    if (window.playersReady) {
-      $('.loadOverlay').removeClass('loading');
-      clearInterval(checkPlayerInterval);
-    }
-  }, 400);
-  
-  // ===== PYRAMID TOGGLE =====
-  
-  // Initialize pyramid view
-  togglePyramidView(false, true);
-  
-  // Create pyramid toggle UI
-  const $pyramidToggle = $('<div class="piramidToggle"></div>').appendTo($videoChooserContent);
-  $('<input class="piramidVideoToggleCB piramidToggleCB" type="checkbox">').appendTo($pyramidToggle);
-  $('<div class="piramidVideoToggleText piramidToggleText">Pyramid View</div>').appendTo($pyramidToggle);
-  
-  // ===== VIDEO THUMBS =====
-  
-  var $videoThumbsDiv = $('<div>', { id: "videoThumbs" }).appendTo($videoChooserContent);
-  var $videoSelect = $('<select>', { class: "videoSelect" }).appendTo($videoChooserContent);
-  
-  // Add video thumbnails if videos array exists
-  if (window.videos && Array.isArray(window.videos)) {
-    window.videos.forEach(function (v) {
-      if (v.only && !v.only.includes(window.pageType)) return;
-  
-      let imageUrl = v.isView
-        ? (v.thumbUrl || 'https://github.com/esculapeso/quantum_generator/raw/main/images/playVideo.png')
-        : `https://img.youtube.com/vi/${v.id}/0.jpg`;
-      let style = `background-image:url(${imageUrl});`;
-  
-      if (v.mode == 'isvideo') {
-        $('<video>', {
-          'videoid': v.id,
-          mode: v.mode,
-          class: 'videoThumb',
-          html: `<source src="${v.id}" type="video/mp4">`,
-          title: v.name
-        }).appendTo($videoThumbsDiv);
-      } else {
-        $('<div>', {
-          'videoid': v.id,
-          'mode': v.mode,
-          class: 'videoThumb',
-          style: style,
-          title: v.name
-        }).appendTo($videoThumbsDiv);
-      }
-  
-      $('<option>', {
-        value: v.id,
-        mode: v.mode,
-        isView: v.isView,
-        text: v.name
-      }).appendTo($videoSelect);
+  if (window.playerManager) {
+    return window.playerManager.getActivePlayers(isPyramidView);
+  } else {
+    // Fallback to the original implementation if playerManager not available
+    return window.players.filter(player => {
+      const elementId = player.getIframe ? player.getIframe().id : player.g?.id;
+      return isPyramidView ? 
+        !elementId.includes('videoHolder') : 
+        elementId.includes('videoHolder');
     });
   }
-  
-  // ===== CUSTOM VIDEO INPUT =====
-  
-  $('<div>', { id: "customVideoText", text: "YouTube Video Link" }).appendTo($videoChooserContent);
-  $('<input>', { class: "customVideoInput", type: "text" }).appendTo($videoChooserContent);
-  
-  // ===== VIDEO CONTROLS =====
-  
-  var $videoControls = $('<div>', { class: "videoControls" }).appendTo($videoChooserContent);
-  $('<img>', { 
-    src: "https://github.com/esculapeso/quantum_generator/raw/main/images/removeVideo.png", 
-    class: "youtubeRemoveButtonImage redButton" 
-  }).appendTo($videoControls);
-  
-  $('<img>', { 
-    src: "https://github.com/esculapeso/quantum_generator/raw/main/images/pauseVideo.png", 
-    class: "youtubePauseButtonImage redButton", 
-    style: "display:none;" 
-  }).appendTo($videoControls);
-  
-  $('<img>', { 
-    src: "https://github.com/esculapeso/quantum_generator/raw/main/images/playVideo.png", 
-    class: "youtubePlayButtonImage redButton" 
-  }).appendTo($videoControls);
-  
-  $('<input>', { 
-    type: "range", 
-    value: "10", 
-    class: "videoVolume" 
-  }).appendTo($videoControls);
-  
-  // ===== EVENT HANDLERS =====
-  
-  // Pyramid toggle handlers
-  $(document).on('change', '.piramidVideoToggleCB', function() {
-    togglePyramidView($(this).is(':checked'), true);
-  }).on('click', '.piramidVideoToggleText', function() {
-    $('.piramidVideoToggleCB').click();
-  });
-  
-  // Video selection handlers
-  $(document).on('click', '.videoThumb', function() {
-    changeVideo($(this).attr('videoid'), $(this).attr("mode"));
-  });
-  
-  $(document).on('change', '.videoSelect', function() {
-    const selectedOption = $(this).find('option:selected');
-    changeVideo($(this).val(), selectedOption.attr("mode") || selectedOption.attr("isView"));
-  });
-  
-  // Custom video input handler
-  $(document).on('change', '.customVideoInput', function() {
-    const videoId = youtube_parser($(this).val());
-    if (videoId) {
-      changeVideo(videoId);
-    }
-  });
-  
-  // Video control button handlers
-  $(document).on('click', '.youtubeRemoveButtonImage', stopFocusVideo)
-    .on('click', '.youtubePauseButtonImage', pauseFocusVideo)
-    .on('click', '.youtubePlayButtonImage', function() {
-      startFocusVideo(window.currentVideoId);
-    });
-  
-  // Volume control handler
-  $(document).on('change', '.videoVolume', function() {
-    var curVal = $(this).val();
-    $('.videoVolume').val(curVal);  // Update all volume sliders
-    
-    if (window.players && window.players.length) {
-      $(window.players).each((i, p) => {
-        try {
-          p.setVolume(curVal);
-        } catch (e) {
-          console.error("Error setting volume:", e);
-        }
-      });
-    }
-  });
 }
 
-// ===== HELPER FUNCTIONS =====
-
-// Extract YouTube video ID from URL
-function youtube_parser(url) {
-  if (!url) return false;
-  
-  var regExp = /^.*(youtu.be\/|v\/|\/u\/w\/|embed\/|watch\?v=|watch\?.+&v=)([^#&?]*).*/;
-  var match = url.match(regExp);
-  
-  if (match && match.length >= 3 && match[2].length == 11) {
-    console.log("Parsed YouTube ID:", match[2]);
-    return match[2];
-  }
-  
-  return false;
-}
-
-// Toggle between play/pause buttons
+// Toggle video controls visibility
 function toggleVideoControls(showPlayButton) {
   $('.youtubePauseButtonImage').toggle(!showPlayButton);
   $('.youtubePlayButtonImage').toggle(showPlayButton);
 }
-
-// Get active players based on current view mode
-function getActivePlayers(setId) {
-  const isPyramidViewActive = $('.piramidToggleCB').is(':checked');
-  
-  if (setId) {
-    // If setId is provided, get players only from that set
-    const allPlayers = window.playerManager.getPlayerInstances(setId);
-    return isPyramidViewActive ? 
-      allPlayers.slice(0, 4) : // First 4 are side players
-      allPlayers.slice(4, 5);  // The 5th is the main player
-  } else {
-    // If no setId, use all players
-    return window.players.filter(player => {
-      // Check if we can get the player's element ID
-      const elementId = player.getIframe ? player.getIframe().id : player.g?.id;
-      if (!elementId) return false;
-      
-      const mapping = window.containerMapping[elementId];
-      if (!mapping) return false;
-      
-      // Return side players for pyramid view, main player for regular view
-      return isPyramidViewActive ? 
-        mapping.position === 'side' : 
-        mapping.position === 'main';
-    });
-  }
-}
-
-// Check if any videos are currently playing
-function isAnyVideoPlaying() {
-  if (!window.players || !window.players.length) return false;
-  
-  for (let i = 0; i < window.players.length; i++) {
-    try {
-      if (window.players[i].getPlayerState && window.players[i].getPlayerState() === YT.PlayerState.PLAYING) {
-        return true;
-      }
-    } catch (e) {
-      console.error("Error checking player state:", e);
-    }
-  }
-  return false;
-}
-
-// ===== VIDEO CONTROL FUNCTIONS =====
 
 // Stop all videos
 function stopFocusVideo() {
   toggleVideoControls(true);
   
   if (window.players && window.players.length) {
-    $(window.players).each((i, p) => {
+    window.players.forEach(player => {
       try {
-        p.stopVideo();
+        player.stopVideo();
       } catch (e) {
         console.error("Error stopping video:", e);
       }
@@ -1429,16 +1186,17 @@ function stopFocusVideo() {
 
 // Pause all videos
 function pauseFocusVideo() {
-  console.log("Pausing videos");
-  
-  if (!window.playersReady) return;
+  if (!window.playersReady) {
+    console.warn("Players not ready yet");
+    return;
+  }
   
   toggleVideoControls(true);
   
   if (window.players && window.players.length) {
-    $(window.players).each((i, p) => {
+    window.players.forEach(player => {
       try {
-        p.pauseVideo();
+        player.pauseVideo();
       } catch (e) {
         console.error("Error pausing video:", e);
       }
@@ -1448,10 +1206,12 @@ function pauseFocusVideo() {
   window.isVideoPlaying = false;
 }
 
-// Start/resume video playback
+// Start all videos
 function startFocusVideo(newVideoId) {
+  console.log("startFocusVideo called with ID:", newVideoId);
+  
   if (!window.playersReady) {
-    console.log("Players not ready, trying again in 1 second");
+    console.log("Players not ready yet, retrying in 1 second");
     setTimeout(() => startFocusVideo(newVideoId), 1000);
     return;
   }
@@ -1459,31 +1219,24 @@ function startFocusVideo(newVideoId) {
   toggleVideoControls(false);
   
   window.currentVideoId = newVideoId || window.currentVideoId;
-  console.log("Starting video ID:", window.currentVideoId);
+  if (!window.currentVideoId) {
+    console.warn("No video ID to play");
+    return;
+  }
+  
+  console.log("Starting video:", window.currentVideoId);
   
   const activePlayers = getActivePlayers();
-  const volumeLevel = $('.videoVolume').val();
+  console.log("Active players:", activePlayers.length);
   
-  let playersStarted = 0; // Counter for players that have started playing
+  const volumeLevel = $('.videoVolume').val();
   
   activePlayers.forEach((player, index) => {
     try {
-      // Load and play the video
       player.loadVideoById({
-        videoId: window.currentVideoId,
-        events: {
-          'onStateChange': (event) => {
-            if (event.data === YT.PlayerState.PLAYING) {
-              playersStarted++;
-              if (playersStarted === activePlayers.length) {
-                window.isVideoPlaying = true;
-              }
-            }
-          }
-        }
+        videoId: window.currentVideoId
       });
       
-      // Set volume and mute status
       player.setVolume(volumeLevel);
       if (index === 0) {
         player.unMute();
@@ -1491,7 +1244,6 @@ function startFocusVideo(newVideoId) {
         player.mute();
       }
       
-      // Set playback quality and play
       player.setPlaybackQuality("small");
       player.playVideo();
     } catch (e) {
@@ -1500,16 +1252,17 @@ function startFocusVideo(newVideoId) {
   });
   
   $('.videoBackground').removeClass('hidden-container');
+  window.isVideoPlaying = true;
 }
 
 // Change the current video
 function changeVideo(newVideoId, mode) {
+  console.log("Changing video to:", newVideoId, "Mode:", mode);
+  
   if (!newVideoId) {
     console.warn("Invalid video ID");
     return;
   }
-  
-  console.log("Changing video to:", newVideoId, "Mode:", mode);
   
   // Store in session if needed
   if (window.sessionObj) {
@@ -1517,11 +1270,9 @@ function changeVideo(newVideoId, mode) {
     window.sessionObj.videoMode = mode;
   }
   
-  // Reset relevant UI elements
+  // Reset UI elements
   $(".imageInnerDiv").removeClass('psalmCover');
   $(".view360InnerDiv").empty();
-  
-  const $view360InnerDiv = $('.view360InnerDiv');
   
   // Handle different video modes
   switch (mode) {
@@ -1532,7 +1283,7 @@ function changeVideo(newVideoId, mode) {
         title: "Esculap ESA ESOC",
         scrolling: "no",
         src: newVideoId
-      }).appendTo($view360InnerDiv);
+      }).appendTo('.view360InnerDiv');
       break;
       
     case 'isvideo':
@@ -1548,7 +1299,7 @@ function changeVideo(newVideoId, mode) {
         $video[0].play().then(function() {
           overlay.hide();
         }).catch(function(error) {
-          console.error('Error attempting to play video:', error);
+          console.error('Error playing video:', error);
         });
       });
       break;
@@ -1560,6 +1311,42 @@ function changeVideo(newVideoId, mode) {
       break;
   }
 }
+
+// Parse YouTube URLs
+function youtube_parser(url) {
+  if (!url) return false;
+  
+  var regExp = /^.*(youtu.be\/|v\/|\/u\/w\/|embed\/|watch\?v=|watch\?.+&v=)([^#&?]*).*/;
+  var match = url.match(regExp);
+  
+  if (match && match.length >= 3 && match[2].length == 11) {
+    console.log("Parsed YouTube ID:", match[2]);
+    return match[2];
+  }
+  
+  console.warn("Could not parse YouTube URL:", url);
+  return false;
+}
+
+// Check if any videos are playing
+function isAnyVideoPlaying() {
+  if (!window.players || window.players.length === 0) return false;
+  
+  for (let i = 0; i < window.players.length; i++) {
+    try {
+      if (window.players[i].getPlayerState && window.players[i].getPlayerState() === YT.PlayerState.PLAYING) {
+        return true;
+      }
+    } catch (e) {
+      console.error("Error checking player state:", e);
+    }
+  }
+  
+  return false;
+}
+
+// Replace the original YouTube initialization code with this in your document ready function:
+const playerManager = initializeYouTube();
 
 
   /**********************
