@@ -490,7 +490,7 @@ jQuery(document).ready(function ($) {
     fetchImageUrls(urlToFetch).then(([url, imageUrls]) => {
       const container = $('.imagesFetched.' + url.split('/').pop());
 
-      const $previewImage = $(`<img class="selectedLiveVideoPreview />`);
+      const $previewImage = $(`<img class="selectedLiveVideoPreview" />`);
       container.append($previewImage);
 
       let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
@@ -499,7 +499,7 @@ jQuery(document).ready(function ($) {
           const $div = $(`<img index="${i}" src="${thumb.url}" class="image-container" />`);
           $div.css({ 'background-image': `url(${thumb.url})` });
           const streamName = thumb.href.split('/').pop();
-          const $link = $(`<div index="${i}" class="image-container" data-stream="${streamName}"></div>`);
+          const $link = $(`<div index="${i}" class="image-wrapper" data-stream="${streamName}"></div>`);
           $link.append($div);
           container.append($link);
         });
@@ -518,27 +518,23 @@ jQuery(document).ready(function ($) {
   $(document).on('click', '.image-container', function () {
     const streamName = $(this).find('.image-container').data('stream');
     console.log("STREAM: ", streamName);
+
+    if (window.frameUpdateTimers[streamName]) {
+      clearTimeout(window.frameUpdateTimers[streamName]);
+      delete window.frameUpdateTimers[streamName];
+    }
+
+    fetchVideoFrame(streamName);
     
-    $('.selectedLiveVideoPreview').attr('src', `${imageUrl}`);
   });
-
-
-   // Start a loop to fetch frames
-  function updateFrame() {
-    const timestamp = new Date().getTime(); // Add timestamp to prevent caching
-    $frameDisplay.find('img').attr('src', `/video-frame/${streamName}?t=${timestamp}`);
-    
-    // Store the timer so we can clear it if needed
-    window.frameUpdateTimers = window.frameUpdateTimers || {};
-    window.frameUpdateTimers[streamName] = setTimeout(updateFrame, 1000);
-  }
 
   function fetchVideoFrame(streamName) {
     const timestamp = new Date().getTime();
     $('.selectedLiveVideoPreview').attr('src', `http://193.106.228.97:5000/video-frame/${streamName}?t=${timestamp}`);
     
     // Schedule the next update
-    setTimeout(() => fetchVideoFrame(streamName), 1000);
+    window.frameUpdateTimers = window.frameUpdateTimers || {};
+    window.frameUpdateTimers[streamName] = setTimeout(() => fetchVideoFrame(streamName), 1000);
   }
 
   async function fetchImageUrls(apiUrl) {
