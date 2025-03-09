@@ -486,28 +486,85 @@ jQuery(document).ready(function ($) {
   }
 
   function updateFetchedImages(urlToFetch) {
-
     fetchImageUrls(urlToFetch).then(([url, imageUrls]) => {
       const container = $('.imagesFetched.' + url.split('/').pop());
       let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
-      if (container.find('.image-container').length == 0)
+      
+      if (container.find('.image-container').length == 0) {
         $.each(urls, (i, thumb) => {
-          const $div = $(`<img index="${i}" src="${thumb.url}" class="image-container" />`);
+          // Extract the stream name from the href
+          const streamName = thumb.href.split('/').pop();
+          
+          const $div = $(`<img index="${i}" src="${thumb.url}" class="image-container" data-stream="${streamName}" />`);
           $div.css({ 'background-image': `url(${thumb.url})` });
-          const $link = $(`<a index="${i}" href="${thumb.href}" target="_blank"></a>`);
-          $link.append($div);
-          container.append($link);
+          
+          // Instead of a link, just wrap in a div with click handler
+          const $wrapper = $(`<div index="${i}" class="stream-wrapper"></div>`);
+          $wrapper.append($div);
+          
+          // Add click handler to start fetching frames
+          $wrapper.on('click', function() {
+            const streamName = $(this).find('.image-container').data('stream');
+            const $clickedImg = $(this).find('.image-container');
+            
+            // Create or find a frame display area
+            let $frameDisplay = $('#frame-' + streamName);
+            if ($frameDisplay.length === 0) {
+              $frameDisplay = $(`<div id="frame-${streamName}" class="video-frame-display">
+                <div class="frame-header">
+                  <span>${streamName}</span>
+                  <button class="close-frame">✕</button>
+                </div>
+                <img src="" alt="Stream frame" />
+              </div>`);
+              $('body').append($frameDisplay);
+              
+              // Add close button handler
+              $frameDisplay.find('.close-frame').on('click', function(e) {
+                e.stopPropagation();
+                $(this).closest('.video-frame-display').remove();
+                window.frameUpdateTimers = window.frameUpdateTimers || {};
+                if (window.frameUpdateTimers[streamName]) {
+                  clearTimeout(window.frameUpdateTimers[streamName]);
+                  delete window.frameUpdateTimers[streamName];
+                }
+              });
+            }
+            
+            // Start a loop to fetch frames
+            function updateFrame() {
+              const timestamp = new Date().getTime(); // Add timestamp to prevent caching
+              $frameDisplay.find('img').attr('src', `/video-frame/${streamName}?t=${timestamp}`);
+              
+              // Store the timer so we can clear it if needed
+              window.frameUpdateTimers = window.frameUpdateTimers || {};
+              window.frameUpdateTimers[streamName] = setTimeout(updateFrame, 1000);
+            }
+            
+            // Start the update loop
+            updateFrame();
+          });
+          
+          container.append($wrapper);
         });
-      else
+      } else {
         $.each(urls, (i, thumb) => {
-          $(`a[index="${i}"]`, container).attr('href', thumb.href);
+          // Extract the stream name from the href
+          const streamName = thumb.href.split('/').pop();
+          
+          // Update existing elements
+          const wrapper = $(`.stream-wrapper[index="${i}"]`, container);
           const image = $(`.image-container[index="${i}"]`, container);
           const old_image_url = image.attr('src');
-          $(`.image-container[index="${i}"]`, container).attr('src', thumb.url).css({ 'background-image': `url(${old_image_url})` });
+          
+          image.attr('src', thumb.url)
+               .css({ 'background-image': `url(${old_image_url})` })
+               .data('stream', streamName);
         });
+      }
     });
-
-    setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);
+    
+    setTimeout(function() { updateFetchedImages(urlToFetch); }, 10000);
   }
 
   async function fetchImageUrls(apiUrl) {
