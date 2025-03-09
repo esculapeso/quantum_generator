@@ -445,61 +445,21 @@ jQuery(document).ready(function ($) {
   //   //$("#tabs-2 a").trigger('click');
   // });
 
-  function setLiveContent(content) {
-    
-    var transmissions = content.filter((s) => s.page == pageType)
-    $.each(transmissions, (i, transmission) => {
-      
-      const currentLivesTabSelector = `#lives-${i + 1}`;
-      $(`#lives ul li:has(a[href='${currentLivesTabSelector}'])`).show().find('a').html(transmission.name).addClass("is_transmission");
-      var $liveTab = $(currentLivesTabSelector);
-      
-      switch (transmission.type) {
-      case "embedLink":
-        $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
-        break;
-        
-      case "imageFetch":
-        $(`<div class="imagesFetched ${transmission.url.split('/').pop()}"></div>`).appendTo($liveTab);
-        updateFetchedImages(transmission.url);
-        break;
 
-      case "coin":
-        $(`<div class="imagesFetched"></div>`).appendTo($liveTab);
-        generateCoin($liveTab);
-        generateTokensContent($liveTab, "parent");
-        generateTokensContent($liveTab, "child");
+  // isRotating = true;
+  // rotationCounter = 0;
 
-        fetchImageUrls(transmission.url).then(coinsData => {
-          updateCoin(coinsData);
-        });
-        break;
+  // function rotateLiveTransmissions() {
+  //   if (isRotating) {
+  //     liveTabs = $('#lives ul li.is_transmission');
+  //     rotationCounter = (rotationCounter + 1) % liveTabs.length;
+  //     liveTabs.eq(rotationCounter).trigger('click');
+  //     setTimeout(rotateLiveTransmissions, 1000);
+  //   }
+  // }
 
-      case "widget":
-        $(`.cryptoPrices${transmission.selector}`).show().appendTo($liveTab);
-        break;
+  // rotateLiveTransmissions();
 
-      default:
-        // Handle unknown transmission type
-        break;
-      }
-      
-    });
-
-    rotateLiveTransmissions();
-  }
-
-  isRotating = true;
-  rotationCounter = 0;
-
-  function rotateLiveTransmissions() {
-    if (isRotating) {
-      liveTabs = $('#lives ul li.is_transmission');
-      rotationCounter = (rotationCounter + 1) % liveTabs.length;
-      liveTabs.eq(rotationCounter).trigger('click');
-      setTimeout(rotateLiveTransmissions, 1000);
-    }
-  }
 
   function generateTokensContent(container, type) {
     $coinInfoContainer = $(`<div class="coinInfoContainer ${type}"></div>`).appendTo(container);
@@ -597,6 +557,49 @@ jQuery(document).ready(function ($) {
       console.error('Error:', error);
       // Handle the error as needed
     }
+  }
+
+  function setLiveContent(content) {
+    
+    var transmissions = content.filter((s) => s.page == pageType)
+    $.each(transmissions, (i, transmission) => {
+      
+      const currentLivesTabSelector = `#lives-${i + 1}`;
+      $(`#lives ul li:has(a[href='${currentLivesTabSelector}'])`).show().find('a').html(transmission.name).addClass("is_transmission");
+      var $liveTab = $(currentLivesTabSelector);
+      
+      switch (transmission.type) {
+      case "embedLink":
+        $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
+        break;
+        
+      case "imageFetch":
+        $(`<div class="imagesFetched ${transmission.url.split('/').pop()}"></div>`).appendTo($liveTab);
+        updateFetchedImages(transmission.url);
+        break;
+
+      case "coin":
+        $(`<div class="imagesFetched"></div>`).appendTo($liveTab);
+        generateCoin($liveTab);
+        generateTokensContent($liveTab, "parent");
+        generateTokensContent($liveTab, "child");
+
+        fetchImageUrls(transmission.url).then(coinsData => {
+          updateCoin(coinsData);
+        });
+        break;
+
+      case "widget":
+        $(`.cryptoPrices${transmission.selector}`).show().appendTo($liveTab);
+        break;
+
+      default:
+        // Handle unknown transmission type
+        break;
+      }
+      
+    });
+
   }
 
   var $jesusLitania = $('<div class="jesusLitania" ></div>').appendTo($liveSection);
