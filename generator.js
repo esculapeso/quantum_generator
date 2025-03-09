@@ -37,30 +37,7 @@ jQuery(document).ready(function ($) {
   var pyramidUpperImagesVar = (typeof pyramidUpperImages !== 'undefined' && pyramidUpperImages) ? pyramidUpperImages : [];
   var videosXRVar = (typeof videosXR !== 'undefined' && videosXR) ? videosXR : [];
 
-  if (typeof liveTransmissions === 'undefined' || !liveTransmissions.length) {
-    // Need to fetch the data
-    var liveTransmissionsVar = [];
-    
-    $.getJSON('https://meditationvideos.replit.app/api/embed-videos')
-      .done(function(data) {
-        liveTransmissionsVar = data;
-        
-        console.log('Data loaded successfully:', liveTransmissionsVar);
-        
-        // Call your functions that need the data
-        setLiveContent(liveTransmissionsVar);
-      })
-      .fail(function(error) {
-        console.error('Error fetching the transmission data:', error);
-      });
-  } else {
-    // Data already exists in the first file, use it
-    var liveTransmissionsVar = liveTransmissions;
-    console.log('Using existing data:', liveTransmissionsVar);
-    
-    // Call your functions that need the data
-    setLiveContent(liveTransmissionsVar);
-  }
+
 
   function setFetchIntervalAndLength(dispInterval) {
     qrngFetchInterval = qrngOrigDisplayInterval;
@@ -562,6 +539,7 @@ jQuery(document).ready(function ($) {
   $("#lives").tabs().appendTo($liveSection);
   $(`#lives ul li`).hide();
   console.log("LIVES ADDED");
+  
 
   function setLiveContent(content) {
 
@@ -607,6 +585,32 @@ jQuery(document).ready(function ($) {
       
     });
 
+  }
+
+
+  if (typeof liveTransmissions === 'undefined' || !liveTransmissions.length) {
+    // Need to fetch the data
+    var liveTransmissionsVar = [];
+    
+    $.getJSON('https://meditationvideos.replit.app/api/embed-videos')
+      .done(function(data) {
+        liveTransmissionsVar = data;
+        
+        console.log('Data loaded successfully:', liveTransmissionsVar);
+        
+        // Call your functions that need the data
+        setLiveContent(liveTransmissionsVar);
+      })
+      .fail(function(error) {
+        console.error('Error fetching the transmission data:', error);
+      });
+  } else {
+    // Data already exists in the first file, use it
+    var liveTransmissionsVar = liveTransmissions;
+    console.log('Using existing data:', liveTransmissionsVar);
+    
+    // Call your functions that need the data
+    setLiveContent(liveTransmissionsVar);
   }
 
   var $jesusLitania = $('<div class="jesusLitania" ></div>').appendTo($liveSection);
