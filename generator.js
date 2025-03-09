@@ -515,8 +515,10 @@ jQuery(document).ready(function ($) {
     setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);
   }
 
-  $(document).on('click', '.image-container', function () {
-    const streamName = $(this).find('.image-container').data('stream');
+  
+  $(document).on('click', '.image-wrapper', function () {
+
+    const streamName = $(this).data('stream');
     console.log("STREAM: ", streamName);
 
     if (window.frameUpdateTimers[streamName]) {
