@@ -485,6 +485,8 @@ jQuery(document).ready(function ($) {
       }
       
     });
+
+    rotateLiveTransmissions();
   }
 
   isRotating = true;
@@ -498,9 +500,6 @@ jQuery(document).ready(function ($) {
       setTimeout(rotateLiveTransmissions, 1000);
     }
   }
-
-  rotateLiveTransmissions();
-
 
   function generateTokensContent(container, type) {
     $coinInfoContainer = $(`<div class="coinInfoContainer ${type}"></div>`).appendTo(container);
