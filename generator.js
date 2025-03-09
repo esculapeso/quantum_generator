@@ -560,13 +560,15 @@ jQuery(document).ready(function ($) {
   }
 
   function setLiveContent(content) {
-    
+    console.log({content})
     var transmissions = content.filter((s) => s.page == pageType)
     $.each(transmissions, (i, transmission) => {
       
       const currentLivesTabSelector = `#lives-${i + 1}`;
       $(`#lives ul li:has(a[href='${currentLivesTabSelector}'])`).show().find('a').html(transmission.name).addClass("is_transmission");
       var $liveTab = $(currentLivesTabSelector);
+      console.log({currentLivesTabSelector, transmission})
+
       
       switch (transmission.type) {
       case "embedLink":
