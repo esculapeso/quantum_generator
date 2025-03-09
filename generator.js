@@ -434,8 +434,7 @@ jQuery(document).ready(function ($) {
   });
 
 
-  $("#lives").tabs().appendTo($liveSection);
-  $(`#lives ul li`).hide();
+
 
   // const firstLivesTabSelector = `#lives ul li:has(a[href='${firstLivesTabSelector}'])`;
   // $(firstLivesTabSelector).show().find('a').html(`⏵︎`);
@@ -560,15 +559,16 @@ jQuery(document).ready(function ($) {
   }
 
   function setLiveContent(content) {
-    console.log({content})
+    
+    $("#lives").tabs().appendTo($liveSection);
+    $(`#lives ul li`).hide();
+
     var transmissions = content.filter((s) => s.page == pageType)
     $.each(transmissions, (i, transmission) => {
       
       const currentLivesTabSelector = `#lives-${i + 1}`;
       $(`#lives ul li:has(a[href='${currentLivesTabSelector}'])`).show().find('a').html(transmission.name).addClass("is_transmission");
       var $liveTab = $(currentLivesTabSelector);
-      console.log({currentLivesTabSelector, transmission})
-
       
       switch (transmission.type) {
       case "embedLink":
