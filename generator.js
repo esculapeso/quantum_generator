@@ -557,11 +557,13 @@ jQuery(document).ready(function ($) {
       // Handle the error as needed
     }
   }
+ 
+    
+  $("#lives").tabs().appendTo($liveSection);
+  $(`#lives ul li`).hide();
+  console.log("LIVES ADDED");
 
   function setLiveContent(content) {
-    
-    $("#lives").tabs().appendTo($liveSection);
-    $(`#lives ul li`).hide();
 
     var transmissions = content.filter((s) => s.page == pageType)
     $.each(transmissions, (i, transmission) => {
@@ -569,6 +571,9 @@ jQuery(document).ready(function ($) {
       const currentLivesTabSelector = `#lives-${i + 1}`;
       $(`#lives ul li:has(a[href='${currentLivesTabSelector}'])`).show().find('a').html(transmission.name).addClass("is_transmission");
       var $liveTab = $(currentLivesTabSelector);
+
+      console.log(`#lives ul li:has(a[href='${currentLivesTabSelector}'])`);
+
       
       switch (transmission.type) {
       case "embedLink":
