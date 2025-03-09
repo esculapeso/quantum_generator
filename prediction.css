@@ -137,6 +137,10 @@
     background-image: url(https://github.com/esculapeso/quantum_generator/raw/main/images/TherapistImage.png);
   }
 
+  .mirror .quadrupoleImage.pyramidImage {
+    background: none;
+  }
+
   .quadGenerator {
     width: 63%;
     height: 63%;
@@ -173,24 +177,24 @@
     word-break: break-word;
   }
 
-  #generator0 {
+  .generator0 {
     bottom: 2.6%;
     left: 17%;
   }
 
-  #generator1 {
+  .generator1 {
     top: 44.2%;
     left: 58.5%;
     transform: rotate(-90deg);
   }
 
-  #generator2 {
+  .generator2 {
     top: 2.6%;
     left: 17%;
     transform: rotate(-180deg);
   }
 
-  #generator3 {
+  .generator3 {
     top: 44%;
     left: -24.5%;
     transform: rotate(-270deg);
@@ -272,6 +276,10 @@
     color: red;
   }
 
+  .mirror .generatorText.pyramidPerson {
+    display: none;
+  }
+
   .generatorText.pyramidPerson {
     width: 12vh !important;
     font-size: 3.6vh !important;
@@ -326,6 +334,14 @@
 
   .sideText.right.pyramidPerson {
     right: 20vh;
+  }
+
+  .mirror .sideText.left.pyramidPerson {
+    display: none;
+  }
+
+  .mirror .sideText.right.pyramidPerson {
+    display: none;
   }
 
   .uploadImageHolder {
@@ -978,6 +994,26 @@
       position: static;
     }
 
+    .mirror .sideText.pyramidPerson {
+      display: none;
+    }
+
+    .mirror .sideText.right.pyramidPerson {
+      display: none;
+    }
+
+    .mirror .sideText.left.pyramidPerson {
+      display: none;
+    }
+
+    .mirror .generatorText.pyramidPerson.focusText {
+      display: none;
+    }
+
+    .mirror .generatorText.pyramidPerson.captionText {
+      display: none;
+    }
+    
     .sideText.pyramidPerson {
       writing-mode: horizontal-tb;
     }
@@ -1040,6 +1076,10 @@
     
     .quadrupoleImage.pyramidImage {
       width: 166vh;
+    }
+
+    .mirror .quadrupoleImage.pyramidImage {
+      width: 100vh;
     }
 
     .quadrupoleImage {
@@ -1422,4 +1462,23 @@
     to {
       transform: rotate(359deg);
     }
+  }
+
+  .maincontainer {
+    position: relative;
+  }
+  .maincontainer.mirror {
+      display: flex;
+  }
+  .original {
+      flex: 1;
+  }
+  .mirrorFrame {
+    flex: 1;
+    border: none; /* Removes border for seamless effect */
+  }
+  .mirrorFrame .quadGeneratorContainer {
+    transform: scaleX(-1);
+    width: 100%;
+    height: 100%;
   }

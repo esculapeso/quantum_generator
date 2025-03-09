@@ -125,7 +125,7 @@ jQuery(document).ready(function ($) {
 
   function appendDataHolder(container, id, className) {
     if (container.length) {
-      $(` <div id="${id}" class="${className}" >
+      $(` <div class="${className} ${id}" >
             <div class="dec" style="display:none;"></div>
             <div class="hex"></div>
           </div>`).appendTo(container);
@@ -185,12 +185,14 @@ jQuery(document).ready(function ($) {
       // parametry: color, jasność, przezroczystość, obwiednia, promień, kąt
       gradient = `conic-gradient(from 0deg at 50% ${gradVerCenter}, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       //conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
-      console.log("background gradient: ", gradient);
-      $('.page-content').css('background', gradient);
+
+      const targetBackgroundClass = $('.mirrorFrame').length ? '.content.original, .mirrorFrame' : '.content.original, .page-content';
+      $(targetBackgroundClass).css('background', gradient);
+
 
       var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4;
       for (var n = 0; n < genCount; ++n) {
-        printHex($('#generator' + n), 'afterbegin', index);
+        printHex($('.generator' + n), 'afterbegin', index);
       }
 
       printHex(dataDualTop, 'afterbegin', index);
@@ -216,9 +218,10 @@ jQuery(document).ready(function ($) {
   // $('<div class="roundViewInner" ></div>').appendTo($roundView);
 
   var $quadGenerator = $('<div class="quadGenerator" ></div>').appendTo(header);
+  var $quadGeneratorContainer = $('<div class="quadGeneratorContainer" ></div>').appendTo($quadGenerator);
   var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4;
   for (var n = 0; n < genCount; ++n) {
-    appendDataHolder($quadGenerator, "generator" + n, "quadrupole")
+    appendDataHolder($quadGeneratorContainer, "generator" + n, "quadrupole")
   }
 
   if (header.hasClass('double')) {
@@ -681,7 +684,7 @@ jQuery(document).ready(function ($) {
     `).appendTo($jesusLanguages);
   });
 
-  var $videoChooserSection = $('<div class="videoChooserSection" ></div>').appendTo($quadrupolePanel);
+  var $videoChooserSection = $('<div class="videoChooserSection" ></div>').appendTo($(".maincontainer"));
   $('<input class="hideOptionsButton button" type="button" altvalue="→" value="←"  />').appendTo($videoChooserSection);
 
   $(document).on('click', '.hideOptionsButton', function () {
