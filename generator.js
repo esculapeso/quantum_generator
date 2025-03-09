@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 jQuery(document).ready(function ($) {
 
   $(document).tooltip();
@@ -29,13 +31,36 @@ jQuery(document).ready(function ($) {
   var sideTextsOptionsVar = (typeof sideTextsOptions !== 'undefined' && sideTextsOptions) ? sideTextsOptions : [];
   var jesusMantrasVar = (typeof jesusMantras !== 'undefined' && jesusMantras) ? jesusMantras : [];
   var defaultSessionVar = (typeof defaultSession !== 'undefined' && defaultSession) ? defaultSession : [];
-  var liveTransmissionsVar = (typeof liveTransmissions !== 'undefined' && liveTransmissions) ? liveTransmissions : [];
   var emotionsListVar = (typeof emotionsList !== 'undefined' && emotionsList) ? emotionsList : [];
   var energiesListVar = (typeof energiesList !== 'undefined' && energiesList) ? energiesList : [];
   var healthListVar = (typeof healthList !== 'undefined' && healthList) ? healthList : [];
   var pyramidUpperImagesVar = (typeof pyramidUpperImages !== 'undefined' && pyramidUpperImages) ? pyramidUpperImages : [];
   var videosXRVar = (typeof videosXR !== 'undefined' && videosXR) ? videosXR : [];
 
+  if (typeof liveTransmissions === 'undefined' || !liveTransmissions.length) {
+    // Need to fetch the data
+    var liveTransmissionsVar = [];
+    
+    $.getJSON('https://meditationvideos.replit.app/api/embed-videos')
+      .done(function(data) {
+        liveTransmissionsVar = data;
+        
+        console.log('Data loaded successfully:', liveTransmissionsVar);
+        
+        // Call your functions that need the data
+        setLiveContent(liveTransmissionsVar);
+      })
+      .fail(function(error) {
+        console.error('Error fetching the transmission data:', error);
+      });
+  } else {
+    // Data already exists in the first file, use it
+    var liveTransmissionsVar = liveTransmissions;
+    console.log('Using existing data:', liveTransmissionsVar);
+    
+    // Call your functions that need the data
+    setLiveContent(liveTransmissionsVar);
+  }
 
   function setFetchIntervalAndLength(dispInterval) {
     qrngFetchInterval = qrngOrigDisplayInterval;
@@ -417,18 +442,20 @@ jQuery(document).ready(function ($) {
   //   //$("#tabs-2 a").trigger('click');
   // });
 
-  var transmissions = liveTransmissionsVar.filter((s) => s.page == pageType)
-  $.each(transmissions, (i, transmission) => {
-
-    const currentLivesTabSelector = `#lives-${i + 1}`;
-    $(`#lives ul li:has(a[href='${currentLivesTabSelector}'])`).show().find('a').html(transmission.name).addClass("is_transmission");
-    var $liveTab = $(currentLivesTabSelector);
-
-    switch (transmission.type) {
+  function setLiveContent(content) {
+    
+    var transmissions = content.filter((s) => s.page == pageType)
+    $.each(transmissions, (i, transmission) => {
+      
+      const currentLivesTabSelector = `#lives-${i + 1}`;
+      $(`#lives ul li:has(a[href='${currentLivesTabSelector}'])`).show().find('a').html(transmission.name).addClass("is_transmission");
+      var $liveTab = $(currentLivesTabSelector);
+      
+      switch (transmission.type) {
       case "embedLink":
         $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
         break;
-
+        
       case "imageFetch":
         $(`<div class="imagesFetched ${transmission.url.split('/').pop()}"></div>`).appendTo($liveTab);
         updateFetchedImages(transmission.url);
@@ -452,9 +479,10 @@ jQuery(document).ready(function ($) {
       default:
         // Handle unknown transmission type
         break;
-    }
-
-  });
+      }
+      
+    });
+  }
 
   isRotating = true;
   rotationCounter = 0;
