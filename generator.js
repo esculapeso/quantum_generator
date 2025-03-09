@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 jQuery(document).ready(function ($) {
 
   $(document).tooltip();
@@ -29,13 +31,36 @@ jQuery(document).ready(function ($) {
   var sideTextsOptionsVar = (typeof sideTextsOptions !== 'undefined' && sideTextsOptions) ? sideTextsOptions : [];
   var jesusMantrasVar = (typeof jesusMantras !== 'undefined' && jesusMantras) ? jesusMantras : [];
   var defaultSessionVar = (typeof defaultSession !== 'undefined' && defaultSession) ? defaultSession : [];
-  var liveTransmissionsVar = (typeof liveTransmissions !== 'undefined' && liveTransmissions) ? liveTransmissions : [];
   var emotionsListVar = (typeof emotionsList !== 'undefined' && emotionsList) ? emotionsList : [];
   var energiesListVar = (typeof energiesList !== 'undefined' && energiesList) ? energiesList : [];
   var healthListVar = (typeof healthList !== 'undefined' && healthList) ? healthList : [];
   var pyramidUpperImagesVar = (typeof pyramidUpperImages !== 'undefined' && pyramidUpperImages) ? pyramidUpperImages : [];
   var videosXRVar = (typeof videosXR !== 'undefined' && videosXR) ? videosXR : [];
 
+  if (typeof liveTransmissions === 'undefined' || !liveTransmissions.length) {
+    // Need to fetch the data
+    var liveTransmissionsVar = [];
+    
+    $.getJSON('https://meditationvideos.replit.app/api/embed-videos')
+      .done(function(data) {
+        liveTransmissionsVar = data;
+        
+        console.log('Data loaded successfully:', liveTransmissionsVar);
+        
+        // Call your functions that need the data
+        setLiveContent(liveTransmissionsVar);
+      })
+      .fail(function(error) {
+        console.error('Error fetching the transmission data:', error);
+      });
+  } else {
+    // Data already exists in the first file, use it
+    var liveTransmissionsVar = liveTransmissions;
+    console.log('Using existing data:', liveTransmissionsVar);
+    
+    // Call your functions that need the data
+    setLiveContent(liveTransmissionsVar);
+  }
 
   function setFetchIntervalAndLength(dispInterval) {
     qrngFetchInterval = qrngOrigDisplayInterval;
@@ -420,18 +445,20 @@ jQuery(document).ready(function ($) {
   //   //$("#tabs-2 a").trigger('click');
   // });
 
-  var transmissions = liveTransmissionsVar.filter((s) => s.page == pageType)
-  $.each(transmissions, (i, transmission) => {
-
-    const currentLivesTabSelector = `#lives-${i + 1}`;
-    $(`#lives ul li:has(a[href='${currentLivesTabSelector}'])`).show().find('a').html(transmission.name).addClass("is_transmission");
-    var $liveTab = $(currentLivesTabSelector);
-
-    switch (transmission.type) {
+  function setLiveContent(content) {
+    
+    var transmissions = content.filter((s) => s.page == pageType)
+    $.each(transmissions, (i, transmission) => {
+      
+      const currentLivesTabSelector = `#lives-${i + 1}`;
+      $(`#lives ul li:has(a[href='${currentLivesTabSelector}'])`).show().find('a').html(transmission.name).addClass("is_transmission");
+      var $liveTab = $(currentLivesTabSelector);
+      
+      switch (transmission.type) {
       case "embedLink":
         $(`<div class="aspect-ratio"><iframe src="${transmission.url}"></iframe></div>`).appendTo($liveTab);
         break;
-
+        
       case "imageFetch":
         $(`<div class="imagesFetched ${transmission.url.split('/').pop()}"></div>`).appendTo($liveTab);
         updateFetchedImages(transmission.url);
@@ -455,9 +482,10 @@ jQuery(document).ready(function ($) {
       default:
         // Handle unknown transmission type
         break;
-    }
-
-  });
+      }
+      
+    });
+  }
 
   isRotating = true;
   rotationCounter = 0;
@@ -1779,6 +1807,40 @@ jQuery(document).ready(function ($) {
 
   const $tab6 = $("#tabs-6");
   const $soundContent = $("<div>", { class: "soundContent" }).appendTo($tab6);
+
+  // Create the select element with full width styling
+  const $soundOptionsSelect = $("<select>", { 
+    class: "soundOptionsSelect", 
+    style: "width: 100%;" 
+  }).appendTo($soundContent);
+
+  // Add the first empty "choose music" option
+  $("<option>", { value: '', text: 'choose music' }).appendTo($soundOptionsSelect);
+
+  const soundOptions = ['morning', 'creativity', 'concentration', 'relax', 'sleep'];
+  $.each(soundOptions, (k, co) => {
+    $("<option>", { value: co, text: co }).appendTo($soundOptionsSelect);
+  });
+
+  let currentAudio = null;
+
+  $(document).on('change', '.soundOptionsSelect', function () {
+    const selectedValue = $(this).val();
+    
+    // If there is a current audio playing, pause it
+    if (currentAudio) {
+      currentAudio.pause();
+    }
+    
+    // Do nothing if no valid option is selected
+    if (!selectedValue) return;
+    
+    // Construct the URL and play the new track
+    const audioUrl = "http://twistor.li/wp-content/uploads/2025/02/ommusic_" + selectedValue + ".mp3";
+    currentAudio = new Audio(audioUrl);
+    currentAudio.play();
+  });
+
 
   $("<img>", { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/speaker.png", class: "speakerOutput soundButton" }).appendTo($soundContent);
   const $usbOutput = $("<img>", { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/usb.png", class: "usbOutput soundButton" }).appendTo($soundContent);
