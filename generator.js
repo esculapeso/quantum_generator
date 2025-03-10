@@ -486,7 +486,6 @@ jQuery(document).ready(function ($) {
   }
 
   function updateFetchedImages(urlToFetch) {
-
     console.log('IS FETCHING');
 
     fetchImageUrls(urlToFetch).then(([url, imageUrls]) => {
@@ -499,53 +498,54 @@ jQuery(document).ready(function ($) {
       console.log('URLS:', urls);
       console.log('iM coNT:', container.find('.image-container').length);
       
-      if (container.find('.image-container').length == 0)
+      if (container.find('.image-container').length == 0) {
         console.log('GOT CONTAINER');
         $.each(urls, (i, thumb) => {
+          const streamName = thumb.href.split('/').pop();
           const $div = $(`<img index="${i}" src="${thumb.url}" class="image-container" data-stream="${streamName}" />`);
           $div.css({ 'background-image': `url(${thumb.url})` });
-          const streamName = thumb.href.split('/').pop();
           const $link = $(`<div index="${i}" class="image-wrapper"></div>`);
           $link.append($div);
           container.append($link);
           container.after($(`<img class="selectedLiveVideoPreview" />`));
         });
-      else
+      } else {
         $.each(urls, (i, thumb) => {
           $(`a[index="${i}"]`, container).attr('href', thumb.href);
           const image = $(`.image-container[index="${i}"]`, container);
           const old_image_url = image.attr('src');
           $(`.image-container[index="${i}"]`, container).attr('src', thumb.url).css({ 'background-image': `url(${old_image_url})` });
         });
+      }
     });
 
     setTimeout(function () { updateFetchedImages(urlToFetch); }, 10000);
+}
+
+
+$(document).on('click', '.image-wrapper img', function () {
+
+  const streamName = $(this).data('stream');
+  console.log("STREAM: ", streamName);
+
+  if (window.frameUpdateTimers[streamName]) {
+    clearTimeout(window.frameUpdateTimers[streamName]);
+    delete window.frameUpdateTimers[streamName];
   }
 
+  fetchVideoFrame(streamName);
   
-  $(document).on('click', '.image-wrapper img', function () {
+});
 
-    const streamName = $(this).data('stream');
-    console.log("STREAM: ", streamName);
-
-    if (window.frameUpdateTimers[streamName]) {
-      clearTimeout(window.frameUpdateTimers[streamName]);
-      delete window.frameUpdateTimers[streamName];
-    }
-
-    fetchVideoFrame(streamName);
-    
-  });
-
-  function fetchVideoFrame(streamName) {
-    const timestamp = new Date().getTime();
-    console.log("FETCH INITIATED: ", `http://193.106.228.97:5000/video-frame/${streamName}?t=${timestamp}`)
-    $('.selectedLiveVideoPreview').attr('src', `http://193.106.228.97:5000/video-frame/${streamName}?t=${timestamp}`);
-    
-    // Schedule the next update
-    window.frameUpdateTimers = window.frameUpdateTimers || {};
-    window.frameUpdateTimers[streamName] = setTimeout(() => fetchVideoFrame(streamName), 1000);
-  }
+function fetchVideoFrame(streamName) {
+  const timestamp = new Date().getTime();
+  console.log("FETCH INITIATED: ", `http://193.106.228.97:5000/video-frame/${streamName}?t=${timestamp}`)
+  $('.selectedLiveVideoPreview').attr('src', `http://193.106.228.97:5000/video-frame/${streamName}?t=${timestamp}`);
+  
+  // Schedule the next update
+  window.frameUpdateTimers = window.frameUpdateTimers || {};
+  window.frameUpdateTimers[streamName] = setTimeout(() => fetchVideoFrame(streamName), 1000);
+}
 
   async function fetchImageUrls(apiUrl) {
     try {
