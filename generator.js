@@ -508,6 +508,18 @@ jQuery(document).ready(function ($) {
           $link.append($div);
           container.append($link);
           container.after($(`<img class="selectedLiveVideoPreview" />`));
+
+          $(document).on('click', '.image-wrapper img', function () {
+            const streamName = $(this).data('stream');
+            console.log("STREAM: ", streamName);
+            if (window.frameUpdateTimers[streamName]) {
+              clearTimeout(window.frameUpdateTimers[streamName]);
+              delete window.frameUpdateTimers[streamName];
+            }
+
+            fetchVideoFrame(streamName);
+            
+          });
         });
       } else {
         $.each(urls, (i, thumb) => {
@@ -523,19 +535,6 @@ jQuery(document).ready(function ($) {
 }
 
 
-$(document).on('click', '.image-wrapper img', function () {
-
-  const streamName = $(this).data('stream');
-  console.log("STREAM: ", streamName);
-
-  if (window.frameUpdateTimers[streamName]) {
-    clearTimeout(window.frameUpdateTimers[streamName]);
-    delete window.frameUpdateTimers[streamName];
-  }
-
-  fetchVideoFrame(streamName);
-  
-});
 
 function fetchVideoFrame(streamName) {
   const timestamp = new Date().getTime();
