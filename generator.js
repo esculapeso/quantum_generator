@@ -487,11 +487,20 @@ jQuery(document).ready(function ($) {
 
   function updateFetchedImages(urlToFetch) {
 
+    console.log('IS FETCHING')
+
     fetchImageUrls(urlToFetch).then(([url, imageUrls]) => {
+      console.log('FETCHED')
+
       const container = $('.imagesFetched.' + url.split('/').pop());
+      console.log('GOT CONTAINER')
 
       let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
+      console.log('URLS:', urls)
+      console.log('iM coNT:', container.find('.image-container').length)
+      
       if (container.find('.image-container').length == 0)
+        console.log('GOT CONTAINER')
         $.each(urls, (i, thumb) => {
           const $div = $(`<img index="${i}" src="${thumb.url}" class="image-container" data-stream="${streamName}" />`);
           $div.css({ 'background-image': `url(${thumb.url})` });
