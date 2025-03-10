@@ -490,9 +490,6 @@ jQuery(document).ready(function ($) {
     fetchImageUrls(urlToFetch).then(([url, imageUrls]) => {
       const container = $('.imagesFetched.' + url.split('/').pop());
 
-      const $previewImage = $(`<img class="selectedLiveVideoPreview" />`);
-      container.append($previewImage);
-
       let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
       if (container.find('.image-container').length == 0)
         $.each(urls, (i, thumb) => {
@@ -502,6 +499,7 @@ jQuery(document).ready(function ($) {
           const $link = $(`<div index="${i}" class="image-wrapper" data-stream="${streamName}"></div>`);
           $link.append($div);
           container.append($link);
+          container.after($(`<img class="selectedLiveVideoPreview" />`));
         });
       else
         $.each(urls, (i, thumb) => {
@@ -532,6 +530,7 @@ jQuery(document).ready(function ($) {
 
   function fetchVideoFrame(streamName) {
     const timestamp = new Date().getTime();
+    console.log("FETCH INITIATED: ", `http://193.106.228.97:5000/video-frame/${streamName}?t=${timestamp}`)
     $('.selectedLiveVideoPreview').attr('src', `http://193.106.228.97:5000/video-frame/${streamName}?t=${timestamp}`);
     
     // Schedule the next update
