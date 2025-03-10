@@ -493,10 +493,10 @@ jQuery(document).ready(function ($) {
       let urls = Array.isArray(imageUrls.images) ? imageUrls.images.slice(0, 15) : [];
       if (container.find('.image-container').length == 0)
         $.each(urls, (i, thumb) => {
-          const $div = $(`<img index="${i}" src="${thumb.url}" class="image-container" />`);
+          const $div = $(`<img index="${i}" src="${thumb.url}" class="image-container" data-stream="${streamName}" />`);
           $div.css({ 'background-image': `url(${thumb.url})` });
           const streamName = thumb.href.split('/').pop();
-          const $link = $(`<div index="${i}" class="image-wrapper" data-stream="${streamName}"></div>`);
+          const $link = $(`<div index="${i}" class="image-wrapper"></div>`);
           $link.append($div);
           container.append($link);
           container.after($(`<img class="selectedLiveVideoPreview" />`));
@@ -514,7 +514,7 @@ jQuery(document).ready(function ($) {
   }
 
   
-  $(document).on('click', '.image-wrapper', function () {
+  $(document).on('click', '.image-wrapper img', function () {
 
     const streamName = $(this).data('stream');
     console.log("STREAM: ", streamName);
