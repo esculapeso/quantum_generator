@@ -512,7 +512,7 @@ jQuery(document).ready(function ($) {
           $(document).on('click', '.image-wrapper img', function () {
             const streamName = $(this).data('stream');
             console.log("STREAM: ", streamName);
-            if (window.frameUpdateTimers[streamName]) {
+            if (window.frameUpdateTimers && window.frameUpdateTimers[streamName]) {
               clearTimeout(window.frameUpdateTimers[streamName]);
               delete window.frameUpdateTimers[streamName];
             }
