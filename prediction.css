@@ -279,6 +279,10 @@
   .mirror .generatorText.pyramidPerson {
     display: none;
   }
+  
+  .mirror .therapistImage.pyramidPerson {
+    display: none;
+  }
 
   .generatorText.pyramidPerson {
     width: 12vh !important;
