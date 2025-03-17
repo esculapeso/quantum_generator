@@ -854,25 +854,44 @@ function fetchVideoFrame(streamName) {
 
 
 
-  // Create and append video container elements
-  const $videoContainerDiv = $('<div>', { class: 'videoBackground hidden-container fullView' }).appendTo($imageDiv);
-  $('<div>', { id: 'videoHolder' }).appendTo($videoContainerDiv);
-  const $pyramid = $('<div>', { class: 'video-container pyramid pyramidView' }).appendTo($imageDiv);
+// Check if the current container is inside a mirrorFrame ancestor
+const isMirrorFrame = $imageDiv.closest('.mirrorFrame').length > 0;
+const videoHolderId = isMirrorFrame ? 'videoMirrorHolder' : 'videoHolder';
+const sides = isMirrorFrame 
+  ? ['northMirror', 'westMirror', 'southMirror', 'eastMirror']
+  : ['north', 'west', 'south', 'east'];
 
-  // Initialize pyramid sides
-  const sides = ['north', 'west', 'south', 'east'];
-  sides.forEach(side => {
-    const $side = $('<div>', { class: `side ${side}` }).appendTo($pyramid);
-    const $inside = $('<div>', { class: 'inside' }).appendTo($side);
-    if (pyramidUpperImagesVar.length > 0)
-      $('<div>', { class: 'imageInnerWingsDiv' }).css('background-image', `url('${pyramidUpperImagesVar[0].url}')`).appendTo($inside);
-    $('<div>', { class: 'imageInnerDiv' }).appendTo($inside);
-    $('<div>', { class: 'videoBackground hidden-container' })
-      .append($('<div>', { class: 'videoForeground' })
-        .append($('<div>', { id: `${side}Holder` })))
+// Create the main video background container and append the video holder
+const $videoContainerDiv = $('<div>', { class: 'videoBackground hidden-container fullView' })
+  .appendTo($imageDiv);
+$('<div>', { id: videoHolderId }).appendTo($videoContainerDiv);
+
+// Create the pyramid container
+const $pyramid = $('<div>', { class: 'video-container pyramid pyramidView' }).appendTo($imageDiv);
+
+// Initialize pyramid sides based on whether we're inside a mirrorFrame or not
+sides.forEach(side => {
+  const $side = $('<div>', { class: `side ${side}` }).appendTo($pyramid);
+  const $inside = $('<div>', { class: 'inside' }).appendTo($side);
+  
+  if (pyramidUpperImagesVar.length > 0) {
+    $('<div>', { class: 'imageInnerWingsDiv' })
+      .css('background-image', `url('${pyramidUpperImagesVar[0].url}')`)
       .appendTo($inside);
-    $('<div>', { class: 'view360InnerDiv' }).appendTo($inside);
-  });
+  }
+  
+  $('<div>', { class: 'imageInnerDiv' }).appendTo($inside);
+  
+  $('<div>', { class: 'videoBackground hidden-container' })
+    .append(
+      $('<div>', { class: 'videoForeground' })
+        .append($('<div>', { id: `${side}Holder` }))
+    )
+    .appendTo($inside);
+  
+  $('<div>', { class: 'view360InnerDiv' }).appendTo($inside);
+});
+
 
   // Video chooser content setup
   const $tab1 = $('#tabs-1'); // Assuming $tab1 is defined elsewhere

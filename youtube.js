@@ -12,7 +12,7 @@ var playersCount = 5;
 var startInverval;
 var playersReady = false;
 
-var holders = ['northHolder', 'westHolder', 'southHolder', 'eastHolder', 'videoHolder'];
+var holders = ['northHolder', 'westHolder', 'southHolder', 'eastHolder', 'videoHolder', 'northMirrorHolder', 'westMirrorHolder', 'southMirrorHolder', 'eastMirrorHolder', 'videoMirrorHolder'];
 
 function onYouTubeIframeAPIReady() {
   startInverval = setInterval(startPlayer, 4000);
