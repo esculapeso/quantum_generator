@@ -8,7 +8,7 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 // 3. This function creates an <iframe> (and YouTube player)
 //    after the API code downloads.
 var players = [];
-var playersCount = 5;
+var playersCount = 10;
 var startInverval;
 var playersReady = false;
 
