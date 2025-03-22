@@ -2239,18 +2239,32 @@ insertVideoPlayers(true, $('.mirrorFrame .uploadImageHolder'));
   });
 
   function addTooltip(psalm, set, $element) {
-    let psalmPreview = `
-          <div class="psalmPreview tooltip">
-            <div class="thumb"><img src="//img.youtube.com/vi/${psalm.youtube}/maxresdefault.jpg"
-              onload="if (this.width < 130) this.src = '//img.youtube.com/vi/${psalm.youtube}/mqdefault.jpg'" /></div>
-            <div class="psalmDetails">
-              <div class="psalmTitle">${set.flag}${set.speaker} ${psalm.name}</div>
-              <div class="psalmContent">${psalm.text ?? ''}</div>
+    // Create the psalm preview element
+    let $psalmPreview = $(`
+        <div class="psalmPreview tooltip">
+            <div class="thumb">
+                <img src="//img.youtube.com/vi/${psalm.youtube}/maxresdefault.jpg" class="psalm-thumbnail" data-fallback="//img.youtube.com/vi/${psalm.youtube}/mqdefault.jpg" />
             </div>
-          </div>
-        `
-    $element.attr('title', psalmPreview);
+            <div class="psalmDetails">
+                <div class="psalmTitle">${set.flag}${set.speaker} ${psalm.name}</div>
+                <div class="psalmContent">${psalm.text ?? ''}</div>
+            </div>
+        </div>
+    `);
+
+    // Attach tooltip to element
+    $element.attr('title', $psalmPreview.prop('outerHTML'));
+
+    // Wait for the document to be ready before setting up event listeners
+    $(document).ready(function () {
+        $(".psalm-thumbnail").on("load", function () {
+            if (this.width < 130) {
+                this.src = $(this).attr("data-fallback");
+            }
+        });
+    });
   }
+
 
   function previewPsalm(psalm, set) {
     let psalmPreview = `
