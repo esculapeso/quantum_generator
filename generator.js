@@ -893,8 +893,12 @@ function insertVideoPlayers(isMirrorFrame, container) {
 
 }
 
-insertVideoPlayers(false, $(':not(.mirrorFrame) .uploadImageHolder'));
-insertVideoPlayers(true, $('.mirrorFrame .uploadImageHolder'));
+const $nonMirrorFrameHolder = $(':not(.mirrorFrame) .uploadImageHolder');
+if ($nonMirrorFrameHolder.length) insertVideoPlayers(false, $nonMirrorFrameHolder);
+
+const $mirrorFrameHolder = $('.mirrorFrame .uploadImageHolder');
+if ($mirrorFrameHolder.length) insertVideoPlayers(true, $mirrorFrameHolder);
+
 
   // Video chooser content setup
   const $tab1 = $('#tabs-1'); // Assuming $tab1 is defined elsewhere
