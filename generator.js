@@ -853,52 +853,100 @@ function fetchVideoFrame(streamName) {
   ***********************/
 
 
-function insertVideoPlayers(isMirrorFrame, container) {
-
-  const videoHolderId = isMirrorFrame ? 'videoMirrorHolder' : 'videoHolder';
-  const sides = isMirrorFrame 
-  ? ['northMirror', 'westMirror', 'southMirror', 'eastMirror']
-  : ['north', 'west', 'south', 'east'];
-
-  // Create the main video background container and append the video holder
-  const $videoContainerDiv = $('<div>', { class: 'videoBackground hidden-container fullView' })
-    .appendTo(container);
-  $('<div>', { id: videoHolderId }).appendTo($videoContainerDiv);
-
-  // Create the pyramid container
-  const $pyramid = $('<div>', { class: 'video-container pyramid pyramidView' }).appendTo(container);
-
-  // Initialize pyramid sides based on whether we're inside a mirrorFrame or not
-  sides.forEach(side => {
-    const $side = $('<div>', { class: `side ${side}` }).appendTo($pyramid);
-    const $inside = $('<div>', { class: 'inside' }).appendTo($side);
-    
-    if (pyramidUpperImagesVar.length > 0) {
-      $('<div>', { class: 'imageInnerWingsDiv' })
-        .css('background-image', `url('${pyramidUpperImagesVar[0].url}')`)
-        .appendTo($inside);
-    }
-    
-    $('<div>', { class: 'imageInnerDiv' }).appendTo($inside);
-    
-    $('<div>', { class: 'videoBackground hidden-container' })
-    .append(
-      $('<div>', { class: 'videoForeground' })
-      .append($('<div>', { id: `${side}Holder` }))
-    )
-    .appendTo($inside);
-    
-    $('<div>', { class: 'view360InnerDiv' }).appendTo($inside);
-  });
-
-}
-
-const $nonMirrorFrameHolder = $(':not(.mirrorFrame) .uploadImageHolder');
-if ($nonMirrorFrameHolder.length) insertVideoPlayers(false, $nonMirrorFrameHolder);
-
-const $mirrorFrameHolder = $('.mirrorFrame .uploadImageHolder');
-if ($mirrorFrameHolder.length) insertVideoPlayers(true, $mirrorFrameHolder);
-
+          function insertVideoPlayers(isMirrorFrame, container) {
+            console.log("insertVideoPlayers called with isMirrorFrame:", isMirrorFrame);
+            console.log("Container received:", container);
+          
+            if (!container || container.length === 0) {
+              console.warn("⚠️ No valid container found for", isMirrorFrame ? "mirror frame" : "normal frame");
+              return;
+            }
+          
+            const videoHolderId = isMirrorFrame ? 'videoMirrorHolder' : 'videoHolder';
+            console.log("Using videoHolderId:", videoHolderId);
+          
+            const sides = isMirrorFrame 
+              ? ['northMirror', 'westMirror', 'southMirror', 'eastMirror']
+              : ['north', 'west', 'south', 'east'];
+          
+            console.log("Sides initialized:", sides);
+          
+            // Create the main video background container and append the video holder
+            const $videoContainerDiv = $('<div>', { class: 'videoBackground hidden-container fullView' })
+              .appendTo(container);
+            console.log("Created and appended video container div");
+          
+            $('<div>', { id: videoHolderId }).appendTo($videoContainerDiv);
+            console.log("Created video holder with id:", videoHolderId);
+          
+            // Create the pyramid container
+            const $pyramid = $('<div>', { class: 'video-container pyramid pyramidView' }).appendTo(container);
+            console.log("Created and appended pyramid container");
+          
+            // Initialize pyramid sides based on whether we're inside a mirrorFrame or not
+            sides.forEach(side => {
+              console.log("Processing side:", side);
+          
+              const $side = $('<div>', { class: `side ${side}` }).appendTo($pyramid);
+              console.log("Created and appended side div:", $side);
+          
+              const $inside = $('<div>', { class: 'inside' }).appendTo($side);
+              console.log("Created and appended inside div:", $inside);
+          
+              if (!Array.isArray(pyramidUpperImagesVar)) {
+                console.error("🚨 Error: pyramidUpperImagesVar is not an array!", pyramidUpperImagesVar);
+              } else if (pyramidUpperImagesVar.length > 0) {
+                console.log("Using pyramidUpperImagesVar:", pyramidUpperImagesVar[0].url);
+          
+                $('<div>', { class: 'imageInnerWingsDiv' })
+                  .css('background-image', `url('${pyramidUpperImagesVar[0].url}')`)
+                  .appendTo($inside);
+                console.log("Created and appended imageInnerWingsDiv with background image");
+              } else {
+                console.warn("⚠️ No images found in pyramidUpperImagesVar");
+              }
+          
+              $('<div>', { class: 'imageInnerDiv' }).appendTo($inside);
+              console.log("Created and appended imageInnerDiv");
+          
+              $('<div>', { class: 'videoBackground hidden-container' })
+                .append(
+                  $('<div>', { class: 'videoForeground' })
+                    .append($('<div>', { id: `${side}Holder` }))
+                )
+                .appendTo($inside);
+              console.log("Created and appended video background + foreground with ID:", `${side}Holder`);
+          
+              $('<div>', { class: 'view360InnerDiv' }).appendTo($inside);
+              console.log("Created and appended view360InnerDiv");
+            });
+          
+            console.log("✅ insertVideoPlayers execution completed for", isMirrorFrame ? "mirror frame" : "normal frame");
+          }
+          
+          // Find and apply the function to normal and mirror frames
+          const $nonMirrorFrameHolder = $(':not(.mirrorFrame) .uploadImageHolder');
+          console.log("Found non-mirror frame containers:", $nonMirrorFrameHolder.length);
+          
+          if ($nonMirrorFrameHolder.length) {
+            console.log("Calling insertVideoPlayers for normal frame");
+            insertVideoPlayers(false, $nonMirrorFrameHolder);
+          } else {
+            console.warn("⚠️ No non-mirror frame containers found!");
+          }
+          
+          const $mirrorFrameHolder = $('.mirrorFrame .uploadImageHolder');
+          console.log("Found mirror frame containers:", $mirrorFrameHolder.length);
+          
+          if ($mirrorFrameHolder.length) {
+            console.log("Calling insertVideoPlayers for mirror frame");
+            insertVideoPlayers(true, $mirrorFrameHolder);
+          } else {
+            console.warn("⚠️ No mirror frame containers found!");
+          }
+          
+          console.log("✅ Script execution completed.");
+          
 
   // Video chooser content setup
   const $tab1 = $('#tabs-1'); // Assuming $tab1 is defined elsewhere
