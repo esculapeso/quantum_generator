@@ -1083,7 +1083,12 @@
     }
 
     .mirror .quadrupoleImage.pyramidImage {
-      width: 100vh;
+      width: 100%;
+    }
+
+    .mirror .pyramidImage .quadGenerator {
+      width: 50vw;
+      height: 50vw;
     }
 
     .quadrupoleImage {
