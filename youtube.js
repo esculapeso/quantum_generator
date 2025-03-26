@@ -13,19 +13,27 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 // 3. This function creates an <iframe> (and YouTube player)
 //    after the API code downloads.
 var players = [];
-var playersCount = 10;
+var playersCount = 0;
 var startInverval;
 var playersReady = false;
 
-var holders = ['northHolder', 'westHolder', 'southHolder', 'eastHolder', 'videoHolder', 'northMirrorHolder', 'westMirrorHolder', 'southMirrorHolder', 'eastMirrorHolder', 'videoMirrorHolder'];
 
 function onYouTubeIframeAPIReady() {
   startInverval = setInterval(startPlayer, 4000);
 }
 
 function startPlayer() {
-  for (var i = 0; i < playersCount; i++) {
-    new YT.Player(holders[i], {
+  const holders = [
+    'northHolder', 'westHolder', 'southHolder', 'eastHolder', 'videoHolder',
+    'northMirrorHolder', 'westMirrorHolder', 'southMirrorHolder', 'eastMirrorHolder', 'videoMirrorHolder'
+  ];
+
+  const existingHolders = holders.filter(id => document.getElementById(id));
+  playersCount = existingHolders.length; // Update player count dynamically
+
+  existingHolders.forEach(holderId => {
+    console.log(`🎬 Creating player in #${holderId}`);
+    new YT.Player(holderId, {
       height: '390',
       width: '90',
       videoId: '6f0y1Iaorug',
@@ -37,8 +45,7 @@ function startPlayer() {
         'onStateChange': onPlayerStateChange
       }
     });
-  }
-
+  });
 }
 
 // 4. The API will call this function when the video player is ready.
