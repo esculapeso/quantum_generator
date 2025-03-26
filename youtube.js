@@ -1,3 +1,8 @@
+// Set YouTube to use no-cookie domain
+var YTConfig = {
+  host: 'https://www.youtube-nocookie.com'
+};
+
 // 2. This code loads the IFrame Player API code asynchronously.
 var tag = document.createElement('script');
 
