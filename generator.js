@@ -163,7 +163,7 @@ jQuery(document).ready(function ($) {
       gradient = `conic-gradient(from 0deg at 50% ${gradVerCenter}, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       //conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
 
-      const targetBackgroundClass = $('.mirrorFrame').length ? '.content.original, .mirrorFrame' : '.content.original, .page-content';
+      const targetBackgroundClass = $('.mirrorFrame').length ? '.content.original, .mirrorFrame, .page-content' : '.page-content';
       $(targetBackgroundClass).css('background', gradient);
 
 
