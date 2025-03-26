@@ -865,9 +865,9 @@ function fetchVideoFrame(streamName) {
             const videoHolderId = isMirrorFrame ? 'videoMirrorHolder' : 'videoHolder';
             console.log("Using videoHolderId:", videoHolderId);
           
-            const sides = isMirrorFrame 
-              ? ['northMirror', 'westMirror', 'southMirror', 'eastMirror']
-              : ['north', 'west', 'south', 'east'];
+            const sides = ['north', 'west', 'south', 'east'];
+
+            const sidesPrefix = isMirrorFrame ? 'Mirror' : '';
           
             console.log("Sides initialized:", sides);
           
@@ -912,7 +912,7 @@ function fetchVideoFrame(streamName) {
               $('<div>', { class: 'videoBackground hidden-container' })
                 .append(
                   $('<div>', { class: 'videoForeground' })
-                    .append($('<div>', { id: `${side}Holder` }))
+                    .append($('<div>', { id: `${side}${sidesPrefix}Holder` }))
                 )
                 .appendTo($inside);
               console.log("Created and appended video background + foreground with ID:", `${side}Holder`);
@@ -925,7 +925,7 @@ function fetchVideoFrame(streamName) {
           }
           
           // Find and apply the function to normal and mirror frames
-          const $nonMirrorFrameHolder = $(':not(.mirrorFrame) .uploadImageHolder');
+          const $nonMirrorFrameHolder = $('.uploadImageHolder').not('.mirrorFrame .uploadImageHolder');
           console.log("Found non-mirror frame containers:", $nonMirrorFrameHolder.length);
           
           if ($nonMirrorFrameHolder.length) {
