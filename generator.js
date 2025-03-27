@@ -151,19 +151,30 @@ jQuery(document).ready(function ($) {
         gradVerCenter = randomBackgroundMiddleVar
       } else {
         // Calculate the middle of the gradient
-        var genHeight = $('.quadGenerator').height();
-        var genOffTop = $(".quadGenerator").offset() ? $(".quadGenerator").offset().top : 0;
-        var graOffTop = $(".et_pb_fullwidth_section").offset() ? $(".et_pb_fullwidth_section").offset().top : 0;
-        var gradCenter = genOffTop - graOffTop + genHeight / 2;
+        // var genHeight = $('.quadGenerator').height();
+        // var genOffTop = $(".quadGenerator").offset() ? $(".quadGenerator").offset().top : 0;
+        // var graOffTop = $(".et_pb_fullwidth_section").offset() ? $(".et_pb_fullwidth_section").offset().top : 0;
+        // var gradCenter = genOffTop - graOffTop + genHeight / 2;
 
-        gradVerCenter = `${gradCenter}px`;
+        // gradVerCenter = `${gradCenter}px`;
+
+        var $container = $('.maincontainer');
+        var $ancestor = $('.page-content'); 
+
+        var containerOffset = $container.offset().top;
+        var containerHeight = $container.outerHeight();
+        var ancestorOffset = $ancestor.offset().top;
+
+        // Vertical middle relative to ancestor top:
+        var middleRelativeToAncestor = (containerOffset + containerHeight / 2) - ancestorOffset;
+        gradVerCenter = `${middleRelativeToAncestor}px`;
       }
 
       // parametry: color, jasność, przezroczystość, obwiednia, promień, kąt
       gradient = `conic-gradient(from 0deg at 50% ${gradVerCenter}, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       //conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
 
-      const targetBackgroundClass = $('.mirrorFrame').length ? '.content.original, .mirrorFrame, .page-content' : '.page-content';
+      const targetBackgroundClass = $('.mirrorFrame').length ? '.content.original, .mirrorFrame' : '.page-content';
       $(targetBackgroundClass).css('background', gradient);
 
 
