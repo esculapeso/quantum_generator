@@ -166,7 +166,7 @@ jQuery(document).ready(function ($) {
         var ancestorOffset = $ancestor.offset().top;
 
         // Vertical middle relative to ancestor top:
-        var middleRelativeToAncestor = (containerOffset + containerHeight / 2) - ancestorOffset;
+        var middleRelativeToAncestor = $('.mirrorFrame').length ? containerHeight / 2 : (containerOffset + containerHeight / 2) - ancestorOffset;
         gradVerCenter = `${middleRelativeToAncestor}px`;
       }
 
