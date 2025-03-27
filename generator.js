@@ -147,9 +147,9 @@ jQuery(document).ready(function ($) {
 
 
       var gradVerCenter;
-      if (randomBackgroundMiddleVar) {
-        gradVerCenter = randomBackgroundMiddleVar
-      } else {
+      // if (randomBackgroundMiddleVar) {
+      //   gradVerCenter = randomBackgroundMiddleVar
+      // } else {
         // Calculate the middle of the gradient
         // var genHeight = $('.quadGenerator').height();
         // var genOffTop = $(".quadGenerator").offset() ? $(".quadGenerator").offset().top : 0;
@@ -158,17 +158,18 @@ jQuery(document).ready(function ($) {
 
         // gradVerCenter = `${gradCenter}px`;
 
-        var $container = $('.maincontainer');
-        var $ancestor = $('.page-content'); 
+      var $container = $('.maincontainer').first();
+      var $ancestor = $('.page-content'); 
 
-        var containerOffset = $container.offset().top;
-        var containerHeight = $container.outerHeight();
-        var ancestorOffset = $ancestor.offset().top;
+      var containerOffset = $container.offset().top;
+      var containerHeight = $container.outerHeight();
+      var ancestorOffset = $ancestor.offset().top;
 
-        // Vertical middle relative to ancestor top:
-        var middleRelativeToAncestor = $('.mirrorFrame').length ? containerHeight / 2 : (containerOffset + containerHeight / 2) - ancestorOffset;
-        gradVerCenter = `${middleRelativeToAncestor}px`;
-      }
+      // Vertical middle relative to ancestor top:
+      var middleRelativeToAncestor = $('.mirrorFrame').length ? containerHeight / 2 : (containerOffset + containerHeight / 2) - ancestorOffset;
+      gradVerCenter = `${middleRelativeToAncestor}px`;
+      
+      // }
 
       // parametry: color, jasność, przezroczystość, obwiednia, promień, kąt
       gradient = `conic-gradient(from 0deg at 50% ${gradVerCenter}, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
