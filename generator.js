@@ -177,6 +177,7 @@ jQuery(document).ready(function ($) {
       const targetBackgroundClass = $('.mirrorFrame').length ? '.content.original, .mirrorFrame' : '.page-content';
       $(targetBackgroundClass).css('background', gradient);
 
+      if($('.mirrorFrame').length) { $('.page-content').css('background', "#f7f0e5"); } 
 
       var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4;
       for (var n = 0; n < genCount; ++n) {
