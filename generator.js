@@ -158,7 +158,7 @@ jQuery(document).ready(function ($) {
 
         // gradVerCenter = `${gradCenter}px`;
 
-      var $container = $('.maincontainer').first();
+      var $container = $('.maincontainer').children(":first");
       var $ancestor = $('.page-content'); 
 
       var containerOffset = $container.offset().top;
