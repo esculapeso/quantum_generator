@@ -750,7 +750,7 @@ function fetchVideoFrame(streamName) {
   const $videoChooserSection = $('<div class="videoChooserSection"></div>').appendTo($(".maincontainer"));
 
   // Create the hover button (visible initially)
-  const $hoverChooserButton = $('<input class="hoverChooserButtons button" type="button" altvalue="→" value="←" />').appendTo($videoChooserSection);
+  const $hoverChooserButton = $('<input class="hoverChooserButton button" type="button" altvalue="→" value="←" />').appendTo($videoChooserSection);
 
   // Create the buttons holder (initially hidden)
   const $videoChooserButtonsHolder = $('<div class="videoChooserButtonsHolder" style="display:none;"></div>').appendTo($videoChooserSection);
@@ -764,13 +764,13 @@ function fetchVideoFrame(streamName) {
   // When hovering over the hover button, hide it and show the buttons holder
   $(document).on("mouseenter", '.hoverChooserButton', function() {
     $(this).hide();
-    $videoChooserButtonsHolder.show();
+    $('.videoChooserButtonsHolder').show();
   });
 
   // When the mouse leaves the entire section, revert to the initial state
   $(document).on("mouseleave", '.videoChooserSection', function() {
-    $videoChooserButtonsHolder.hide();
-    $hoverChooserButton.show();
+    $('.videoChooserButtonsHolder').hide();
+    $('.hoverChooserButton').show();
   });
     
   $(document).on('click', '.centerGenerator', function () {
