@@ -746,8 +746,47 @@ function fetchVideoFrame(streamName) {
     `).appendTo($jesusLanguages);
   });
 
-  var $videoChooserSection = $('<div class="videoChooserSection" ></div>').appendTo($(".maincontainer"));
-  $('<input class="hideOptionsButton button" type="button" altvalue="→" value="←"  />').appendTo($videoChooserSection);
+  // Create the container section
+  const $videoChooserSection = $('<div class="videoChooserSection"></div>').appendTo($(".maincontainer"));
+
+  // Create the hover button (visible initially)
+  const $hoverChooserButton = $('<input class="hoverChooserButtons button" type="button" altvalue="→" value="←" />').appendTo($videoChooserSection);
+
+  // Create the buttons holder (initially hidden)
+  const $videoChooserButtonsHolder = $('<div class="videoChooserButtonsHolder" style="display:none;"></div>').appendTo($videoChooserSection);
+
+  // Add the additional buttons into the buttons holder
+  $('<input class="hideOptionsButton button" type="button" altvalue="→" value="←" />').appendTo($videoChooserButtonsHolder);
+  $('<input class="centerGenerator button" type="button" value="↕" />').appendTo($videoChooserButtonsHolder);
+  $('<input class="playGeneratorVideo button" type="button" altvalue="II" value="►" />').appendTo($videoChooserButtonsHolder);
+  $('<input class="togglePyramidButton button" type="button" alttitle="Classic View" title="Pyramid View" altvalue="▣" value="◭" />').appendTo($videoChooserButtonsHolder);
+
+  // When hovering over the hover button, hide it and show the buttons holder
+  $(document).on("mouseenter", '.hoverChooserButton', function() {
+    $(this).hide();
+    $videoChooserButtonsHolder.show();
+  });
+
+  // When the mouse leaves the entire section, revert to the initial state
+  $(document).on("mouseleave", '.videoChooserSection', function() {
+    $videoChooserButtonsHolder.hide();
+    $hoverChooserButton.show();
+  });
+    
+  $(document).on('click', '.centerGenerator', function () {
+    $(window).scrollTop($(".quadGenerator").offset().top - ($(window).height() / 2) + ($(".quadGenerator").outerHeight() / 2));
+  });
+
+  $(document).on('click', '.playGeneratorVideo', function () {
+    startFocusVideo()
+  });
+
+  $(document).on('click', '.togglePyramidButton', function () {
+    togglePyramidView();
+
+    toggleButtonAltValue($(this));
+  });
+  
 
   $(document).on('click', '.hideOptionsButton', function () {
     $('#tabs').toggle();
@@ -770,35 +809,6 @@ function fetchVideoFrame(streamName) {
     }
   }
 
-
-  $('<input class="centerGenerator button" type="button" value="↕"  />').appendTo($videoChooserSection);
-  $('<input class="playGeneratorVideo button" type="button" altvalue="II" value="►"  />').appendTo($videoChooserSection);
-  $('<input class="togglePyramidButton button" type="button" alttitle="Classic View" title="Pyramid View" altvalue="▣" value="◭"  />').appendTo($videoChooserSection);
-
-  $(document).on('click', '.centerGenerator', function () {
-    $(window).scrollTop($(".quadGenerator").offset().top - ($(window).height() / 2) + ($(".quadGenerator").outerHeight() / 2));
-  });
-
-  $(document).on('click', '.playGeneratorVideo', function () {
-    startFocusVideo()
-
-    // ispl = isAnyVideoPlaying();
-    // console.log("isVideoPlaying ", ispl)
-    // if (ispl) {
-    //   pauseFocusVideo()
-    // }
-    // else {
-    //   startFocusVideo()
-    // }
-
-    // toggleButtonAltValue($(this));
-  });
-
-  $(document).on('click', '.togglePyramidButton', function () {
-    togglePyramidView();
-
-    toggleButtonAltValue($(this));
-  });
 
 
   /**********************
