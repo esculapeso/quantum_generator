@@ -2022,14 +2022,11 @@ function fetchVideoFrame(streamName) {
       const audioUrl = selectedSound.path;
       currentAudio = new Audio(audioUrl);
   
-      // --- START: Set Initial Volume ---
       currentAudio.volume = 0.1; // Set volume to 10% (0.1)
-      // --- END: Set Initial Volume ---
+      currentAudio.loop = true; 
   
-      // --- START: Update and Enable Slider ---
       $volumeSlider.val(0.1); // Set slider position to match initial volume
       $volumeSlider.prop('disabled', false); // Enable the slider now that audio is loaded
-      // --- END: Update and Enable Slider ---
   
       // Play the new audio track
       currentAudio.play().catch(error => {
