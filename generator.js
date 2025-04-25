@@ -1955,55 +1955,144 @@ function fetchVideoFrame(streamName) {
 
   const $tab6 = $("#tabs-6");
   const $soundContent = $("<div>", { class: "soundContent" }).appendTo($tab6);
-
-  // Create the select element with full width styling
-  const $soundOptionsSelect = $("<select>", { 
-    class: "soundOptionsSelect", 
-    style: "width: 100%;" 
+  
+  // Create the select element with full width styling and some margin below
+  const $soundOptionsSelect = $("<select>", {
+      class: "soundOptionsSelect",
+      style: "width: 100%; margin-bottom: 10px;" // Added margin-bottom for spacing
   }).appendTo($soundContent);
-
+  
   // Add the first empty "choose music" option
   $("<option>", { value: '', text: 'choose music' }).appendTo($soundOptionsSelect);
-
-  $.each(sounds, (k, sound) => {
-    $("<option>", { value: sound.name, text: sound.name }).appendTo($soundOptionsSelect);
-  });
-
+  
+  // Populate select options from the sounds array (assuming 'sounds' is defined elsewhere)
+  // Example: const sounds = [{name: 'Track 1', path: 'path/to/track1.mp3'}, ...];
+  if (typeof sounds !== 'undefined' && Array.isArray(sounds)) {
+      $.each(sounds, (k, sound) => {
+          $("<option>", { value: sound.name, text: sound.name }).appendTo($soundOptionsSelect);
+      });
+  } else {
+      console.error("The 'sounds' array is not defined or not an array.");
+      // Optionally add a disabled placeholder if sounds aren't loaded
+      $("<option>", { value: '', text: 'No sounds available', disabled: true }).appendTo($soundOptionsSelect);
+      $soundOptionsSelect.prop('disabled', true);
+  }
+  
+  
+  // --- START: Added Volume Slider ---
+  // Create the volume range slider
+  const $volumeSlider = $("<input>", {
+      type: "range",
+      id: "volumeControl", // Added ID for potential styling/access
+      class: "volumeSlider", // Added class for selection
+      min: "0",            // Minimum volume (silent)
+      max: "1",            // Maximum volume (full)
+      step: "0.01",        // Step for finer control (100 steps)
+      value: "0.1",        // Initial value set to 10%
+      style: "width: 100%; display: block; margin-bottom: 10px;", // Style to take full width and add margin
+      disabled: true       // Start disabled until a track is loaded
+  }).appendTo($soundContent); // Append it below the select dropdown
+  // --- END: Added Volume Slider ---
+  
+  
   let currentAudio = null;
-
+  
+  // Event listener for the sound selection dropdown
   $(document).on('change', '.soundOptionsSelect', function () {
-    const selectedValue = $(this).val();
-    const selectedSound = sounds.find(s => s.name == selectedValue)
-    psalmVideoVar.find(e => e.lang == selectedPsalmsLang)
-    
-    // If there is a current audio playing, pause it
-    if (currentAudio) {
-      currentAudio.pause();
-    }
-    
-    // Do nothing if no valid option is selected
-    if (!selectedValue) return;
-    
-    // Construct the URL and play the new track
-    const audioUrl = selectedSound.path;
-    currentAudio = new Audio(audioUrl);
-    currentAudio.play();
+      const selectedValue = $(this).val();
+  
+      // Find the selected sound object (assuming 'sounds' array exists)
+      const selectedSound = typeof sounds !== 'undefined'
+                            ? sounds.find(s => s.name == selectedValue)
+                            : null;
+  
+      // Stop and clear previous audio if it exists
+      if (currentAudio) {
+          currentAudio.pause();
+          currentAudio = null; // Clear the reference
+      }
+  
+      // If "choose music" or an invalid option is selected, disable slider and return
+      if (!selectedValue || !selectedSound) {
+          $volumeSlider.prop('disabled', true); // Disable slider if no track selected
+          return;
+      }
+  
+      // Construct the URL and create the new Audio object
+      const audioUrl = selectedSound.path;
+      currentAudio = new Audio(audioUrl);
+  
+      // --- START: Set Initial Volume ---
+      currentAudio.volume = 0.2; // Set volume to 10% (0.1)
+      // --- END: Set Initial Volume ---
+  
+      // --- START: Update and Enable Slider ---
+      $volumeSlider.val(0.2); // Set slider position to match initial volume
+      $volumeSlider.prop('disabled', false); // Enable the slider now that audio is loaded
+      // --- END: Update and Enable Slider ---
+  
+      // Play the new audio track
+      currentAudio.play().catch(error => {
+          console.error("Error playing audio:", error);
+          // Handle potential play errors (e.g., browser restrictions)
+          $volumeSlider.prop('disabled', true); // Disable slider if play fails
+      });
+  
+      // Optional: Add event listener for when the audio ends
+      currentAudio.onended = function() {
+          console.log("Audio track finished.");
+          $volumeSlider.prop('disabled', true); // Disable slider when track ends
+          currentAudio = null; // Clear reference
+          $soundOptionsSelect.val(''); // Reset dropdown (optional)
+      };
   });
-
-
-  $("<img>", { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/speaker.png", class: "speakerOutput soundButton" }).appendTo($soundContent);
-  const $usbOutput = $("<img>", { src: "https://github.com/esculapeso/quantum_generator/raw/main/images/usb.png", class: "usbOutput soundButton" }).appendTo($soundContent);
-
-  let isSoundMod = 0;
-
+  
+  // --- START: Event Listener for Volume Slider ---
+  // Use 'input' event for real-time updates as the slider is dragged
+  $(document).on('input', '.volumeSlider', function () {
+      const volumeValue = $(this).val(); // Get the current value from the slider (0 to 1)
+      if (currentAudio) {
+          currentAudio.volume = volumeValue; // Update the audio volume
+      }
+  });
+  // --- END: Event Listener for Volume Slider ---
+  
+  
+  // Append the speaker and USB images (ensure paths are correct)
+  // Make sure these are appended *after* the select and slider
+  $("<img>", {
+      src: "https://github.com/esculapeso/quantum_generator/raw/main/images/speaker.png",
+      class: "speakerOutput soundButton",
+      alt: "Speaker Output" // Added alt text for accessibility
+  }).appendTo($soundContent);
+  
+  const $usbOutput = $("<img>", {
+      src: "https://github.com/esculapeso/quantum_generator/raw/main/images/usb.png",
+      class: "usbOutput soundButton",
+      alt: "USB Output" // Added alt text for accessibility
+  }).appendTo($soundContent);
+  
+  
+  let isSoundMod = 0; // Assuming this controls an external mute state?
+  
+  // Event listener for the USB output button
   $(document).on('click', '.usbOutput', function () {
-    isSoundMod = 1 - isSoundMod;
-    $usbOutput.css('opacity', isSoundMod ? 0.5 : 1);
-
-    // Assuming 'players' is defined and accessible
-    if (!isSoundMod) $(players).each((i, p) => p.unMute());
+      isSoundMod = 1 - isSoundMod; // Toggle state
+      $usbOutput.css('opacity', isSoundMod ? 0.5 : 1); // Visual feedback
+  
+      // Assuming 'players' is defined elsewhere and needs muting/unmuting
+      if (typeof players !== 'undefined') {
+          if (!isSoundMod) {
+              $(players).each((i, p) => p.unMute()); // Unmute external players
+          } else {
+              // You might need logic here to *mute* the external players if isSoundMod is 1
+                $(players).each((i, p) => p.mute()); // Example: Assuming a mute() method exists
+          }
+      } else {
+          console.warn("'players' variable is not defined. USB button might not function as expected.");
+      }
   });
-
+          
   /********************
           CALL 
   ********************/
