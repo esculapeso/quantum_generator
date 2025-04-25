@@ -2023,11 +2023,11 @@ function fetchVideoFrame(streamName) {
       currentAudio = new Audio(audioUrl);
   
       // --- START: Set Initial Volume ---
-      currentAudio.volume = 0.2; // Set volume to 10% (0.1)
+      currentAudio.volume = 0.1; // Set volume to 10% (0.1)
       // --- END: Set Initial Volume ---
   
       // --- START: Update and Enable Slider ---
-      $volumeSlider.val(0.2); // Set slider position to match initial volume
+      $volumeSlider.val(0.1); // Set slider position to match initial volume
       $volumeSlider.prop('disabled', false); // Enable the slider now that audio is loaded
       // --- END: Update and Enable Slider ---
   
@@ -2039,12 +2039,12 @@ function fetchVideoFrame(streamName) {
       });
   
       // Optional: Add event listener for when the audio ends
-      currentAudio.onended = function() {
-          console.log("Audio track finished.");
-          $volumeSlider.prop('disabled', true); // Disable slider when track ends
-          currentAudio = null; // Clear reference
-          $soundOptionsSelect.val(''); // Reset dropdown (optional)
-      };
+      // currentAudio.onended = function() {
+      //     console.log("Audio track finished.");
+      //     $volumeSlider.prop('disabled', true); // Disable slider when track ends
+      //     currentAudio = null; // Clear reference
+      //     $soundOptionsSelect.val(''); // Reset dropdown (optional)
+      // };
   });
   
   // --- START: Event Listener for Volume Slider ---
