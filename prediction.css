@@ -692,9 +692,9 @@
 
   .personImage {
     position: absolute;
-    width: 12.6vh;
-    height: 12.6vh;
-    background-size: contain;
+    width: 13vh;
+    height: 13vh;
+    background-size: cover;
     background-position: center;
     cursor: pointer;
     border-radius: 50%;
@@ -724,24 +724,24 @@
   }
 
   .therapistImage.top {
-    top: 0.5%;
-    left: 68.6%;
+    top: 0.2%;
+    left: 68.4%;
     transform: scaleX(-1);
   }
 
   .therapistImage.left {
-    top: 18.8%;
-    left: 0.4%;
+    top: 18.4%;
+    left: 0.3%;
   }
 
   .therapistImage.bottom {
     bottom: 0.5%;
-    left: 18.7%;
+    left: 18.6%;
   }
 
   .therapistImage.right {
-    top: 68.7%;
-    left: 86.9%;
+    top: 68.2%;
+    left: 86.7%;
     transform: scaleX(-1);
   }
 
