@@ -380,6 +380,16 @@
     background-size: 100% 30%;
   }
 
+  .view360InnerDiv {
+    height:100%;
+  }
+
+  .view360InnerDiv video {
+    height: 100%;
+    margin: auto;
+    display: block;
+  }
+
   .uploadImageExample {
     cursor: pointer;
     display: inline-block;
