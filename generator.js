@@ -22,6 +22,7 @@ jQuery(document).ready(function ($) {
 
   var isMobile = window.innerHeight > window.innerWidth; // checks if portrait mode 
   var videos = (typeof videosForFocus !== 'undefined' && videosForFocus) ? videosForFocus : [];
+  var sounds = (typeof soundsForFocus !== 'undefined' && soundsForFocus) ? videosForFocus : [];
   var psalmVideoVar = (typeof psalmVideo !== 'undefined' && psalmVideo) ? psalmVideo : [];
   var view360VideoVar = (typeof view360Video !== 'undefined' && view360Video) ? view360Video : [];
   var focusImages = (typeof imagesForFocus !== 'undefined' && imagesForFocus) ? imagesForFocus : [];
@@ -1964,15 +1965,16 @@ function fetchVideoFrame(streamName) {
   // Add the first empty "choose music" option
   $("<option>", { value: '', text: 'choose music' }).appendTo($soundOptionsSelect);
 
-  const soundOptions = ['morning', 'creativity', 'concentration', 'relax', 'sleep'];
-  $.each(soundOptions, (k, co) => {
-    $("<option>", { value: co, text: co }).appendTo($soundOptionsSelect);
+  $.each(sounds, (k, sound) => {
+    $("<option>", { value: sound.name, text: sound.name }).appendTo($soundOptionsSelect);
   });
 
   let currentAudio = null;
 
   $(document).on('change', '.soundOptionsSelect', function () {
     const selectedValue = $(this).val();
+    const selectedSound = sounds.find(s => s.name == selectedValue)
+    psalmVideoVar.find(e => e.lang == selectedPsalmsLang)
     
     // If there is a current audio playing, pause it
     if (currentAudio) {
@@ -1983,7 +1985,7 @@ function fetchVideoFrame(streamName) {
     if (!selectedValue) return;
     
     // Construct the URL and play the new track
-    const audioUrl = "http://twistor.li/wp-content/uploads/2025/02/ommusic_" + selectedValue + ".mp3";
+    const audioUrl = selectedSound.path;
     currentAudio = new Audio(audioUrl);
     currentAudio.play();
   });
