@@ -380,9 +380,9 @@
     background-size: 100% 30%;
   }
 
-  .view360InnerDiv {
+  /* .view360InnerDiv {
     height:100%;
-  }
+  } */
 
   .view360InnerDiv video {
     height: 100%;
