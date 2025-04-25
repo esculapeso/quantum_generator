@@ -1699,6 +1699,7 @@ function fetchVideoFrame(streamName) {
     updateIfDefined(jsonObject.innerBgColorLeft, data => $('.bgColorLeftTextbox').val(data).change());
     updateIfDefined(jsonObject.innerBgColorRight, data => $('.bgColorRightTextbox').val(data).change());
     updateIfDefined(jsonObject.gallery, updateGallery);
+    updateIfDefined(jsonObject.sound, data => $('.soundOptionsSelect').val(data).change());
     $('.changeInnerBg').trigger("input");
 
     // Handle video related updates
@@ -2469,6 +2470,7 @@ function fetchVideoFrame(streamName) {
     var imageData = $('.imageInnerDiv').css('background-image');
     var image3dData = $('.imageInnerDiv .modelviewer3d').attr('src');
     var sideText = $(".sideTextTextBox").val();
+    var sound = $(".soundOptionsSelect").val();
 
     var people = [
       { role: 'therapist', data: $('.therapistImage').css('background-image') },
@@ -2514,7 +2516,7 @@ function fetchVideoFrame(streamName) {
       callClipSize: $('.callRange').val(),
       innerBgColorLeft: $('.bgColorLeftTextbox').val(),
       innerBgColorRight: $('.bgColorRightTextbox').val(),
-
+      sound,
     };
 
     fileName = `${year}_${month}_${day}_${focusText}`;
