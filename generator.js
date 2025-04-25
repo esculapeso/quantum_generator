@@ -159,7 +159,8 @@ jQuery(document).ready(function ($) {
         // gradVerCenter = `${gradCenter}px`;
 
       var $container = $('.maincontainer').children(":first");
-      var $ancestor = $('.page-content'); 
+      const pageSelector = '.page-content, .site-content-contain';
+      var $ancestor = $(pageSelector); 
 
       var containerOffset = $container.offset().top;
       var containerHeight = $container.outerHeight();
@@ -175,10 +176,10 @@ jQuery(document).ready(function ($) {
       gradient = `conic-gradient(from 0deg at 50% ${gradVerCenter}, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
       //conic-gradient(from 45deg, ${col1}, ${col2}, ${col3}, ${col1}, ${col2}, ${col3}, ${col1})`
 
-      const targetBackgroundClass = $('.mirrorFrame').length ? '.content.original, .mirrorFrame' : '.page-content';
+      const targetBackgroundClass = $('.mirrorFrame').length ? '.content.original, .mirrorFrame' : pageSelector;
       $(targetBackgroundClass).css('background', gradient);
 
-      if($('.mirrorFrame').length) { $('.page-content').css('background', "#f7f0e5"); } 
+      if($('.mirrorFrame').length) { $ancestor.css('background', "#f7f0e5"); } 
 
       var genCount = typeof generatorsNumber != 'undefined' ? generatorsNumber : 4;
       for (var n = 0; n < genCount; ++n) {
