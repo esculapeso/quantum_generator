@@ -22,7 +22,7 @@ jQuery(document).ready(function ($) {
 
   var isMobile = window.innerHeight > window.innerWidth; // checks if portrait mode 
   var videos = (typeof videosForFocus !== 'undefined' && videosForFocus) ? videosForFocus : [];
-  var sounds = (typeof soundsForFocus !== 'undefined' && soundsForFocus) ? videosForFocus : [];
+  var sounds = (typeof soundsForFocus !== 'undefined' && soundsForFocus) ? soundsForFocus : [];
   var psalmVideoVar = (typeof psalmVideo !== 'undefined' && psalmVideo) ? psalmVideo : [];
   var view360VideoVar = (typeof view360Video !== 'undefined' && view360Video) ? view360Video : [];
   var focusImages = (typeof imagesForFocus !== 'undefined' && imagesForFocus) ? imagesForFocus : [];
